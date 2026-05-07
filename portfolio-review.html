@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mutual Fund Portfolio Review — Tejas Jadhav, CFA, FRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --white:#fff;--off:#f7f6f3;--paper:#faf9f7;
+  --border:#e4e0d8;--border2:#d4cfc5;
+  --ink:#1a1816;--ink2:#3d3a35;--muted:#8a857c;--faint:#c4bfb8;
+  --navy:#1b2a4a;--navy2:#2d4070;--navy3:#0f1c33;
+  --green:#1a6645;--gl:#e8f5ee;--gb:#b8dfc9;
+  --red:#c0392b;--rl:#fde8e6;--rb:#f5b7b1;
+  --amber:#d97706;--al:#fef3cd;--ab:#f0d080;
+  --blue:#2563eb;--bl:#eff6ff;--bb:#bfdbfe;
+  --s1:0 1px 3px rgba(26,24,22,.06),0 1px 2px rgba(26,24,22,.04);
+  --s2:0 4px 16px rgba(26,24,22,.08),0 1px 4px rgba(26,24,22,.04);
+  --s3:0 12px 40px rgba(26,24,22,.12);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--ink);min-height:100vh;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+/* HEADER */
+.hdr{background:var(--navy3);border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;z-index:100;height:56px;}
+.hdr-in{max-width:1200px;margin:0 auto;padding:0 2rem;height:100%;display:flex;align-items:center;justify-content:space-between;}
+.hdr-left{display:flex;flex-direction:column;}
+.hdr-name{font-family:'Libre Baskerville',serif;font-size:.9rem;font-weight:700;color:#fff;}
+.hdr-sub{font-size:.58rem;color:#fff;letter-spacing:.04em;}
+.hdr-back{font-size:.68rem;color:rgba(255,255,255,.5);text-decoration:none;display:flex;align-items:center;gap:.3rem;transition:color .15s;}
+.hdr-back:hover{color:rgba(255,255,255,.9);}
+
+/* UPLOAD */
+.upload-screen{max-width:560px;margin:0 auto;padding:3.5rem 2rem 3rem;}
+.upload-title{font-family:'Libre Baskerville',serif;font-size:1.85rem;font-weight:400;color:var(--navy);margin-bottom:.4rem;text-align:center;line-height:1.25;}
+.upload-sub{font-size:.78rem;color:var(--muted);text-align:center;line-height:1.75;margin-bottom:1.75rem;}
+.drop-z{border:1.5px dashed var(--border2);border-radius:12px;padding:2rem 1.75rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--white);box-shadow:var(--s1);}
+.drop-z:hover,.drop-z.dg{border-color:var(--navy);background:#f0f3f8;box-shadow:var(--s2);}
+.drop-ico{width:48px;height:48px;margin:0 auto 1rem;background:var(--off);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.drop-title{font-family:'Libre Baskerville',serif;font-size:1rem;color:var(--ink);margin-bottom:.3rem;}
+.drop-hint{font-size:.7rem;color:var(--muted);line-height:1.75;}
+.fmt-tags{display:flex;justify-content:center;gap:.35rem;margin-top:.65rem;flex-wrap:wrap;}
+.fmt-tag{padding:.15rem .55rem;border:1px solid var(--border);border-radius:20px;font-family:'DM Mono',monospace;font-size:.55rem;color:var(--muted);background:var(--off);}
+#fi{display:none;}
+.fpill{display:none;align-items:center;gap:.65rem;padding:.75rem .9rem;background:var(--off);border:1px solid var(--border);border-radius:8px;margin-top:.85rem;}
+.fpill.show{display:flex;}
+.fpill-ico{width:28px;height:28px;background:var(--navy);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.fpill-name{font-size:.72rem;font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fpill-size{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);}
+
+/* DISCLAIMER CHECKBOX */
+
+.btn-analyse{width:100%;padding:.85rem;background:var(--navy);border:none;border-radius:8px;font-size:.82rem;font-weight:500;color:var(--white);cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:.65rem;opacity:.45;transition:all .2s;}
+.btn-analyse.ready{opacity:1;}
+.btn-analyse.ready:hover{background:var(--navy2);}
+
+/* TRUST BOX */
+.trust-box{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--white);box-shadow:var(--s1);margin-top:1.5rem;}
+.trust-hdr{background:var(--navy);padding:.75rem 1.1rem;display:flex;align-items:center;gap:.55rem;}
+.trust-hdr-txt{font-family:'Libre Baskerville',serif;font-size:.82rem;color:white;font-weight:700;}
+.trust-items{padding:1.1rem;display:flex;flex-direction:column;gap:.75rem;}
+.trust-item{display:flex;gap:.65rem;align-items:flex-start;}
+.trust-ico{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.trust-ico.green{background:var(--gl);border:1px solid var(--gb);}
+.trust-ico.amber{background:var(--al);border:1px solid var(--ab);}
+.trust-item-title{font-size:.74rem;font-weight:600;color:var(--ink);margin-bottom:.1rem;}
+.trust-item-desc{font-size:.66rem;color:var(--muted);line-height:1.55;}
+.trust-footer{background:var(--off);border-top:1px solid var(--border);padding:.55rem 1.1rem;}
+.trust-footer-txt{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.04em;}
+.disc-txt{font-size:.6rem;color:var(--faint);text-align:center;margin-top:1.25rem;line-height:1.7;}
+
+/* LOADING */
+.loading-screen{display:none;max-width:400px;margin:0 auto;padding:6rem 2rem;text-align:center;}
+.loading-screen.show{display:block;}
+.ld-ring{width:40px;height:40px;border:2px solid var(--border);border-top-color:var(--navy);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1.25rem;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.ld-title{font-family:'Libre Baskerville',serif;font-size:1rem;color:var(--navy);margin-bottom:.3rem;}
+.ld-sub{font-size:.7rem;color:var(--muted);line-height:1.7;}
+.ld-steps{margin-top:1.25rem;display:flex;flex-direction:column;gap:.35rem;text-align:left;max-width:240px;margin-left:auto;margin-right:auto;}
+.ld-step{font-size:.62rem;font-family:'DM Mono',monospace;color:var(--faint);display:flex;align-items:center;gap:.45rem;}
+.ld-step.active{color:var(--navy);}
+.ld-step.done{color:var(--green);}
+.ld-dot{width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0;}
+
+/* DASHBOARD */
+.dash{display:none;max-width:1200px;margin:0 auto;padding:1.75rem 2rem;}
+.dash.show{display:block;}
+
+/* BENCHMARK STRIP */
+.bench-strip{background:var(--navy3);border-radius:8px;padding:.75rem 1.25rem;display:flex;align-items:center;gap:1.5rem;margin-bottom:1.25rem;flex-wrap:wrap;}
+.bench-strip-lbl{font-family:'DM Mono',monospace;font-size:.55rem;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;margin-right:.25rem;}
+.bench-item{display:flex;align-items:center;gap:.5rem;}
+.bench-name{font-size:.65rem;color:rgba(255,255,255,.6);}
+.bench-vals{display:flex;gap:.75rem;}
+.bench-val{text-align:center;}
+.bench-val .yr{font-family:'DM Mono',monospace;font-size:.5rem;color:rgba(255,255,255,.35);letter-spacing:.06em;}
+.bench-val .pct{font-family:'DM Mono',monospace;font-size:.78rem;font-weight:500;}
+.bench-val .pct.pos{color:#6fdba0;}
+.bench-val .pct.neg{color:#f48a8a;}
+.bench-divider{width:1px;height:24px;background:rgba(255,255,255,.1);}
+
+/* SUMMARY STRIP */
+.summary-strip{background:var(--navy);border-radius:10px;padding:1.25rem 1.75rem;color:var(--white);display:grid;grid-template-columns:1fr auto;gap:1.5rem;align-items:start;margin-bottom:1.5rem;}
+.ss-name{font-family:'Libre Baskerville',serif;font-size:1rem;font-weight:700;margin-bottom:.2rem;}
+.ss-summary{font-size:.72rem;color:rgba(255,255,255,.6);line-height:1.6;max-width:600px;}
+.ss-meta{display:flex;gap:1.75rem;}
+.ss-item .lbl{font-family:'DM Mono',monospace;font-size:.5rem;color:rgba(255,255,255,.38);letter-spacing:.08em;text-transform:uppercase;}
+.ss-item .val{font-family:'Libre Baskerville',serif;font-size:1.2rem;line-height:1.15;margin-top:.1rem;}
+.ss-item .val.pos{color:#6fdba0;}
+.ss-item .val.neg{color:#f48a8a;}
+.ss-note{font-family:'DM Mono',monospace;font-size:.5rem;color:#ffffff;letter-spacing:.05em;grid-column:1/-1;margin-top:.5rem;padding-top:.65rem;border-top:1px solid rgba(255,255,255,.07);}
+
+/* SECTIONS */
+.sec{margin-bottom:1.5rem;}
+.sec-hd{display:flex;align-items:center;gap:.65rem;margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);}
+.sec-title{font-family:'Libre Baskerville',serif;font-size:.95rem;font-weight:400;color:var(--navy);}
+.sec-badge{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);padding:.12rem .45rem;border:1px solid var(--border);border-radius:10px;}
+.sec-badge.warn{background:var(--rl);border-color:var(--rb);color:var(--red);}
+
+/* KEY INSIGHTS */
+.insights-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+.insight-card{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--navy);border-radius:8px;padding:.85rem 1rem;display:flex;gap:.6rem;}
+.ins-num{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--faint);min-width:16px;margin-top:1px;flex-shrink:0;}
+.ins-txt{font-size:.72rem;color:var(--ink2);line-height:1.65;}
+
+/* METRICS */
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;}
+.mc{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:.8rem .9rem;position:relative;}
+.mc.good{border-left:3px solid var(--green);}
+.mc.warn{border-left:3px solid var(--red);}
+.mc.neutral{border-left:3px solid var(--amber);}
+.mc-dot{position:absolute;top:.6rem;right:.6rem;width:5px;height:5px;border-radius:50%;}
+.mc.good .mc-dot{background:var(--green);}
+.mc.warn .mc-dot{background:var(--red);}
+.mc.neutral .mc-dot{background:var(--amber);}
+.mc-lbl{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem;}
+.mc-val{font-family:'Libre Baskerville',serif;font-size:1.15rem;color:var(--ink);line-height:1;margin-bottom:.15rem;}
+.mc-bench{font-size:.58rem;color:var(--muted);}
+.mc-note{font-size:.58rem;color:var(--ink2);margin-top:.2rem;line-height:1.4;}
+
+/* XIRR CHART — category-aware */
+.xirr-chart{display:flex;flex-direction:column;gap:.3rem;}
+.xirr-row{display:grid;grid-template-columns:200px 1fr 80px 70px;gap:.5rem;align-items:center;}
+.xirr-name{font-size:.68rem;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.xirr-bar-wrap{background:var(--off);border-radius:3px;height:16px;position:relative;overflow:hidden;}
+.xirr-bar{height:100%;border-radius:3px;transition:width .5s ease;}
+.xirr-bench-line{position:absolute;top:0;bottom:0;width:1.5px;background:var(--navy);opacity:.6;}
+.xirr-pct{font-family:'DM Mono',monospace;font-size:.65rem;font-weight:500;text-align:right;}
+.xirr-cat{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted);text-align:right;}
+.xirr-bad{color:var(--red);}
+.xirr-good{color:var(--green);}
+.xirr-neutral{color:var(--amber);}
+.xirr-legend{display:flex;gap:1.25rem;margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(--border);flex-wrap:wrap;}
+.xirr-legend-item{display:flex;align-items:center;gap:.3rem;font-family:'DM Mono',monospace;font-size:.55rem;color:var(--muted);}
+.xirr-legend-dot{width:8px;height:8px;border-radius:2px;}
+
+/* UNDERPERFORMERS */
+.up-card{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:8px;padding:.9rem 1.1rem;margin-bottom:.5rem;}
+.up-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:.5rem;}
+.up-name{font-size:.82rem;font-weight:600;color:var(--ink);}
+.up-meta{font-size:.6rem;color:var(--muted);font-family:'DM Mono',monospace;margin-top:.1rem;}
+.up-badges{display:flex;gap:.35rem;align-items:center;flex-wrap:wrap;}
+.plan-badge{display:inline-block;padding:.08rem .4rem;border-radius:3px;font-family:'DM Mono',monospace;font-size:.52rem;font-weight:500;}
+.plan-badge.regular{background:var(--rl);color:var(--red);}
+.plan-badge.direct{background:var(--gl);color:var(--green);}
+.up-numbers{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:.35rem;margin-bottom:.5rem;}
+.up-num-box{background:var(--off);border-radius:5px;padding:.35rem .55rem;}
+.up-num-lbl{font-size:.55rem;color:var(--muted);font-family:'DM Mono',monospace;}
+.up-num-val{font-size:.75rem;font-weight:600;font-family:'DM Mono',monospace;}
+.up-why{background:var(--rl);border:1px solid var(--rb);border-radius:5px;padding:.45rem .7rem;}
+.up-why-lbl{font-size:.55rem;font-weight:600;color:var(--red);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.15rem;}
+.up-why-txt{font-size:.7rem;color:var(--ink2);line-height:1.5;}
+
+/* OBSERVATIONS */
+.obs-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;}
+.obs-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:.9rem 1rem;display:flex;gap:.7rem;}
+.obs-card.critical{border-left:3px solid var(--red);background:var(--rl);}
+.obs-card.high{border-left:3px solid var(--red);}
+.obs-card.medium{border-left:3px solid var(--amber);}
+.obs-card.low{border-left:3px solid var(--green);}
+.obs-num{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--faint);min-width:18px;flex-shrink:0;margin-top:2px;}
+.obs-body{}
+.obs-sev{font-family:'DM Mono',monospace;font-size:.5rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.12rem .38rem;border-radius:3px;display:inline-block;margin-bottom:.25rem;}
+.obs-card.critical .obs-sev,.obs-card.high .obs-sev{background:var(--red);color:#fff;}
+.obs-card.medium .obs-sev{background:var(--amber);color:#fff;}
+.obs-card.low .obs-sev{background:var(--green);color:#fff;}
+.obs-title{font-size:.77rem;font-weight:600;color:var(--ink);margin-bottom:.18rem;}
+.obs-desc{font-size:.68rem;color:var(--ink2);line-height:1.6;}
+.obs-fix{font-size:.65rem;color:var(--green);font-weight:500;margin-top:.25rem;}
+
+/* SWITCH */
+.switch-card{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:.5rem;box-shadow:var(--s1);}
+.sw-inner{display:grid;grid-template-columns:1fr auto 1fr;}
+.sw-out{padding:.8rem .9rem;border-right:1px solid var(--border);}
+.sw-arr{display:flex;align-items:center;justify-content:center;padding:0 .75rem;background:var(--off);font-size:.9rem;color:var(--navy);}
+.sw-in{padding:.8rem .9rem;}
+.sw-lbl{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.2rem;}
+.sw-out .sw-lbl{color:var(--red);}
+.sw-in .sw-lbl{color:var(--green);}
+.sw-fund{font-size:.77rem;font-weight:600;color:var(--ink);margin-bottom:.12rem;}
+.sw-reason{font-size:.65rem;color:var(--muted);line-height:1.5;}
+.sw-badge{display:inline-block;margin-top:.2rem;padding:.1rem .38rem;border-radius:3px;font-size:.55rem;font-family:'DM Mono',monospace;}
+.sw-badge.regular,.sw-badge.underperform{background:var(--rl);color:var(--red);}
+.sw-badge.overlap,.sw-badge.duplicate{background:var(--al);color:var(--amber);}
+.sw-same{font-size:.58rem;color:var(--green);margin-top:.15rem;font-family:'DM Mono',monospace;}
+
+/* CATEGORY GRID */
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;}
+.cat-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:.85rem .95rem;border-top:2px solid var(--border);}
+.cat-card.add{border-top-color:var(--green);}
+.cat-card.hold{border-top-color:var(--amber);}
+.cat-card.reduce{border-top-color:var(--red);}
+.cat-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.45rem;}
+.cat-name{font-size:.75rem;font-weight:600;color:var(--ink);}
+.cat-action{font-family:'DM Mono',monospace;font-size:.55rem;font-weight:600;padding:.1rem .38rem;border-radius:3px;text-transform:uppercase;}
+.cat-card.add .cat-action{background:var(--gl);color:var(--green);}
+.cat-card.hold .cat-action{background:var(--al);color:var(--amber);}
+.cat-card.reduce .cat-action{background:var(--rl);color:var(--red);}
+.cat-alloc{display:flex;align-items:center;gap:.4rem;margin-bottom:.4rem;}
+.cat-alloc-item{flex:1;text-align:center;background:var(--off);border-radius:4px;padding:.25rem .35rem;}
+.cat-alloc-lbl{font-family:'DM Mono',monospace;font-size:.5rem;color:var(--muted);}
+.cat-alloc-val{font-family:'DM Mono',monospace;font-size:.75rem;font-weight:600;}
+.cat-fund{font-size:.68rem;font-weight:600;color:var(--navy);margin-bottom:.15rem;}
+.cat-reason{font-size:.62rem;color:var(--muted);line-height:1.45;}
+
+/* PASSWORD MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(10,16,28,.55);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;}
+.modal-bg.show{opacity:1;pointer-events:all;}
+.modal{background:var(--white);border-radius:14px;width:100%;max-width:420px;padding:1.75rem;box-shadow:var(--s3);transform:translateY(8px) scale(.98);transition:transform .2s;margin:1rem;}
+.modal-bg.show .modal{transform:none;}
+.mod-ico{width:40px;height:40px;background:var(--off);border:1px solid var(--border);border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:.85rem;}
+.mod-title{font-family:'Libre Baskerville',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.3rem;}
+.mod-sub{font-size:.72rem;color:var(--muted);line-height:1.65;margin-bottom:.9rem;}
+.pan-hint{display:flex;gap:.5rem;padding:.7rem .85rem;background:var(--al);border:1px solid var(--ab);border-radius:7px;margin-bottom:.75rem;}
+.pan-hint p{font-size:.67rem;color:#6b4500;line-height:1.6;}
+.priv-note{background:var(--gl);border:1px solid var(--gb);border-radius:7px;padding:.65rem .85rem;margin-bottom:.75rem;}
+.priv-note-title{font-size:.65rem;font-weight:600;color:var(--green);margin-bottom:.2rem;}
+.priv-note-txt{font-size:.63rem;color:#1a5c3a;line-height:1.55;}
+.pwd-wrap{position:relative;margin-bottom:.4rem;}
+.pwd-in{width:100%;padding:.75rem 2.5rem .75rem .9rem;border:1.5px solid var(--border);border-radius:7px;font-family:'DM Mono',monospace;font-size:.8rem;color:var(--ink);letter-spacing:.1em;outline:none;transition:border-color .15s;background:var(--off);}
+.pwd-in:focus{border-color:var(--navy);background:var(--white);}
+.pwd-in.err{border-color:var(--red);}
+.pwd-eye{position:absolute;right:.75rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--faint);display:flex;padding:0;}
+.pwd-err{display:none;font-size:.65rem;color:var(--red);margin-bottom:.5rem;}
+.pwd-err.show{display:block;}
+.pwd-priv{display:flex;gap:.45rem;padding:.6rem .8rem;background:var(--gl);border:1px solid var(--gb);border-radius:7px;margin-bottom:.9rem;}
+.pwd-priv p{font-size:.62rem;color:#1a5c3a;line-height:1.5;}
+.mod-btns{display:flex;gap:.5rem;}
+.btn-can{flex:1;padding:.65rem;background:var(--off);border:1px solid var(--border);border-radius:7px;font-size:.75rem;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-unl{flex:2;padding:.65rem;background:var(--navy);border:none;border-radius:7px;font-size:.75rem;font-weight:500;color:var(--white);cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-unl:hover{background:var(--navy2);}
+.btn-unl:disabled{opacity:.4;cursor:not-allowed;}
+
+@media(max-width:900px){
+  .metrics-grid{grid-template-columns:1fr 1fr;}
+  .obs-grid{grid-template-columns:1fr;}
+  .insights-grid{grid-template-columns:1fr;}
+  .cat-grid{grid-template-columns:1fr 1fr;}
+  .xirr-row{grid-template-columns:130px 1fr 65px 55px;}
+  .summary-strip{grid-template-columns:1fr;}
+  .ss-meta{flex-wrap:wrap;gap:1rem;}
+  .up-numbers{grid-template-columns:1fr 1fr;}
+  .sw-inner{grid-template-columns:1fr;}
+  .sw-arr{padding:.4rem;border:none;border-top:1px solid var(--border);}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="hdr-left">
+      <div class="hdr-name">Tejas Jadhav, CFA, FRM</div>
+      <div class="hdr-sub">PERSONAL FINANCE ENTHUSIAST · NOT SEBI REGISTERED</div>
+    </div>
+    <a href="https://tejasgjadhav.github.io/" class="hdr-back">
+      <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      tejasgjadhav.github.io
+    </a>
+  </div>
+</header>
+
+<!-- UPLOAD -->
+<div class="upload-screen" id="upload-screen">
+  <div class="upload-title">Mutual Fund Portfolio Review</div>
+  <div class="upload-sub">Upload your NSDL eCAS for an educational reference analysis of your MF portfolio — performance observations, cost notes and diversification review. Not investment advice.</div>
+
+  <div class="drop-z" id="drop-z" onclick="document.getElementById('fi').click()">
+    <div class="drop-ico">
+      <svg width="20" height="20" fill="none" stroke="#1b2a4a" stroke-width="1.5" viewBox="0 0 24 24">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/>
+      </svg>
+    </div>
+    <div class="drop-title">Drop your PDF statement here</div>
+    <div class="drop-hint">Click to browse or drag & drop<br>NSDL eCAS · CAMS · MF Central</div>
+    <div class="fmt-tags">
+      <span class="fmt-tag">Password Protected ✓</span>
+      <span class="fmt-tag">No Upload</span>
+      <span class="fmt-tag">Data Scrubbed</span>
+      <span class="fmt-tag">Free</span>
+    </div>
+    <input type="file" id="fi" accept=".pdf">
+  </div>
+
+  <div class="fpill" id="fpill">
+    <div class="fpill-ico"><svg width="12" height="12" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+    <div class="fpill-name" id="fp-name">—</div>
+    <div class="fpill-size" id="fp-size">—</div>
+  </div>
+
+
+  <div class="trust-box" style="margin-top:1.1rem;">
+    <div class="trust-hdr">
+      <svg width="14" height="14" fill="none" stroke="white" stroke-width="1.75" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <div class="trust-hdr-txt">Your Data is Safe — How This Works</div>
+    </div>
+    <div class="trust-items">
+      <div class="trust-item">
+        <div class="trust-ico green"><svg width="12" height="12" fill="none" stroke="var(--green)" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <div><div class="trust-item-title">PDF never leaves your device</div><div class="trust-item-desc">Processed entirely in your browser via PDF.js. Never uploaded to any server or database.</div></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-ico green"><svg width="12" height="12" fill="none" stroke="var(--green)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div><div class="trust-item-title">Only MF Folios section is extracted</div><div class="trust-item-desc">Your <span style="color:var(--red);font-weight:600;">equity holdings · demat numbers · PAN · Aadhaar · email · mobile</span> are never read or transmitted.</div></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-ico green"><svg width="12" height="12" fill="none" stroke="var(--green)" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div><div class="trust-item-title">Sensitive data scrubbed before transmission</div><div class="trust-item-desc">Even within the MF section, <span style="color:var(--red);font-weight:600;">PAN · Aadhaar · email · mobile · IFSC · demat IDs · PRAN</span> are stripped in your browser before any data is sent. Only fund names, NAV, costs and returns reach the analysis engine.</div></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-ico green"><svg width="12" height="12" fill="none" stroke="var(--green)" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <div><div class="trust-item-title">Password decrypts locally only</div><div class="trust-item-desc">Your PAN (PDF password) is used only in your browser to decrypt the file. Never sent anywhere or stored.</div></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-ico amber"><svg width="12" height="12" fill="none" stroke="var(--amber)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div><div class="trust-item-title">Educational use only — Not SEBI registered</div><div class="trust-item-desc">This tool provides educational reference analysis only. Nothing constitutes investment advice. Always consult a qualified financial advisor before making investment decisions.</div></div>
+      </div>
+    </div>
+    <div class="trust-footer">
+      <span class="trust-footer-txt">NOT SEBI REGISTERED · EDUCATIONAL REFERENCE ONLY · NOT INVESTMENT ADVICE · TEJAS JADHAV, CFA, FRM · tejasgjadhav.github.io</span>
+    </div>
+  </div>
+  <div class="disc-txt">Educational purposes only · Not investment advice · Not SEBI registered · Tejas Jadhav, CFA, FRM</div>
+</div>
+
+<!-- LOADING -->
+<div class="loading-screen" id="loading-screen">
+  <div class="ld-ring"></div>
+  <div class="ld-title">Analysing your portfolio…</div>
+  <div class="ld-sub">Scrubbing personal data · Extracting MF folios · Running analysis</div>
+  <div class="ld-steps">
+    <div class="ld-step" id="ls1"><div class="ld-dot"></div>Reading & extracting PDF text</div>
+    <div class="ld-step" id="ls2"><div class="ld-dot"></div>Scrubbing PAN, Aadhaar, email, mobile</div>
+    <div class="ld-step" id="ls3"><div class="ld-dot"></div>Locating MF Folios (F) section</div>
+    <div class="ld-step" id="ls4"><div class="ld-dot"></div>Generating educational reference</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dash" id="dash">
+
+  <!-- BENCHMARK CONTEXT STRIP -->
+  <div class="bench-strip">
+    <span class="bench-strip-lbl">Market Context</span>
+    <div class="bench-item">
+      <span class="bench-name">Nifty 50 TRI</span>
+      <div class="bench-vals">
+        <div class="bench-val"><div class="yr">1YR</div><div class="pct pos">+12.1%</div></div>
+        <div class="bench-val"><div class="yr">3YR</div><div class="pct pos">+14.2%</div></div>
+        <div class="bench-val"><div class="yr">5YR</div><div class="pct pos">+13.5%</div></div>
+      </div>
+    </div>
+    <div class="bench-divider"></div>
+    <div class="bench-item">
+      <span class="bench-name">Nifty Midcap 150 TRI</span>
+      <div class="bench-vals">
+        <div class="bench-val"><div class="yr">1YR</div><div class="pct pos">+8.4%</div></div>
+        <div class="bench-val"><div class="yr">3YR</div><div class="pct pos">+19.1%</div></div>
+        <div class="bench-val"><div class="yr">5YR</div><div class="pct pos">+22.3%</div></div>
+      </div>
+    </div>
+    <div class="bench-divider"></div>
+    <div class="bench-item">
+      <span class="bench-name">Nifty Small Cap 250 TRI</span>
+      <div class="bench-vals">
+        <div class="bench-val"><div class="yr">1YR</div><div class="pct neg">-2.1%</div></div>
+        <div class="bench-val"><div class="yr">3YR</div><div class="pct pos">+17.8%</div></div>
+        <div class="bench-val"><div class="yr">5YR</div><div class="pct pos">+25.4%</div></div>
+      </div>
+    </div>
+    <div class="bench-divider"></div>
+    <div class="bench-item">
+      <span class="bench-name">Nifty IT TRI</span>
+      <div class="bench-vals">
+        <div class="bench-val"><div class="yr">1YR</div><div class="pct neg">-4.8%</div></div>
+        <div class="bench-val"><div class="yr">3YR</div><div class="pct pos">+6.2%</div></div>
+        <div class="bench-val"><div class="yr">5YR</div><div class="pct pos">+14.1%</div></div>
+      </div>
+    </div>
+    <div style="margin-left:auto;font-family:'DM Mono',monospace;font-size:.5rem;color:rgba(255,255,255,.25);">Reference data · Approximate · Verify independently</div>
+  </div>
+
+  <!-- SUMMARY STRIP -->
+  <div class="summary-strip" id="summary-strip">
+    <div>
+      <div class="ss-name" id="ss-name">—</div>
+      <div class="ss-summary" id="ss-summary"></div>
+    </div>
+    <div class="ss-meta" id="ss-meta"></div>
+    <div class="ss-note">Educational reference only &nbsp;·&nbsp; MF portfolio only &nbsp;·&nbsp; Not SEBI registered &nbsp;·&nbsp; Not investment advice</div>
+  </div>
+
+  <!-- 1. KEY INSIGHTS -->
+  <div class="sec">
+    <div class="sec-hd">
+      <div class="sec-title">💡 Key Insights</div>
+      <div class="sec-badge">Educational reference</div>
+    </div>
+    <div class="insights-grid" id="insights-grid"></div>
+  </div>
+
+  <!-- 2. PORTFOLIO METRICS -->
+  <div class="sec">
+    <div class="sec-hd">
+      <div class="sec-title">Portfolio Metrics</div>
+    </div>
+    <div class="metrics-grid" id="metrics-grid"></div>
+  </div>
+
+  <!-- 3. FUND PERFORMANCE — category-aware benchmark -->
+  <div class="sec">
+    <div class="sec-hd">
+      <div class="sec-title">Fund Performance</div>
+      <div class="sec-badge">Each fund shown against its category benchmark · Educational reference</div>
+    </div>
+    <div id="xirr-chart"></div>
+  </div>
+
+  <!-- 4. UNDERPERFORMERS -->
+  <div class="sec">
+    <div class="sec-hd">
+      <div class="sec-title">🔴 Funds Below Category Benchmark</div>
+      <div class="sec-badge warn" id="underperf-count">0 funds</div>
+    </div>
+    <div id="underperf-cards"></div>
+  </div>
+
+  <!-- 5. OBSERVATIONS -->
+  <div class="sec">
+    <div class="sec-hd">
+      <div class="sec-title">⚡ Observations &amp; Considerations</div>
+      <div class="sec-badge warn" id="obs-count">0 items</div>
+    </div>
+    <div class="sec-badge" style="margin-bottom:.65rem;display:inline-block;background:var(--al);border-color:var(--ab);color:var(--amber);">⚠ For educational reference only · Not investment advice · Consult a SEBI registered advisor</div>
+    <div class="obs-grid" id="obs-grid"></div>
+  </div>
+
+  <!-- 6. SWITCH OBSERVATIONS -->
+  <div class="sec">
+    <div class="sec-hd">
+      <div class="sec-title">↔ Switch Observations</div>
+      <div class="sec-badge">Educational reference · Not investment advice · Consult your advisor</div>
+    </div>
+    <div id="switch-wrap"></div>
+  </div>
+
+  <!-- 7. CATEGORY OBSERVATIONS -->
+  <div class="sec">
+    <div class="sec-hd">
+      <div class="sec-title">📋 Category-wise Observations</div>
+      <div class="sec-badge">Educational reference · Not investment advice</div>
+    </div>
+    <div class="cat-grid" id="cat-grid"></div>
+  </div>
+
+  <div style="margin-top:2rem;padding-top:1.25rem;border-top:1px solid var(--border);font-size:.6rem;color:var(--faint);text-align:center;line-height:1.8;">
+    This is an <strong>educational reference tool only</strong>. Nothing here constitutes investment advice, a solicitation, or a recommendation to buy or sell any security or fund.<br>
+    Tejas Jadhav, CFA, FRM is <strong>not a SEBI registered investment advisor</strong>. Past performance of funds is not indicative of future returns.<br>
+    Benchmark data shown is approximate and for reference only — verify independently. Always consult a qualified SEBI registered financial advisor before making investment decisions.<br>
+    tejasgjadhav.github.io
+  </div>
+</div>
+
+<!-- UNIFIED MODAL — handles both no-password and password PDFs -->
+<div class="modal-bg" id="main-modal">
+  <div class="modal" style="max-width:460px;">
+
+    <!-- Step 1: Disclaimer (always shown first) -->
+    <div id="step-disclaimer">
+      <div class="mod-ico">
+        <svg width="16" height="16" fill="none" stroke="#1b2a4a" stroke-width="1.75" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div class="mod-title">Before We Begin</div>
+      <div class="mod-sub">Your PDF is ready. Please acknowledge the following to continue.</div>
+
+      <div class="priv-note" style="margin-bottom:.85rem;">
+        <div class="priv-note-title">🔒 Privacy — What gets sent</div>
+        <div class="priv-note-txt">Only the <strong>Mutual Fund Folios (F)</strong> section is extracted. Before sending, your browser auto-scrubs <span style="font-weight:600;color:#b45309;">PAN · Aadhaar · email · mobile · demat IDs</span>. Only fund names, NAV, costs and returns reach the analysis engine.</div>
+      </div>
+
+      <label style="display:flex;gap:.7rem;align-items:flex-start;padding:1rem 1.1rem;background:var(--al);border:1.5px solid var(--ab);border-radius:10px;margin-bottom:1.1rem;cursor:pointer;transition:background .15s;" id="disc-label">
+        <input type="checkbox" id="disc-chk" onchange="onDiscChange()" style="margin-top:2px;width:16px;height:16px;flex-shrink:0;accent-color:var(--navy);cursor:pointer;">
+        <span style="font-size:.68rem;color:#5a3a00;line-height:1.65;"><strong>I understand</strong> this is an educational reference tool only and does not constitute investment advice. I will consult a qualified financial advisor before making any investment decisions. <strong>Tejas Jadhav, CFA, FRM is not a SEBI registered investment advisor.</strong></span>
+      </label>
+
+      <div class="mod-btns">
+        <button class="btn-can" onclick="closeMainModal()">Cancel</button>
+        <button class="btn-unl" id="btn-continue" onclick="onContinue()" disabled style="background:var(--navy);opacity:.4;">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Password entry (shown only if PDF is password-protected) -->
+    <div id="step-password" style="display:none;">
+      <div class="mod-ico">
+        <svg width="16" height="16" fill="none" stroke="#1b2a4a" stroke-width="1.75" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+      <div class="mod-title">Statement is Password Protected</div>
+      <div class="mod-sub">Enter your PAN number to decrypt and analyse your statement.</div>
+
+      <div class="pan-hint" style="margin-bottom:.85rem;">
+        <div style="font-size:.85rem;flex-shrink:0;">💡</div>
+        <p>NSDL eCAS uses your <strong>PAN in uppercase</strong> as password. Example: <strong>ABCDE1234F</strong></p>
+      </div>
+
+      <div class="pwd-wrap">
+        <input class="pwd-in" type="password" id="pwd-in" placeholder="Enter PAN — e.g. ABCDE1234F" onkeydown="if(event.key==='Enter') subPwd()" oninput="clrErr()">
+        <button class="pwd-eye" onclick="togEye()" type="button">
+          <svg id="eye-svg" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <div class="pwd-err" id="pwd-err">Incorrect password — please check your PAN</div>
+
+      <div class="pwd-priv" style="margin-bottom:1rem;">
+        <svg width="11" height="11" fill="none" stroke="#1a6645" stroke-width="1.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <p>Password used only in your browser to decrypt PDF. <strong>Never transmitted or stored.</strong></p>
+      </div>
+
+      <div class="mod-btns">
+        <button class="btn-can" onclick="closeMainModal()">Cancel</button>
+        <button class="btn-unl" id="btn-unl" onclick="subPwd()">Unlock &amp; Analyse →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = '';
+const API_ENDPOINT = 'https://claude-api.tejasipsjadhav.workers.dev';
+let pdfText = '', aData = null, pdfBytes = null, pwdCb = null;
+
+// Category benchmarks — used for per-category comparison
+const CAT_BENCH = {
+  'Small Cap': {label:'Nifty SC 250', val: 25.4},
+  'Mid Cap': {label:'Nifty MC 150', val: 22.3},
+  'Large Cap': {label:'Nifty 50', val: 13.5},
+  'Flexi Cap': {label:'Nifty 500', val: 15.2},
+  'Large&MidCap': {label:'Nifty LMC 250', val: 18.1},
+  'ELSS': {label:'Nifty 500', val: 15.2},
+  'Sectoral': {label:'Nifty IT', val: 14.1},
+  'Hybrid': {label:'Nifty 50', val: 13.5},
+  'Debt': {label:'CRISIL ST', val: 7.0},
+};
+function getBench(cat) {
+  for(const k of Object.keys(CAT_BENCH)) {
+    if(cat && cat.toLowerCase().includes(k.toLowerCase())) return CAT_BENCH[k];
+  }
+  return {label:'Nifty 50', val:13.5};
+}
+
+
+
+const dz = document.getElementById('drop-z');
+document.getElementById('fi').addEventListener('change', e => { if(e.target.files[0]) hFile(e.target.files[0]); });
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dg'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('dg'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('dg');
+  if(e.dataTransfer.files[0]?.type === 'application/pdf') hFile(e.dataTransfer.files[0]);
+});
+
+// ── UNIFIED MODAL LOGIC ─────────────────────────
+function hFile(file) {
+  document.getElementById('fp-name').textContent = file.name;
+  document.getElementById('fp-size').textContent = (file.size/1024).toFixed(0) + ' KB';
+  document.getElementById('fpill').classList.add('show');
+  const r = new FileReader();
+  r.onload = e => {
+    pdfBytes = new Uint8Array(e.target.result);
+    openMainModal();
+  };
+  r.readAsArrayBuffer(file);
+}
+
+function openMainModal() {
+  // Always start at step 1 (disclaimer)
+  document.getElementById('step-disclaimer').style.display = 'block';
+  document.getElementById('step-password').style.display = 'none';
+  document.getElementById('disc-chk').checked = false;
+  const btn = document.getElementById('btn-continue');
+  btn.disabled = true;
+  btn.style.opacity = '.4';
+  document.getElementById('main-modal').classList.add('show');
+}
+
+function onDiscChange() {
+  const checked = document.getElementById('disc-chk').checked;
+  const btn = document.getElementById('btn-continue');
+  btn.disabled = !checked;
+  btn.style.opacity = checked ? '1' : '.4';
+  // Visual feedback on label
+  document.getElementById('disc-label').style.background = checked ? 'var(--gl)' : 'var(--al)';
+  document.getElementById('disc-label').style.borderColor = checked ? 'var(--gb)' : 'var(--ab)';
+}
+
+function onContinue() {
+  // Disclaimer accepted — now try to load PDF
+  // If it needs a password, showPasswordStep() will be called
+  showLoading();
+  document.getElementById('main-modal').classList.remove('show');
+  loadPDF(pdfBytes, null);
+}
+
+function showPasswordStep(wrong) {
+  // PDF needs password — show step 2 inside same modal
+  document.getElementById('loading-screen').classList.remove('show');
+  document.getElementById('upload-screen').style.display = 'block';
+  document.getElementById('step-disclaimer').style.display = 'none';
+  document.getElementById('step-password').style.display = 'block';
+  const inp = document.getElementById('pwd-in');
+  if(wrong) {
+    inp.classList.add('err');
+    document.getElementById('pwd-err').classList.add('show');
+  } else {
+    inp.classList.remove('err');
+    document.getElementById('pwd-err').classList.remove('show');
+  }
+  inp.value = '';
+  document.getElementById('main-modal').classList.add('show');
+  setTimeout(() => inp.focus(), 150);
+}
+
+function closeMainModal() {
+  document.getElementById('main-modal').classList.remove('show');
+  document.getElementById('upload-screen').style.display = 'block';
+  document.getElementById('loading-screen').classList.remove('show');
+  document.getElementById('fpill').classList.remove('show');
+  document.getElementById('disc-chk').checked = false;
+}
+
+function showLoading() {
+  document.getElementById('upload-screen').style.display = 'none';
+  document.getElementById('loading-screen').classList.add('show');
+  animateSteps();
+}
+
+async function loadPDF(bytes, pwd) {
+  try {
+    const task = pdfjsLib.getDocument({ data: bytes, password: pwd || '' });
+    task.onPassword = (cb, reason) => {
+      pwdCb = cb;
+      showPasswordStep(reason === pdfjsLib.PasswordResponses.INCORRECT_PASSWORD);
+    };
+    const pdf = await task.promise;
+    let t = '';
+    for(let i = 1; i <= Math.min(pdf.numPages, 50); i++) {
+      const pg = await pdf.getPage(i);
+      const c = await pg.getTextContent();
+      const items = c.items.sort((a, b) => {
+        const yD = Math.round(b.transform[5]) - Math.round(a.transform[5]);
+        if(Math.abs(yD) > 3) return yD;
+        return a.transform[4] - b.transform[4];
+      });
+      let lastY = null, line = '', lines = [];
+      items.forEach(item => {
+        const y = Math.round(item.transform[5]);
+        if(lastY !== null && Math.abs(y - lastY) > 3) {
+          if(line.trim()) lines.push(line.trim());
+          line = '';
+        }
+        line += (line ? '  ' : '') + item.str;
+        lastY = y;
+      });
+      if(line.trim()) lines.push(line.trim());
+      t += lines.join('\n') + '\n---P' + i + '---\n';
+    }
+    pdfText = t;
+    hideModal();
+    if(!document.getElementById('loading-screen').classList.contains('show')) showLoading();
+    startAnalysis();
+  } catch(err) {
+    if(err.name === 'PasswordException') return;
+    document.getElementById('loading-screen').classList.remove('show');
+    document.getElementById('upload-screen').style.display = 'block';
+    alert('Could not read this PDF. Please ensure it is a valid NSDL eCAS or CAMS statement.');
+  }
+}
+
+function animateSteps() {
+  const steps = ['ls1','ls2','ls3','ls4'];
+  let i = 0;
+  const iv = setInterval(() => {
+    if(i > 0) { const el = document.getElementById(steps[i-1]); el.classList.remove('active'); el.classList.add('done'); }
+    if(i < steps.length) { document.getElementById(steps[i]).classList.add('active'); i++; }
+    else clearInterval(iv);
+  }, 1100);
+}
+
+
+function hideModal() { document.getElementById("main-modal").classList.remove("show"); }
+function clrErr() { document.getElementById('pwd-in').classList.remove('err'); document.getElementById('pwd-err').classList.remove('show'); }
+function subPwd() {
+  const inp = document.getElementById('pwd-in'), pwd = inp.value.trim().toUpperCase();
+  if(!pwd) { inp.classList.add('err'); return; }
+  const btn = document.getElementById('btn-unl'); btn.disabled = true; btn.textContent = 'Unlocking…';
+  if(pwdCb) { pwdCb(pwd); pwdCb = null; } else loadPDF(pdfBytes, pwd);
+  setTimeout(() => { btn.disabled = false; btn.textContent = 'Unlock & Analyse →'; }, 3000);
+}
+function canPwd() { closeMainModal(); }
+function togEye() {
+  const inp = document.getElementById('pwd-in'), svg = document.getElementById('eye-svg');
+  if(inp.type === 'password') { inp.type = 'text'; svg.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'; }
+  else { inp.type = 'password'; svg.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'; }
+}
+
+// MF EXTRACTION
+function extractMFSection(text) {
+  const lines = text.split('\n');
+  let start = -1;
+
+  // Find "Mutual Fund Folios (F)" that is the HOLDINGS table (not transactions/demat)
+  for(let i = 0; i < lines.length; i++) {
+    const l = lines[i].trim();
+    if(l === 'Mutual Fund Folios (F)' || l.match(/^Mutual Fund Folios \(F\)/)) {
+      const win = lines.slice(i, i+80).join('\n');
+      if(win.match(/INF[A-Z0-9]{9}/) && (win.includes('Total Cost') || win.includes('Annualised') || win.match(/\d+\.\d{3}\s+\d+\.\d{4}/))) {
+        start = i; break;
+      }
+    }
+  }
+  // Find first INF ISIN line (not in TER section)
+  if(start === -1) {
+    for(let i = 0; i < lines.length; i++) {
+      if(lines[i].match(/^INF[A-Z0-9]{9}/)) {
+        const prev = lines.slice(Math.max(0,i-20),i).join(' ');
+        if(!prev.includes('Total Expense') && !prev.includes('Distributor')) { start = Math.max(0,i-12); break; }
+      }
+    }
+  }
+  // Find Annualised Return column header
+  if(start === -1) {
+    for(let i = 0; i < lines.length; i++) {
+      if(lines[i].includes('Annualised') && lines[i].includes('Return') && !lines[i].includes('Total Expense')) {
+        start = Math.max(0,i-5); break;
+      }
+    }
+  }
+  if(start === -1) return text.substring(0, 12000);
+  return lines.slice(start, start+800).join('\n').substring(0, 14000);
+}
+
+// SCRUB SENSITIVE DATA
+function scrub(text) {
+  return text
+    .replace(/[A-Z]{5}[0-9]{4}[A-Z]/g, '[PAN]')
+    .replace(/\b\d{4}\s?\d{4}\s?\d{4}\b/g, '[AADHAAR]')
+    .replace(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/g, '[EMAIL]')
+    .replace(/[T][X]+[A-Z]*@[X]+[a-zA-Z]/g, '[EMAIL]')
+    .replace(/(\+91[\s\-]?)?[6-9]\d{9}/g, '[MOBILE]')
+    .replace(/[xX]{4,}\d{2,4}/g, '[MOBILE]')
+    .replace(/[A-Z]{4}0[A-Z0-9]{6}/g, '[IFSC]')
+    .replace(/Client ID[:\s]+\d+/gi, 'Client ID:[REDACTED]')
+    .replace(/DP ID[:\s]+[A-Z0-9]+/gi, 'DP ID:[REDACTED]')
+    .replace(/PINCODE[:\s]+\d{6}/gi, 'PINCODE:[REDACTED]')
+    .replace(/PRAN[:\s]+\d{12}/gi, 'PRAN:[REDACTED]');
+}
+
+// ANALYSIS
+async function startAnalysis() {
+  const rawMF = extractMFSection(pdfText);
+  const safeMF = scrub(rawMF);
+
+  const prompt = `Analyse NSDL eCAS Mutual Fund Folios (F) section. Ignore "Mutual Funds (M)" demat section.
+Columns: ISIN|UCC|Fund Name|Folio No|Units|Avg Cost/Unit|Total Cost(=invested)|Current NAV|Current Value|P&L|Annualised Return%(=XIRR)
+Rules: Skip zero-unit rows. Direct=name has "Direct". Each holding's category: Small Cap/Mid Cap/Large Cap/Flexi Cap/ELSS/Sectoral/Large&MidCap/Debt/Hybrid.
+Educational language only. Max 12 words per desc/reason/fix field.
+
+JSON (compact, no markdown):
+{"investorName":"first name","totalMFValue":"X,XX,XXX","totalMFInvested":"X,XX,XXX","portfolioXirr":"X.X","alpha":"X.X","summary":"1 concise sentence with key observation","insights":["insight with specific fund names and numbers","insight 2 with numbers","insight 3","insight 4"],"metrics":[{"label":"No. of Schemes","value":"X","bench":"8-12","status":"warn","note":"brief"},{"label":"Regular Plans","value":"X","bench":"0","status":"warn","note":"names"},{"label":"ELSS Invested","value":"Rs X","bench":"Rs 1.5L","status":"neutral","note":"brief"},{"label":"Direct Plan %","value":"X%","bench":"100%","status":"warn","note":"brief"},{"label":"Avg Expense","value":"X%","bench":"<0.5%","status":"good","note":"brief"},{"label":"Overlap Risk","value":"High","bench":"Low","status":"warn","note":"brief"},{"label":"SIP Active","value":"Yes","bench":"Active","status":"good","note":"brief"},{"label":"Sector Conc.","value":"X%","bench":"<20%","status":"neutral","note":"brief"}],"holdings":[{"name":"exact fund name","invested":"Total Cost","currentValue":"Current Value","xirr":"Annualised Return or null","plan":"Direct or Regular","category":"exact category","underperforming":true,"whyUnderperform":"brief specific reason","allocation":"X.X%"}],"issues":[{"sev":"critical|high|medium|low","title":"Short title","desc":"Max 12 words specific","fix":"Max 10 words"}],"switches":[{"outFund":"name","outReason":"Max 8 words","outBadge":"regular|underperform|overlap|duplicate","inFund":"name","inReason":"Max 8 words","sameCategory":true}],"categoryRecommendations":[{"category":"Large Cap","action":"add|hold|reduce","currentAllocation":"X%","targetAllocation":"X%","recommendedFund":"specific fund name","reason":"Max 8 words"},{"category":"Mid Cap","action":"add|hold|reduce","currentAllocation":"X%","targetAllocation":"X%","recommendedFund":"specific fund name","reason":"Max 8 words"},{"category":"Small Cap","action":"add|hold|reduce","currentAllocation":"X%","targetAllocation":"X%","recommendedFund":"specific fund name","reason":"Max 8 words"},{"category":"Flexi Cap","action":"add|hold|reduce","currentAllocation":"X%","targetAllocation":"X%","recommendedFund":"specific fund name","reason":"Max 8 words"},{"category":"ELSS","action":"add|hold|reduce","currentAllocation":"X%","targetAllocation":"X%","recommendedFund":"specific fund name","reason":"Max 8 words"},{"category":"Debt/Hybrid","action":"add|hold|reduce","currentAllocation":"0%","targetAllocation":"10-15%","recommendedFund":"specific fund name","reason":"Max 8 words"}]}
+
+MF FOLIOS DATA:
+${safeMF}
+
+JSON only:`;
+
+  try {
+    const res = await fetch(API_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 6000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    if(!data?.content?.[0]?.text) throw new Error('Empty response from API. Check Worker and API key.');
+    let raw = data.content[0].text.trim();
+    const m = raw.match(/\{[\s\S]*\}/);
+    if(!m) throw new Error('No JSON in response: ' + raw.substring(0,200));
+    let jsonStr = m[0];
+    try {
+      aData = JSON.parse(jsonStr);
+    } catch(e) {
+      // Repair truncated JSON
+      jsonStr = jsonStr.replace(/,\s*[^,{}\[\]"]*$/, '');
+      let opens = 0, openArr = 0;
+      for(let c of jsonStr) { if(c==='{') opens++; else if(c==='}') opens--; else if(c==='[') openArr++; else if(c===']') openArr--; }
+      for(let i=0;i<openArr;i++) jsonStr += ']';
+      for(let i=0;i<opens;i++) jsonStr += '}';
+      aData = JSON.parse(jsonStr);
+    }
+    renderDashboard(aData);
+  } catch(err) {
+    document.getElementById('loading-screen').classList.remove('show');
+    document.getElementById('dash').classList.add('show');
+    document.getElementById('dash').innerHTML = `<div style="background:var(--rl);border:1px solid var(--rb);border-radius:8px;padding:1.5rem;max-width:600px;margin:2rem auto;font-size:.75rem;color:var(--red);line-height:1.8;">
+      <strong>Analysis failed:</strong> ${err.message}<br><br>
+      <button onclick="location.reload()" style="background:var(--navy);color:white;border:none;padding:.45rem .9rem;border-radius:6px;cursor:pointer;font-size:.72rem;">Try Again</button>
+    </div>`;
+  }
+}
+
+function renderDashboard(d) {
+  document.getElementById('loading-screen').classList.remove('show');
+  document.getElementById('dash').classList.add('show');
+
+  // Summary
+  document.getElementById('ss-name').textContent = (d.investorName || 'Investor') + ' — MF Portfolio';
+  document.getElementById('ss-summary').textContent = d.summary || '';
+  const xirr = parseFloat(d.portfolioXirr) || 0;
+  const alpha = parseFloat(d.alpha) || 0;
+  document.getElementById('ss-meta').innerHTML = [
+    {lbl:'MF Value', val:'₹'+(d.totalMFValue||'—')},
+    {lbl:'Invested', val:'₹'+(d.totalMFInvested||'—')},
+    {lbl:'Portfolio XIRR', val:(d.portfolioXirr||'—')+'%', cls: xirr>=13.5?'pos':'neg'},
+    {lbl:'Alpha vs Nifty 50', val:(alpha>=0?'+':'')+alpha.toFixed(1)+'%', cls: alpha>=0?'pos':'neg'},
+  ].map(m=>`<div class="ss-item"><div class="lbl">${m.lbl}</div><div class="val ${m.cls||''}">${m.val}</div></div>`).join('');
+
+  // Insights
+  document.getElementById('insights-grid').innerHTML = (d.insights||[]).map((ins,i)=>`
+    <div class="insight-card">
+      <div class="ins-num">0${i+1}</div>
+      <div class="ins-txt">${ins}</div>
+    </div>`).join('') || '<div style="color:var(--muted);font-size:.75rem;padding:.5rem;">No insights available</div>';
+
+  // Metrics
+  document.getElementById('metrics-grid').innerHTML = (d.metrics||[]).map(m=>`
+    <div class="mc ${m.status}">
+      <div class="mc-dot"></div>
+      <div class="mc-lbl">${m.label}</div>
+      <div class="mc-val">${m.value}</div>
+      <div class="mc-bench">${m.bench}</div>
+      ${m.note?`<div class="mc-note">${m.note}</div>`:''}
+    </div>`).join('');
+
+  // XIRR chart — category-aware benchmark
+  const holdings = d.holdings || [];
+  const activeHoldings = holdings.filter(h => h.xirr && parseFloat(h.xirr) !== 0);
+  if(activeHoldings.length) {
+    const maxVal = Math.max(...activeHoldings.map(h=>Math.abs(parseFloat(h.xirr)||0)), 30);
+    document.getElementById('xirr-chart').innerHTML = activeHoldings.map(h => {
+      const x = parseFloat(h.xirr) || 0;
+      const bench = getBench(h.category);
+      const benchPct = bench.val / maxVal * 100;
+      const pct = Math.max(Math.abs(x) / maxVal * 100, 2);
+      const col = x >= bench.val ? 'var(--green)' : x >= bench.val*0.6 ? 'var(--amber)' : 'var(--red)';
+      const cls = x >= bench.val ? 'xirr-good' : x >= bench.val*0.6 ? 'xirr-neutral' : 'xirr-bad';
+      const short = h.name.length > 36 ? h.name.substring(0,36)+'…' : h.name;
+      const gap = (x - bench.val).toFixed(1);
+      return `<div class="xirr-row">
+        <div class="xirr-name" title="${h.name}">${short}</div>
+        <div class="xirr-bar-wrap">
+          <div class="xirr-bar" style="width:${pct}%;background:${col};"></div>
+          <div class="xirr-bench-line" style="left:${benchPct}%;"></div>
+        </div>
+        <div class="xirr-pct ${cls}">${h.xirr}%</div>
+        <div class="xirr-cat" title="vs ${bench.label} ${bench.val}%">${gap>=0?'+':''}${gap}% vs ${bench.label}</div>
+      </div>`;
+    }).join('') + `<div class="xirr-legend">
+      <div class="xirr-legend-item"><div class="xirr-legend-dot" style="background:var(--navy);"></div>▏ Line = category benchmark (varies by fund type)</div>
+      <div class="xirr-legend-item"><div class="xirr-legend-dot" style="background:var(--green);"></div>Above benchmark</div>
+      <div class="xirr-legend-item"><div class="xirr-legend-dot" style="background:var(--amber);"></div>Near benchmark</div>
+      <div class="xirr-legend-item"><div class="xirr-legend-dot" style="background:var(--red);"></div>Below benchmark</div>
+      <div style="margin-left:auto;font-size:.55rem;color:var(--faint);">Reference benchmarks · Approximate · Not a guarantee</div>
+    </div>`;
+  } else {
+    document.getElementById('xirr-chart').innerHTML = '<div style="font-size:.73rem;color:var(--muted);padding:.5rem;">Fund performance data not available in statement</div>';
+  }
+
+  // Underperformers
+  const underperf = holdings.filter(h=>h.underperforming);
+  document.getElementById('underperf-count').textContent = underperf.length + ' funds';
+  document.getElementById('underperf-cards').innerHTML = underperf.length
+    ? underperf.map(h => {
+        const x = parseFloat(h.xirr) || 0;
+        const bench = getBench(h.category);
+        const gap = (x - bench.val).toFixed(1);
+        return `<div class="up-card">
+          <div class="up-header">
+            <div>
+              <div class="up-name">${h.name}</div>
+              <div class="up-meta">${h.category||''} · ${h.allocation||''} · Benchmark: ${bench.label} ${bench.val}%</div>
+            </div>
+            <div class="up-badges">
+              ${h.plan?`<span class="plan-badge ${(h.plan||'').toLowerCase()}">${h.plan}</span>`:''}
+              <span style="font-family:'DM Mono',monospace;font-size:.72rem;font-weight:600;color:var(--red);">${h.xirr||'—'}% XIRR</span>
+            </div>
+          </div>
+          <div class="up-numbers">
+            <div class="up-num-box"><div class="up-num-lbl">Invested</div><div class="up-num-val" style="color:var(--ink);">₹${h.invested||'—'}</div></div>
+            <div class="up-num-box"><div class="up-num-lbl">Current Value</div><div class="up-num-val" style="color:var(--red);">₹${h.currentValue||'—'}</div></div>
+            <div class="up-num-box"><div class="up-num-lbl">vs ${bench.label}</div><div class="up-num-val" style="color:var(--red);">${gap}%</div></div>
+            <div class="up-num-box"><div class="up-num-lbl">Category Bench</div><div class="up-num-val" style="color:var(--muted);">${bench.val}%</div></div>
+          </div>
+          <div class="up-why">
+            <div class="up-why-lbl">Observation</div>
+            <div class="up-why-txt">${h.whyUnderperform||'—'}</div>
+          </div>
+        </div>`;
+      }).join('')
+    : '<div style="padding:.85rem;background:var(--gl);border:1px solid var(--gb);border-radius:8px;font-size:.73rem;color:var(--green);">✓ No funds below their category benchmark</div>';
+
+  // Observations
+  const issues = d.issues || [];
+  document.getElementById('obs-count').textContent = issues.length + ' items';
+  document.getElementById('obs-grid').innerHTML = issues.length
+    ? issues.map((iss,i)=>`
+      <div class="obs-card ${iss.sev}">
+        <div class="obs-num">0${i+1}</div>
+        <div class="obs-body">
+          <span class="obs-sev">${iss.sev}</span>
+          <div class="obs-title">${iss.title}</div>
+          <div class="obs-desc">${iss.desc}</div>
+          <div class="obs-fix">💡 Consider: ${iss.fix}</div>
+        </div>
+      </div>`).join('')
+    : '<div style="padding:.85rem;background:var(--gl);border:1px solid var(--gb);border-radius:8px;font-size:.73rem;color:var(--green);grid-column:1/-1;">✓ No major observations</div>';
+
+  // Switches
+  const switches = (d.switches||[]).filter(s=>s.outFund&&s.inFund&&s.outFund!=='Fund name'&&s.outFund!=='undefined');
+  document.getElementById('switch-wrap').innerHTML = switches.length
+    ? switches.map(sw=>`
+      <div class="switch-card">
+        <div class="sw-inner">
+          <div class="sw-out">
+            <div class="sw-lbl">Consider Reviewing</div>
+            <div class="sw-fund">${sw.outFund}</div>
+            <div class="sw-reason">${sw.outReason||''}</div>
+            <span class="sw-badge ${sw.outBadge||'underperform'}">${sw.outBadge||'underperform'}</span>
+          </div>
+          <div class="sw-arr">→</div>
+          <div class="sw-in">
+            <div class="sw-lbl">Possible Alternative</div>
+            <div class="sw-fund">${sw.inFund}</div>
+            <div class="sw-reason">${sw.inReason||''}</div>
+            ${sw.sameCategory?'<div class="sw-same">✓ Same category</div>':''}
+          </div>
+        </div>
+      </div>`).join('')
+    : '<div style="padding:.85rem;background:var(--gl);border:1px solid var(--gb);border-radius:8px;font-size:.73rem;color:var(--green);">No switch observations for this portfolio</div>';
+
+  // Category observations
+  const catRecs = d.categoryRecommendations || [];
+  document.getElementById('cat-grid').innerHTML = catRecs.length
+    ? catRecs.map(r=>{
+        const bench = getBench(r.category);
+        return `<div class="cat-card ${r.action}">
+          <div class="cat-header">
+            <div class="cat-name">${r.category}</div>
+            <span class="cat-action">${r.action==='add'?'underweight':r.action==='reduce'?'overweight':'review'}</span>
+          </div>
+          <div class="cat-alloc">
+            <div class="cat-alloc-item">
+              <div class="cat-alloc-lbl">CURRENT</div>
+              <div class="cat-alloc-val">${r.currentAllocation||'0%'}</div>
+            </div>
+            <div style="color:var(--muted);font-size:.7rem;">→</div>
+            <div class="cat-alloc-item">
+              <div class="cat-alloc-lbl">REFERENCE TARGET</div>
+              <div class="cat-alloc-val" style="color:${r.action==='add'?'var(--green)':r.action==='reduce'?'var(--red)':'var(--amber)'};">${r.targetAllocation||'—'}</div>
+            </div>
+            <div class="cat-alloc-item">
+              <div class="cat-alloc-lbl">CAT. BENCH</div>
+              <div class="cat-alloc-val" style="color:var(--muted);">${bench.val}%</div>
+            </div>
+          </div>
+          ${r.recommendedFund&&r.recommendedFund!=='Fund name'?`<div class="cat-fund">→ ${r.recommendedFund}</div>`:''}
+          <div class="cat-reason">${r.reason||''}</div>
+        </div>`;
+      }).join('')
+    : '<div style="font-size:.73rem;color:var(--muted);">Category observations not available</div>';
+}
+</script>
+</body>
+</html>
