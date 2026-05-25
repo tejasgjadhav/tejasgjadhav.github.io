@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI & Advanced Analytics in Finance | ISBMS Pune</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #03030f;
+  --bg2: #07071a;
+  --card: rgba(255,255,255,0.03);
+  --c1: #00d4ff;
+  --c2: #7c3aed;
+  --c3: #f59e0b;
+  --c4: #10b981;
+  --txt: #f1f5f9;
+  --txt2: #94a3b8;
+  --b1: rgba(0,212,255,0.18);
+  --b2: rgba(124,58,237,0.18);
+  --glow1: 0 0 40px rgba(0,212,255,0.22);
+  --glow2: 0 0 40px rgba(124,58,237,0.22);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;line-height:1.6}
+
+#nc{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#pb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3));z-index:9999;transition:width .1s}
+
+.orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
+.o1{width:500px;height:500px;background:var(--c1);top:-150px;right:-150px;opacity:.09}
+.o2{width:400px;height:400px;background:var(--c2);bottom:10%;left:-150px;opacity:.09}
+.o3{width:300px;height:300px;background:var(--c3);bottom:-80px;right:25%;opacity:.06}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:.85rem 2.5rem;background:rgba(3,3,15,.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.nav-logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.95rem;background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap}
+.nav-links{display:flex;gap:1.6rem;list-style:none}
+.nav-links a{color:var(--txt2);text-decoration:none;font-size:.78rem;font-weight:500;letter-spacing:.04em;transition:color .25s}
+.nav-links a:hover,.nav-links a.active{color:var(--c1)}
+.nav-gh{display:inline-flex;align-items:center;gap:.4rem;padding:.42rem 1rem;background:transparent;border:1px solid var(--b1);border-radius:50px;color:var(--c1);text-decoration:none;font-size:.76rem;font-weight:600;letter-spacing:.04em;transition:all .25s;white-space:nowrap}
+.nav-gh:hover{background:rgba(0,212,255,.1);box-shadow:var(--glow1)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:9rem 2rem 5rem;position:relative;z-index:1}
+.hero-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(0,212,255,.06) 0%,transparent 65%);pointer-events:none}
+
+.badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.3);border-radius:100px;padding:.42rem 1.2rem;font-size:.73rem;font-weight:700;color:var(--c1);letter-spacing:.12em;text-transform:uppercase;margin-bottom:2rem;animation:pulseb 2.5s ease-in-out infinite}
+@keyframes pulseb{0%,100%{box-shadow:0 0 0 0 rgba(0,212,255,.35)}50%{box-shadow:0 0 0 10px rgba(0,212,255,0)}}
+.dot{width:6px;height:6px;background:var(--c1);border-radius:50%;animation:blink 1.5s ease-in-out infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+h1.hero-h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.5rem,6.2vw,5rem);font-weight:700;line-height:1.08;letter-spacing:-.03em;margin-bottom:1.4rem}
+.gt{background:linear-gradient(135deg,#00d4ff 0%,#7c3aed 48%,#f59e0b 100%);background-size:260% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gs 5s ease-in-out infinite alternate}
+@keyframes gs{0%{background-position:0% center}100%{background-position:100% center}}
+
+.hero-sub{font-size:clamp(.92rem,2.1vw,1.12rem);color:var(--txt2);max-width:660px;margin:0 auto 1.2rem;line-height:1.78}
+.hero-inst{font-size:.86rem;color:var(--c3);font-weight:600;letter-spacing:.06em;margin-bottom:2.8rem;padding:.48rem 1.2rem;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);display:inline-block;border-radius:8px}
+
+/* STATS */
+.stats{display:flex;justify-content:center;flex-wrap:wrap;margin:0 auto 2.8rem;background:rgba(255,255,255,.03);border:1px solid var(--b1);border-radius:20px;overflow:hidden;max-width:620px}
+.stat{flex:1;min-width:110px;padding:1.4rem .9rem;text-align:center;border-right:1px solid var(--b1)}
+.stat:last-child{border-right:none}
+.stat-n{font-family:'Space Grotesk',sans-serif;font-size:2.1rem;font-weight:700;color:var(--c1);line-height:1}
+.stat-l{font-size:.7rem;color:var(--txt2);text-transform:uppercase;letter-spacing:.1em;margin-top:.3rem}
+
+/* BUTTONS */
+.btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-p{display:inline-flex;align-items:center;gap:.5rem;padding:.82rem 1.9rem;background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;text-decoration:none;border-radius:50px;font-weight:700;font-size:.86rem;letter-spacing:.04em;transition:all .3s;border:none;cursor:pointer}
+.btn-p:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(0,212,255,.35)}
+.btn-s{display:inline-flex;align-items:center;gap:.5rem;padding:.82rem 1.9rem;background:transparent;color:var(--txt);text-decoration:none;border-radius:50px;font-weight:600;font-size:.86rem;letter-spacing:.04em;border:1px solid var(--b1);transition:all .3s;cursor:pointer}
+.btn-s:hover{border-color:var(--c1);color:var(--c1);transform:translateY(-3px)}
+
+/* LAYOUT */
+section{position:relative;z-index:1}
+.container{max-width:1220px;margin:0 auto;padding:0 2rem}
+.sec-pad{padding:6.5rem 0}
+.sec-head{text-align:center;margin-bottom:4rem}
+.sec-tag{display:inline-block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--c1);margin-bottom:.9rem;background:rgba(0,212,255,.08);padding:.28rem .85rem;border-radius:100px;border:1px solid rgba(0,212,255,.2)}
+.sec-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.75rem,3.8vw,2.8rem);font-weight:700;line-height:1.2;letter-spacing:-.025em;margin-bottom:.85rem}
+.sec-sub{font-size:.93rem;color:var(--txt2);max-width:600px;margin:0 auto;line-height:1.75}
+
+/* OVERVIEW CARDS */
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:1.3rem}
+.ov-card{background:var(--card);border:1px solid var(--b1);border-radius:18px;padding:1.9rem;backdrop-filter:blur(12px);transition:all .3s;position:relative;overflow:hidden}
+.ov-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--c1),var(--c2));transform:scaleX(0);transition:transform .3s;transform-origin:left}
+.ov-card:hover{transform:translateY(-5px);border-color:rgba(0,212,255,.4);box-shadow:var(--glow1)}
+.ov-card:hover::after{transform:scaleX(1)}
+.ov-icon{font-size:2.3rem;margin-bottom:1rem;display:block}
+.ov-title{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.45rem}
+.ov-text{font-size:.84rem;color:var(--txt2);line-height:1.65}
+
+/* CURRICULUM TABLE */
+.qtable-wrap{overflow-x:auto;border-radius:16px;border:1px solid var(--b1)}
+.qtable{width:100%;border-collapse:collapse;font-size:.82rem}
+.qtable th{background:rgba(0,212,255,.08);color:var(--c1);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.7rem;padding:.85rem 1rem;text-align:left;border-bottom:1px solid var(--b1)}
+.qtable td{padding:.8rem 1rem;border-bottom:1px solid rgba(255,255,255,.05);color:var(--txt2);vertical-align:top;transition:background .2s}
+.qtable tr:last-child td{border-bottom:none}
+.qtable tr:hover td{background:rgba(0,212,255,.04);color:var(--txt)}
+.qtable td:first-child{font-family:'JetBrains Mono',monospace;color:var(--c1);font-weight:600;white-space:nowrap;font-size:.76rem}
+.qtable td:nth-child(2){color:var(--txt);font-weight:500}
+.qb{display:inline-block;padding:.18rem .55rem;border-radius:4px;font-size:.68rem;font-weight:700;margin:.1rem}
+.qb-g{background:rgba(16,185,129,.12);color:#34d399;border:1px solid rgba(16,185,129,.25)}
+.qb-f{background:rgba(245,158,11,.12);color:var(--c3);border:1px solid rgba(245,158,11,.25)}
+.qb-t{background:rgba(124,58,237,.12);color:#a78bfa;border:1px solid rgba(124,58,237,.25)}
+
+/* MODULE CARDS */
+.mod-wrap{display:flex;flex-direction:column;gap:1.1rem}
+.mod-card{background:var(--card);border:1px solid var(--b2);border-radius:18px;overflow:hidden;backdrop-filter:blur(12px);transition:border-color .3s}
+.mod-card:hover{border-color:rgba(0,212,255,.3)}
+.mod-card.active{border-color:rgba(0,212,255,.45);box-shadow:0 0 28px rgba(0,212,255,.1)}
+.mod-hdr{display:flex;align-items:center;gap:1.4rem;padding:1.5rem 2rem;cursor:pointer;user-select:none}
+.mod-num{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--c1);background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.22);border-radius:8px;padding:.42rem .72rem;white-space:nowrap;min-width:74px;text-align:center;flex-shrink:0}
+.mod-tg{flex:1;min-width:0}
+.mod-name{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;margin-bottom:.32rem;line-height:1.3}
+.mod-meta{display:flex;gap:.55rem;flex-wrap:wrap}
+.mtag{font-size:.68rem;padding:.18rem .58rem;border-radius:4px;font-weight:600}
+.mt-h{background:rgba(245,158,11,.12);color:var(--c3);border:1px solid rgba(245,158,11,.25)}
+.mt-t{background:rgba(124,58,237,.12);color:#a78bfa;border:1px solid rgba(124,58,237,.25)}
+.mt-cap{background:rgba(245,158,11,.2);color:var(--c3);border:1px solid rgba(245,158,11,.4)}
+.mod-arr{color:var(--txt2);font-size:1.2rem;transition:transform .3s,color .3s;flex-shrink:0}
+.mod-card.active .mod-arr{transform:rotate(180deg);color:var(--c1)}
+.mod-body{display:none;padding:0 2rem 2rem;border-top:1px solid rgba(255,255,255,.06)}
+.mod-card.active .mod-body{display:block;animation:sd .35s ease}
+@keyframes sd{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.mod-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem;margin-top:1.4rem}
+.msec{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.2rem}
+.msec-title{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--c1);font-weight:700;margin-bottom:.8rem;display:flex;align-items:center;gap:.45rem}
+.msec-title::before{content:'';width:12px;height:2px;background:linear-gradient(90deg,var(--c1),var(--c2));display:inline-block;flex-shrink:0}
+.msec ul{list-style:none;display:flex;flex-direction:column;gap:.42rem}
+.msec li{font-size:.83rem;color:var(--txt2);padding-left:.95rem;position:relative;line-height:1.5}
+.msec li::before{content:'▸';position:absolute;left:0;color:var(--c1);font-size:.62rem;top:3px}
+.lab-box{background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.14);border-radius:10px;padding:.95rem 1rem;font-size:.82rem;color:var(--txt2);font-family:'JetBrains Mono',monospace;line-height:1.6}
+.lab-box strong{color:var(--c1);display:block;margin-bottom:.38rem}
+.pt-tags{display:flex;flex-wrap:wrap;gap:.38rem;margin-top:.8rem}
+.ptag{font-size:.7rem;padding:.26rem .72rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.22);color:#34d399;border-radius:100px;font-weight:600}
+
+/* ─── ACADEMIC DESIGN ─── */
+.acad-section{padding:6.5rem 0;background:linear-gradient(180deg,transparent,rgba(0,212,255,.018) 50%,transparent)}
+.acad-phases{display:flex;flex-direction:column;gap:1.8rem;margin-top:3rem}
+.phase{display:grid;grid-template-columns:220px 1fr;gap:2rem;align-items:start}
+.phase-label{display:flex;flex-direction:column;gap:.6rem;padding-top:.3rem}
+.phase-num{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--c1);font-weight:600;letter-spacing:.1em}
+.phase-name{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;line-height:1.25}
+.phase-mods{font-size:.78rem;color:var(--txt2)}
+.phase-bar{height:3px;border-radius:2px;margin-top:.5rem;background:linear-gradient(90deg,var(--c1),var(--c2))}
+.phase-bar.b2{background:linear-gradient(90deg,var(--c2),#06b6d4)}
+.phase-bar.b3{background:linear-gradient(90deg,var(--c3),var(--c2))}
+.phase-bar.b4{background:linear-gradient(90deg,var(--c4),var(--c1))}
+.phase-content{background:var(--card);border:1px solid var(--b1);border-radius:16px;padding:1.75rem}
+.phase-content-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.1rem;margin-top:1rem}
+.pc-item{border-left:2px solid var(--b1);padding-left:1rem}
+.pc-item-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--c1);margin-bottom:.3rem}
+.pc-item p{font-size:.83rem;color:var(--txt2);line-height:1.55}
+.phase-connector{display:flex;align-items:center;justify-content:center;margin:-0.5rem 0;position:relative;z-index:2}
+.phase-connector::before{content:'↓';font-size:1.1rem;color:var(--b1);font-family:'Space Grotesk',sans-serif}
+
+/* integration arrows between phases */
+.int-arrow{text-align:center;padding:.6rem 0;color:rgba(0,212,255,.3);font-size:1.2rem}
+
+/* pedagogical integration diagram */
+.integ-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2.5rem}
+.integ-card{background:var(--card);border:1px solid var(--b2);border-radius:14px;padding:1.5rem;text-align:center;transition:all .3s}
+.integ-card:hover{border-color:rgba(0,212,255,.35);transform:translateY(-4px);box-shadow:var(--glow1)}
+.integ-icon{font-size:2rem;margin-bottom:.85rem;display:block}
+.integ-title{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.5rem}
+.integ-desc{font-size:.82rem;color:var(--txt2);line-height:1.6}
+
+/* ─── PLACEMENT DESIGN ─── */
+.place-section{padding:6.5rem 0}
+.place-journey{display:flex;flex-direction:column;gap:1.4rem;margin-top:3rem;position:relative}
+.place-journey::before{content:'';position:absolute;left:28px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--c1),var(--c2),var(--c3),var(--c4))}
+.pj-item{display:grid;grid-template-columns:60px 1fr;gap:1.5rem;align-items:start}
+.pj-dot{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;position:relative;z-index:1}
+.pj-dot.d1{background:rgba(0,212,255,.15);border:2px solid rgba(0,212,255,.4)}
+.pj-dot.d2{background:rgba(124,58,237,.15);border:2px solid rgba(124,58,237,.4)}
+.pj-dot.d3{background:rgba(245,158,11,.15);border:2px solid rgba(245,158,11,.4)}
+.pj-dot.d4{background:rgba(16,185,129,.15);border:2px solid rgba(16,185,129,.4)}
+.pj-body{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:1.6rem;margin-bottom:.2rem}
+.pj-phase{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem}
+.p1{color:var(--c1)}.p2{color:#a78bfa}.p3{color:var(--c3)}.p4{color:#34d399}
+.pj-title{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
+.pj-desc{font-size:.85rem;color:var(--txt2);line-height:1.65;margin-bottom:1rem}
+.pj-outcomes{display:flex;flex-wrap:wrap;gap:.5rem}
+.pj-out{font-size:.75rem;padding:.3rem .8rem;border-radius:6px;font-weight:600}
+.pj-out.o1{background:rgba(0,212,255,.1);color:var(--c1);border:1px solid rgba(0,212,255,.25)}
+.pj-out.o2{background:rgba(124,58,237,.1);color:#a78bfa;border:1px solid rgba(124,58,237,.25)}
+.pj-out.o3{background:rgba(245,158,11,.1);color:var(--c3);border:1px solid rgba(245,158,11,.25)}
+.pj-out.o4{background:rgba(16,185,129,.1);color:#34d399;border:1px solid rgba(16,185,129,.25)}
+
+.place-table-wrap{overflow-x:auto;border-radius:16px;border:1px solid var(--b1);margin-top:3.5rem}
+.place-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.place-table th{background:rgba(124,58,237,.1);color:#a78bfa;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.7rem;padding:.85rem 1rem;text-align:left;border-bottom:1px solid var(--b2)}
+.place-table td{padding:.8rem 1rem;border-bottom:1px solid rgba(255,255,255,.05);color:var(--txt2);vertical-align:top}
+.place-table tr:last-child td{border-bottom:none}
+.place-table tr:hover td{background:rgba(124,58,237,.04);color:var(--txt)}
+.place-table td:first-child{color:var(--txt);font-weight:600;white-space:nowrap}
+.skill-tag{display:inline-block;padding:.18rem .55rem;border-radius:4px;font-size:.68rem;font-weight:700;background:rgba(0,212,255,.1);color:var(--c1);border:1px solid rgba(0,212,255,.22);margin:.1rem}
+
+/* METHODOLOGY */
+.meth-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.3rem}
+.meth-card{background:var(--card);border:1px solid var(--b2);border-radius:18px;padding:1.85rem 1.65rem;text-align:center;transition:all .3s;backdrop-filter:blur(12px)}
+.meth-card:hover{transform:translateY(-5px);border-color:rgba(124,58,237,.5);box-shadow:var(--glow2)}
+.meth-icon{font-size:2.8rem;margin-bottom:1.1rem;display:block}
+.meth-title{font-family:'Space Grotesk',sans-serif;font-size:.98rem;font-weight:700;margin-bottom:.65rem}
+.meth-desc{font-size:.83rem;color:var(--txt2);line-height:1.65}
+
+/* CAPSTONE */
+.cap-card{background:linear-gradient(135deg,rgba(0,212,255,.05),rgba(124,58,237,.05));border:1px solid rgba(0,212,255,.22);border-radius:24px;padding:3.8rem 3rem;text-align:center;position:relative;overflow:hidden}
+.cap-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(0,212,255,.04),transparent 30%);animation:rg 10s linear infinite}
+@keyframes rg{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.cap-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.55rem,4vw,2.3rem);font-weight:700;position:relative;z-index:1;margin-bottom:.8rem}
+.cap-sub{font-size:.93rem;color:var(--txt2);max-width:660px;margin:0 auto 2rem;line-height:1.78;position:relative;z-index:1}
+.cap-feats{display:flex;flex-wrap:wrap;gap:.85rem;justify-content:center;position:relative;z-index:1;margin-bottom:2.4rem}
+.cap-feat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:.75rem 1.25rem;font-size:.86rem;display:flex;align-items:center;gap:.45rem;transition:all .25s}
+.cap-feat:hover{border-color:rgba(0,212,255,.4);background:rgba(0,212,255,.07)}
+.cap-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+
+/* FOOTER */
+footer{padding:3.2rem 0;border-top:1px solid var(--b1);text-align:center;position:relative;z-index:1}
+.foot-logo{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.45rem}
+.foot-txt{font-size:.83rem;color:var(--txt2);margin-bottom:.35rem}
+.foot-gh{display:inline-flex;align-items:center;gap:.45rem;color:var(--c1);text-decoration:none;font-size:.82rem;border:1px solid rgba(0,212,255,.3);padding:.48rem 1rem;border-radius:50px;margin-top:1.2rem;transition:all .3s}
+.foot-gh:hover{background:rgba(0,212,255,.1);box-shadow:var(--glow1)}
+
+/* ANIMATIONS */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease}
+.rv.vis{opacity:1;transform:translateY(0)}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--c1),var(--c2));border-radius:3px}
+
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.4rem;color:var(--txt2);font-size:.72rem;letter-spacing:.1em;animation:fud 2s ease-in-out infinite}
+@keyframes fud{0%,100%{opacity:.4;transform:translateX(-50%) translateY(0)}50%{opacity:1;transform:translateX(-50%) translateY(6px)}}
+
+@media(max-width:900px){
+  .phase{grid-template-columns:1fr}
+  .phase-label{flex-direction:row;align-items:center;flex-wrap:wrap;gap:.8rem}
+  .phase-bar{display:none}
+  .integ-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  nav{padding:.75rem 1.2rem}
+  .nav-links{display:none}
+  .mod-hdr{gap:.9rem;padding:1.2rem}
+  .mod-body{padding:0 1.2rem 1.2rem}
+  .cap-card{padding:2.5rem 1.5rem}
+  .pj-item{grid-template-columns:50px 1fr;gap:1rem}
+  .stats{flex-direction:column}
+  .stat{border-right:none;border-bottom:1px solid var(--b1)}
+  .stat:last-child{border-bottom:none}
+}
+</style>
+</head>
+<body>
+
+<div id="pb"></div>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+<canvas id="nc"></canvas>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">ISBMS · Agentic AI in Finance</div>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#curriculum">Curriculum</a></li>
+    <li><a href="#modules">Modules</a></li>
+    <li><a href="#academic">Academic Design</a></li>
+    <li><a href="#placement">Placement Design</a></li>
+    <li><a href="#methodology">Methodology</a></li>
+  </ul>
+  <a href="https://github.com/tejasgjadhav/AIFINANCE" target="_blank" class="nav-gh">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+    GitHub
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="badge"><span class="dot"></span>Semester 3 · MBA / PGDM · 30 Credit Hours</div>
+
+  <h1 class="hero-h1">
+    <span class="gt">Agentic AI</span> &amp;<br>
+    Advanced Analytics<br>
+    <span style="color:var(--txt2);font-size:.6em;font-weight:400;letter-spacing:-.01em">in Finance</span>
+  </h1>
+
+  <p class="hero-sub">
+    A 30-hour specialization that bridges academic finance theory with the AI-driven transformation happening inside Global Capability Centers — preparing Semester 3 students for fund administration, risk management, and regulatory technology roles.
+  </p>
+
+  <div class="hero-inst">🏛️ Imperial School of Banking &amp; Management Studies, Pune</div>
+
+  <div class="stats rv">
+    <div class="stat"><div class="stat-n" data-target="30">0</div><div class="stat-l">Credit Hours</div></div>
+    <div class="stat"><div class="stat-n" data-target="10">0</div><div class="stat-l">Modules</div></div>
+    <div class="stat"><div class="stat-n" data-target="4">0</div><div class="stat-l">Learning Phases</div></div>
+    <div class="stat"><div class="stat-n" data-target="3">0</div><div class="stat-l">Hrs per Module</div></div>
+  </div>
+
+  <div class="btns rv">
+    <a href="#curriculum" class="btn-p">📚 View Full Curriculum</a>
+    <a href="#placement" class="btn-s">📈 Placement Strategy</a>
+  </div>
+
+  <div class="scroll-hint">↓ SCROLL</div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="sec-pad" id="overview">
+  <div class="container">
+    <div class="sec-head rv">
+      <span class="sec-tag">What This Course Delivers</span>
+      <h2 class="sec-title">Designed for the <span class="gt">AI-First Finance Era</span></h2>
+      <p class="sec-sub">Built with the academic rigor of Harvard, NUS, and LBS case methods — and the practical urgency of India's $100B GCC ecosystem, where back-office transformation is happening right now.</p>
+    </div>
+    <div class="ov-grid">
+      <div class="ov-card rv"><span class="ov-icon">🧠</span><div class="ov-title">AI Fluency for Finance Professionals</div><p class="ov-text">Students learn how large language models, RAG systems, and agentic workflows apply specifically to financial data — not generic AI, but AI that understands prospectuses, NAV sheets, and Basel reports.</p></div>
+      <div class="ov-card rv"><span class="ov-icon">📊</span><div class="ov-title">FRM-Grounded Risk Analytics</div><p class="ov-text">Probability of Default modeling, Monte Carlo VaR, IFRS 9 Expected Credit Loss, and Basel III/IV — the exact risk frameworks that FRM-certified professionals work with daily in GCC environments.</p></div>
+      <div class="ov-card rv"><span class="ov-icon">📋</span><div class="ov-title">Regulatory Technology in Practice</div><p class="ov-text">Students simulate the real data journey from trade ledger to Basel disclosure report using AxiomSL-style templates — learning the RegTech stack that every bank GCC runs today.</p></div>
+      <div class="ov-card rv"><span class="ov-icon">🏦</span><div class="ov-title">Fund Administration Automation</div><p class="ov-text">Automated NAV calculation, Transfer Agency workflows, and corporate actions processing — the exact middle and back-office operations being transformed at Opus, Apex, and SS&C GlobeOp right now.</p></div>
+      <div class="ov-card rv"><span class="ov-icon">📈</span><div class="ov-title">Algorithmic Finance &amp; Execution</div><p class="ov-text">Trading bot construction, TWAP/VWAP execution, backtesting frameworks, and LLM-augmented signal generation — connecting quant finance theory to real implementation in Python.</p></div>
+      <div class="ov-card rv"><span class="ov-icon">🎯</span><div class="ov-title">A Portfolio, Not Just a Certificate</div><p class="ov-text">Students graduate with a deployed GitHub project — a live Market Commentary Dashboard that serves as their placement-season portfolio piece for fund accounting, risk, and analytics roles.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM TABLE -->
+<section class="sec-pad" id="curriculum" style="padding-top:2rem">
+  <div class="container">
+    <div class="sec-head rv">
+      <span class="sec-tag">30-Hour Breakdown</span>
+      <h2 class="sec-title">Full Curriculum <span class="gt">At a Glance</span></h2>
+      <p class="sec-sub">Ten modules, three hours each. Each one builds on the last — moving from AI foundations through to a live deployed capstone project.</p>
+    </div>
+    <div class="qtable-wrap rv">
+      <table class="qtable">
+        <thead>
+          <tr>
+            <th>Module</th>
+            <th>Title</th>
+            <th>Domain</th>
+            <th>Core Skill Developed</th>
+            <th>In-Class Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>MOD 01</td><td>Foundations of Agentic AI in Financial Services</td><td><span class="qb qb-t">AI Architecture</span></td><td>LLM mental model + first API call</td><td>Structured financial data extraction prompt</td></tr>
+          <tr><td>MOD 02</td><td>Prompt Engineering &amp; RAG for Financial Analysis</td><td><span class="qb qb-t">RAG Pipeline</span></td><td>Build retrieval-augmented document Q&amp;A</td><td>Prospectus Q&amp;A bot (200-page PDF)</td></tr>
+          <tr><td>MOD 03</td><td>Model Context Protocol &amp; Agent Orchestration</td><td><span class="qb qb-t">Multi-Agent</span></td><td>Design multi-agent financial workflows</td><td>3-agent investment memo pipeline</td></tr>
+          <tr><td>MOD 04</td><td>Algorithmic Trading &amp; Execution Strategies</td><td><span class="qb qb-f">Quant Finance</span></td><td>Build and backtest trading strategies</td><td>AI trading bot with backtested results</td></tr>
+          <tr><td>MOD 05</td><td>Risk Modeling: PD Models &amp; Monte Carlo VaR</td><td><span class="qb qb-f">FRM Focus</span></td><td>Credit risk + portfolio VaR engine</td><td>10,000-path Monte Carlo VaR report</td></tr>
+          <tr><td>MOD 06</td><td>RegTech &amp; Automated Basel III/IV Compliance</td><td><span class="qb qb-f">Regulatory</span></td><td>Trade-to-report regulatory pipeline</td><td>Auto-generated Basel III disclosure</td></tr>
+          <tr><td>MOD 07</td><td>Enterprise AI Governance, Security &amp; Cost</td><td><span class="qb qb-t">Governance</span></td><td>AI risk frameworks for regulated firms</td><td>AI governance blueprint document</td></tr>
+          <tr><td>MOD 08</td><td>Fund Administration: NAV &amp; Transfer Agency</td><td><span class="qb qb-g">Fund Admin</span></td><td>Automated NAV + exception engine</td><td>Daily NAV report with AI commentary</td></tr>
+          <tr><td>MOD 09</td><td>Market Commentary &amp; Valuation Dashboards</td><td><span class="qb qb-t">NLP + Viz</span></td><td>Live dashboard + automated commentary</td><td>Streamlit market intelligence prototype</td></tr>
+          <tr style="background:rgba(245,158,11,.04)"><td>MOD 10</td><td>GCC Capstone: Integrated Financial AI System</td><td><span class="qb qb-f">Capstone 🏆</span></td><td>Full integration + mock panel interview</td><td>Deployed portfolio + pitch deck</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- MODULES DETAILED -->
+<section class="sec-pad" id="modules" style="background:linear-gradient(180deg,transparent,rgba(0,212,255,.015) 50%,transparent)">
+  <div class="container">
+    <div class="sec-head rv">
+      <span class="sec-tag">Module Deep Dive</span>
+      <h2 class="sec-title">Inside Every <span class="gt">3-Hour Session</span></h2>
+      <p class="sec-sub">Click any module to see what students learn, what they build in class, and how it connects to the broader academic and placement design.</p>
+    </div>
+    <div class="mod-wrap">
+
+      <!-- M1 -->
+      <div class="mod-card rv">
+        <div class="mod-hdr" onclick="toggleMod(this)">
+          <div class="mod-num">MOD 01</div>
+          <div class="mod-tg">
+            <div class="mod-name">Foundations of Agentic AI in Financial Services</div>
+            <div class="mod-meta"><span class="mtag mt-h">⏱ 3 Hours</span><span class="mtag mt-t">Phase 1 · AI Literacy</span></div>
+          </div>
+          <span class="mod-arr">⌄</span>
+        </div>
+        <div class="mod-body">
+          <div class="mod-grid">
+            <div class="msec">
+              <div class="msec-title">Learning Objectives</div>
+              <ul>
+                <li>Trace the evolution from rule-based systems to autonomous agentic AI</li>
+                <li>Differentiate GenAI, LLMs, and multi-step Agentic architecture</li>
+                <li>Map financial AI applications across fund admin, risk, trading, and compliance</li>
+                <li>Understand LLM limitations: hallucination, grounding, token windows</li>
+                <li>Articulate AI's role in middle-office transformation confidently</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Core Concepts &amp; Academic Benchmarks</div>
+              <ul>
+                <li><strong>Harvard AI for Finance:</strong> Transformer architecture for practitioners</li>
+                <li>Observe → Plan → Act: the autonomous agent loop explained</li>
+                <li>Tokenization, embeddings, and why financial text is structurally different</li>
+                <li><strong>NUS Case:</strong> AI adoption at MAS-regulated GCCs — DBS digital transformation</li>
+                <li><strong>LBS Case:</strong> HSBC enterprise AI roadmap 2023–25</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">In-Class Lab</div>
+              <div class="lab-box">
+                <strong>🔬 First API Call — Financial Data Extraction</strong>
+                Students write structured prompts to extract key risk factors from a sample 10-K filing, revenue segments from an earnings transcript, and covenant details from a credit agreement. Compare zero-shot, few-shot, and chain-of-thought outputs. Measure hallucination rates across prompt patterns.
+              </div>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Academic Integration</div>
+              <ul>
+                <li>Establishes shared vocabulary for all 9 subsequent modules</li>
+                <li>Directly supports the Prompt Engineering skills built in Module 2</li>
+                <li>Links to financial reporting theory from core MBA finance modules</li>
+              </ul>
+              <div class="pt-tags"><span class="ptag">AI Foundations</span><span class="ptag">Financial Documents</span><span class="ptag">API Literacy</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M2 -->
+      <div class="mod-card rv">
+        <div class="mod-hdr" onclick="toggleMod(this)">
+          <div class="mod-num">MOD 02</div>
+          <div class="mod-tg">
+            <div class="mod-name">Prompt Engineering &amp; RAG for Financial Analysis</div>
+            <div class="mod-meta"><span class="mtag mt-h">⏱ 3 Hours</span><span class="mtag mt-t">Phase 1 · AI Literacy</span></div>
+          </div>
+          <span class="mod-arr">⌄</span>
+        </div>
+        <div class="mod-body">
+          <div class="mod-grid">
+            <div class="msec">
+              <div class="msec-title">Learning Objectives</div>
+              <ul>
+                <li>Master advanced prompt patterns: Chain-of-Thought, ReAct, few-shot for finance</li>
+                <li>Design and implement a RAG pipeline from chunking to answer generation</li>
+                <li>Use vector databases for financial document retrieval</li>
+                <li>Build grounded, citation-traceable, hallucination-resistant responses</li>
+                <li>Compare RAG vs fine-tuning — cost vs accuracy trade-offs</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Core Concepts &amp; Academic Benchmarks</div>
+              <ul>
+                <li>RAG architecture: Document loader → Chunker → Embedder → Retriever → Generator</li>
+                <li>Hybrid search: semantic + BM25 keyword for financial precision</li>
+                <li><strong>Harvard Case:</strong> Bloomberg AI extracting structured earnings insights from transcripts</li>
+                <li><strong>LBS Case:</strong> Clifford Chance legal document automation — 200-page contracts</li>
+                <li>Chunking strategies for regulatory documents: prospectuses, ODD reports, PPMs</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">In-Class Lab</div>
+              <div class="lab-box">
+                <strong>🔬 Prospectus Intelligence Bot</strong>
+                Students receive a 200-page hedge fund prospectus. Build a RAG pipeline: parse and chunk the document, embed with a text model, store in a vector database, build a Q&amp;A interface. Test questions: "What are the redemption terms?" "What fees apply to Class B units?" Benchmark RAG accuracy vs raw LLM on 20 test questions.
+              </div>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Academic Integration</div>
+              <ul>
+                <li>RAG system built here becomes the retrieval layer for the Module 10 Capstone</li>
+                <li>Connects to fund accounting theory — prospectus as the authoritative source of fund rules</li>
+                <li>Reinforces information quality and source verification — core audit principles</li>
+              </ul>
+              <div class="pt-tags"><span class="ptag">RAG Architecture</span><span class="ptag">Document Intelligence</span><span class="ptag">Information Retrieval</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M3 -->
+      <div class="mod-card rv">
+        <div class="mod-hdr" onclick="toggleMod(this)">
+          <div class="mod-num">MOD 03</div>
+          <div class="mod-tg">
+            <div class="mod-name">Model Context Protocol (MCP) &amp; Agent Orchestration</div>
+            <div class="mod-meta"><span class="mtag mt-h">⏱ 3 Hours</span><span class="mtag mt-t">Phase 1 · AI Literacy</span></div>
+          </div>
+          <span class="mod-arr">⌄</span>
+        </div>
+        <div class="mod-body">
+          <div class="mod-grid">
+            <div class="msec">
+              <div class="msec-title">Learning Objectives</div>
+              <ul>
+                <li>Understand MCP as the emerging standard for AI agent communication</li>
+                <li>Design multi-agent financial workflows using orchestration patterns</li>
+                <li>Implement tool-use and function-calling in agentic pipelines</li>
+                <li>Evaluate orchestration frameworks: LangChain, CrewAI, AutoGen</li>
+                <li>Build fail-safe agents for mission-critical financial operations</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Core Concepts &amp; Academic Benchmarks</div>
+              <ul>
+                <li>ReAct (Reason + Act) loop — the cognitive engine of financial agents</li>
+                <li>Choreography vs. orchestration: when to use each in financial workflows</li>
+                <li><strong>NUS Case:</strong> Multi-agent credit decisioning at DBS Bank Singapore</li>
+                <li><strong>LBS Case:</strong> JP Morgan's COIN — 360,000 hours of legal work automated</li>
+                <li>Error handling, idempotency, and circuit breakers for financial agents</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">In-Class Lab</div>
+              <div class="lab-box">
+                <strong>🔬 3-Agent Investment Memo System</strong>
+                Students build a 3-agent pipeline: Agent 1 fetches market data + fundamentals, Agent 2 computes P/E, EV/EBITDA, and DCF, Agent 3 formats a 1-page investment memo with buy/hold/sell recommendation. Agents communicate asynchronously. Final output: auto-saved investment memo PDF.
+              </div>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Academic Integration</div>
+              <ul>
+                <li>Agent orchestration patterns reused in Module 8 NAV automation pipeline</li>
+                <li>Connects to operations management theory: workflow decomposition and handoffs</li>
+                <li>Prepares students to reason about automation design in any back-office context</li>
+              </ul>
+              <div class="pt-tags"><span class="ptag">Agent Design</span><span class="ptag">Workflow Automation</span><span class="ptag">MCP Protocol</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M4 -->
+      <div class="mod-card rv">
+        <div class="mod-hdr" onclick="toggleMod(this)">
+          <div class="mod-num">MOD 04</div>
+          <div class="mod-tg">
+            <div class="mod-name">Algorithmic Trading &amp; Automated Execution Strategies</div>
+            <div class="mod-meta"><span class="mtag mt-h">⏱ 3 Hours</span><span class="mtag mt-t">Phase 2 · Quantitative Finance</span></div>
+          </div>
+          <span class="mod-arr">⌄</span>
+        </div>
+        <div class="mod-body">
+          <div class="mod-grid">
+            <div class="msec">
+              <div class="msec-title">Learning Objectives</div>
+              <ul>
+                <li>Understand the architecture of modern algorithmic trading systems</li>
+                <li>Build, backtest, and evaluate trading strategies using Python</li>
+                <li>Implement execution algorithms: TWAP, VWAP, Implementation Shortfall</li>
+                <li>Integrate LLM-based news sentiment as a trading signal</li>
+                <li>Apply position sizing and drawdown-based risk controls programmatically</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Core Concepts &amp; Academic Benchmarks</div>
+              <ul>
+                <li>Strategy taxonomy: momentum, mean-reversion, pairs trading, stat arb</li>
+                <li>Look-ahead bias, survivorship bias — the two killers of backtested alpha</li>
+                <li><strong>Harvard Case:</strong> Renaissance Technologies' Medallion Fund — the math behind 66% annualized returns</li>
+                <li><strong>NUS Case:</strong> AI-driven execution at Singapore Exchange — latency and liquidity management</li>
+                <li>Market microstructure: bid-ask spread, slippage, market impact modeling</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">In-Class Lab</div>
+              <div class="lab-box">
+                <strong>🔬 AI-Augmented Trading Bot</strong>
+                Fetch OHLCV data for 5 NSE stocks, classify financial headlines using a sentiment model, generate buy/sell signals combining momentum + sentiment, execute simulated trades with 2% stop-loss and 1% max daily drawdown. Backtest on 12 months of data. Measure Sharpe ratio, max drawdown, and win rate.
+              </div>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Academic Integration</div>
+              <ul>
+                <li>Quant finance layer that deepens the risk intuition built in Module 5</li>
+                <li>Connects to portfolio theory and CAPM from core MBA finance</li>
+                <li>The sentiment signal pipeline is reused in the Module 9 dashboard</li>
+              </ul>
+              <div class="pt-tags"><span class="ptag">Algo Trading</span><span class="ptag">Backtesting</span><span class="ptag">Execution Logic</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M5 -->
+      <div class="mod-card rv">
+        <div class="mod-hdr" onclick="toggleMod(this)">
+          <div class="mod-num">MOD 05</div>
+          <div class="mod-tg">
+            <div class="mod-name">Risk Modeling: Probability of Default &amp; Monte Carlo VaR</div>
+            <div class="mod-meta"><span class="mtag mt-h">⏱ 3 Hours</span><span class="mtag mt-t">Phase 2 · Quantitative Finance</span></div>
+          </div>
+          <span class="mod-arr">⌄</span>
+        </div>
+        <div class="mod-body">
+          <div class="mod-grid">
+            <div class="msec">
+              <div class="msec-title">Learning Objectives</div>
+              <ul>
+                <li>Build Probability of Default models: logistic regression, gradient boosting, scorecards</li>
+                <li>Implement full Monte Carlo VaR with correlated asset simulation</li>
+                <li>Understand Expected Credit Loss under IFRS 9: PD × LGD × EAD</li>
+                <li>Automate risk model outputs into regulatory narrative reports</li>
+                <li>Conduct stress testing using historical crisis scenarios</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Core Concepts &amp; Academic Benchmarks</div>
+              <ul>
+                <li>PD, LGD, EAD: the three pillars of credit risk quantification (FRM aligned)</li>
+                <li>VaR methodologies: Historical, Parametric, Monte Carlo — pros and cons</li>
+                <li>Cholesky decomposition for correlated multi-asset MC simulation</li>
+                <li><strong>Harvard Case:</strong> The 2008 GFC — when Gaussian copula VaR models failed catastrophically</li>
+                <li><strong>LBS Case:</strong> IFRS 9 ECL implementation at Standard Chartered</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">In-Class Lab</div>
+              <div class="lab-box">
+                <strong>🔬 Monte Carlo VaR Engine + Auto Report</strong>
+                Load a 10-stock portfolio, compute covariance matrix, apply Cholesky decomposition, run 10,000 correlated MC paths over a 1-day horizon, compute 95% and 99% VaR and CVaR, stress test with COVID March 2020 volatility shock, feed results to an LLM that writes a 3-paragraph risk narrative in regulatory language. Export as PDF.
+              </div>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Academic Integration</div>
+              <ul>
+                <li>Risk outputs from this module feed directly into Module 6 Basel reporting pipeline</li>
+                <li>FRM Part I and II curriculum alignment — strengthens certification study</li>
+                <li>Capstone includes the VaR engine as one of its core analytical components</li>
+              </ul>
+              <div class="pt-tags"><span class="ptag">FRM Aligned</span><span class="ptag">Credit Risk</span><span class="ptag">Monte Carlo</span><span class="ptag">IFRS 9</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M6 -->
+      <div class="mod-card rv">
+        <div class="mod-hdr" onclick="toggleMod(this)">
+          <div class="mod-num">MOD 06</div>
+          <div class="mod-tg">
+            <div class="mod-name">RegTech &amp; Automated Basel III/IV Compliance Reporting</div>
+            <div class="mod-meta"><span class="mtag mt-h">⏱ 3 Hours</span><span class="mtag mt-t">Phase 2 · Quantitative Finance</span></div>
+          </div>
+          <span class="mod-arr">⌄</span>
+        </div>
+        <div class="mod-body">
+          <div class="mod-grid">
+            <div class="msec">
+              <div class="msec-title">Learning Objectives</div>
+              <ul>
+                <li>Understand Basel III capital adequacy: CET1, Tier 1, Total Capital ratios</li>
+                <li>Compute Liquidity Coverage Ratio and Net Stable Funding Ratio</li>
+                <li>Apply SA-CCR (standardized approach for counterparty credit risk)</li>
+                <li>Map the full data flow from raw trade ledger to final regulatory disclosure</li>
+                <li>Simulate AxiomSL-style automated report generation using Python + LLM</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Core Concepts &amp; Academic Benchmarks</div>
+              <ul>
+                <li>Risk-Weighted Assets calculation: Standardized vs Internal Ratings-Based approaches</li>
+                <li>Three Pillars: minimum capital, supervisory review, market discipline</li>
+                <li>FRTB — the fundamental review of the trading book under Basel IV</li>
+                <li><strong>NUS Case:</strong> MAS reporting automation at OCBC — from T+3 to real-time</li>
+                <li><strong>Harvard Case:</strong> Deutsche Bank's €2B fine for regulatory reporting failures (2022)</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">In-Class Lab</div>
+              <div class="lab-box">
+                <strong>🔬 Trade-to-Basel Report Pipeline</strong>
+                Students receive a mock trade ledger (500 rows: equities, bonds, FX forwards, interest rate swaps). Build a pipeline: aggregate exposures, apply standardized RWA weights, compute CET1 ratio, calculate LCR using HQLA templates, auto-generate a Pillar 3 disclosure document using LLM narrative. Output mimics AxiomSL report structure.
+              </div>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Academic Integration</div>
+              <ul>
+                <li>Completes the risk-to-reporting arc started in Module 5 (VaR → Basel disclosure)</li>
+                <li>Regulatory framework connects to law and governance electives in MBA curriculum</li>
+                <li>The pipeline architecture is a direct precursor to the Capstone's reporting module</li>
+              </ul>
+              <div class="pt-tags"><span class="ptag">Basel III/IV</span><span class="ptag">RegTech</span><span class="ptag">Regulatory Reporting</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M7 -->
+      <div class="mod-card rv">
+        <div class="mod-hdr" onclick="toggleMod(this)">
+          <div class="mod-num">MOD 07</div>
+          <div class="mod-tg">
+            <div class="mod-name">Enterprise AI Governance, Security &amp; Cost Management</div>
+            <div class="mod-meta"><span class="mtag mt-h">⏱ 3 Hours</span><span class="mtag mt-t">Phase 3 · Applied Enterprise AI</span></div>
+          </div>
+          <span class="mod-arr">⌄</span>
+        </div>
+        <div class="mod-body">
+          <div class="mod-grid">
+            <div class="msec">
+              <div class="msec-title">Learning Objectives</div>
+              <ul>
+                <li>Design AI governance frameworks for regulated financial institutions</li>
+                <li>Identify and mitigate AI security threats: prompt injection, data exfiltration</li>
+                <li>Build a token budget calculator for enterprise-scale LLM deployments</li>
+                <li>Apply EU AI Act, MAS AI guidelines, and SR 11-7 model risk management</li>
+                <li>Design explainable AI outputs for regulatory submission and audit trail</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Core Concepts &amp; Academic Benchmarks</div>
+              <ul>
+                <li>AI governance pillars: accountability, transparency, fairness, robustness, privacy</li>
+                <li>Prompt injection attack vectors in financial AI — security-first thinking</li>
+                <li>Token economics: context optimization, caching strategies, cost per query modeling</li>
+                <li><strong>LBS Case:</strong> RBS AI governance failure — model risk and the £3.1B IT disaster</li>
+                <li>SHAP values and LIME for explainable credit decisions under consumer protection law</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">In-Class Lab</div>
+              <div class="lab-box">
+                <strong>🔬 AI Governance Blueprint</strong>
+                Teams design a governance framework for a GCC deploying 3 LLM use cases. Produce: AI Use Case Risk Classification Matrix (High/Medium/Low), data security checklist for PII handling and API key management, token budget calculator for 10,000 daily queries across 3 models, and a Model Explainability Requirements Document for audit.
+              </div>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Academic Integration</div>
+              <ul>
+                <li>Bridges AI technical skills (Modules 1–3) with corporate governance theory</li>
+                <li>Connects to business ethics and CSR modules in the MBA curriculum</li>
+                <li>Governance principles applied in every subsequent module and the Capstone</li>
+              </ul>
+              <div class="pt-tags"><span class="ptag">AI Governance</span><span class="ptag">Security</span><span class="ptag">Responsible AI</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M8 -->
+      <div class="mod-card rv">
+        <div class="mod-hdr" onclick="toggleMod(this)">
+          <div class="mod-num">MOD 08</div>
+          <div class="mod-tg">
+            <div class="mod-name">Fund Administration: NAV Automation &amp; Transfer Agency Workflows</div>
+            <div class="mod-meta"><span class="mtag mt-h">⏱ 3 Hours</span><span class="mtag mt-t">Phase 3 · Applied Enterprise AI</span></div>
+          </div>
+          <span class="mod-arr">⌄</span>
+        </div>
+        <div class="mod-body">
+          <div class="mod-grid">
+            <div class="msec">
+              <div class="msec-title">Learning Objectives</div>
+              <ul>
+                <li>Master the NAV calculation process for mutual funds, hedge funds, and private equity</li>
+                <li>Automate Transfer Agency workflows: subscription → AML → allocation → settlement</li>
+                <li>Build AI-powered reconciliation with intelligent exception flagging (&gt;0.5bps)</li>
+                <li>Understand corporate actions processing and their NAV impact</li>
+                <li>Implement the full middle/back-office automation stack used at Opus and Apex</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Core Concepts &amp; Academic Benchmarks</div>
+              <ul>
+                <li>NAV components: securities pricing, daily accruals, management and performance fees</li>
+                <li>T+1 settlement impact on NAV timing and liquidity requirements</li>
+                <li>Pricing hierarchy: exchange → evaluated pricing → broker quotes → fair value models</li>
+                <li><strong>Harvard Case:</strong> Madoff Ponzi scheme — why independent NAV verification is non-negotiable</li>
+                <li><strong>NUS Case:</strong> SS&amp;C GlobeOp's automated fund accounting platform serving $35T AUA</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">In-Class Lab</div>
+              <div class="lab-box">
+                <strong>🔬 Automated NAV Calculator + AI Exception Engine</strong>
+                Students receive a mock hedge fund portfolio (50 positions, mixed asset classes). Build: a Python NAV calculator with accruals, fees, and high watermark logic; a reconciliation agent that flags exceptions &gt;0.5bps; an auto-generated daily NAV report with LLM commentary explaining variances; a Transfer Agency subscriber register update with full audit trail.
+              </div>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Academic Integration</div>
+              <ul>
+                <li>Draws on accounting theory (accrual basis, matching principle) from core MBA accounting</li>
+                <li>Agent orchestration from Module 3 applied to a real-world operational workflow</li>
+                <li>NAV calculator becomes a live component of the Module 10 Capstone project</li>
+              </ul>
+              <div class="pt-tags"><span class="ptag">Fund Accounting</span><span class="ptag">NAV Calculation</span><span class="ptag">Transfer Agency</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M9 -->
+      <div class="mod-card rv">
+        <div class="mod-hdr" onclick="toggleMod(this)">
+          <div class="mod-num">MOD 09</div>
+          <div class="mod-tg">
+            <div class="mod-name">Market Commentary &amp; AI-Powered Valuation Dashboards</div>
+            <div class="mod-meta"><span class="mtag mt-h">⏱ 3 Hours</span><span class="mtag mt-t">Phase 3 · Applied Enterprise AI</span></div>
+          </div>
+          <span class="mod-arr">⌄</span>
+        </div>
+        <div class="mod-body">
+          <div class="mod-grid">
+            <div class="msec">
+              <div class="msec-title">Learning Objectives</div>
+              <ul>
+                <li>Build automated market commentary systems combining NLP sentiment + LLM generation</li>
+                <li>Create production-quality valuation dashboards in Streamlit + Plotly</li>
+                <li>Implement real-time data feeds for live market intelligence</li>
+                <li>Build DCF models with sensitivity analysis and scenario tables programmatically</li>
+                <li>Design client-facing financial intelligence products for non-technical users</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Core Concepts &amp; Academic Benchmarks</div>
+              <ul>
+                <li>NLP progression: VADER (lexicon) → FinBERT (domain fine-tuned) → GPT-4 (contextual)</li>
+                <li>Valuation methodology hierarchy: DCF → Comparable Companies → Precedent Transactions</li>
+                <li>Dashboard UX design: information density vs clarity for financial professionals</li>
+                <li><strong>LBS Case:</strong> Schroders' AI-generated fund commentary — 200 reports/minute vs 2/hour manually</li>
+                <li>Alternative data signals: web scraping, news sentiment, management tone analysis</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">In-Class Lab</div>
+              <div class="lab-box">
+                <strong>🔬 Market Intelligence Dashboard (Capstone Prototype)</strong>
+                Build a live Streamlit dashboard: pull real-time data for 10 securities, run sentiment scoring on 50 headlines per stock, compute DCF with 3 scenarios and a tornado chart, display technical indicators, auto-generate 3-paragraph morning commentary refreshed every 15 minutes using structured LLM prompts. This prototype is submitted as the base for the Capstone.
+              </div>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Academic Integration</div>
+              <ul>
+                <li>Integrates all three preceding phases: AI layer (Mod 1–3) + Quant (Mod 4–6) + Enterprise (Mod 7–8)</li>
+                <li>Valuation connects to corporate finance and equity analysis from core MBA curriculum</li>
+                <li>Dashboard built here is expanded and deployed as the final Capstone project</li>
+              </ul>
+              <div class="pt-tags"><span class="ptag">NLP + Sentiment</span><span class="ptag">Valuation Models</span><span class="ptag">Dashboard Design</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M10 -->
+      <div class="mod-card rv" style="border-color:rgba(245,158,11,.35)">
+        <div class="mod-hdr" onclick="toggleMod(this)" style="background:rgba(245,158,11,.04)">
+          <div class="mod-num" style="color:var(--c3);border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.1)">MOD 10</div>
+          <div class="mod-tg">
+            <div class="mod-name" style="color:var(--c3)">GCC Capstone: Integrated Financial AI System &amp; Placement Simulation</div>
+            <div class="mod-meta"><span class="mtag mt-h">⏱ 3 Hours</span><span class="mtag mt-cap">🏆 Phase 4 · Capstone</span></div>
+          </div>
+          <span class="mod-arr">⌄</span>
+        </div>
+        <div class="mod-body">
+          <div class="mod-grid">
+            <div class="msec">
+              <div class="msec-title">Learning Objectives</div>
+              <ul>
+                <li>Integrate all 9 module skills into one cohesive, deployable AI financial platform</li>
+                <li>Present technical projects to a mock GCC hiring panel</li>
+                <li>Articulate technical architecture decisions in business language</li>
+                <li>Demonstrate problem-solving under pressure with live Q&amp;A on your own code</li>
+                <li>Produce a placement-ready GitHub portfolio and pitch deck</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Capstone Project Deliverables</div>
+              <ul>
+                <li>Live Market Commentary Dashboard — RAG-powered, real-time data, deployed on Streamlit Cloud</li>
+                <li>Automated NAV Calculator with AI exception engine and daily report generation</li>
+                <li>Monte Carlo VaR engine with regulatory narrative in Basel disclosure format</li>
+                <li>GitHub repository — documented, with README and live demo link</li>
+                <li>5-slide pitch deck: "AI Transformation Proposal for [Target GCC]"</li>
+                <li>Technical resume addendum: "AI Projects" section with GitHub links</li>
+              </ul>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Mock GCC Panel Simulation</div>
+              <div class="lab-box">
+                <strong>🎯 30-Minute Hiring Panel — Live Simulation</strong>
+                Round 1 (Technical): "Walk me through your NAV automation logic. How do you handle corporate actions?" Round 2 (Problem-solving): "Your exception engine flagged 12 positions today with &gt;1bps variance. Walk me through your escalation protocol." Round 3 (Strategic): "If you were Chief Data Officer at Apex Group, what AI initiative would you prioritize in Year 1?" Peer panel evaluation using a structured GCC rubric. Written feedback report for each student.
+              </div>
+            </div>
+            <div class="msec">
+              <div class="msec-title">Academic Integration</div>
+              <ul>
+                <li>Every module's in-class output contributes one component to the final project</li>
+                <li>Assessment synthesizes technical, analytical, and communication competencies</li>
+                <li>GitHub repository serves as living proof of learning — continues to grow post-graduation</li>
+                <li>Portfolio is shared directly with target GCC HR teams at placement season</li>
+              </ul>
+              <div class="pt-tags"><span class="ptag">Full Integration</span><span class="ptag">Portfolio Ready</span><span class="ptag">Interview Prep</span><span class="ptag">Deployed Project</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ACADEMIC DESIGN -->
+<section class="acad-section" id="academic">
+  <div class="container">
+    <div class="sec-head rv">
+      <span class="sec-tag">Academic Architecture</span>
+      <h2 class="sec-title">How the Course Is <span class="gt">Designed Academically</span></h2>
+      <p class="sec-sub">The 30 hours are structured as four progressive phases — each phase building on the last, each module producing a tangible output that feeds into the Capstone. Nothing is taught in isolation.</p>
+    </div>
+
+    <!-- Phase progression -->
+    <div class="acad-phases">
+
+      <div class="phase rv">
+        <div class="phase-label">
+          <div class="phase-num">PHASE 01 · MOD 01–03</div>
+          <div class="phase-name">AI Literacy &amp; Infrastructure</div>
+          <div class="phase-mods">9 hours · Conceptual + Lab-based</div>
+          <div class="phase-bar"></div>
+        </div>
+        <div class="phase-content">
+          <p style="font-size:.88rem;color:var(--txt2);line-height:1.7;margin-bottom:1rem">Students enter with MBA-level finance knowledge but no AI fluency. Phase 1 solves this by building the core mental model — what LLMs are, how agents think, and how RAG makes AI reliable for financial documents. Every concept is grounded in a real financial application.</p>
+          <div class="phase-content-grid">
+            <div class="pc-item">
+              <div class="pc-item-title">Academic Grounding</div>
+              <p>Transformer architecture explained through financial analogies. Agent workflows mapped to existing operations management frameworks students already know.</p>
+            </div>
+            <div class="pc-item">
+              <div class="pc-item-title">Pedagogical Method</div>
+              <p>Harvard-style case opening each session. Sandbox-first: every concept is immediately applied in a live coding environment before lecture continues.</p>
+            </div>
+            <div class="pc-item">
+              <div class="pc-item-title">Phase Output</div>
+              <p>A working RAG-based document Q&amp;A bot and a 3-agent investment memo pipeline — both reused in the Capstone.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="int-arrow rv">↓ Phase 1 AI skills now applied to quantitative financial problems</div>
+
+      <div class="phase rv">
+        <div class="phase-label">
+          <div class="phase-num">PHASE 02 · MOD 04–06</div>
+          <div class="phase-name">Quantitative Finance &amp; Regulation</div>
+          <div class="phase-mods">9 hours · Python-heavy + FRM aligned</div>
+          <div class="phase-bar b2"></div>
+        </div>
+        <div class="phase-content">
+          <p style="font-size:.88rem;color:var(--txt2);line-height:1.7;margin-bottom:1rem">Phase 2 takes the AI tools from Phase 1 and applies them to the quantitative foundations of finance — trading, risk, and regulatory compliance. Each module produces a regulatory-grade output. The VaR engine from Module 5 feeds directly into the Basel report in Module 6, which feeds into the Capstone.</p>
+          <div class="phase-content-grid">
+            <div class="pc-item">
+              <div class="pc-item-title">Academic Grounding</div>
+              <p>FRM Part I and II curriculum alignment across risk modeling. Regulatory framework aligned to Basel Committee documentation and RBI/SEBI guidelines for Indian context.</p>
+            </div>
+            <div class="pc-item">
+              <div class="pc-item-title">Pedagogical Method</div>
+              <p>Regulatory simulation: students work with real-format data (trade ledgers, portfolio files) rather than toy datasets. Failure-case-first structure — understanding why models broke before building better ones.</p>
+            </div>
+            <div class="pc-item">
+              <div class="pc-item-title">Phase Output</div>
+              <p>A Monte Carlo VaR engine, an AI trading bot with backtest results, and an auto-generated Basel III compliance report — all Capstone components.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="int-arrow rv">↓ Quantitative outputs now deployed inside enterprise-grade systems</div>
+
+      <div class="phase rv">
+        <div class="phase-label">
+          <div class="phase-num">PHASE 03 · MOD 07–09</div>
+          <div class="phase-name">Applied Enterprise AI</div>
+          <div class="phase-mods">9 hours · Integration + Real-World</div>
+          <div class="phase-bar b3"></div>
+        </div>
+        <div class="phase-content">
+          <p style="font-size:.88rem;color:var(--txt2);line-height:1.7;margin-bottom:1rem">Phase 3 is where the course earns its MBA character. Students move from building isolated tools to thinking about how AI is deployed, governed, and experienced inside a real organization. Governance, fund operations, and client-facing analytics — the complete spectrum of a modern financial analyst's work.</p>
+          <div class="phase-content-grid">
+            <div class="pc-item">
+              <div class="pc-item-title">Academic Grounding</div>
+              <p>Corporate governance, business ethics, and organizational behavior connect here. Fund accounting theory informs the NAV lab. Corporate finance underpins the valuation dashboard.</p>
+            </div>
+            <div class="pc-item">
+              <div class="pc-item-title">Pedagogical Method</div>
+              <p>Team-based framework design in Module 7. Individual technical depth in Module 8 and 9. LBS case on Schroders' AI commentary system brings real industry scale to Module 9.</p>
+            </div>
+            <div class="pc-item">
+              <div class="pc-item-title">Phase Output</div>
+              <p>AI Governance Blueprint, Automated NAV Calculator with exception engine, and a deployed Streamlit Market Commentary Dashboard — the Capstone prototype.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="int-arrow rv">↓ All outputs integrate into one deployable system</div>
+
+      <div class="phase rv">
+        <div class="phase-label">
+          <div class="phase-num">PHASE 04 · MOD 10</div>
+          <div class="phase-name">Capstone &amp; Synthesis</div>
+          <div class="phase-mods">3 hours · Integration + Presentation</div>
+          <div class="phase-bar b4"></div>
+        </div>
+        <div class="phase-content">
+          <p style="font-size:.88rem;color:var(--txt2);line-height:1.7;margin-bottom:1rem">The Capstone is not a new project — it is the integration of all nine in-class outputs into a single deployable system, presented to a mock hiring panel. Every component was built during class. The final session focuses on integration, explanation, and communication — skills that distinguish top placement candidates.</p>
+          <div class="phase-content-grid">
+            <div class="pc-item">
+              <div class="pc-item-title">Academic Grounding</div>
+              <p>Capstone methodology borrowed from NUS Fintech Lab — where final projects are presented to industry juries, not just academic panels. Learning is evaluated on deployment, not just code.</p>
+            </div>
+            <div class="pc-item">
+              <div class="pc-item-title">Pedagogical Method</div>
+              <p>Mock hiring panel simulation with structured rubric. Peer evaluation component. Faculty + industry mentor judges. Written feedback for every student.</p>
+            </div>
+            <div class="pc-item">
+              <div class="pc-item-title">Final Deliverable</div>
+              <p>A live deployed GitHub project shared directly with target GCC hiring teams at placement season — a portfolio piece, not a PDF report.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cross-module integration -->
+    <div class="sec-head rv" style="margin-top:5rem;margin-bottom:2rem">
+      <span class="sec-tag">Curriculum Integration</span>
+      <h2 class="sec-title" style="font-size:clamp(1.4rem,3vw,2.2rem)">How Modules <span class="gt">Build on Each Other</span></h2>
+    </div>
+    <div class="integ-grid rv">
+      <div class="integ-card">
+        <span class="integ-icon">🔗</span>
+        <div class="integ-title">Vertical Integration</div>
+        <p class="integ-desc">The RAG system from Module 2, the VaR engine from Module 5, the NAV calculator from Module 8, and the dashboard from Module 9 are all components of the single Module 10 Capstone. Students build the whole while learning the parts.</p>
+      </div>
+      <div class="integ-card">
+        <span class="integ-icon">🎓</span>
+        <div class="integ-title">Core MBA Curriculum Links</div>
+        <p class="integ-desc">Financial Accounting → Module 8 (NAV). Corporate Finance → Module 9 (DCF). Portfolio Theory → Module 5 (VaR). Business Law → Module 6 (Basel). Organizational Behavior → Module 7 (AI Governance). This course extends, not replaces, what students already know.</p>
+      </div>
+      <div class="integ-card">
+        <span class="integ-icon">📐</span>
+        <div class="integ-title">Case Method Continuity</div>
+        <p class="integ-desc">Each module opens with a real financial failure: GFC (Mod 5), Deutsche Bank fine (Mod 6), Madoff (Mod 8), Schroders' efficiency challenge (Mod 9). The cases thread a narrative of AI as a solution to documented industry failures — building judgment, not just skills.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLACEMENT DESIGN -->
+<section class="place-section" id="placement">
+  <div class="container">
+    <div class="sec-head rv">
+      <span class="sec-tag">Placement Architecture</span>
+      <h2 class="sec-title">How the Course Is <span class="gt">Designed for Placement</span></h2>
+      <p class="sec-sub">The placement data for Semester 3 students shows a concentration in Fund Accounting, Financial Reporting, Risk Advisory, and Audit at GCCs in Pune and Mumbai. Every design decision in this course maps back to that reality.</p>
+    </div>
+
+    <!-- Placement journey -->
+    <div class="place-journey">
+
+      <div class="pj-item rv">
+        <div class="pj-dot d1">🧠</div>
+        <div class="pj-body">
+          <div class="pj-phase p1">PHASE 1 · MODULES 01–03 · AI LITERACY</div>
+          <div class="pj-title">What students can say after this phase</div>
+          <p class="pj-desc">After Phase 1, students can walk into any GCC interview and speak fluently about how LLMs, RAG systems, and AI agents are being deployed in fund administration and financial reporting. They have built working prototypes — not theoretical knowledge. When a hiring manager asks "are you comfortable with AI tools?", they can demonstrate a 200-page prospectus bot they built in class.</p>
+          <div class="pj-outcomes">
+            <span class="pj-out o1">Can discuss AI architecture intelligently</span>
+            <span class="pj-out o1">Demonstrates API and prompt engineering skills</span>
+            <span class="pj-out o1">Built a working document intelligence system</span>
+            <span class="pj-out o1">Understands MCP and agent orchestration</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pj-item rv">
+        <div class="pj-dot d2">📊</div>
+        <div class="pj-body">
+          <div class="pj-phase p2">PHASE 2 · MODULES 04–06 · QUANTITATIVE FINANCE</div>
+          <div class="pj-title">The skills that unlock risk and reporting roles</div>
+          <p class="pj-desc">Fund administration, risk analytics, and regulatory reporting roles at GCCs like Apex, SS&C, and EisnerAmper require quantitative credibility. A student who can demonstrate they have built a Monte Carlo VaR engine and auto-generated a Basel III report is immediately differentiated from peers who can only discuss these concepts theoretically. Phase 2 provides that technical proof.</p>
+          <div class="pj-outcomes">
+            <span class="pj-out o2">FRM-aligned risk modeling competency</span>
+            <span class="pj-out o2">Built a working Basel compliance pipeline</span>
+            <span class="pj-out o2">Can explain VaR methodology in an interview</span>
+            <span class="pj-out o2">Demonstrated regulatory reporting knowledge</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pj-item rv">
+        <div class="pj-dot d3">🏦</div>
+        <div class="pj-body">
+          <div class="pj-phase p3">PHASE 3 · MODULES 07–09 · APPLIED ENTERPRISE AI</div>
+          <div class="pj-title">The layer that makes students hire-ready for back-office transformation</div>
+          <p class="pj-desc">The specific roles that target GCCs are hiring for — Fund Accountant at Opus, NAV Analyst at Apex, Financial Analyst at EisnerAmper — are all undergoing AI transformation right now. A student who has built an automated NAV calculator, designed an AI governance framework, and deployed a market commentary dashboard has directly simulated the work these roles involve. This is the layer that converts knowledge into employability.</p>
+          <div class="pj-outcomes">
+            <span class="pj-out o3">Automated NAV calculator built in class</span>
+            <span class="pj-out o3">AI governance framework design experience</span>
+            <span class="pj-out o3">Deployed market intelligence dashboard</span>
+            <span class="pj-out o3">Understands fund admin workflows end-to-end</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pj-item rv">
+        <div class="pj-dot d4">🏆</div>
+        <div class="pj-body">
+          <div class="pj-phase p4">PHASE 4 · MODULE 10 · CAPSTONE</div>
+          <div class="pj-title">The portfolio piece that goes into every GCC interview</div>
+          <p class="pj-desc">The Capstone is designed as a placement artifact. The GitHub repository and the 5-slide pitch deck are shared with target GCC HR teams before placement season begins. The mock panel interview — conducted with industry mentor judges — means students have already been through a realistic version of the hiring process before it happens for real. The Capstone doesn't prepare students for placement. It IS placement preparation.</p>
+          <div class="pj-outcomes">
+            <span class="pj-out o4">Live deployed project on GitHub</span>
+            <span class="pj-out o4">Mock interview experience with structured feedback</span>
+            <span class="pj-out o4">GCC-ready pitch deck per student</span>
+            <span class="pj-out o4">Resume-ready AI projects section</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Placement skill-role map -->
+    <div class="sec-head rv" style="margin-top:5rem;margin-bottom:1.5rem;text-align:left">
+      <span class="sec-tag">Role Mapping</span>
+      <h2 class="sec-title" style="font-size:clamp(1.35rem,2.8vw,2rem)">Skills Built → <span class="gt">Roles Unlocked</span></h2>
+    </div>
+    <div class="place-table-wrap rv">
+      <table class="place-table">
+        <thead>
+          <tr>
+            <th>Target Role Type</th>
+            <th>Skills This Course Builds</th>
+            <th>Module Source</th>
+            <th>Interview Edge</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Fund Accountant / NAV Analyst</td>
+            <td><span class="skill-tag">NAV Calculation</span><span class="skill-tag">Accruals &amp; Fees</span><span class="skill-tag">Exception Management</span></td>
+            <td>Module 8</td>
+            <td>Can demo a working NAV calculator built in class</td>
+          </tr>
+          <tr>
+            <td>Transfer Agency Analyst</td>
+            <td><span class="skill-tag">TA Workflow Design</span><span class="skill-tag">Agent Orchestration</span><span class="skill-tag">Audit Trail Logic</span></td>
+            <td>Modules 3, 8</td>
+            <td>Understands the subscription-to-settlement lifecycle technically</td>
+          </tr>
+          <tr>
+            <td>Regulatory Reporting Analyst</td>
+            <td><span class="skill-tag">Basel III/IV</span><span class="skill-tag">RWA Calculation</span><span class="skill-tag">LCR / NSFR</span></td>
+            <td>Modules 5, 6</td>
+            <td>Has built a trade-to-Basel-report pipeline — not just read about it</td>
+          </tr>
+          <tr>
+            <td>Risk Analytics Analyst</td>
+            <td><span class="skill-tag">Monte Carlo VaR</span><span class="skill-tag">PD Modeling</span><span class="skill-tag">Stress Testing</span></td>
+            <td>Module 5</td>
+            <td>Can explain VaR methodology, run scenarios, articulate FRM alignment</td>
+          </tr>
+          <tr>
+            <td>Financial / Research Analyst</td>
+            <td><span class="skill-tag">DCF Valuation</span><span class="skill-tag">Market Commentary</span><span class="skill-tag">Sentiment Analysis</span></td>
+            <td>Modules 4, 9</td>
+            <td>Has a deployed live dashboard as portfolio evidence</td>
+          </tr>
+          <tr>
+            <td>AI / Data Transformation Analyst</td>
+            <td><span class="skill-tag">RAG Systems</span><span class="skill-tag">Prompt Engineering</span><span class="skill-tag">AI Governance</span></td>
+            <td>Modules 1, 2, 7</td>
+            <td>Can design and evaluate AI deployment for a specific back-office use case</td>
+          </tr>
+          <tr>
+            <td>Audit Technology / AI Audit</td>
+            <td><span class="skill-tag">AI Governance</span><span class="skill-tag">Explainable AI</span><span class="skill-tag">Model Risk</span></td>
+            <td>Modules 6, 7</td>
+            <td>Understands AI risk classification, audit trail requirements, and SR 11-7</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section class="sec-pad" id="methodology" style="background:linear-gradient(180deg,transparent,rgba(124,58,237,.025) 50%,transparent)">
+  <div class="container">
+    <div class="sec-head rv">
+      <span class="sec-tag">How We Teach</span>
+      <h2 class="sec-title">The <span class="gt">Applied-Agentic</span> Methodology</h2>
+      <p class="sec-sub">Four evidence-based teaching pillars borrowed from Harvard, LBS, and NUS — adapted for a classroom that builds real deployed systems, not just passes exams.</p>
+    </div>
+    <div class="meth-grid">
+      <div class="meth-card rv">
+        <span class="meth-icon">📰</span>
+        <div class="meth-title">Case Method First</div>
+        <p class="meth-desc">Harvard and LBS style. Every session opens with a real financial failure — a liquidity crisis, a reporting scandal, a rogue trading system. Students debate the cause before learning the AI-powered solution. Builds judgment, not just knowledge.</p>
+      </div>
+      <div class="meth-card rv">
+        <span class="meth-icon">🧪</span>
+        <div class="meth-title">Sandbox-First Learning</div>
+        <p class="meth-desc">No passive instruction. Students write code in every session. Every concept is immediately applied in a live sandboxed environment before the lecture continues. If you can't deploy it, you don't know it.</p>
+      </div>
+      <div class="meth-card rv">
+        <span class="meth-icon">⚖️</span>
+        <div class="meth-title">Regulatory Simulation</div>
+        <p class="meth-desc">Students experience the real data journey — raw trade ledger to Basel disclosure — using AxiomSL-style templates. Understanding every transformation and regulatory decision point, not just the framework names.</p>
+      </div>
+      <div class="meth-card rv">
+        <span class="meth-icon">🏆</span>
+        <div class="meth-title">GCC Capstone Project</div>
+        <p class="meth-desc">The final project is not a test — it is a live deployed system presented to a mock hiring panel. Students leave with a GitHub portfolio, a pitch deck, and mock interview experience. The Capstone IS the placement preparation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAPSTONE SHOWCASE -->
+<section class="sec-pad" id="capstone">
+  <div class="container">
+    <div class="sec-head rv">
+      <span class="sec-tag">The Final Project</span>
+      <h2 class="sec-title">What Students <span class="gt">Graduate With</span></h2>
+    </div>
+    <div class="cap-card rv">
+      <div class="cap-title">
+        🏆 Market Commentary &amp; Intelligence Dashboard<br>
+        <span style="font-size:.52em;color:var(--txt2);font-weight:400">Live Deployed · RAG-Powered · Real-Time Data · Placement Portfolio Piece</span>
+      </div>
+      <p class="cap-sub">Every in-class output from Module 1 through Module 9 becomes a component of this one deployed system. Students don't build a new project for the Capstone — they integrate everything they've already built. The result is a production-grade financial AI platform that serves as their primary placement artifact.</p>
+      <div class="cap-feats">
+        <div class="cap-feat">📄 RAG Prospectus Q&amp;A Engine (Mod 2)</div>
+        <div class="cap-feat">🤖 Investment Memo Agent (Mod 3)</div>
+        <div class="cap-feat">⚠️ Monte Carlo VaR Dashboard (Mod 5)</div>
+        <div class="cap-feat">📋 Basel Report Auto-Generator (Mod 6)</div>
+        <div class="cap-feat">🏦 NAV Calculator + Exception Engine (Mod 8)</div>
+        <div class="cap-feat">📊 Live Market Commentary (Mod 9)</div>
+      </div>
+      <div class="cap-btns">
+        <a href="https://github.com/tejasgjadhav/AIFINANCE" target="_blank" class="btn-p">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          View on GitHub
+        </a>
+        <a href="#modules" class="btn-s">📚 Explore All Modules</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-logo">Agentic AI &amp; Advanced Analytics in Finance</div>
+    <p class="foot-txt">Imperial School of Banking &amp; Management Studies, Pune · MBA/PGDM Semester 3 · 30 Credit Hours</p>
+    <p class="foot-txt">Applied-Agentic Methodology · Benchmarked against NUS · Harvard · LBS curricula · Academic Year 2025–26</p>
+    <a href="https://github.com/tejasgjadhav/AIFINANCE" target="_blank" class="foot-gh">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      github.com/tejasgjadhav/AIFINANCE
+    </a>
+    <p style="margin-top:1.8rem;font-size:.7rem;color:rgba(148,163,184,.35)">Senior Learning Design Team · ISBMS Pune · 2025–26</p>
+  </div>
+</footer>
+
+<script>
+// ── NEURAL NETWORK CANVAS ──
+const canvas = document.getElementById('nc');
+const ctx = canvas.getContext('2d');
+let pts = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  initPts();
+}
+
+function initPts() {
+  pts = [];
+  const n = Math.min(Math.floor(window.innerWidth * window.innerHeight / 11000), 90);
+  for (let i = 0; i < n; i++) pts.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - .5) * .42,
+    vy: (Math.random() - .5) * .42,
+    r: Math.random() * 1.6 + .7,
+    a: Math.random() * .45 + .18,
+    p: Math.random() * Math.PI * 2,
+    ps: .014 + Math.random() * .018
+  });
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const maxD = 135;
+  for (let i = 0; i < pts.length; i++) {
+    const p = pts[i];
+    p.x += p.vx; p.y += p.vy; p.p += p.ps;
+    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0,212,255,${p.a * (.7 + .3 * Math.sin(p.p))})`;
+    ctx.fill();
+    for (let j = i + 1; j < pts.length; j++) {
+      const q = pts[j];
+      const dx = p.x - q.x, dy = p.y - q.y;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      if (d < maxD) {
+        const al = (1 - d/maxD) * .22;
+        const g = ctx.createLinearGradient(p.x, p.y, q.x, q.y);
+        g.addColorStop(0, `rgba(0,212,255,${al})`);
+        g.addColorStop(.5, `rgba(124,58,237,${al*.8})`);
+        g.addColorStop(1, `rgba(0,212,255,${al})`);
+        ctx.beginPath();
+        ctx.strokeStyle = g;
+        ctx.lineWidth = .4;
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(q.x, q.y);
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(draw);
+}
+resize(); draw();
+window.addEventListener('resize', resize);
+
+// ── MOUSE PARALLAX ──
+document.addEventListener('mousemove', e => {
+  const x = (e.clientX/window.innerWidth-.5)*22, y = (e.clientY/window.innerHeight-.5)*22;
+  document.querySelector('.o1').style.transform = `translate(${x*.5}px,${y*.5}px)`;
+  document.querySelector('.o2').style.transform = `translate(${-x*.32}px,${-y*.32}px)`;
+  document.querySelector('.o3').style.transform = `translate(${x*.22}px,${y*.38}px)`;
+});
+
+// ── PROGRESS BAR ──
+window.addEventListener('scroll', () => {
+  document.getElementById('pb').style.width =
+    (window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100)+'%';
+}, {passive:true});
+
+// ── COUNTER ANIMATION ──
+function counter(el, target) {
+  let s=0; const step=target/(1800/16);
+  const t=setInterval(()=>{
+    s=Math.min(s+step,target);
+    el.textContent=Math.floor(s);
+    if(s>=target)clearInterval(t);
+  },16);
+}
+const cObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){counter(e.target,+e.target.dataset.target);cObs.unobserve(e.target);}});
+},{threshold:.5});
+document.querySelectorAll('[data-target]').forEach(el=>cObs.observe(el));
+
+// ── SCROLL REVEAL ──
+const rvObs=new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*55);rvObs.unobserve(e.target);}
+  });
+},{threshold:.07});
+document.querySelectorAll('.rv').forEach(el=>rvObs.observe(el));
+
+// ── MODULE TOGGLE ──
+function toggleMod(hdr) {
+  const card=hdr.closest('.mod-card');
+  const was=card.classList.contains('active');
+  document.querySelectorAll('.mod-card').forEach(c=>c.classList.remove('active'));
+  if(!was){card.classList.add('active');setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'nearest'}),120);}
+}
+
+// ── ACTIVE NAV ──
+const secs=document.querySelectorAll('section[id]');
+const nls=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  secs.forEach(s=>{if(window.scrollY>=s.offsetTop-130)cur=s.id;});
+  nls.forEach(l=>{l.classList.remove('active');if(l.getAttribute('href')==='#'+cur)l.classList.add('active');});
+},{passive:true});
+</script>
+</body>
+</html>
