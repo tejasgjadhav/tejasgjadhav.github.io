@@ -141,6 +141,22 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:.75rem 2.5rem;backg
 h1.hero-h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.5rem,6.2vw,5rem);font-weight:700;line-height:1.08;letter-spacing:-.03em;margin-bottom:1.4rem}
 .gt{background:linear-gradient(135deg,#00d4ff 0%,#7c3aed 48%,#f59e0b 100%);background-size:260% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gs 5s ease-in-out infinite alternate}
 @keyframes gs{0%{background-position:0% center}100%{background-position:100% center}}
+/* ── HERO TITLE REVEAL + GLITCH ── */
+.hl{display:inline-block}
+.hl1{animation:gs 5s ease-in-out infinite alternate,hlr .95s cubic-bezier(.16,1,.3,1) .1s both}
+.hl2{animation:hlr .95s cubic-bezier(.16,1,.3,1) .48s both}
+.hl3{animation:hlr .95s cubic-bezier(.16,1,.3,1) .86s both}
+.hl4{animation:hlr .95s cubic-bezier(.16,1,.3,1) 1.22s both}
+.hero-amp{color:var(--c3);-webkit-text-fill-color:var(--c3);font-weight:700}
+@keyframes hlr{from{opacity:0;transform:translateY(34px);filter:blur(18px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+h1.hero-h1{animation:hg 14s ease-in-out infinite}
+@keyframes hg{
+  0%,87%,100%{filter:none;transform:none}
+  88%{filter:brightness(2) saturate(1.4);transform:skewX(-.5deg) translateX(3px)}
+  89%{filter:brightness(.55) hue-rotate(160deg);transform:skewX(.5deg) translateX(-3px)}
+  90%{filter:brightness(1.7) saturate(1.2);transform:translateX(2px)}
+  91%{filter:none;transform:none}
+}
 
 .hero-sub{font-size:clamp(.92rem,2.1vw,1.12rem);color:var(--txt2);max-width:660px;margin:0 auto 1.2rem;line-height:1.78}
 .hero-inst{font-size:.86rem;color:var(--c3);font-weight:600;letter-spacing:.06em;margin-bottom:2.8rem;padding:.48rem 1.2rem;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);display:inline-block;border-radius:8px}
@@ -256,7 +272,7 @@ section{position:relative;z-index:1}
 
 /* ─── PLACEMENT DESIGN ─── */
 .place-section{padding:6.5rem 0}
-.place-journey{display:flex;flex-direction:column;gap:1.4rem;margin-top:3rem;position:relative}
+.place-journey{display:flex;flex-direction:column;gap:0.6rem;margin-top:3rem;position:relative}
 .place-journey::before{content:'';position:absolute;left:28px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--c1),var(--c2),var(--c3),var(--c4))}
 .pj-item{display:grid;grid-template-columns:60px 1fr;gap:1.5rem;align-items:start}
 .pj-dot{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;position:relative;z-index:1}
@@ -264,7 +280,7 @@ section{position:relative;z-index:1}
 .pj-dot.d2{background:rgba(124,58,237,.15);border:2px solid rgba(124,58,237,.4)}
 .pj-dot.d3{background:rgba(245,158,11,.15);border:2px solid rgba(245,158,11,.4)}
 .pj-dot.d4{background:rgba(16,185,129,.15);border:2px solid rgba(16,185,129,.4)}
-.pj-body{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:1.6rem;margin-bottom:.2rem}
+.pj-body{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:1.6rem}
 .pj-phase{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem}
 .p1{color:var(--c1)}.p2{color:#a78bfa}.p3{color:var(--c3)}.p4{color:#34d399}
 .pj-title{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
@@ -408,9 +424,9 @@ footer{padding:3.2rem 0;border-top:1px solid var(--b1);text-align:center;positio
   <div class="badge"><span class="dot"></span>Semester 3 · MBA / PGDM · 30 Hours of Training</div>
 
   <h1 class="hero-h1">
-    <span class="gt">Agentic AI</span> &amp;<br>
-    Advanced Analytics<br>
-    <span style="color:var(--txt2);font-size:.6em;font-weight:400;letter-spacing:-.01em">in Finance</span>
+    <span class="gt hl hl1">Agentic AI</span><span class="hero-amp hl hl2"> &amp;</span><br>
+    <span class="hl hl3">Advanced Analytics</span><br>
+    <span class="hl hl4" style="color:var(--txt2);font-size:.6em;font-weight:400;letter-spacing:-.01em">in Finance</span>
   </h1>
 
   <p class="hero-sub">
