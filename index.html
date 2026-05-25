@@ -36,15 +36,16 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);overfl
 .o3{width:300px;height:300px;background:var(--c3);bottom:-80px;right:25%;opacity:.06}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:.75rem 2.5rem;background:rgba(3,3,15,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.nav-brand{display:flex;flex-direction:column;gap:0;line-height:1}
-.nav-logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.05rem;background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap;letter-spacing:.02em}
-.nav-sub{font-size:.6rem;color:var(--txt2);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
-.nav-links{display:flex;gap:1.6rem;list-style:none}
-.nav-links a{color:var(--txt2);text-decoration:none;font-size:.78rem;font-weight:500;letter-spacing:.04em;transition:color .25s}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:.75rem 2.5rem;background:rgba(3,3,15,.95);backdrop-filter:blur(24px);border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;gap:1.5rem}
+.nav-course{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.85rem;background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap;letter-spacing:.04em;flex-shrink:0}
+.nav-links{display:flex;gap:1.5rem;list-style:none}
+.nav-links a{color:var(--txt2);text-decoration:none;font-size:.78rem;font-weight:500;letter-spacing:.04em;transition:color .25s;white-space:nowrap}
 .nav-links a:hover,.nav-links a.active{color:var(--c1)}
-.nav-gh{display:inline-flex;align-items:center;gap:.4rem;padding:.42rem 1rem;background:transparent;border:1px solid var(--b1);border-radius:50px;color:var(--c1);text-decoration:none;font-size:.76rem;font-weight:600;letter-spacing:.04em;transition:all .25s;white-space:nowrap}
-.nav-gh:hover{background:rgba(0,212,255,.1);box-shadow:var(--glow1)}
+.nav-toggle{display:none;flex-direction:column;gap:5px;background:none;border:1px solid var(--b1);cursor:pointer;padding:.55rem .65rem;border-radius:8px;flex-shrink:0}
+.nav-toggle span{display:block;width:20px;height:2px;background:var(--txt2);border-radius:2px;transition:all .3s}
+.nav-toggle.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.nav-toggle.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-toggle.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
 
 /* ─── UNIQUE SECTION ─── */
 .unique-section{padding:7rem 0;background:linear-gradient(180deg,transparent,rgba(124,58,237,.03) 50%,transparent)}
@@ -102,8 +103,22 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:.75rem 2.5rem;backg
 .curr-photo-bg::before{content:'';position:absolute;inset:0;background-image:url('https://bunny-wp-pullzone-4y0e6szi1k.b-cdn.net/wp-content/uploads/2026/03/Imperial-Students.webp');background-size:cover;background-position:center;opacity:.045;z-index:0;border-radius:0}
 .curr-photo-bg .container{position:relative;z-index:1}
 
-@media(max-width:900px){.unique-hero{grid-template-columns:1fr}.unique-img{display:none}.integ-grid{grid-template-columns:1fr}}
-@media(max-width:768px){nav{padding:.7rem 1.2rem}.nav-links{display:none}.nav-sub{display:none}.mod-hdr{gap:.9rem;padding:1.2rem}.mod-body{padding:0 1.2rem 1.2rem}.cap-card{padding:2.5rem 1.5rem}.ai-flow-steps{flex-direction:column}.afs-arrow{transform:rotate(90deg)}}
+@media(max-width:900px){
+  .unique-hero{grid-template-columns:1fr;gap:2.5rem;margin-bottom:3rem}
+  .unique-img{display:none}
+  .integ-grid{grid-template-columns:1fr}
+  .pillars{grid-template-columns:1fr}
+  .school-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  nav{padding:.65rem 1.1rem}
+  .nav-links{display:none;position:fixed;top:57px;left:0;right:0;background:rgba(3,3,15,.98);backdrop-filter:blur(24px);flex-direction:column;gap:0;border-bottom:1px solid var(--b1);padding:.5rem 0;z-index:999}
+  .nav-links.open{display:flex}
+  .nav-links li a{display:block;padding:.85rem 1.5rem;font-size:.9rem;border-bottom:1px solid rgba(255,255,255,.04)}
+  .nav-toggle{display:flex}
+  .ai-flow-steps{flex-direction:column}
+  .afs-arrow{transform:rotate(90deg);padding:.2rem 0}
+}
 
 /* HERO */
 .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:9rem 2rem 5rem;position:relative;z-index:1}
@@ -303,17 +318,53 @@ footer{padding:3.2rem 0;border-top:1px solid var(--b1);text-align:center;positio
   .phase-label{flex-direction:row;align-items:center;flex-wrap:wrap;gap:.8rem}
   .phase-bar{display:none}
   .integ-grid{grid-template-columns:1fr}
+  .meth-grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:768px){
-  nav{padding:.75rem 1.2rem}
-  .nav-links{display:none}
-  .mod-hdr{gap:.9rem;padding:1.2rem}
-  .mod-body{padding:0 1.2rem 1.2rem}
-  .cap-card{padding:2.5rem 1.5rem}
+  .hero{padding:7rem 1.25rem 4rem}
+  h1.hero-h1{font-size:clamp(2rem,8vw,2.8rem);letter-spacing:-.02em}
+  .hero-sub{font-size:.875rem}
+  .hero-inst{font-size:.78rem;padding:.38rem .9rem}
+  .stats{max-width:100%;flex-wrap:wrap}
+  .stat{min-width:calc(50% - 1px);padding:1.1rem .7rem}
+  .stat-n{font-size:1.75rem}
+  .btns{gap:.65rem}
+  .btn-p,.btn-s{padding:.7rem 1.3rem;font-size:.82rem}
+  .container{padding:0 1.1rem}
+  .sec-pad{padding:4rem 0}
+  .sec-title{font-size:clamp(1.45rem,5.5vw,2rem)}
+  .unique-stats{gap:1.25rem}
+  .ustat-n{font-size:2rem}
+  .mod-hdr{gap:.85rem;padding:1.15rem 1.2rem}
+  .mod-body{padding:0 1.2rem 1.4rem}
+  .mod-grid{grid-template-columns:1fr}
+  .cap-card{padding:2.5rem 1.25rem}
+  .cap-feats{gap:.55rem}
+  .cap-feat{padding:.55rem .85rem;font-size:.79rem}
+  .cap-btns{flex-direction:column;align-items:stretch}
+  .cap-btns .btn-p,.cap-btns .btn-s{justify-content:center}
   .pj-item{grid-template-columns:50px 1fr;gap:1rem}
+  .pj-dot{width:50px;height:50px;font-size:1.2rem}
+  .place-journey::before{left:25px}
+  .acad-phases{gap:1.25rem}
+  .phase-content{padding:1.25rem}
+  .phase-content-grid{grid-template-columns:1fr}
+  .meth-grid{grid-template-columns:1fr}
+  .school-grid{margin-top:1.5rem}
+}
+@media(max-width:520px){
   .stats{flex-direction:column}
-  .stat{border-right:none;border-bottom:1px solid var(--b1)}
+  .stat{border-right:none;border-bottom:1px solid var(--b1);min-width:100%}
   .stat:last-child{border-bottom:none}
+  .ov-grid{grid-template-columns:1fr}
+  .qtable{font-size:.75rem}
+  .qtable th,.qtable td{padding:.65rem .7rem}
+  .place-table{font-size:.76rem}
+  .place-table th,.place-table td{padding:.65rem .7rem}
+  .afs{min-width:100%}
+  .pj-body{padding:1.25rem}
+  .unique-left h2{font-size:clamp(1.5rem,6vw,2.2rem)}
+  footer{padding:2.5rem 0}
 }
 </style>
 </head>
@@ -327,20 +378,19 @@ footer{padding:3.2rem 0;border-top:1px solid var(--b1);text-align:center;positio
 
 <!-- NAV -->
 <nav id="navbar">
-  <div class="nav-brand">
-    <div class="nav-logo">ISBMS</div>
-    <div class="nav-sub">Imperial School of Banking &amp; Management Studies</div>
-  </div>
-  <ul class="nav-links">
-    <li><a href="#overview">Overview</a></li>
-    <li><a href="#unique">Why ISBMS</a></li>
-    <li><a href="#curriculum">Curriculum</a></li>
-    <li><a href="#modules">Modules</a></li>
-    <li><a href="#academic">Academic Design</a></li>
-    <li><a href="#placement">Placement</a></li>
-    <li><a href="#methodology">Methodology</a></li>
+  <div class="nav-course">Agentic AI · Finance</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#overview" onclick="closeNav()">Overview</a></li>
+    <li><a href="#unique" onclick="closeNav()">Why ISBMS</a></li>
+    <li><a href="#curriculum" onclick="closeNav()">Curriculum</a></li>
+    <li><a href="#modules" onclick="closeNav()">Modules</a></li>
+    <li><a href="#academic" onclick="closeNav()">Academic Design</a></li>
+    <li><a href="#placement" onclick="closeNav()">Placement</a></li>
+    <li><a href="#methodology" onclick="closeNav()">Methodology</a></li>
   </ul>
-  <a href="https://imperialbschool.com/" target="_blank" class="nav-gh">Visit ISBMS ↗</a>
+  <button class="nav-toggle" id="navToggle" onclick="toggleNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -1481,7 +1531,7 @@ footer{padding:3.2rem 0;border-top:1px solid var(--b1);text-align:center;positio
       </div>
       <div class="cap-btns">
         <a href="#modules" class="btn-p">📚 Explore All 10 Modules</a>
-        <a href="https://imperialbschool.com/" target="_blank" class="btn-s">🏛️ Visit ISBMS</a>
+        <a href="#overview" class="btn-s">↑ Back to Overview</a>
       </div>
     </div>
   </div>
@@ -1604,6 +1654,22 @@ function toggleMod(hdr) {
   document.querySelectorAll('.mod-card').forEach(c=>c.classList.remove('active'));
   if(!was){card.classList.add('active');setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'nearest'}),120);}
 }
+
+// ── HAMBURGER MENU ──
+function toggleNav(){
+  const t=document.getElementById('navToggle');
+  const l=document.getElementById('navLinks');
+  t.classList.toggle('open');
+  l.classList.toggle('open');
+}
+function closeNav(){
+  document.getElementById('navToggle').classList.remove('open');
+  document.getElementById('navLinks').classList.remove('open');
+}
+document.addEventListener('click',e=>{
+  const nav=document.getElementById('navbar');
+  if(!nav.contains(e.target))closeNav();
+});
 
 // ── ACTIVE NAV ──
 const secs=document.querySelectorAll('section[id]');
