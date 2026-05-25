@@ -331,6 +331,65 @@ footer{padding:3.2rem 0;border-top:1px solid var(--b1);text-align:center;positio
 .rv{opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease}
 .rv.vis{opacity:1;transform:translateY(0)}
 
+/* ── HERO FINANCE SHIMMER ── */
+.hero-fin{background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3),var(--c1));background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:finshimmer 2.4s linear infinite;font-weight:700;letter-spacing:.02em}
+
+/* ── INSTRUCTOR SECTION ── */
+.instr-section{padding:7rem 0;background:linear-gradient(180deg,transparent,rgba(124,58,237,.03) 50%,transparent)}
+.instr-grid{display:grid;grid-template-columns:340px 1fr;gap:3.5rem;align-items:start;margin-top:4rem}
+.instr-left{text-align:center}
+.instr-photo-wrap{position:relative;width:210px;height:210px;margin:0 auto 1.8rem}
+.instr-ring{position:absolute;border-radius:50%;animation:iringp 3s ease-in-out infinite;top:0;left:0;right:0;bottom:0}
+.instr-ring.r1{inset:-10px;border:2px solid rgba(0,212,255,.55);animation-delay:0s}
+.instr-ring.r2{inset:-22px;border:1.5px solid rgba(124,58,237,.38);animation-delay:.7s}
+.instr-ring.r3{inset:-36px;border:1px solid rgba(0,212,255,.18);animation-delay:1.4s}
+@keyframes iringp{0%,100%{transform:scale(.94);opacity:.35}50%{transform:scale(1.06);opacity:1}}
+.instr-photo{width:210px;height:210px;border-radius:50%;object-fit:cover;object-position:center top;border:3px solid rgba(0,212,255,.45);display:block;filter:brightness(.97) contrast(1.04)}
+.instr-rec{position:absolute;top:10px;right:6px;background:rgba(220,38,38,.92);color:#fff;font-size:.58rem;font-weight:700;letter-spacing:.12em;padding:.2rem .6rem;border-radius:100px;display:flex;align-items:center;gap:.35rem}
+.instr-rec span{width:6px;height:6px;background:#fff;border-radius:50%;animation:blink 1s ease-in-out infinite;flex-shrink:0}
+.instr-name-big{font-family:'Space Grotesk',sans-serif;font-size:1.45rem;font-weight:700;margin-bottom:.3rem}
+.instr-title-line{font-size:.75rem;color:var(--txt2);margin-bottom:1.1rem;letter-spacing:.04em}
+.ic-badges{display:flex;gap:.45rem;justify-content:center;flex-wrap:wrap;margin-bottom:.55rem}
+.ic-badge{font-size:.65rem;font-weight:700;padding:.25rem .72rem;border-radius:100px;letter-spacing:.07em}
+.ic-cfa{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.4);color:var(--c1)}
+.ic-frm{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.4);color:#a78bfa}
+.ic-book{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.4);color:var(--c3)}
+.instr-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;margin-top:1.2rem}
+.ik{background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:.9rem .45rem;text-align:center}
+.ik-n{font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:700;color:var(--c1);line-height:1.1}
+.ik-l{font-size:.6rem;color:var(--txt2);text-transform:uppercase;letter-spacing:.07em;margin-top:.25rem;line-height:1.3}
+.book-card{background:linear-gradient(135deg,rgba(245,158,11,.07),rgba(124,58,237,.07));border:1px solid rgba(245,158,11,.28);border-radius:14px;padding:1.1rem 1.2rem;display:flex;align-items:center;gap:1rem;margin-top:1.3rem;text-decoration:none;color:inherit;transition:all .3s}
+.book-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(245,158,11,.18)}
+.book-icon{font-size:2.2rem;flex-shrink:0;animation:ifl 3s ease-in-out infinite}
+.book-title{font-family:'Space Grotesk',sans-serif;font-size:.86rem;font-weight:700;margin-bottom:.22rem}
+.book-sub{font-size:.72rem;color:var(--c3);font-weight:600;margin-bottom:.18rem}
+.book-badge{font-size:.65rem;color:var(--txt2)}
+
+/* Interview panel */
+.interview-panel{background:rgba(255,255,255,.02);border:1px solid var(--b1);border-radius:20px;overflow:hidden;margin-bottom:1.6rem}
+.interview-header{background:rgba(0,0,0,.3);border-bottom:1px solid rgba(255,255,255,.06);padding:.85rem 1.4rem;display:flex;align-items:center;gap:.75rem}
+.ir-dot{width:9px;height:9px;background:#ef4444;border-radius:50%;animation:blink 1s ease-in-out infinite;flex-shrink:0}
+.ir-label{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--txt2)}
+.ir-name{font-size:.7rem;color:var(--c1);font-weight:600;margin-left:auto;white-space:nowrap}
+.interview-body{padding:1.5rem;display:flex;flex-direction:column;gap:1rem;max-height:340px;overflow-y:auto}
+.interview-body::-webkit-scrollbar{width:3px}
+.interview-body::-webkit-scrollbar-thumb{background:var(--b1);border-radius:2px}
+.iq{background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);border-radius:12px 12px 12px 3px;padding:.8rem 1rem;font-size:.8rem;color:var(--c1);font-weight:500;opacity:0;transform:translateX(-14px);transition:opacity .5s ease,transform .5s ease}
+.ia{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px 12px 3px 12px;padding:.8rem 1rem;font-size:.83rem;color:var(--txt);line-height:1.68;opacity:0;transform:translateX(14px);transition:opacity .5s ease,transform .5s ease}
+.iq.show,.ia.show{opacity:1;transform:translateX(0)}
+
+/* Experience mini-grid */
+.instr-exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.iexp{background:var(--card);border:1px solid var(--b2);border-radius:14px;padding:1.25rem;transition:all .3s}
+.iexp:hover{border-color:rgba(0,212,255,.3);transform:translateY(-4px);box-shadow:var(--glow1)}
+.iexp-icon{font-size:1.6rem;margin-bottom:.6rem;display:inline-block;animation:ifl 3.5s ease-in-out infinite}
+.iexp:nth-child(1) .iexp-icon{animation-delay:0s}.iexp:nth-child(2) .iexp-icon{animation-delay:.6s}.iexp:nth-child(3) .iexp-icon{animation-delay:1.2s}.iexp:nth-child(4) .iexp-icon{animation-delay:1.8s}
+.iexp-title{font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:700;margin-bottom:.45rem}
+.iexp-desc{font-size:.78rem;color:var(--txt2);line-height:1.6}
+
+@media(max-width:900px){.instr-grid{grid-template-columns:1fr}.instr-left{max-width:340px;margin:0 auto}.instr-exp-grid{grid-template-columns:1fr}}
+@media(max-width:520px){.instr-kpis{grid-template-columns:repeat(3,1fr)}.instr-exp-grid{grid-template-columns:1fr}}
+
 /* ── ANIMATED ICON SYSTEM ── */
 .ov-icon,.pillar-icon,.meth-icon,.integ-icon{display:inline-block;animation:ifl 3.6s ease-in-out infinite,igl 3s ease-in-out infinite}
 @keyframes ifl{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-9px) scale(1.1)}}
@@ -439,6 +498,7 @@ footer{padding:3.2rem 0;border-top:1px solid var(--b1);text-align:center;positio
     <li><a href="#academic" onclick="closeNav()">Academic Design</a></li>
     <li><a href="#placement" onclick="closeNav()">Placement</a></li>
     <li><a href="#methodology" onclick="closeNav()">Methodology</a></li>
+    <li><a href="#instructor" onclick="closeNav()">Instructor</a></li>
   </ul>
   <button class="nav-toggle" id="navToggle" onclick="toggleNav()" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -453,14 +513,12 @@ footer{padding:3.2rem 0;border-top:1px solid var(--b1);text-align:center;positio
   <h1 class="hero-h1">
     <span class="gt hl hl1">AI</span><span class="hero-amp hl hl2"> &amp;</span><br>
     <span class="hl hl3">Advanced Analytics</span><br>
-    <span class="hl hl4" style="color:var(--txt2);font-size:.6em;font-weight:400;letter-spacing:-.01em">in Finance</span>
+    <span class="hl hl4" style="font-size:.6em;font-weight:400;letter-spacing:-.01em;color:var(--txt2)">in <span class="hero-fin">Finance</span></span>
   </h1>
 
   <p class="hero-sub">
     A 30-hour specialization that bridges academic finance theory with the AI-driven transformation happening inside Global Capability Centers — preparing Semester 3 students for fund administration, risk management, and regulatory technology roles.
   </p>
-
-  <div class="hero-inst">🏛️ Imperial School of Banking &amp; Management Studies, Pune</div>
 
   <div class="stats rv">
     <div class="stat"><div class="stat-n" data-target="30">0</div><div class="stat-l">Training Hours</div></div>
@@ -1589,6 +1647,89 @@ footer{padding:3.2rem 0;border-top:1px solid var(--b1);text-align:center;positio
   </div>
 </section>
 
+<!-- INSTRUCTOR -->
+<section class="instr-section" id="instructor">
+  <div class="container">
+    <div class="sec-head rv">
+      <span class="sec-tag">Course Architect &amp; Faculty</span>
+      <h2 class="sec-title">Built by a <span class="gt">Practitioner</span>. Taught by One.</h2>
+      <p class="sec-sub">Not a visiting lecturer. Not a textbook theorist. The architect of this course spent 12 years building the exact systems students will learn — from live trading desks to fund automation at institutional level.</p>
+    </div>
+    <div class="instr-grid">
+
+      <!-- LEFT: Photo + credentials -->
+      <div class="instr-left rv">
+        <div class="instr-photo-wrap">
+          <div class="instr-ring r1"></div>
+          <div class="instr-ring r2"></div>
+          <div class="instr-ring r3"></div>
+          <img src="headshot.jpg" class="instr-photo" alt="Tejas Jadhav CFA FRM" onerror="this.style.opacity='0'">
+          <div class="instr-rec"><span></span>LIVE CLASS</div>
+        </div>
+        <div class="instr-name-big">Tejas Jadhav</div>
+        <div class="instr-title-line">Course Designer · Lead Faculty · ISBMS Pune</div>
+        <div class="ic-badges">
+          <span class="ic-badge ic-cfa">CFA Charterholder</span>
+          <span class="ic-badge ic-frm">FRM Certified</span>
+        </div>
+        <div class="ic-badges">
+          <span class="ic-badge ic-book">Amazon Best-Seller</span>
+          <span class="ic-badge ic-book">AI Finance Author</span>
+        </div>
+        <div class="instr-kpis">
+          <div class="ik"><div class="ik-n">12+</div><div class="ik-l">Yrs Finance</div></div>
+          <div class="ik"><div class="ik-n">CFA<br>FRM</div><div class="ik-l">Dual Certified</div></div>
+          <div class="ik"><div class="ik-n">#1</div><div class="ik-l">Amazon Author</div></div>
+        </div>
+        <a href="https://www.amazon.com/Claude-Cowork-Finance-Dashboards-Automations-ebook/dp/B0H1R2GZX9" target="_blank" rel="noopener" class="book-card">
+          <span class="book-icon">📗</span>
+          <div>
+            <div class="book-title">Claude Cowork for Finance</div>
+            <div class="book-sub">AI Agents · Financial Workflows · Trading Bots</div>
+            <div class="book-badge">Amazon Best-Seller · AI &amp; Practical Finance Series</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- RIGHT: AI Interview + experience -->
+      <div class="instr-right rv">
+        <div class="interview-panel">
+          <div class="interview-header">
+            <div class="ir-dot"></div>
+            <span class="ir-label">AI Faculty Interview</span>
+            <span class="ir-name">Tejas Jadhav · CFA, FRM</span>
+          </div>
+          <div class="interview-body" id="interviewBody"></div>
+        </div>
+
+        <div class="instr-exp-grid">
+          <div class="iexp rv">
+            <span class="iexp-icon">📈</span>
+            <div class="iexp-title">HNI Portfolio Management</div>
+            <p class="iexp-desc">Managed high-net-worth client portfolios across equity, structured products, and fixed income — real P&amp;L responsibility, not simulated.</p>
+          </div>
+          <div class="iexp rv">
+            <span class="iexp-icon">⚙️</span>
+            <div class="iexp-title">ESG &amp; Climate Risk Platforms</div>
+            <p class="iexp-desc">Built technology and data platforms for ESG investing, climate risk, and FRTB market risk for institutional financial services firms.</p>
+          </div>
+          <div class="iexp rv">
+            <span class="iexp-icon">🎓</span>
+            <div class="iexp-title">MBA · Sydenham Mumbai</div>
+            <p class="iexp-desc">MBA Finance from Sydenham Institute, Mumbai. CFA Charterholder. FRM Certified. All three earned while working full-time in finance.</p>
+          </div>
+          <div class="iexp rv">
+            <span class="iexp-icon">✍️</span>
+            <div class="iexp-title">AI Finance Author</div>
+            <p class="iexp-desc">"Claude Cowork for Finance" — Amazon best-selling guide to building AI agents and financial workflow automations for practitioners across India.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="container">
@@ -1706,6 +1847,52 @@ function toggleMod(hdr) {
   document.querySelectorAll('.mod-card').forEach(c=>c.classList.remove('active'));
   if(!was){card.classList.add('active');setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'nearest'}),120);}
 }
+
+// ── INSTRUCTOR AI INTERVIEW ──
+(function(){
+  const body = document.getElementById('interviewBody');
+  if(!body) return;
+  const qa = [
+    {
+      q:"Sir, what makes this course different from any regular finance elective?",
+      a:"See, the thing is — I spent 12 years actually building these systems. On trading desks, in risk technology, managing HNI portfolios. When I joined a fund house and started building NAV automation and ESG risk platforms, I realised — the gap between what colleges teach and what GCCs actually need is very large. So I designed this course to close that gap completely. Every lab session is something I personally built professionally."
+    },
+    {
+      q:"You are a CFA and FRM. Why focus on AI specifically?",
+      a:"Because the finance professional of tomorrow needs all three. CFA gives you investment judgment. FRM gives you risk quantification. AI gives you the ability to automate and scale both — at ten times the speed. I wrote an Amazon best-seller on exactly this. The students who learn AI on top of their finance foundation will be hired first. That is simply the reality of what GCCs are looking for right now."
+    },
+    {
+      q:"What should a student expect from your teaching style?",
+      a:"In my class, you will build something in the first 30 minutes. Always. Whether it is your first API call or a Monte Carlo VaR engine — you will have something running before I explain why it works. That is how I learned on real finance floors. You do first, you understand later. That habit will carry you through your entire career, not just placement season."
+    }
+  ];
+  let fired = false;
+  function runInterview(){
+    if(fired) return; fired = true;
+    let delay = 300;
+    qa.forEach(({q, a}) => {
+      setTimeout(() => {
+        const qEl = document.createElement('div');
+        qEl.className = 'iq';
+        qEl.textContent = q;
+        body.appendChild(qEl);
+        requestAnimationFrame(() => requestAnimationFrame(() => qEl.classList.add('show')));
+        setTimeout(() => {
+          const aEl = document.createElement('div');
+          aEl.className = 'ia';
+          aEl.textContent = a;
+          body.appendChild(aEl);
+          requestAnimationFrame(() => requestAnimationFrame(() => aEl.classList.add('show')));
+          body.scrollTop = body.scrollHeight;
+        }, 900);
+      }, delay);
+      delay += 3800;
+    });
+  }
+  const obs = new IntersectionObserver(e => { if(e[0].isIntersecting) runInterview(); }, {threshold: 0.25});
+  const sec = document.getElementById('instructor');
+  if(sec) obs.observe(sec);
+})();
 
 // ── AI × FINANCE SCRAMBLE ──
 (function(){
