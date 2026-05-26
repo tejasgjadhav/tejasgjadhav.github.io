@@ -272,25 +272,50 @@ section{position:relative;z-index:1}
 
 /* ─── PLACEMENT DESIGN ─── */
 .place-section{padding:6.5rem 0}
-.place-journey{display:flex;flex-direction:column;gap:0.6rem;margin-top:3rem;position:relative}
-.place-journey::before{content:'';position:absolute;left:28px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--c1),var(--c2),var(--c3),var(--c4))}
-.pj-item{display:grid;grid-template-columns:60px 1fr;gap:1.5rem;align-items:start;opacity:1;transform:none}
-.pj-dot{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;position:relative;z-index:1}
-.pj-dot.d1{background:rgba(0,212,255,.15);border:2px solid rgba(0,212,255,.4)}
-.pj-dot.d2{background:rgba(124,58,237,.15);border:2px solid rgba(124,58,237,.4)}
-.pj-dot.d3{background:rgba(245,158,11,.15);border:2px solid rgba(245,158,11,.4)}
-.pj-dot.d4{background:rgba(16,185,129,.15);border:2px solid rgba(16,185,129,.4)}
-.pj-body{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:1.6rem}
-.pj-phase{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem}
-.p1{color:var(--c1)}.p2{color:#a78bfa}.p3{color:var(--c3)}.p4{color:#34d399}
-.pj-title{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
-.pj-desc{font-size:.85rem;color:var(--txt2);line-height:1.65;margin-bottom:1rem}
-.pj-outcomes{display:flex;flex-wrap:wrap;gap:.5rem}
-.pj-out{font-size:.75rem;padding:.3rem .8rem;border-radius:6px;font-weight:600}
-.pj-out.o1{background:rgba(0,212,255,.1);color:var(--c1);border:1px solid rgba(0,212,255,.25)}
-.pj-out.o2{background:rgba(124,58,237,.1);color:#a78bfa;border:1px solid rgba(124,58,237,.25)}
-.pj-out.o3{background:rgba(245,158,11,.1);color:var(--c3);border:1px solid rgba(245,158,11,.25)}
-.pj-out.o4{background:rgba(16,185,129,.1);color:#34d399;border:1px solid rgba(16,185,129,.25)}
+
+/* Stats bar */
+.place-stats{display:flex;flex-wrap:wrap;gap:0;margin:2.5rem 0 3.5rem;background:rgba(255,255,255,.02);border:1px solid var(--b1);border-radius:20px;overflow:hidden}
+.ps-stat{flex:1;min-width:120px;text-align:center;padding:1.4rem 1rem;border-right:1px solid var(--b1)}
+.ps-stat:last-child{border-right:none}
+.ps-n{font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:800;background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.ps-l{font-size:.68rem;color:var(--txt2);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-top:.35rem}
+
+/* Phase 2×2 grid — replaces broken timeline */
+.phase-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem}
+.pg-card{background:var(--card);border:1px solid var(--b2);border-radius:18px;padding:1.6rem;transition:all .3s}
+.pg-card:hover{transform:translateY(-4px)}
+.pg-num{font-size:.65rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.55rem;display:flex;align-items:center;gap:.5rem}
+.pg-num::before{content:'';display:inline-block;width:24px;height:2px;border-radius:2px}
+.pg-num.p1{color:var(--c1)}.pg-num.p1::before{background:var(--c1)}
+.pg-num.p2{color:#a78bfa}.pg-num.p2::before{background:#a78bfa}
+.pg-num.p3{color:var(--c3)}.pg-num.p3::before{background:var(--c3)}
+.pg-num.p4{color:#34d399}.pg-num.p4::before{background:#34d399}
+.pg-title{font-family:'Space Grotesk',sans-serif;font-size:.98rem;font-weight:700;margin-bottom:.45rem;line-height:1.3}
+.pg-desc{font-size:.78rem;color:var(--txt2);line-height:1.65;margin-bottom:.8rem}
+.pg-tags{display:flex;flex-wrap:wrap;gap:.35rem}
+.pg-tag{font-size:.68rem;padding:.22rem .6rem;border-radius:5px;font-weight:600}
+.pg-tag.t1{background:rgba(0,212,255,.1);color:var(--c1)}
+.pg-tag.t2{background:rgba(124,58,237,.1);color:#a78bfa}
+.pg-tag.t3{background:rgba(245,158,11,.1);color:var(--c3)}
+.pg-tag.t4{background:rgba(16,185,129,.1);color:#34d399}
+
+/* Hiring company cards */
+.hire-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.2rem;margin-top:2rem}
+.hc{background:var(--card);border:1px solid var(--b2);border-radius:18px;padding:1.5rem;transition:all .3s;position:relative;overflow:hidden}
+.hc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:18px 18px 0 0}
+.hc.hc1::before{background:linear-gradient(90deg,var(--c1),#06b6d4)}
+.hc.hc2::before{background:linear-gradient(90deg,var(--c2),#8b5cf6)}
+.hc.hc3::before{background:linear-gradient(90deg,var(--c3),#f97316)}
+.hc.hc4::before{background:linear-gradient(90deg,#10b981,#06b6d4)}
+.hc:hover{border-color:rgba(0,212,255,.28);transform:translateY(-4px);box-shadow:0 14px 36px rgba(0,0,0,.3)}
+.hc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;margin-bottom:.7rem}
+.hc-name{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;line-height:1.25}
+.hc-placed{font-size:.65rem;font-weight:700;background:rgba(0,212,255,.12);color:var(--c1);border:1px solid rgba(0,212,255,.3);padding:.18rem .5rem;border-radius:50px;white-space:nowrap;flex-shrink:0}
+.hc-role{font-size:.74rem;color:var(--c1);font-weight:600;margin-bottom:.7rem;letter-spacing:.02em}
+.hc-ai-label{font-size:.6rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#a78bfa;margin-bottom:.25rem}
+.hc-ai{font-size:.77rem;color:var(--txt2);line-height:1.6;margin-bottom:.85rem;padding:.6rem .75rem;background:rgba(124,58,237,.06);border-left:2px solid rgba(124,58,237,.4);border-radius:0 8px 8px 0}
+.hc-edge-label{font-size:.6rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#34d399;margin-bottom:.25rem}
+.hc-edge{font-size:.74rem;color:rgba(255,255,255,.8);line-height:1.5}
 
 .place-table-wrap{overflow-x:auto;border-radius:16px;border:1px solid var(--b1);margin-top:3.5rem}
 .place-table{width:100%;border-collapse:collapse;font-size:.82rem}
@@ -455,9 +480,10 @@ footer{padding:3.2rem 0;border-top:1px solid var(--b1);text-align:center;positio
   .cap-feat{padding:.55rem .85rem;font-size:.79rem}
   .cap-btns{flex-direction:column;align-items:stretch}
   .cap-btns .btn-p,.cap-btns .btn-s{justify-content:center}
-  .pj-item{grid-template-columns:50px 1fr;gap:1rem}
-  .pj-dot{width:50px;height:50px;font-size:1.2rem}
-  .place-journey::before{left:25px}
+  .phase-grid{grid-template-columns:1fr}
+  .hire-grid{grid-template-columns:1fr}
+  .place-stats{flex-direction:row;flex-wrap:wrap}
+  .ps-stat{flex:1 1 45%;border-right:none;border-bottom:1px solid var(--b1)}
   .acad-phases{gap:0.4rem}
   .phase-content{padding:1.25rem}
   .phase-content-grid{grid-template-columns:1fr}
@@ -474,7 +500,6 @@ footer{padding:3.2rem 0;border-top:1px solid var(--b1);text-align:center;positio
   .place-table{font-size:.76rem}
   .place-table th,.place-table td{padding:.65rem .7rem}
   .afs{min-width:100%}
-  .pj-body{padding:1.25rem}
   .unique-left h2{font-size:clamp(1.5rem,6vw,2.2rem)}
   footer{padding:2.5rem 0}
 }
@@ -1398,67 +1423,168 @@ footer{padding:3.2rem 0;border-top:1px solid var(--b1);text-align:center;positio
       <p class="sec-sub">The placement data for Semester 3 students shows a concentration in Fund Accounting, Financial Reporting, Risk Advisory, and Audit at GCCs in Pune and Mumbai. Every design decision in this course maps back to that reality.</p>
     </div>
 
-    <!-- Placement journey -->
-    <div class="place-journey">
+    <!-- Stats bar -->
+    <div class="place-stats rv">
+      <div class="ps-stat"><div class="ps-n">42</div><div class="ps-l">Students Placed</div></div>
+      <div class="ps-stat"><div class="ps-n">15</div><div class="ps-l">Hiring Companies</div></div>
+      <div class="ps-stat"><div class="ps-n">7+</div><div class="ps-l">Sectors</div></div>
+      <div class="ps-stat"><div class="ps-n">100%</div><div class="ps-l">Finance Focused</div></div>
+    </div>
 
-      <div class="pj-item">
-        <div class="pj-dot d1">🧠</div>
-        <div class="pj-body">
-          <div class="pj-phase p1">PHASE 1 · MODULES 01–03 · AI LITERACY</div>
-          <div class="pj-title">What students can say after this phase</div>
-          <p class="pj-desc">After Phase 1, students can walk into any GCC interview and speak fluently about how LLMs, RAG systems, and AI agents are being deployed in fund administration and financial reporting. They have built working prototypes — not theoretical knowledge. When a hiring manager asks "are you comfortable with AI tools?", they can demonstrate a 200-page prospectus bot they built in class.</p>
-          <div class="pj-outcomes">
-            <span class="pj-out o1">Can discuss AI architecture intelligently</span>
-            <span class="pj-out o1">Demonstrates API and prompt engineering skills</span>
-            <span class="pj-out o1">Built a working document intelligence system</span>
-            <span class="pj-out o1">Understands MCP and agent orchestration</span>
-          </div>
+    <!-- Phase 2×2 grid -->
+    <div class="sec-head rv" style="margin-bottom:1.2rem;text-align:left">
+      <span class="sec-tag">Course → Career Map</span>
+      <h3 class="sec-title" style="font-size:clamp(1.25rem,2.8vw,1.8rem)">4 Phases That Build <span class="gt">Placement-Ready Skills</span></h3>
+    </div>
+    <div class="phase-grid">
+      <div class="pg-card rv">
+        <div class="pg-num p1">Phase 1 · Modules 01–03 · AI Literacy</div>
+        <div class="pg-title">What students say in any GCC interview</div>
+        <p class="pg-desc">Students walk into EisnerAmper, MSKA, or Apex interviews able to speak fluently about LLMs, RAG systems, and AI agents — and demonstrate a 200-page prospectus bot they built in class.</p>
+        <div class="pg-tags">
+          <span class="pg-tag t1">LLM Architecture</span>
+          <span class="pg-tag t1">Prompt Engineering</span>
+          <span class="pg-tag t1">Document AI Agent</span>
+          <span class="pg-tag t1">API Integration</span>
         </div>
       </div>
-
-      <div class="pj-item">
-        <div class="pj-dot d2">📊</div>
-        <div class="pj-body">
-          <div class="pj-phase p2">PHASE 2 · MODULES 04–06 · QUANTITATIVE FINANCE</div>
-          <div class="pj-title">The skills that unlock risk and reporting roles</div>
-          <p class="pj-desc">Fund administration, risk analytics, and regulatory reporting roles at GCCs like Apex, SS&C, and EisnerAmper require quantitative credibility. A student who can demonstrate they have built a Monte Carlo VaR engine and auto-generated a Basel III report is immediately differentiated from peers who can only discuss these concepts theoretically. Phase 2 provides that technical proof.</p>
-          <div class="pj-outcomes">
-            <span class="pj-out o2">FRM-aligned risk modeling competency</span>
-            <span class="pj-out o2">Built a working Basel compliance pipeline</span>
-            <span class="pj-out o2">Can explain VaR methodology in an interview</span>
-            <span class="pj-out o2">Demonstrated regulatory reporting knowledge</span>
-          </div>
+      <div class="pg-card rv">
+        <div class="pg-num p2">Phase 2 · Modules 04–06 · Quantitative Finance</div>
+        <div class="pg-title">Skills that unlock risk &amp; reporting roles</div>
+        <p class="pg-desc">Apex, SS&amp;C, and ADP require quantitative credibility. Students who have built a Monte Carlo VaR engine and auto-generated a Basel III report are immediately differentiated in any technical interview.</p>
+        <div class="pg-tags">
+          <span class="pg-tag t2">Monte Carlo VaR</span>
+          <span class="pg-tag t2">Basel III Pipeline</span>
+          <span class="pg-tag t2">FRM-Aligned Risk</span>
+          <span class="pg-tag t2">DCF Modeling</span>
         </div>
       </div>
-
-      <div class="pj-item">
-        <div class="pj-dot d3">🏦</div>
-        <div class="pj-body">
-          <div class="pj-phase p3">PHASE 3 · MODULES 07–09 · APPLIED ENTERPRISE AI</div>
-          <div class="pj-title">The layer that makes students hire-ready for back-office transformation</div>
-          <p class="pj-desc">The specific roles that target GCCs are hiring for — Fund Accountant at Opus, NAV Analyst at Apex, Financial Analyst at EisnerAmper — are all undergoing AI transformation right now. A student who has built an automated NAV calculator, designed an AI governance framework, and deployed a market commentary dashboard has directly simulated the work these roles involve. This is the layer that converts knowledge into employability.</p>
-          <div class="pj-outcomes">
-            <span class="pj-out o3">Automated NAV calculator built in class</span>
-            <span class="pj-out o3">AI governance framework design experience</span>
-            <span class="pj-out o3">Deployed market intelligence dashboard</span>
-            <span class="pj-out o3">Understands fund admin workflows end-to-end</span>
-          </div>
+      <div class="pg-card rv">
+        <div class="pg-num p3">Phase 3 · Modules 07–09 · Applied Enterprise AI</div>
+        <div class="pg-title">Hire-ready for back-office transformation</div>
+        <p class="pg-desc">Opus, HC Global, and KFINTECH are all actively automating fund admin workflows. Students who have built NAV calculators and AI governance frameworks have already done the job before being hired.</p>
+        <div class="pg-tags">
+          <span class="pg-tag t3">NAV Automation</span>
+          <span class="pg-tag t3">AI Governance</span>
+          <span class="pg-tag t3">Fund Admin Workflows</span>
+          <span class="pg-tag t3">Market Intelligence</span>
         </div>
       </div>
-
-      <div class="pj-item">
-        <div class="pj-dot d4">🏆</div>
-        <div class="pj-body">
-          <div class="pj-phase p4">PHASE 4 · MODULE 10 · CAPSTONE</div>
-          <div class="pj-title">The portfolio piece that goes into every GCC interview</div>
-          <p class="pj-desc">The Capstone is designed as a placement artifact. The live project portfolio and the 5-slide pitch deck are shared with target GCC HR teams before placement season begins. The mock panel interview — conducted with industry mentor judges — means students have already been through a realistic version of the hiring process before it happens for real. The Capstone doesn't prepare students for placement. It IS placement preparation.</p>
-          <div class="pj-outcomes">
-            <span class="pj-out o4">Live deployed project portfolio</span>
-            <span class="pj-out o4">Mock interview experience with structured feedback</span>
-            <span class="pj-out o4">GCC-ready pitch deck per student</span>
-            <span class="pj-out o4">Resume-ready AI projects section</span>
-          </div>
+      <div class="pg-card rv">
+        <div class="pg-num p4">Phase 4 · Module 10 · Capstone</div>
+        <div class="pg-title">Portfolio that goes into every GCC interview</div>
+        <p class="pg-desc">A live deployed project, a 5-slide pitch deck shared with target HR teams, and a mock panel interview with industry judges. The Capstone IS the placement preparation — not a simulation of it.</p>
+        <div class="pg-tags">
+          <span class="pg-tag t4">Live Portfolio</span>
+          <span class="pg-tag t4">Mock Interview</span>
+          <span class="pg-tag t4">GCC Pitch Deck</span>
+          <span class="pg-tag t4">AI Resume Section</span>
         </div>
+      </div>
+    </div>
+
+    <!-- Hiring company cards -->
+    <div class="sec-head rv" style="margin-top:4.5rem;margin-bottom:1.2rem;text-align:left">
+      <span class="sec-tag">Real Hiring Partners · Batch 2024–26</span>
+      <h3 class="sec-title" style="font-size:clamp(1.25rem,2.8vw,1.8rem)">Companies That <span class="gt">Already Hire From ISBMS</span> — And Their AI Agenda</h3>
+      <p class="sec-sub" style="text-align:left;margin:0">Their transformation plan. Our course content. Your competitive edge.</p>
+    </div>
+    <div class="hire-grid">
+
+      <div class="hc hc1 rv">
+        <div class="hc-top">
+          <div class="hc-name">EisnerAmper</div>
+          <span class="hc-placed">7 placed</span>
+        </div>
+        <div class="hc-role">Management Trainee – Audit</div>
+        <div class="hc-ai-label">Their AI Agenda</div>
+        <div class="hc-ai">Launched a dedicated AI Audit practice in 2023. Using generative AI for automated anomaly detection, audit sampling, and financial statement review. Actively upskilling audit teams on AI-assisted workflows.</div>
+        <div class="hc-edge-label">What our students bring</div>
+        <div class="hc-edge">Built an AI governance framework + understand explainability and model risk — exactly what AI-assisted audit requires.</div>
+      </div>
+
+      <div class="hc hc2 rv">
+        <div class="hc-top">
+          <div class="hc-name">Opus Fund Services</div>
+          <span class="hc-placed">4 placed</span>
+        </div>
+        <div class="hc-role">Accountant – Financial Reporting</div>
+        <div class="hc-ai-label">Their AI Agenda</div>
+        <div class="hc-ai">Deploying AI-powered fund accounting automation for private markets — automated NAV processing, exception management, and investor reporting. Part of the SS&amp;C intelligence ecosystem.</div>
+        <div class="hc-edge-label">What our students bring</div>
+        <div class="hc-edge">Built a working NAV calculator with exception detection in Module 8 — can hit the ground running on day one.</div>
+      </div>
+
+      <div class="hc hc3 rv">
+        <div class="hc-top">
+          <div class="hc-name">MSKA &amp; Associates</div>
+          <span class="hc-placed">4 placed</span>
+        </div>
+        <div class="hc-role">Analyst – Audit &amp; Assurance</div>
+        <div class="hc-ai-label">Their AI Agenda</div>
+        <div class="hc-ai">Adopting AI audit analytics tools for intelligent risk scoring, automated reconciliation checks, and document classification — aligning with ICAI's digital audit standards for 2025–26.</div>
+        <div class="hc-edge-label">What our students bring</div>
+        <div class="hc-edge">Understand AI governance, SR 11-7 model risk, and how to frame AI findings in an audit report context.</div>
+      </div>
+
+      <div class="hc hc4 rv">
+        <div class="hc-top">
+          <div class="hc-name">HC Global Fund Services</div>
+          <span class="hc-placed">3 placed</span>
+        </div>
+        <div class="hc-role">Fund Administration Associate</div>
+        <div class="hc-ai-label">Their AI Agenda</div>
+        <div class="hc-ai">Cloud-first fund administrator building AI-enhanced investor portals, automated fund reporting, and intelligent data validation for hedge funds and private equity clients across Asia and India.</div>
+        <div class="hc-edge-label">What our students bring</div>
+        <div class="hc-edge">Understand end-to-end fund admin workflows and have built AI-powered document intelligence systems — a rare combination.</div>
+      </div>
+
+      <div class="hc hc1 rv">
+        <div class="hc-top">
+          <div class="hc-name">Apex Group</div>
+          <span class="hc-placed">3 placed</span>
+        </div>
+        <div class="hc-role">Associate – Transfer Agency</div>
+        <div class="hc-ai-label">Their AI Agenda</div>
+        <div class="hc-ai">"Apex Intelligence" platform uses ML for automated investor onboarding, KYC, trade matching, and subscription-to-settlement tracking. Transfer agency is their first AI-transformation priority.</div>
+        <div class="hc-edge-label">What our students bring</div>
+        <div class="hc-edge">Designed agent-orchestrated TA workflows in class — understands the subscription lifecycle technically, not just theoretically.</div>
+      </div>
+
+      <div class="hc hc2 rv">
+        <div class="hc-top">
+          <div class="hc-name">KFINTECH</div>
+          <span class="hc-placed">3 placed</span>
+        </div>
+        <div class="hc-role">Executive – Private Equity</div>
+        <div class="hc-ai-label">Their AI Agenda</div>
+        <div class="hc-ai">India's largest registrar/transfer agent is deploying AI for e-KYC, investor services automation, digital PE fund operations, and intelligent distribution analytics for mutual funds and AIF platforms.</div>
+        <div class="hc-edge-label">What our students bring</div>
+        <div class="hc-edge">Built RAG-based document intelligence systems — directly applicable to PE fund reporting and investor query automation.</div>
+      </div>
+
+      <div class="hc hc3 rv">
+        <div class="hc-top">
+          <div class="hc-name">ADP</div>
+          <span class="hc-placed">2 placed</span>
+        </div>
+        <div class="hc-role">Financial Analyst – FP&amp;A</div>
+        <div class="hc-ai-label">Their AI Agenda</div>
+        <div class="hc-ai">"ADP Assist" — generative AI embedded across the HCM platform for payroll analytics, FP&amp;A variance analysis, and executive reporting automation. AI fluency is now a baseline expectation for FP&amp;A hires.</div>
+        <div class="hc-edge-label">What our students bring</div>
+        <div class="hc-edge">Deployed a live market commentary dashboard and built AI-powered financial analysis pipelines — can automate FP&amp;A workflows from day one.</div>
+      </div>
+
+      <div class="hc hc4 rv">
+        <div class="hc-top">
+          <div class="hc-name">SS&amp;C GlobeOp</div>
+          <span class="hc-placed">1 placed</span>
+        </div>
+        <div class="hc-role">Associate – Fund Operations</div>
+        <div class="hc-ai-label">Their AI Agenda</div>
+        <div class="hc-ai">SS&amp;C deploys Blue Prism RPA + generative AI across fund admin — automated NAV, trade matching, regulatory reporting. SS&amp;C Algorithmics handles AI-driven risk analytics for institutional clients globally.</div>
+        <div class="hc-edge-label">What our students bring</div>
+        <div class="hc-edge">VaR modeling, Basel pipeline, and NAV automation built in class mirror SS&amp;C's own technology stack — immediate credibility in interviews.</div>
       </div>
 
     </div>
