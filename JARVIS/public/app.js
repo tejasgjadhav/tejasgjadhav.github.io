@@ -304,6 +304,7 @@ function speak(text) {
   pauseListeningForSpeech();
 
   const clean = text
+    .replace(/J\.A\.R\.V\.I\.S\./g, 'Jarvis')
     .replace(/[#*_`>]/g, '')
     .replace(/\n{2,}/g, '. ')
     .replace(/\n/g, ', ')
@@ -409,8 +410,8 @@ function toggleSidebar() {
 // ═══════════════════════════════════════════════════════════
 
 function cleanForTTS(s) {
-  return s.replace(/[#*_`>]/g,'').replace(/\n{2,}/g,'. ').replace(/\n/g,', ')
-           .replace(/={2,}/g,'').replace(/[★⚠️●◆▶]/g,'').trim().substring(0,900);
+  return s.replace(/J\.A\.R\.V\.I\.S\./g,'Jarvis').replace(/[#*_`>]/g,'').replace(/\n{2,}/g,'. ')
+           .replace(/\n/g,', ').replace(/={2,}/g,'').replace(/[★⚠️●◆▶]/g,'').trim().substring(0,900);
 }
 
 function ttsReset() {
