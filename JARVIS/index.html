@@ -9,19 +9,18 @@
 </head>
 <body>
 
-<!-- ═══ SETUP OVERLAY ═══ -->
-<div id="setupOverlay" class="setup-overlay" style="display:none">
+<!-- ═══ ACCESS GATE ═══ -->
+<div id="accessGate" class="setup-overlay" style="display:none">
   <div class="setup-box">
     <div class="setup-arc-outer"><div class="setup-arc-inner"></div></div>
     <div class="setup-logo">J.A.R.V.I.S.</div>
-    <div class="setup-sub">MARK VII — INITIALISATION PROTOCOL</div>
+    <div class="setup-sub">MARK VII — SECURE ACCESS</div>
     <div class="setup-divider"></div>
-    <div class="setup-label">SECURITY CLEARANCE — ANTHROPIC API KEY</div>
-    <input type="password" id="apiKeyInput" class="setup-input"
-           placeholder="sk-ant-api03-..." autocomplete="off" spellcheck="false">
-    <div class="setup-hint">Your key is stored locally in your browser only.<br>Never sent anywhere except directly to <span style="color:#00d4ff">api.anthropic.com</span>.</div>
-    <button id="authenticateBtn" class="setup-btn">⚡ AUTHENTICATE</button>
-    <div id="setupError" class="setup-error" style="display:none"></div>
+    <div class="setup-label" id="gateLabel">ENTER ACCESS CODE</div>
+    <input type="password" id="accessInput" class="setup-input"
+           placeholder="Access code..." autocomplete="off" spellcheck="false">
+    <button id="accessBtn" class="setup-btn">⚡ AUTHORIZE</button>
+    <div id="gateError" class="setup-error" style="display:none"></div>
   </div>
 </div>
 
@@ -64,7 +63,6 @@
         <button class="ctrl-btn" id="voiceToggleBtn" title="Toggle voice">🔊</button>
         <button class="ctrl-btn active" id="audioLogBtn" title="Audio Log">📜</button>
         <button class="ctrl-btn" id="clearBtn" title="Clear chat">🗑</button>
-        <button class="ctrl-btn" id="keyBtn" title="Change API key">🔑</button>
       </div>
     </div>
   </header>
@@ -463,13 +461,21 @@ body{font-family:var(--fbody);color:var(--text);-webkit-font-smoothing:antialias
 <script>
 'use strict';
 
-// ─── Config ───────────────────────────────────────────────
-const API_URL   = 'https://api.anthropic.com/v1/messages';
-const API_HDRS  = () => ({
-  'x-api-key': getApiKey(),
+// ─── Owner Config ─────────────────────────────────────────
+// OWNER: Set your API key and access code here, then keep this repo PRIVATE.
+const JARVIS_CFG = {
+  key:  '',         // Your Anthropic API key (sk-ant-...)
+  code: 'JARVIS'    // Access code — share this with your friends
+};
+
+// ─── API Config ───────────────────────────────────────────
+const API_URL  = 'https://api.anthropic.com/v1/messages';
+const API_HDRS = () => ({
+  'x-api-key': JARVIS_CFG.key,
   'anthropic-version': '2023-06-01',
   'content-type': 'application/json',
-  'anthropic-dangerous-direct-browser-access': 'true'
+  'anthropic-dangerous-direct-browser-access': 'true',
+  'anthropic-beta': 'prompt-caching-2024-07-31'
 });
 
 // ─── State ────────────────────────────────────────────────
@@ -496,7 +502,7 @@ const thinkBar   = $('thinkingBar'), voicePill = $('voicePill');
 const voiceStatus = $('voiceStatus');
 const modelSel   = $('modelSelector'), modelInd = $('modelIndicator');
 const voiceToggle = $('voiceToggleBtn'), audioLogBtn = $('audioLogBtn');
-const clearBtn   = $('clearBtn'), keyBtn = $('keyBtn');
+const clearBtn   = $('clearBtn');
 const analyzeBtn = $('analyzeBtn'), buildBtn = $('buildBtn');
 const finResults = $('finResults'), valBlock = $('valBlock');
 const finBadge   = $('finBadge');
@@ -505,30 +511,52 @@ const sidebar    = $('speakingSidebar'), sidebarClose = $('sidebarClose');
 const sbNow = $('sbNow'), sbNowText = $('sbNowText'), sbCursor = $('sbCursor');
 const sbHistory = $('sbHistory'), sbHistLabel = $('sbHistLabel');
 
-// ─── API Key ──────────────────────────────────────────────
-function getApiKey()   { return localStorage.getItem('jarvis_api_key'); }
-function saveApiKey(k) { localStorage.setItem('jarvis_api_key', k); }
-function clearApiKey() { localStorage.removeItem('jarvis_api_key'); }
-
-function showSetup(msg) {
-  $('setupOverlay').style.display = 'flex';
+// ─── Access Gate ──────────────────────────────────────────
+function showGate(msg) {
+  if (!JARVIS_CFG.key) {
+    $('gateLabel').textContent = 'NOT CONFIGURED';
+    $('accessInput').style.display = 'none';
+    $('accessBtn').style.display = 'none';
+    $('gateError').style.display = 'block';
+    $('gateError').textContent = 'JARVIS_CFG.key is empty. Set your API key in the HTML before deploying.';
+  }
+  $('accessGate').style.display = 'flex';
   $('jarvisApp').style.display = 'none';
-  if (msg) { const e=$('setupError'); e.style.display='block'; e.textContent=msg; }
+  if (msg) { $('gateError').style.display='block'; $('gateError').textContent=msg; }
 }
 
-function hideSetup() {
-  $('setupOverlay').style.display = 'none';
-  $('jarvisApp').style.display    = 'flex';
+function openApp() {
+  $('accessGate').style.display = 'none';
+  $('jarvisApp').style.display  = 'flex';
 }
 
 // ─── Init ─────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  if (!getApiKey()) { showSetup(); return; }
-  initApp();
+  // Access gate listeners must be bound before initApp is called
+  $('accessBtn').addEventListener('click', () => {
+    const entered = $('accessInput').value.trim();
+    if (entered === JARVIS_CFG.code) {
+      sessionStorage.setItem('jarvis_auth', '1');
+      initApp();
+    } else {
+      $('gateError').style.display = 'block';
+      $('gateError').textContent = 'ACCESS DENIED — Invalid code, Sir.';
+      $('accessInput').value = '';
+      $('accessInput').style.borderColor = '#ff4422';
+      setTimeout(() => { $('accessInput').style.borderColor = ''; }, 1200);
+    }
+  });
+  $('accessInput').addEventListener('keydown', e => { if (e.key === 'Enter') $('accessBtn').click(); });
+
+  if (!JARVIS_CFG.key) { showGate(); return; }
+  if (!JARVIS_CFG.code || sessionStorage.getItem('jarvis_auth') === '1') {
+    initApp(); return;
+  }
+  showGate();
 });
 
 async function initApp() {
-  hideSetup();
+  openApp();
   updateClock(); setInterval(updateClock, 1000);
   initBgCanvas();
   initVizCanvas();
@@ -586,7 +614,7 @@ async function* streamApi(messages, model, maxTokens=2048) {
 
   if (!res.ok) {
     const err = await res.json();
-    if (res.status===401||res.status===403) { clearApiKey(); showSetup('Authentication failed. Please re-enter your API key.'); }
+    if (res.status===401||res.status===403) { showGate('API key invalid or expired. Update JARVIS_CFG.key and redeploy.'); }
     throw new Error(err.error?.message || `HTTP ${res.status}`);
   }
 
@@ -613,7 +641,7 @@ async function callApi(messages, model, maxTokens=6144) {
   });
   if (!res.ok) {
     const err = await res.json();
-    if (res.status===401||res.status===403) { clearApiKey(); showSetup('Authentication failed. Please re-enter your API key.'); }
+    if (res.status===401||res.status===403) { showGate('API key invalid or expired. Update JARVIS_CFG.key and redeploy.'); }
     throw new Error(err.error?.message || `HTTP ${res.status}`);
   }
   return res.json();
@@ -826,7 +854,7 @@ function speak(text) {
   speechSynthesis.cancel();
   pauseListening();
 
-  const clean=text.replace(/[#*_`>]/g,'').replace(/\n{2,}/g,'. ').replace(/\n/g,', ').replace(/[★⚠️●◆▶]/g,'').substring(0,900);
+  const clean=text.replace(/J\.A\.R\.V\.I\.S\./g,'Jarvis').replace(/[#*_`>]/g,'').replace(/\n{2,}/g,'. ').replace(/\n/g,', ').replace(/[★⚠️●◆▶]/g,'').substring(0,900);
   const utt=new SpeechSynthesisUtterance(clean);
   if(S.selectedVoice) utt.voice=S.selectedVoice;
   utt.rate=0.92; utt.pitch=0.9; utt.volume=1.0;
@@ -874,7 +902,7 @@ function toggleSidebar(){ S.sidebarOpen?closeSidebar():openSidebar(); }
 // ─── TTS Pipeline — sentence-level streaming ──────────────
 const tts = { buf:'', q:[], active:false, done:false, full:'' };
 
-function cleanTTS(s){ return s.replace(/[#*_`>]/g,'').replace(/\n{2,}/g,'. ').replace(/\n/g,', ').replace(/[★⚠️●◆▶]/g,'').trim().substring(0,900); }
+function cleanTTS(s){ return s.replace(/J\.A\.R\.V\.I\.S\./g,'Jarvis').replace(/[#*_`>]/g,'').replace(/\n{2,}/g,'. ').replace(/\n/g,', ').replace(/[★⚠️●◆▶]/g,'').trim().substring(0,900); }
 
 function ttsReset(){ speechSynthesis.cancel(); tts.buf=''; tts.q=[]; tts.active=false; tts.done=false; tts.full=''; }
 
@@ -1019,25 +1047,6 @@ function initVizCanvas(){
 
 // ─── Events ───────────────────────────────────────────────
 function bindEvents(){
-  // Auth
-  $('authenticateBtn').addEventListener('click',async()=>{
-    const k=$('apiKeyInput').value.trim();
-    if(!k||!k.startsWith('sk-')){$('setupError').style.display='block';$('setupError').textContent='Invalid key format. Should start with sk-ant-...';return;}
-    // Quick validation call
-    try{
-      $('authenticateBtn').textContent='⚡ VERIFYING...';
-      const r=await fetch(API_URL,{method:'POST',headers:{'x-api-key':k,'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:10,messages:[{role:'user',content:'hi'}]})});
-      if(!r.ok){const e=await r.json();throw new Error(e.error?.message||'Invalid key');}
-      saveApiKey(k);
-      $('authenticateBtn').textContent='⚡ AUTHENTICATE';
-      initApp();
-    }catch(err){
-      $('authenticateBtn').textContent='⚡ AUTHENTICATE';
-      $('setupError').style.display='block';$('setupError').textContent='Authentication failed: '+err.message;
-    }
-  });
-  $('apiKeyInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('authenticateBtn').click();});
-
   // Chat
   sendBtn.addEventListener('click',()=>sendMessage(msgInput.value));
   msgInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage(msgInput.value);}});
@@ -1063,7 +1072,6 @@ function bindEvents(){
 
   // Controls
   clearBtn.addEventListener('click',()=>{chatMsgs.innerHTML='';S.history=[];missionLog.innerHTML='<div class="empty-state"><div class="empty-icon">📡</div><div class="empty-title">Log Cleared</div></div>';addMsg('jarvis','Memory cleared, Master. Ready for new directives.');});
-  keyBtn.addEventListener('click',()=>{clearApiKey();showSetup();});
   modelSel.addEventListener('change',e=>{
     S.model=e.target.value;
     const labels={'auto':'AUTO-ROUTING ACTIVE','claude-opus-4-7':'OPUS 4.7 ACTIVE','claude-sonnet-4-6':'SONNET 4.6 ACTIVE','claude-haiku-4-5-20251001':'HAIKU 4.5 ACTIVE'};
