@@ -110,6 +110,14 @@
       "inLanguage": "en", "genre": "History, Leadership, Personal Finance"
     },
     {
+      "@type": "Book",
+      "name": "Claude Cowork — Finance Dashboards & Automations",
+      "author": {"@id": "https://tejasgjadhav.github.io/#person"},
+      "url": "https://www.amazon.com/Claude-Cowork-Finance-Dashboards-Automations-ebook/dp/B0H1R2GZX9",
+      "description": "Build production-ready finance dashboards and automate workflows using Claude AI. A practical playbook for finance teams and analysts.",
+      "inLanguage": "en", "genre": "Finance, Technology, AI", "publisher": {"@type": "Organization","name": "Amazon KDP"}
+    },
+    {
       "@type": "NewsArticle",
       "headline": "TEJAS JADHAV, CFA, FRM featured in Mint Newspaper",
       "author": {"@id": "https://tejasgjadhav.github.io/#person"},
@@ -328,6 +336,7 @@ footer{padding:2.25rem 0;border-top:1px solid var(--line);}
   :root{--nav-h:60px;}
   .nav-links a:not(.nav-buy):not([aria-label]){display:none;}
   .nav-links a[href="#contact"]{display:flex;}
+  .nav-links a[href="#projects"]{display:flex;}
   .nav-logo{font-size:.88rem;}
   .sec{padding:4rem 0;}
   .hero h1{font-size:2rem;}
@@ -359,6 +368,8 @@ footer{padding:2.25rem 0;border-top:1px solid var(--line);}
       <a href="#about">About</a>
       <a href="#experience">Career</a>
       <a href="#books">Books</a>
+      <a href="#projects">Projects</a>
+      <a href="https://tejasgjadhav.github.io/BSR/" target="_blank" rel="noopener">BSR Rankings</a>
       <a href="#contact">Contact</a>
       <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
         <svg id="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -528,9 +539,16 @@ footer{padding:2.25rem 0;border-top:1px solid var(--line);}
         <p class="book-desc">Timeless Money Principles to Build Wealth, Security & Financial Freedom — drawing from the economic brilliance of Chhatrapati Shivaji Maharaj. Leadership, strategy and financial wisdom for the modern wealth-builder.</p>
         <a href="https://www.amazon.com/dp/B0D8R41W2F" target="_blank" rel="noopener" class="book-buy">Buy on Amazon <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
       </article>
+      <article class="book-c rv rv-1" style="grid-column:1/-1;">
+        <div class="book-badge-pill">⭐ New Release · AI Productivity</div>
+        <h3 class="book-title">Claude Cowork — Finance Dashboards &amp; Automations</h3>
+        <p class="book-desc">Build production-ready finance dashboards, automate repetitive workflows, and integrate Claude AI into your daily finance desk — all without needing to code. Practical, step-by-step playbook for analysts, managers, and finance teams who want to work alongside Claude as a coworker, not just a chatbot.</p>
+        <a href="https://www.amazon.com/Claude-Cowork-Finance-Dashboards-Automations-ebook/dp/B0H1R2GZX9" target="_blank" rel="noopener" class="book-buy">Buy on Amazon <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </article>
     </div>
-    <div style="margin-top:1.5rem;text-align:center;">
+    <div style="margin-top:1.5rem;text-align:center;display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;align-items:center;">
       <a href="https://www.amazon.com/stores/author/B0GTBWDWML" target="_blank" rel="noopener" class="book-ghost">View all books on Amazon author page</a>
+      <a href="https://tejasgjadhav.github.io/BSR/" target="_blank" rel="noopener" class="book-ghost" style="color:var(--gold);border-color:var(--gold);">View Amazon BSR Rankings ↗</a>
     </div>
   </div>
 </section>
@@ -583,12 +601,76 @@ footer{padding:2.25rem 0;border-top:1px solid var(--line);}
   </div>
 </section>
 
+<!-- BSR RANKINGS -->
+<section class="sec" id="bsr">
+  <div class="sec-inner">
+    <div style="margin-bottom:2.5rem;">
+      <div class="sec-label rv">06 — BSR Rankings</div>
+      <h2 class="sec-h rv rv-1">Best Seller <em>Rankings</em></h2>
+      <p class="sec-sub rv rv-2">Live Amazon BSR (Best Seller Rank) tracker across categories — books ranked in Free, Paid, and Overall charts on Amazon India and amazon.com.</p>
+    </div>
+    <div class="rv" style="background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:2rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
+      <div style="flex:1;min-width:200px;">
+        <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:.4rem;">Amazon BSR Live Page</div>
+        <p style="font-size:.9rem;color:var(--ink2);font-weight:300;line-height:1.65;margin-bottom:1.25rem;">Track real-time Amazon Best Seller Rankings for all books — Free, Paid &amp; Overall charts across India and US categories including Finance, AI, FRM, Valuation, and Wealth Management.</p>
+        <a href="https://tejasgjadhav.github.io/BSR/" target="_blank" rel="noopener" class="book-buy" style="background:var(--gold);border-color:var(--gold);">View BSR Rankings <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.85rem;flex-shrink:0;">
+        <div style="text-align:center;background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:1rem .75rem;">
+          <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--accent);line-height:1;">#1</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase;margin-top:.3rem;">Free Ebook<br>Amazon India</div>
+        </div>
+        <div style="text-align:center;background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:1rem .75rem;">
+          <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--accent);line-height:1;">5+</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase;margin-top:.3rem;">Books<br>Published</div>
+        </div>
+        <div style="text-align:center;background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:1rem .75rem;">
+          <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--accent);line-height:1;">Top</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase;margin-top:.3rem;">Ranked<br>amazon.com</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="sec" id="projects">
+  <div class="sec-inner">
+    <div style="margin-bottom:3rem;">
+      <div class="sec-label rv">07 — Live Projects</div>
+      <h2 class="sec-h rv rv-1">GitHub <em>Projects</em></h2>
+      <p class="sec-sub rv rv-2">Open-source finance tools and dashboards built and deployed. Click to explore any project live.</p>
+    </div>
+    <div class="books-grid rv">
+      <article class="book-c">
+        <div class="book-badge-pill" style="color:var(--green);border-color:var(--green);">&#x25CF; Live · Finance</div>
+        <h3 class="book-title">Morning Commentary Dashboard</h3>
+        <p class="book-desc">A daily finance morning briefing dashboard — pre-market commentary, key market data, and AI-generated financial insights to start the trading day right. Built as a practical AI + Finance integration tool.</p>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;margin-top:auto;">
+          <a href="https://tejasgjadhav.github.io/daily-dashboard/" target="_blank" rel="noopener" class="book-buy" style="background:var(--green);border-color:var(--green);">Launch Dashboard <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+      </article>
+      <article class="book-c">
+        <div class="book-badge-pill" style="color:var(--green);border-color:var(--green);">&#x25CF; Live · Trading</div>
+        <h3 class="book-title">Intraday Trading Dashboard</h3>
+        <p class="book-desc">An intraday trading tool for tracking, analysing, and making sense of live market movements. Built for traders and analysts who need fast, clean data views for intraday decisions.</p>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;margin-top:auto;">
+          <a href="https://tejasgjadhav.github.io/Trade-Intraday/" target="_blank" rel="noopener" class="book-buy" style="background:var(--green);border-color:var(--green);">Launch Dashboard <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+      </article>
+    </div>
+    <div style="margin-top:1.5rem;text-align:center;">
+      <a href="https://github.com/tejasgjadhav" target="_blank" rel="noopener" class="book-ghost">View all projects on GitHub</a>
+    </div>
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section class="sec contact-sec" id="contact">
   <div class="sec-inner">
     <div class="contact-g">
       <div>
-        <div class="sec-label rv">05 — Contact</div>
+        <div class="sec-label rv">08 — Contact</div>
         <h2 class="contact-h rv rv-1">Get in <em>touch</em><br>with Tejas.</h2>
         <p class="contact-p rv rv-2">Open to roles at the intersection of AI, financial risk, and product — where domain expertise is the foundation and technology is the multiplier. Also available for consulting, speaking engagements, book collaborations, and 1:1 mentoring.</p>
         <a href="mailto:tejasipsjadhav@gmail.com" class="email-row rv rv-3">
