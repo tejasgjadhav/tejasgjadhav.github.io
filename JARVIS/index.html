@@ -53,11 +53,12 @@
       <div class="god-mode-block">
         <div class="god-mode-label">⚡ GOD MODE</div>
         <select id="modelSelector" class="model-select">
+          <option value="auto" selected>⚡ AUTO — SMART ROUTE</option>
           <option value="claude-opus-4-7">⬛ OPUS 4.7 — MAX INTEL</option>
-          <option value="claude-sonnet-4-6" selected>◆ SONNET 4.6 — CORE</option>
+          <option value="claude-sonnet-4-6">◆ SONNET 4.6 — CORE</option>
           <option value="claude-haiku-4-5-20251001">▷ HAIKU 4.5 — RAPID FIRE</option>
         </select>
-        <div class="model-indicator" id="modelIndicator">SONNET ACTIVE</div>
+        <div class="model-indicator" id="modelIndicator">AUTO-ROUTING ACTIVE</div>
       </div>
       <div class="header-controls">
         <button class="ctrl-btn" id="voiceToggleBtn" title="Toggle voice">🔊</button>
@@ -473,7 +474,7 @@ const API_HDRS  = () => ({
 
 // ─── State ────────────────────────────────────────────────
 const S = {
-  model: 'claude-sonnet-4-6',
+  model: 'auto',
   history: [],
   continuousOn: true,
   isListening: false,
@@ -578,7 +579,9 @@ async function* streamApi(messages, model, maxTokens=2048) {
   const res = await fetch(API_URL, {
     method: 'POST',
     headers: API_HDRS(),
-    body: JSON.stringify({ model, max_tokens: maxTokens, stream: true, system: sysPrompt(), messages })
+    body: JSON.stringify({ model, max_tokens: maxTokens, stream: true,
+      system: [{ type: 'text', text: sysPrompt(), cache_control: { type: 'ephemeral' } }],
+      messages })
   });
 
   if (!res.ok) {
@@ -622,23 +625,37 @@ async function sendMessage(text) {
   addMsg('user', text); msgInput.value='';
   updateMissionLog('user', text);
   showThinking(true);
+  ttsReset();
+
+  const actualModel = autoRouteModel(text);
+  const t0 = Date.now();
+  let ttftShown = false;
 
   const jarvisEl = addMsg('jarvis','',true);
   const bubble   = jarvisEl.querySelector('.msg-bubble');
   let full       = '';
 
   try {
-    for await (const chunk of streamApi([...S.history.slice(-28),{role:'user',content:text}], S.model)) {
+    for await (const chunk of streamApi([...S.history.slice(-28),{role:'user',content:text}], actualModel)) {
       full += chunk;
       bubble.innerHTML = md(full);
       scrollBottom();
+      ttsFeed(chunk);
+      if(!ttftShown){
+        ttftShown=true;
+        const ms=Date.now()-t0;
+        const ml=actualModel.includes('opus')?'OPUS':actualModel.includes('haiku')?'HAIKU':'SONNET';
+        voiceStatus.textContent=`TTFT ${ms}ms · ${ml}`;
+        setTimeout(()=>voiceStatus.textContent=S.isListening?'LISTENING':'STANDBY',4000);
+      }
     }
     showThinking(false);
     S.history.push({role:'user',content:text},{role:'assistant',content:full});
     updateMissionLog('jarvis', full);
-    if (full) speak(full);
+    ttsFinish();
   } catch(err) {
     showThinking(false);
+    tts.done=true;
     const e=`I apologise, Master. A fault occurred: ${err.message}`;
     bubble.innerHTML=md(e);
     speak(e);
@@ -831,11 +848,11 @@ function logSidebar(text) {
   renderHistory();
 }
 
-function typeWriter(el,text,speed=13) {
+function typeWriter(el,text,speed=13,autoHide=true) {
   clearTimeout(S.typerTimer); el.textContent=''; let i=0;
   function tick(){
     if(i<text.length){el.textContent+=text[i++]; S.typerTimer=setTimeout(tick,speed);}
-    else { setTimeout(()=>{if(sbNow)sbNow.style.display='none'; renderHistory();},2000); }
+    else if(autoHide){ setTimeout(()=>{if(sbNow)sbNow.style.display='none'; renderHistory();},2000); }
   }
   tick();
 }
@@ -853,6 +870,75 @@ function renderHistory() {
 function openSidebar()  { S.sidebarOpen=true;  sidebar.classList.add('open');    audioLogBtn.classList.add('active'); }
 function closeSidebar() { S.sidebarOpen=false; sidebar.classList.remove('open'); audioLogBtn.classList.remove('active'); }
 function toggleSidebar(){ S.sidebarOpen?closeSidebar():openSidebar(); }
+
+// ─── TTS Pipeline — sentence-level streaming ──────────────
+const tts = { buf:'', q:[], active:false, done:false, full:'' };
+
+function cleanTTS(s){ return s.replace(/[#*_`>]/g,'').replace(/\n{2,}/g,'. ').replace(/\n/g,', ').replace(/[★⚠️●◆▶]/g,'').trim().substring(0,900); }
+
+function ttsReset(){ speechSynthesis.cancel(); tts.buf=''; tts.q=[]; tts.active=false; tts.done=false; tts.full=''; }
+
+function ttsFeed(chunk) {
+  tts.full += chunk;
+  if (!voiceEnabled()) return;
+  tts.buf += chunk;
+  for(;;) {
+    let bi=-1;
+    for(let i=2;i<tts.buf.length;i++){
+      const c=tts.buf[i-1],n=tts.buf[i];
+      if('.!?…'.includes(c)&&(n===' '||n==='\n')){bi=i;break;}
+      if(c==='\n'&&n==='\n'){bi=i+1;break;}
+    }
+    if(bi<0)break;
+    const s=tts.buf.slice(0,bi).trim(); tts.buf=tts.buf.slice(bi);
+    if(s.length>8) tts.q.push(cleanTTS(s));
+  }
+  _ttsDrain();
+}
+
+function ttsFinish() {
+  tts.done=true;
+  const rem=tts.buf.trim();
+  if(rem.length>4&&voiceEnabled()){tts.q.push(cleanTTS(rem));tts.buf='';}
+  if(!voiceEnabled()){logSidebar(tts.full);if(S.continuousOn)schedRestart(500);return;}
+  if(!tts.active&&!tts.q.length){if(tts.full)logSidebar(tts.full);if(S.continuousOn)schedRestart(500);}
+  else _ttsDrain();
+}
+
+function _ttsDrain() {
+  if(tts.active||!tts.q.length)return;
+  if(!S.isSpeaking)pauseListening();
+  const sentence=tts.q.shift();
+  tts.active=true; S.isSpeaking=true;
+  sidebar.classList.add('speaking');
+  openSidebar();
+  sbNow.style.display='block';
+  if(sbCursor)sbCursor.classList.remove('done');
+  typeWriter(sbNowText,sentence,13,false);
+  const utt=new SpeechSynthesisUtterance(sentence);
+  if(S.selectedVoice)utt.voice=S.selectedVoice;
+  utt.rate=0.92; utt.pitch=0.9; utt.volume=1.0;
+  utt.onend=utt.onerror=()=>{
+    tts.active=false;
+    if(tts.q.length){_ttsDrain();return;}
+    if(tts.done){
+      S.isSpeaking=false; sidebar.classList.remove('speaking'); sbNow.style.display='none';
+      if(sbCursor)sbCursor.classList.add('done');
+      const t=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+      const disp=tts.full.replace(/[#*_`]/g,'').replace(/\n+/g,' ').trim();
+      S.speakLog.unshift({text:disp,time:t}); renderHistory(); resumeListening();
+    }
+  };
+  speechSynthesis.speak(utt);
+}
+
+function autoRouteModel(text) {
+  if(S.model!=='auto') return S.model;
+  const q=text.toLowerCase().trim();
+  if(/\b(dcf|lbo|model|valuat|analys|portfolio|ebitda|wacc|irr|moic|cash flow|financial|investment|equity|debt|revenue|earnings|balance sheet|income statement)\b/.test(q)) return 'claude-opus-4-7';
+  if(q.length<55||/^(hi|hey|hello|thanks|ok|good|what time|date)\b/.test(q)) return 'claude-haiku-4-5-20251001';
+  return 'claude-sonnet-4-6';
+}
 
 // ─── Speech Recognition (Continuous) ─────────────────────
 function initSpeechRec() {
@@ -980,9 +1066,14 @@ function bindEvents(){
   keyBtn.addEventListener('click',()=>{clearApiKey();showSetup();});
   modelSel.addEventListener('change',e=>{
     S.model=e.target.value;
-    const n={'claude-opus-4-7':'OPUS 4.7','claude-sonnet-4-6':'SONNET 4.6','claude-haiku-4-5-20251001':'HAIKU 4.5'};
-    modelInd.textContent=(n[e.target.value]||e.target.value).toUpperCase()+' ACTIVE';
-    addMsg('jarvis',`Switching to ${n[e.target.value]||e.target.value}, Master. ${e.target.value.includes('opus')?'Maximum analytical power engaged.':e.target.value.includes('haiku')?'Rapid-response mode active.':'Balanced performance mode active.'}`);
+    const labels={'auto':'AUTO-ROUTING ACTIVE','claude-opus-4-7':'OPUS 4.7 ACTIVE','claude-sonnet-4-6':'SONNET 4.6 ACTIVE','claude-haiku-4-5-20251001':'HAIKU 4.5 ACTIVE'};
+    modelInd.textContent=labels[e.target.value]||e.target.value.toUpperCase();
+    const names={'auto':'Auto-routing','claude-opus-4-7':'Opus 4.7','claude-sonnet-4-6':'Sonnet 4.6','claude-haiku-4-5-20251001':'Haiku 4.5'};
+    const val=e.target.value;
+    const msg=val==='auto'
+      ?'Auto-routing engaged, Master. I will select the optimal model — Haiku for quick queries, Opus for financial analysis, Sonnet for everything else.'
+      :`Switching to ${names[val]||val}, Master. ${val.includes('opus')?'Maximum analytical power engaged.':val.includes('haiku')?'Rapid-response mode active.':'Balanced performance mode active.'}`;
+    addMsg('jarvis',msg);
   });
 
   // Financial
