@@ -14,11 +14,12 @@
   <div class="setup-box">
     <div class="setup-arc-outer"><div class="setup-arc-inner"></div></div>
     <div class="setup-logo">J.A.R.V.I.S.</div>
-    <div class="setup-sub">MARK VII — SECURE ACCESS</div>
+    <div class="setup-sub" id="gateSub">MARK VII — SECURE ACCESS</div>
     <div class="setup-divider"></div>
     <div class="setup-label" id="gateLabel">ENTER ACCESS CODE</div>
     <input type="password" id="accessInput" class="setup-input"
            placeholder="Access code..." autocomplete="off" spellcheck="false">
+    <div class="setup-hint" id="gateHint" style="display:none">Your key is stored locally in this browser only — never sent anywhere except directly to <span style="color:#00d4ff">api.anthropic.com</span>.</div>
     <button id="accessBtn" class="setup-btn">⚡ AUTHORIZE</button>
     <div id="gateError" class="setup-error" style="display:none"></div>
   </div>
@@ -470,8 +471,10 @@ const JARVIS_CFG = {
 
 // ─── API Config ───────────────────────────────────────────
 const API_URL  = 'https://api.anthropic.com/v1/messages';
+// Effective key: code-embedded key takes priority, then localStorage fallback
+function effectiveKey() { return JARVIS_CFG.key || localStorage.getItem('jarvis_api_key') || ''; }
 const API_HDRS = () => ({
-  'x-api-key': JARVIS_CFG.key,
+  'x-api-key': effectiveKey(),
   'anthropic-version': '2023-06-01',
   'content-type': 'application/json',
   'anthropic-dangerous-direct-browser-access': 'true',
@@ -512,17 +515,33 @@ const sbNow = $('sbNow'), sbNowText = $('sbNowText'), sbCursor = $('sbCursor');
 const sbHistory = $('sbHistory'), sbHistLabel = $('sbHistLabel');
 
 // ─── Access Gate ──────────────────────────────────────────
-function showGate(msg) {
-  if (!JARVIS_CFG.key) {
-    $('gateLabel').textContent = 'NOT CONFIGURED';
-    $('accessInput').style.display = 'none';
-    $('accessBtn').style.display = 'none';
-    $('gateError').style.display = 'block';
-    $('gateError').textContent = 'JARVIS_CFG.key is empty. Set your API key in the HTML before deploying.';
-  }
+let _gateMode = 'code'; // 'code' | 'apikey'
+
+function showApiKeySetup() {
+  _gateMode = 'apikey';
+  $('gateSub').textContent    = 'MARK VII — INITIALISATION PROTOCOL';
+  $('gateLabel').textContent  = 'ANTHROPIC API KEY';
+  $('accessInput').placeholder = 'sk-ant-api03-...';
+  $('accessInput').value       = '';
+  $('gateHint').style.display  = 'block';
+  $('accessBtn').textContent   = '⚡ INITIALISE JARVIS';
+  $('gateError').style.display = 'none';
   $('accessGate').style.display = 'flex';
-  $('jarvisApp').style.display = 'none';
-  if (msg) { $('gateError').style.display='block'; $('gateError').textContent=msg; }
+  $('jarvisApp').style.display  = 'none';
+}
+
+function showCodeGate(msg) {
+  _gateMode = 'code';
+  $('gateSub').textContent    = 'MARK VII — SECURE ACCESS';
+  $('gateLabel').textContent  = 'ENTER ACCESS CODE';
+  $('accessInput').placeholder = 'Access code...';
+  $('accessInput').value       = '';
+  $('gateHint').style.display  = 'none';
+  $('accessBtn').textContent   = '⚡ AUTHORIZE';
+  $('gateError').style.display = 'none';
+  $('accessGate').style.display = 'flex';
+  $('jarvisApp').style.display  = 'none';
+  if (msg) { $('gateError').style.display = 'block'; $('gateError').textContent = msg; }
 }
 
 function openApp() {
@@ -532,27 +551,51 @@ function openApp() {
 
 // ─── Init ─────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  // Access gate listeners must be bound before initApp is called
+  // Bind gate button immediately — initApp hasn't run yet
   $('accessBtn').addEventListener('click', () => {
-    const entered = $('accessInput').value.trim();
-    if (entered === JARVIS_CFG.code) {
-      sessionStorage.setItem('jarvis_auth', '1');
-      initApp();
+    const val = $('accessInput').value.trim();
+
+    if (_gateMode === 'apikey') {
+      // Personal setup: save key, no test call
+      if (!val || !val.startsWith('sk-')) {
+        $('gateError').style.display = 'block';
+        $('gateError').textContent = 'Invalid key — should start with sk-ant-...';
+        return;
+      }
+      localStorage.setItem('jarvis_api_key', val);
+      $('gateError').style.display = 'none';
+      // If owner also set an access code, require it now
+      if (JARVIS_CFG.code) { showCodeGate(); } else { initApp(); }
+
     } else {
-      $('gateError').style.display = 'block';
-      $('gateError').textContent = 'ACCESS DENIED — Invalid code, Sir.';
-      $('accessInput').value = '';
-      $('accessInput').style.borderColor = '#ff4422';
-      setTimeout(() => { $('accessInput').style.borderColor = ''; }, 1200);
+      // Code gate
+      if (val === JARVIS_CFG.code) {
+        sessionStorage.setItem('jarvis_auth', '1');
+        initApp();
+      } else {
+        $('gateError').style.display = 'block';
+        $('gateError').textContent = 'ACCESS DENIED — Invalid code, Sir.';
+        $('accessInput').value = '';
+        $('accessInput').style.borderColor = '#ff4422';
+        setTimeout(() => { $('accessInput').style.borderColor = ''; }, 1200);
+      }
     }
   });
   $('accessInput').addEventListener('keydown', e => { if (e.key === 'Enter') $('accessBtn').click(); });
 
-  if (!JARVIS_CFG.key) { showGate(); return; }
-  if (!JARVIS_CFG.code || sessionStorage.getItem('jarvis_auth') === '1') {
-    initApp(); return;
+  const key = effectiveKey();
+
+  if (!key) {
+    // No key anywhere — first-time personal setup
+    showApiKeySetup();
+    return;
   }
-  showGate();
+  // Key exists — check if access code gate is needed
+  if (JARVIS_CFG.code && sessionStorage.getItem('jarvis_auth') !== '1') {
+    showCodeGate();
+    return;
+  }
+  initApp();
 });
 
 async function initApp() {
@@ -614,7 +657,7 @@ async function* streamApi(messages, model, maxTokens=2048) {
 
   if (!res.ok) {
     const err = await res.json();
-    if (res.status===401||res.status===403) { showGate('API key invalid or expired. Update JARVIS_CFG.key and redeploy.'); }
+    if (res.status===401||res.status===403) { localStorage.removeItem('jarvis_api_key'); showApiKeySetup(); }
     throw new Error(err.error?.message || `HTTP ${res.status}`);
   }
 
@@ -641,7 +684,7 @@ async function callApi(messages, model, maxTokens=6144) {
   });
   if (!res.ok) {
     const err = await res.json();
-    if (res.status===401||res.status===403) { showGate('API key invalid or expired. Update JARVIS_CFG.key and redeploy.'); }
+    if (res.status===401||res.status===403) { localStorage.removeItem('jarvis_api_key'); showApiKeySetup(); }
     throw new Error(err.error?.message || `HTTP ${res.status}`);
   }
   return res.json();
