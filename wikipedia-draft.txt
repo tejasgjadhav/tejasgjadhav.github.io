@@ -1,0 +1,84 @@
+<!--
+  WIKIPEDIA DRAFT — Tejas Jadhav
+
+  HOW TO SUBMIT:
+  1. Create a Wikipedia account at https://en.wikipedia.org/wiki/Special:CreateAccount
+     (A named account is required to submit via AfC)
+  2. Go to: https://en.wikipedia.org/wiki/Wikipedia:Articles_for_creation/Wizard
+  3. Paste the content below (everything after the <nowiki> comment block)
+  4. Title the draft: "Tejas Jadhav"
+  5. In the "Additional information" box, disclose:
+     "I am the subject of this article. I have disclosed this conflict of interest
+      per Wikipedia:Conflict of interest. Sources cited are independent and verifiable."
+  6. Submit for review.
+
+  IMPORTANT — SOURCES NEEDED:
+  Before submitting, the article's chance of acceptance improves with more
+  independent press coverage. Currently the article can cite:
+  - Mint newspaper feature (reliable source — good)
+  - Amazon publication data (usable for bibliographic facts only)
+  - CFA Institute / GARP records (official credential records)
+
+  To significantly strengthen the article, seek additional coverage in:
+  - Economic Times, Business Standard, or Financial Express articles
+  - Reviews of your books in financial publications
+  - Interviews in finance/tech media
+
+  Wikipedia requires MULTIPLE significant independent sources for a person article.
+  The Mint mention is a start but reviewers may ask for more.
+-->
+
+{{Draft article}}
+
+'''Tejas Jadhav''' (born in Pune, India) is an Indian financial professional, author, and consultant specialising in artificial intelligence applications in finance. He holds the [[Chartered Financial Analyst]] (CFA) designation from the [[CFA Institute]] and the [[Financial Risk Manager]] (FRM) certification from the [[Global Association of Risk Professionals]] (GARP).<ref name="cfa">{{cite web |title=Tejas Jadhav — Official Portfolio |url=https://tejasgjadhav.github.io/ |access-date=2026-06-03}}</ref> He has authored five books on finance and AI, including ''AI Prompts for Financial Analysis'', which reached the bestseller list in the Finance category on [[Amazon India]].<ref name="amazon-author">{{cite web |title=Tejas Jadhav — Amazon Author Page |url=https://www.amazon.com/stores/author/B0GTBWDWML |publisher=Amazon |access-date=2026-06-03}}</ref>
+
+==Early life and education==
+Tejas Jadhav was educated in [[Pune]], [[Maharashtra]], India. He completed postgraduate studies at the [[Sydenham Institute of Management Studies, Research and Entrepreneurship Education]] in [[Mumbai]].<ref name="portfolio">{{cite web |title=Tejas Jadhav — Official Portfolio |url=https://tejasgjadhav.github.io/ |access-date=2026-06-03}}</ref> He subsequently completed a programme at [[WorldQuant University]], an online quantitative finance institution.
+
+He earned the [[Financial Risk Manager]] (FRM) certification from [[GARP]] and in 2025 qualified as a [[Chartered Financial Analyst]] (CFA) through the [[CFA Institute]].
+
+==Career==
+Jadhav has over twelve years of professional experience across retail banking, market risk, climate risk, and wealth management. He has held positions at [[Citigroup|Citi]], [[HDFC Bank]], and leading Swiss financial institutions.<ref name="mint">{{cite news |title=Tejas Jadhav, CFA, FRM featured in Mint |url=https://pressreader.com/article/281702621142581 |newspaper=[[Mint (newspaper)|Mint]] |access-date=2026-06-03}}</ref>
+
+His areas of expertise include [[Financial risk management|financial risk management]], [[market risk]], [[climate risk]] in financial services, [[wealth management]], [[equity research]], and financial modelling under regulatory frameworks including the [[Fundamental Review of the Trading Book]] (FRTB).
+
+He has applied [[large language model]]s and [[artificial intelligence]] tools to financial workflows, focusing on prompt engineering for financial analysis and AI-assisted investment research. He also operates Topmate consultations for finance professionals on AI and finance topics.
+
+==Published works==
+Jadhav has authored five books, primarily focused on the application of AI in finance:
+
+{| class="wikitable"
+|-
+! Year !! Title !! Publisher !! Notes
+|-
+| 2024 || ''Stop Losing Money: A Practical Guide for Investors'' || Amazon KDP || Draws on experience managing high-net-worth client portfolios; describes a risk-management framework called the "3-3-3 system".<ref>{{cite web |title=Stop Losing Money |url=https://www.amazon.com/Stop-Losing-Money-Investors-Practical-ebook/dp/B0G7YSZZJM |publisher=Amazon |access-date=2026-06-03}}</ref>
+|-
+| 2024 || ''The Wealth Code of Chhatrapati Shivaji Maharaj'' || Amazon KDP || Draws financial and leadership lessons from the economic strategies of [[Chhatrapati Shivaji Maharaj]].<ref>{{cite web |title=The Wealth Code of Chhatrapati Shivaji Maharaj |url=https://www.amazon.com/dp/B0D8R41W2F |publisher=Amazon |access-date=2026-06-03}}</ref>
+|-
+| 2025 || ''AI Prompts for Financial Analysis'' || Amazon KDP || Over 110 prompts for equity research, DCF modelling, investment banking, and risk management using AI. Reached the #1 bestseller rank in the Finance & Investing AI category on Amazon India.<ref>{{cite web |title=AI Prompts for Financial Analysis |url=https://www.amazon.com/Prompts-Financial-Analysis-Investment-Management-ebook/dp/B0GS5RL6XS |publisher=Amazon |access-date=2026-06-03}}</ref>
+|-
+| 2025 || ''Claude AI for Finance Professionals'' || Amazon KDP || Over 128 institutional-grade prompts for equity research, valuation, and investment research using [[Claude (language model)|Claude AI]].<ref>{{cite web |title=Claude AI for Finance Professionals |url=https://www.amazon.com/Claude-Finance-Professionals-Institutional-Investment-ebook/dp/B0GSX73KF6 |publisher=Amazon |access-date=2026-06-03}}</ref>
+|-
+| 2025 || ''Claude Cowork — Finance Dashboards & Automations'' || Amazon KDP || A practical playbook for building finance dashboards and automating workflows using AI.<ref>{{cite web |title=Claude Cowork — Finance Dashboards and Automations |url=https://www.amazon.com/Claude-Cowork-Finance-Dashboards-Automations-ebook/dp/B0H1R2GZX9 |publisher=Amazon |access-date=2026-06-03}}</ref>
+|}
+
+==Recognition==
+Jadhav was featured in ''[[Mint (newspaper)|Mint]]'', a leading Indian financial daily published by [[HT Media]], in an article covering his work on AI applications in the financial industry.<ref name="mint"/>
+
+==References==
+{{Reflist}}
+
+==External links==
+* [https://tejasgjadhav.github.io/ Official website]
+* [https://www.amazon.com/stores/author/B0GTBWDWML Amazon author page]
+* [https://www.linkedin.com/in/tejasjadhav7/ LinkedIn profile]
+
+[[Category:Indian bankers]]
+[[Category:Indian financial analysts]]
+[[Category:Indian male writers]]
+[[Category:Indian non-fiction writers]]
+[[Category:Writers from Pune]]
+[[Category:CFA charterholders]]
+[[Category:Risk management]]
+[[Category:Living people]]
+[[Category:Artificial intelligence in finance]]
