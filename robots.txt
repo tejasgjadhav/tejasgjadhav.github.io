@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Image crawling explicitly allowed
+User-agent: Googlebot-Image
+Allow: /assets/images/
+
+Sitemap: https://tejasgjadhav.github.io/sitemap.xml

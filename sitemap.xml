@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <url>
+    <loc>https://tejasgjadhav.github.io/</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://tejasgjadhav.github.io/assets/images/tejas-jadhav-cfa-frm.jpg</image:loc>
+      <image:caption>Tejas Jadhav, CFA, FRM — AI in Finance Author and Risk Management Expert, Pune India</image:caption>
+      <image:title>Tejas Jadhav — AI in Finance Author | CFA, FRM | Pune India</image:title>
+      <image:geo_location>Pune, Maharashtra, India</image:geo_location>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://tejasgjadhav.github.io/portfolio-review.html</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>
