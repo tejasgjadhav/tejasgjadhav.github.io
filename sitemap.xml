@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://tejasgjadhav.github.io/</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://tejasgjadhav.github.io/tejas-jadhav.jpg</image:loc>
+      <image:title>Tejas Jadhav — CFA, FRM, AI in Finance Author, Pune India</image:title>
+      <image:caption>Tejas Jadhav, CFA, FRM — Published author on AI in Finance. 12+ years at Citi, HDFC Bank and leading Swiss Banks.</image:caption>
+    </image:image>
+  </url>
+</urlset>
