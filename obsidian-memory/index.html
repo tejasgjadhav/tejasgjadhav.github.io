@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Graph — Tejas Jadhav · AI × Finance</title>
+<style>
+:root {
+  --bg0:#0d0e11; --bg1:#13151a; --bg2:#1a1d24; --bg3:#22262f; --bg4:#2a2f3a;
+  --txt:#cdd6f4; --txt2:#a6adc8; --txt3:#6c7086;
+  --accent:#89b4fa; --purple:#cba6f7; --teal:#94e2d5;
+  --green:#a6e3a1; --yellow:#f9e2af; --red:#f38ba8; --orange:#fab387;
+  --border:#2a2f3a;
+  --node-person:#cba6f7; --node-topic:#89b4fa; --node-skill:#94e2d5;
+  --node-memory:#a6e3a1; --node-book:#f9e2af; --node-company:#f38ba8;
+  --node-project:#fab387;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg0); color: var(--txt);
+  display: flex; flex-direction: column;
+}
+
+/* ── HEADER ── */
+.hdr {
+  height: 38px; background: var(--bg1); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 .75rem; gap: .75rem;
+  flex-shrink: 0; user-select: none; z-index: 10;
+}
+.hdr-logo {
+  font-size: .72rem; font-weight: 800; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--accent); white-space: nowrap;
+  display: flex; align-items: center; gap: .35rem;
+}
+.hdr-logo svg { width: 14px; height: 14px; }
+.vtabs {
+  display: flex; gap: 2px; background: var(--bg0); padding: 3px;
+  border-radius: 6px;
+}
+.vtab {
+  padding: 3px 10px; font-size: .72rem; font-weight: 500;
+  border-radius: 4px; cursor: pointer; color: var(--txt3);
+  transition: all .15s; border: none; background: none; font-family: inherit;
+}
+.vtab.on { background: var(--bg3); color: var(--txt); }
+.hdr-right { margin-left: auto; display: flex; align-items: center; gap: .4rem; }
+.hbtn {
+  padding: 3px 9px; font-size: .7rem; font-weight: 600; border-radius: 4px;
+  border: 1px solid var(--border); background: var(--bg3); color: var(--txt2);
+  cursor: pointer; transition: all .15s; display: flex; align-items: center;
+  gap: 3px; font-family: inherit; text-decoration: none;
+}
+.hbtn:hover { background: var(--accent); color: var(--bg0); border-color: var(--accent); }
+.save-pill {
+  font-size: .65rem; padding: 2px 7px; border-radius: 3px;
+  border: 1px solid transparent; color: var(--txt3); transition: all .3s;
+}
+.save-pill.ok { color: var(--green); border-color: var(--green); }
+.save-pill.dirty { color: var(--yellow); border-color: var(--yellow); }
+
+/* ── LAYOUT ── */
+.body { flex: 1; display: flex; overflow: hidden; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 230px; background: var(--bg1); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden;
+}
+.sb-top {
+  padding: .5rem .6rem; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: .4rem;
+}
+.sb-search {
+  flex: 1; background: var(--bg0); border: 1px solid var(--border);
+  border-radius: 4px; padding: 4px 8px; font-size: .72rem; color: var(--txt);
+  outline: none; transition: border-color .15s; font-family: inherit;
+}
+.sb-search:focus { border-color: var(--accent); }
+.sb-search::placeholder { color: var(--txt3); }
+.new-btn {
+  width: 25px; height: 25px; background: var(--accent); color: var(--bg0);
+  border: none; border-radius: 4px; cursor: pointer; font-size: 1rem;
+  font-weight: 700; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: opacity .15s;
+}
+.new-btn:hover { opacity: .82; }
+.note-list { flex: 1; overflow-y: auto; padding: .2rem 0; }
+.note-list::-webkit-scrollbar { width: 2px; }
+.note-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.ni {
+  padding: .4rem .65rem; cursor: pointer; font-size: .75rem; color: var(--txt2);
+  display: flex; align-items: flex-start; gap: .4rem; transition: all .1s;
+  border-left: 2px solid transparent;
+}
+.ni:hover { background: var(--bg3); color: var(--txt); }
+.ni.on { background: var(--bg3); color: var(--accent); border-left-color: var(--accent); }
+.ni-ico { font-size: .65rem; opacity: .65; flex-shrink: 0; margin-top: 2px; }
+.ni-body { flex: 1; min-width: 0; }
+.ni-title { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ni-time { display: block; font-size: .6rem; color: var(--txt3); margin-top: 1px; }
+.sb-foot {
+  padding: .4rem .65rem; border-top: 1px solid var(--border);
+  font-size: .62rem; color: var(--txt3);
+}
+
+/* ── MAIN ── */
+.main { flex: 1; display: flex; overflow: hidden; position: relative; }
+
+/* ── GRAPH ── */
+.graph-wrap { flex: 1; position: relative; overflow: hidden; background: var(--bg0); }
+#gsvg { width: 100%; height: 100%; }
+.g-ctrl {
+  position: absolute; bottom: 1rem; left: 1rem;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.g-btn {
+  width: 30px; height: 30px; background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--txt); cursor: pointer; font-size: .85rem;
+  display: flex; align-items: center; justify-content: center; transition: all .15s;
+}
+.g-btn:hover { background: var(--bg3); color: var(--accent); }
+.g-legend {
+  position: absolute; top: .75rem; left: .75rem; background: var(--bg1);
+  border: 1px solid var(--border); border-radius: 6px; padding: .5rem .65rem;
+  font-size: .63rem; color: var(--txt3); display: flex; flex-direction: column; gap: 3px;
+}
+.leg { display: flex; align-items: center; gap: 5px; }
+.leg-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── EDITOR ── */
+.ed-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.ed-bar {
+  padding: .5rem .85rem; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: .5rem; background: var(--bg1); flex-shrink: 0;
+}
+.ed-title {
+  font-size: 1rem; font-weight: 700; color: var(--txt);
+  background: none; border: none; outline: none; flex: 1; font-family: inherit;
+}
+.ed-title::placeholder { color: var(--txt3); }
+.ed-tags {
+  font-size: .7rem; color: var(--purple); background: none;
+  border: none; outline: none; width: 180px; font-family: inherit;
+}
+.ed-tags::placeholder { color: var(--txt3); }
+.ed-body { flex: 1; display: flex; overflow: hidden; }
+.ed-textarea {
+  flex: 1; padding: 1.25rem; background: var(--bg2); color: var(--txt);
+  border: none; outline: none; font-size: .87rem; line-height: 1.75;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  resize: none; overflow-y: auto; tab-size: 2;
+}
+.ed-textarea::-webkit-scrollbar { width: 3px; }
+.ed-textarea::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.ed-preview {
+  flex: 1; padding: 1.25rem; overflow-y: auto; background: var(--bg2);
+  font-size: .87rem; line-height: 1.75; display: none;
+}
+.ed-preview.show { display: block; }
+.ed-preview::-webkit-scrollbar { width: 3px; }
+.ed-preview::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.ed-preview h1 { font-size: 1.5em; color: var(--accent); margin: .8em 0 .4em; }
+.ed-preview h2 { font-size: 1.15em; color: var(--purple); margin: .8em 0 .3em; }
+.ed-preview h3 { font-size: 1em; color: var(--teal); margin: .7em 0 .3em; }
+.ed-preview p { margin: .5em 0; color: var(--txt2); }
+.ed-preview strong { color: var(--txt); font-weight: 700; }
+.ed-preview em { color: var(--yellow); font-style: italic; }
+.ed-preview code {
+  background: var(--bg4); padding: 1px 5px; border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace; font-size: .83em; color: var(--yellow);
+}
+.ed-preview pre { background: var(--bg4); padding: .85rem; border-radius: 6px; margin: .6em 0; overflow-x: auto; }
+.ed-preview pre code { background: none; padding: 0; }
+.ed-preview ul, .ed-preview ol { padding-left: 1.4rem; margin: .4em 0; }
+.ed-preview li { color: var(--txt2); margin: .2em 0; }
+.ed-preview blockquote { border-left: 3px solid var(--accent); padding-left: .85rem; margin: .6em 0; color: var(--txt3); }
+.wl { color: var(--accent); cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+.wl:hover { color: var(--purple); }
+
+/* ── CHAT PANEL ── */
+.chat {
+  width: 310px; background: var(--bg1); border-left: 1px solid var(--border);
+  display: flex; flex-direction: column; flex-shrink: 0;
+}
+.chat-hdr {
+  padding: .5rem .7rem; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: .4rem; flex-shrink: 0;
+}
+.chat-title { font-size: .73rem; font-weight: 700; color: var(--accent); letter-spacing: .06em; text-transform: uppercase; flex: 1; }
+.chat-clr {
+  font-size: .62rem; color: var(--txt3); background: none; border: none;
+  cursor: pointer; padding: 2px 6px; border-radius: 3px; transition: all .15s; font-family: inherit;
+}
+.chat-clr:hover { background: var(--bg3); color: var(--red); }
+.mem-bar {
+  padding: .35rem .7rem; background: var(--bg0); border-bottom: 1px solid var(--border);
+  font-size: .62rem; color: var(--txt3); display: flex; align-items: center; gap: 4px;
+  flex-shrink: 0;
+}
+.mem-dot { width: 5px; height: 5px; background: var(--green); border-radius: 50%; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:.3} }
+.msgs { flex: 1; overflow-y: auto; padding: .6rem; display: flex; flex-direction: column; gap: .5rem; }
+.msgs::-webkit-scrollbar { width: 2px; }
+.msgs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.msg {
+  padding: .45rem .6rem; border-radius: 6px; font-size: .77rem;
+  line-height: 1.55; max-width: 100%; word-break: break-word;
+}
+.msg.u { background: var(--bg4); color: var(--txt); align-self: flex-end; border-bottom-right-radius: 2px; }
+.msg.a { background: var(--bg0); border: 1px solid var(--border); color: var(--txt2); align-self: flex-start; border-bottom-left-radius: 2px; }
+.msg.sys { background: none; color: var(--txt3); font-size: .65rem; font-style: italic; text-align: center; padding: .2rem; }
+.msg.loading { color: var(--txt3); }
+.dots span {
+  display: inline-block; width: 4px; height: 4px; background: var(--txt3);
+  border-radius: 50%; animation: dot 1.4s infinite; margin: 0 1px;
+}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes dot{0%,80%,100%{transform:translateY(0);opacity:.5}40%{transform:translateY(-4px);opacity:1}}
+.chat-inp {
+  padding: .55rem .65rem; border-top: 1px solid var(--border); flex-shrink: 0;
+}
+.inp-row { display: flex; gap: .35rem; align-items: flex-end; }
+.chat-ta {
+  flex: 1; background: var(--bg0); border: 1px solid var(--border); border-radius: 6px;
+  padding: 5px 9px; font-size: .76rem; color: var(--txt); outline: none;
+  font-family: inherit; resize: none; max-height: 80px; min-height: 30px;
+  line-height: 1.4; transition: border-color .15s;
+}
+.chat-ta:focus { border-color: var(--accent); }
+.chat-ta::placeholder { color: var(--txt3); }
+.send-btn {
+  width: 30px; height: 30px; background: var(--accent); color: var(--bg0);
+  border: none; border-radius: 6px; cursor: pointer; font-size: .8rem;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: opacity .15s;
+}
+.send-btn:hover { opacity: .85; }
+.send-btn:disabled { opacity: .35; cursor: not-allowed; }
+.quick-btns { margin-top: .35rem; display: flex; gap: .3rem; flex-wrap: wrap; }
+.qb {
+  font-size: .6rem; padding: 2px 7px; background: var(--bg0); border: 1px solid var(--border);
+  border-radius: 100px; color: var(--txt3); cursor: pointer; transition: all .15s;
+  white-space: nowrap; font-family: inherit;
+}
+.qb:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── STATUS BAR ── */
+.statusbar {
+  height: 20px; background: var(--accent); color: var(--bg0);
+  padding: 0 .75rem; display: flex; align-items: center;
+  justify-content: space-between; font-size: .62rem; font-weight: 700;
+  letter-spacing: .05em; flex-shrink: 0;
+}
+
+/* ── TOOLTIP ── */
+.tip {
+  position: fixed; background: var(--bg2); border: 1px solid var(--accent);
+  border-radius: 6px; padding: .35rem .6rem; font-size: .7rem; color: var(--txt);
+  pointer-events: none; opacity: 0; transition: opacity .12s; z-index: 9999;
+  max-width: 180px;
+}
+
+/* ── HIDDEN ── */
+.off { display: none !important; }
+
+/* ── D3 GRAPH ELEMENTS ── */
+.g-link { stroke: rgba(137,180,250,.2); stroke-width: 1.2px; }
+.g-label { font-size: 9.5px; fill: rgba(166,173,200,.8); pointer-events: none; font-family: -apple-system, sans-serif; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .sidebar { width: 190px; }
+  .chat { width: 260px; }
+}
+@media (max-width: 640px) {
+  .sidebar { display: none; }
+  .chat { width: 100%; border-left: none; border-top: 1px solid var(--border); }
+  .body { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"/><circle cx="4" cy="6" r="2"/><circle cx="20" cy="6" r="2"/>
+      <circle cx="4" cy="18" r="2"/><circle cx="20" cy="18" r="2"/>
+      <line x1="6" y1="7" x2="10" y2="11"/><line x1="18" y1="7" x2="14" y2="11"/>
+      <line x1="6" y1="17" x2="10" y2="13"/><line x1="18" y1="17" x2="14" y2="13"/>
+    </svg>
+    Memory Graph
+  </div>
+  <div class="vtabs">
+    <button class="vtab on" id="tab-graph" onclick="setView('graph')">Graph</button>
+    <button class="vtab" id="tab-editor" onclick="setView('editor')">Editor</button>
+  </div>
+  <div class="hdr-right">
+    <span class="save-pill" id="save-pill">saved</span>
+    <button class="hbtn" onclick="exportVault()">↓ Export</button>
+    <a href="/" class="hbtn">← Portfolio</a>
+  </div>
+</header>
+
+<!-- BODY -->
+<div class="body">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-top">
+      <input class="sb-search" type="text" placeholder="Search notes…" id="sb-search" oninput="filterNotes(this.value)">
+      <button class="new-btn" onclick="newNote()" title="New note">+</button>
+    </div>
+    <div class="note-list" id="note-list"></div>
+    <div class="sb-foot" id="sb-foot">0 notes</div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- GRAPH VIEW -->
+    <div class="graph-wrap" id="view-graph">
+      <svg id="gsvg"></svg>
+      <div class="g-ctrl">
+        <button class="g-btn" onclick="zIn()" title="Zoom in">+</button>
+        <button class="g-btn" onclick="zOut()" title="Zoom out">−</button>
+        <button class="g-btn" onclick="zFit()" title="Fit">⊡</button>
+      </div>
+      <div class="g-legend">
+        <div class="leg"><div class="leg-dot" style="background:var(--node-person)"></div>Person</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--node-topic)"></div>Topic</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--node-skill)"></div>Skill</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--node-memory)"></div>Memory</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--node-book)"></div>Book</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--node-company)"></div>Company</div>
+      </div>
+    </div>
+
+    <!-- EDITOR VIEW -->
+    <div class="ed-wrap off" id="view-editor">
+      <div class="ed-bar">
+        <input class="ed-title" type="text" id="ed-title" placeholder="Note title…" oninput="dirty()">
+        <input class="ed-tags" type="text" id="ed-tags" placeholder="#tag1 #tag2" oninput="dirty()">
+        <button class="hbtn" onclick="togglePrev()" id="prev-btn">Preview</button>
+        <button class="hbtn" onclick="saveNote()" style="background:var(--accent);color:var(--bg0);border-color:var(--accent)">Save</button>
+        <button class="hbtn" onclick="delNote()" style="color:var(--red);border-color:var(--red)">Delete</button>
+      </div>
+      <div class="ed-body">
+        <textarea class="ed-textarea" id="ed-content" placeholder="Write in markdown… Use [[Note Title]] to link notes." oninput="dirty(); wc()"></textarea>
+        <div class="ed-preview" id="ed-preview"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- CHAT PANEL -->
+  <aside class="chat">
+    <div class="chat-hdr">
+      <span class="chat-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="display:inline;vertical-align:middle;margin-right:3px"><circle cx="12" cy="12" r="3"/><circle cx="4" cy="6" r="2"/><circle cx="20" cy="6" r="2"/><circle cx="4" cy="18" r="2"/><circle cx="20" cy="18" r="2"/><line x1="6" y1="7" x2="10" y2="11"/><line x1="18" y1="7" x2="14" y2="11"/><line x1="6" y1="17" x2="10" y2="13"/><line x1="18" y1="17" x2="14" y2="13"/></svg>
+        Claude Memory
+      </span>
+      <button class="chat-clr" onclick="clearChat()">Clear</button>
+    </div>
+    <div class="mem-bar">
+      <div class="mem-dot"></div>
+      Memory active · <span id="mem-count">0</span> notes loaded
+    </div>
+    <div class="msgs" id="msgs">
+      <div class="msg sys">Claude reads your full memory graph on every message. Say <strong>remember: fact</strong> to auto-save a memory note.</div>
+    </div>
+    <div class="chat-inp">
+      <div class="inp-row">
+        <textarea class="chat-ta" id="chat-ta" placeholder="Ask Claude with memory context…" rows="1"
+          onkeydown="chatKey(event)" oninput="taResize(this)"></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMsg()">↑</button>
+      </div>
+      <div class="quick-btns">
+        <button class="qb" onclick="qp('Summarize my knowledge graph')">Summarize graph</button>
+        <button class="qb" onclick="qp('What are my key strengths based on my notes?')">Key strengths</button>
+        <button class="qb" onclick="qp('What should I write next based on my AI Finance work?')">Next book idea</button>
+        <button class="qb" onclick="qp('Create a memory note for my current project focus')">Save memory</button>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<!-- STATUS BAR -->
+<div class="statusbar">
+  <span id="sb-left">Memory Graph · Tejas Jadhav, CFA FRM · AI × Finance</span>
+  <span id="sb-right">0 words</span>
+</div>
+
+<!-- TOOLTIP -->
+<div class="tip" id="tip"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
+<script>
+// ════════════════════════════════════════════════════════════════
+// CONSTANTS
+// ════════════════════════════════════════════════════════════════
+const SK = 'tejas-mg-v2';
+const API = '/.netlify/functions/claude';
+
+const NODE_CLR = {
+  person:'#cba6f7', topic:'#89b4fa', skill:'#94e2d5',
+  memory:'#a6e3a1', book:'#f9e2af', company:'#f38ba8', project:'#fab387'
+};
+
+const ICONS = { person:'◉', topic:'◈', skill:'◇', memory:'◌', book:'◆', company:'▲', project:'⬡' };
+
+// ════════════════════════════════════════════════════════════════
+// SEED DATA  (Tejas's professional profile pre-loaded)
+// ════════════════════════════════════════════════════════════════
+const SEEDS = [
+  {
+    id:'tejas',title:'Tejas Jadhav',type:'person',
+    tags:['person','finance','author','cfa','frm'],
+    content:`# Tejas Jadhav, CFA FRM
+
+**AI × Finance Author & Expert** based in [[Pune India]]
+
+## Credentials
+- CFA Charterholder (2025) — CFA Institute
+- FRM Certified — GARP
+- MBA — [[Sydenham Institute of Management]], Mumbai
+- MScFE — WorldQuant University
+- UGC NET Qualified
+- 25+ Professional Certifications
+
+## Career
+12 years across [[Citi Bank]], [[HDFC Bank]], Aditya Birla Finance, [[LTI Larsen Toubro]], and leading Swiss Banks.
+
+## Current Work
+AI & Finance integration at a large MNC. Author of [[Books Published]].
+Guest faculty: Boston Institute of Analytics — teaches [[AI in Finance]] and [[Prompt Engineering for Finance]].
+
+## Press
+Featured in [[Mint Newspaper]] — India's leading financial daily.
+
+## Contact
+- Email: tejasipsjadhav@gmail.com
+- LinkedIn: in/tejasjadhav7`,
+    created: Date.now()-86400000*60, modified: Date.now()
+  },
+  {
+    id:'ai-finance',title:'AI in Finance',type:'topic',
+    tags:['topic','ai','finance','core'],
+    content:`# AI in Finance
+
+Core expertise area of [[Tejas Jadhav]]. The applied intersection of LLMs and financial services.
+
+## Key Applications
+- [[Prompt Engineering for Finance]] — designing effective prompts for financial analysis
+- LLM-powered equity research and investment thesis writing
+- AI-driven risk assessment and reporting
+- Automated financial modelling (DCF, LBO, Comps)
+- Portfolio optimization with AI
+- ESG & climate risk analysis automation
+
+## Primary Tools
+- Claude AI (main LLM for finance workflows)
+- ChatGPT / GPT-4
+- Gemini, Perplexity Finance
+
+## Teaching
+Guest faculty at Boston Institute of Analytics — covers [[AI in Finance]] integration with real analyst workflows.
+
+## Books
+See [[Books Published]] — multiple bestsellers on AI × Finance.`,
+    created: Date.now()-86400000*50, modified: Date.now()
+  },
+  {
+    id:'books',title:'Books Published',type:'book',
+    tags:['book','amazon','bestseller','published'],
+    content:`# Books by [[Tejas Jadhav]]
+
+All books on Amazon — Kindle & Paperback.
+
+## 1. Claude AI for Finance Professionals
+- **Status:** #1 Free Ebook at Launch (Amazon India) · Amazon Best Seller
+- 128+ institutional-grade prompts for equity research, valuation & investment research
+- amazon.com/dp/B0GSX73KF6
+- Topic: [[AI in Finance]], [[Prompt Engineering for Finance]]
+
+## 2. AI Prompts for Financial Analysis
+- **Status:** Amazon Best Seller — Multiple Categories
+- 110+ battle-tested prompts across equity research, DCF, IB, risk management
+- Compatible with ChatGPT, Claude, Gemini, Copilot, Perplexity
+- amazon.com/dp/B0GS5RL6XS
+
+## 3. Claude Cowork — Finance Dashboards & Automations
+- **Status:** New Release · AI Productivity
+- Build production-ready finance dashboards; automate workflows with Claude AI
+- amazon.com/dp/B0H1R2GZX9
+
+## 4. Stop Losing Money
+- Category: [[Wealth Management]]
+- Real stories from a private wealth manager; HNI investor mistakes; 3-3-3 system
+- amazon.com/dp/B0G7YSZZJM
+
+## 5. The Wealth Code of Chhatrapati Shivaji Maharaj
+- Category: History · Leadership · Wealth
+- Timeless money principles from Shivaji Maharaj's economic brilliance
+- amazon.com/dp/B0D8R41W2F`,
+    created: Date.now()-86400000*45, modified: Date.now()
+  },
+  {
+    id:'risk',title:'Risk Management',type:'skill',
+    tags:['skill','risk','finance','frtb'],
+    content:`# Risk Management
+
+Core domain expertise of [[Tejas Jadhav]] across 12+ years.
+
+## Specializations
+- **Market Risk:** FRTB IMA & SA — implementation and validation
+- **Climate / Transition Risk:** TCFD reporting, MSCI ESG data, TPI data
+- **Credit Risk:** Retail banking convergence
+- **Operational Risk:** Process design and controls
+
+## Key Frameworks
+- FRTB (Fundamental Review of the Trading Book)
+- Basel III / IV
+- TCFD (Task Force on Climate-related Financial Disclosures)
+- MSCI ESG / TPI Ratings
+
+## Experience
+- [[Citi Bank]] — Market Risk & FRTB projects
+- [[LTI Larsen Toubro]] — Risk & Finance data integration (Citi Retail Convergence)
+
+## Certifications
+- FRM (Financial Risk Manager) — GARP
+- CFA Charterholder — CFA Institute
+
+## Related
+- [[AI in Finance]] — AI applied to risk reporting and model validation
+- [[Wealth Management]]`,
+    created: Date.now()-86400000*35, modified: Date.now()
+  },
+  {
+    id:'wealth',title:'Wealth Management',type:'skill',
+    tags:['skill','wealth','hni','portfolio'],
+    content:`# Wealth Management
+
+HNI / UHNI client portfolio management experience of [[Tejas Jadhav]].
+
+## Specializations
+- HNI & UHNI portfolio management and review
+- Asset allocation strategy and risk profiling
+- Capital markets: equity, debt, derivatives
+- Structured products: hedge funds, PPNs
+- Insurance products integration
+- Investment banking advisory
+
+## Experience
+- [[Citi Bank]] — Wealth Management, Pune (2016–2018)
+- [[Aditya Birla Finance]] — Senior Portfolio Manager (2018–2019)
+
+## Related Books
+- *Stop Losing Money* — from [[Books Published]]
+- *The Wealth Code of Chhatrapati Shivaji Maharaj* — from [[Books Published]]
+
+## AI Application
+- [[AI in Finance]] tools for portfolio commentary
+- [[Prompt Engineering for Finance]] for client report automation`,
+    created: Date.now()-86400000*30, modified: Date.now()
+  },
+  {
+    id:'prompting',title:'Prompt Engineering for Finance',type:'skill',
+    tags:['skill','ai','prompting','llm'],
+    content:`# Prompt Engineering for Finance
+
+Signature specialty of [[Tejas Jadhav]].
+
+## Core Techniques
+- Role-based prompting (act as senior analyst / risk manager...)
+- Chain-of-thought for multi-step financial reasoning
+- Few-shot examples with finance-specific context
+- Context injection: financial data, ratios, peer comps
+- Multi-turn financial workflow orchestration
+
+## Tools
+- Claude AI (primary)
+- ChatGPT / GPT-4
+- Gemini
+- Perplexity Finance
+
+## Applications
+- Equity research automation
+- DCF model generation
+- Investment thesis writing
+- Risk report generation
+- ESG & climate analysis
+- Portfolio commentary
+
+## Books
+- *Claude AI for Finance Professionals* — from [[Books Published]]
+- *AI Prompts for Financial Analysis* — from [[Books Published]]
+
+## Teaching
+Guest faculty at Boston Institute of Analytics — [[AI in Finance]] prompt engineering module`,
+    created: Date.now()-86400000*25, modified: Date.now()
+  },
+  {
+    id:'citi',title:'Citi Bank',type:'company',
+    tags:['company','employer','bank','global'],
+    content:`# Citi Bank
+
+[[Tejas Jadhav]] worked with Citi in two capacities:
+
+## Assistant Manager — Wealth Management (2016–2018)
+- Location: Pune, India
+- [[Wealth Management]] for HNI clients
+- Asset allocation, risk profiling, investment recommendations
+- Citi Leap for Startups — onboarding programme
+- Cards and retail banking projects
+
+## LTI — Citi Retail Convergence Project (2020–2022)
+- Via [[LTI Larsen Toubro]]
+- Business & Data Analyst on the Retail Convergence programme
+- Integration of Risk and Finance data across retail banking products
+- Led FRD discussions independently; managed stakeholder sign-offs
+
+## Skills Applied
+- [[Wealth Management]]
+- [[Risk Management]]
+- Business Analysis
+- Data Architecture & Modelling`,
+    created: Date.now()-86400000*20, modified: Date.now()
+  },
+  {
+    id:'lti',title:'LTI Larsen Toubro',type:'company',
+    tags:['company','employer','it','consulting'],
+    content:`# LTI (Larsen & Toubro Infotech)
+
+IT consulting firm. [[Tejas Jadhav]] worked here Nov 2020 – Mar 2022.
+
+## Role: Specialist — Business & Data Analysis
+- Project: [[Citi Bank]] Retail Convergence
+- Integrated Risk and Finance data across retail banking products
+- Led FRD discussions and stakeholder sign-offs independently
+- Business Analysis and Data Architecture
+
+## Skills Applied
+- [[Risk Management]] — risk and finance data
+- Data Modelling & Architecture
+- Business Analysis`,
+    created: Date.now()-86400000*18, modified: Date.now()
+  },
+  {
+    id:'hdfc',title:'HDFC Bank',type:'company',
+    tags:['company','employer','bank','india'],
+    content:`# HDFC Bank
+
+One of the global institutions in [[Tejas Jadhav]]'s career spanning 12+ years.
+
+## Role
+Part of the finance career across Indian banking — covering retail banking, risk management, and wealth management functions.
+
+## Related
+- [[Risk Management]]
+- [[Wealth Management]]
+- [[Tejas Jadhav]]`,
+    created: Date.now()-86400000*15, modified: Date.now()
+  },
+  {
+    id:'pune',title:'Pune India',type:'topic',
+    tags:['location','india','maharashtra'],
+    content:`# Pune, India
+
+Base of [[Tejas Jadhav]].
+
+- City: Pune, Maharashtra, India
+- Coordinates: 18.5204°N, 73.8567°E
+- Finance & tech hub in India
+
+## Connections
+- [[Citi Bank]] — Pune operations
+- [[Aditya Birla Finance]] — Pune
+- Boston Institute of Analytics — where Tejas teaches
+- [[Sydenham Institute of Management]] — Mumbai (nearby)`,
+    created: Date.now()-86400000*10, modified: Date.now()
+  },
+  {
+    id:'mint',title:'Mint Newspaper',type:'topic',
+    tags:['media','press','feature','india'],
+    content:`# Mint Newspaper
+
+[[Tejas Jadhav]] was featured in Mint — India's leading financial daily.
+
+## Details
+- Publication: Mint (livemint.com) — owned by HT Media
+- Significance: India's second-largest financial newspaper
+- Topic: AI in Finance expertise
+- Article: pressreader.com/article/281702621142581
+
+## Context
+Being featured as an AI in Finance expert in Mint is a major press credential in the Indian finance industry.
+
+## Related
+- [[AI in Finance]]
+- [[Books Published]]
+- [[Tejas Jadhav]]`,
+    created: Date.now()-86400000*8, modified: Date.now()
+  },
+  {
+    id:'sydenham',title:'Sydenham Institute of Management',type:'topic',
+    tags:['education','mba','mumbai'],
+    content:`# Sydenham Institute of Management
+
+MBA alma mater of [[Tejas Jadhav]].
+
+- Full name: Sydenham Institute of Management Studies, Research & Entrepreneurship Education (SIMSREE)
+- Location: Mumbai, Maharashtra, India
+- Degree: MBA
+- One of the top management schools in Mumbai
+
+## Related
+- [[Tejas Jadhav]]
+- [[Wealth Management]]
+- [[Risk Management]]`,
+    created: Date.now()-86400000*5, modified: Date.now()
+  }
+];
+
+// ════════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════════
+let notes = [];
+let active = null;
+let history = [];
+let view = 'graph';
+let previewing = false;
+let unsaved = false;
+let busy = false;
+let sim = null;
+let zoom = null;
+
+// ════════════════════════════════════════════════════════════════
+// STORAGE
+// ════════════════════════════════════════════════════════════════
+function load() {
+  try {
+    const s = localStorage.getItem(SK);
+    notes = s ? JSON.parse(s) : [...SEEDS];
+    if (!s) save();
+  } catch { notes = [...SEEDS]; }
+}
+
+function save() { localStorage.setItem(SK, JSON.stringify(notes)); }
+
+function getNote(id) { return notes.find(n => n.id === id); }
+
+function getNoteByTitle(title) {
+  return notes.find(n => n.title.toLowerCase() === title.toLowerCase());
+}
+
+// ════════════════════════════════════════════════════════════════
+// NOTE CRUD
+// ════════════════════════════════════════════════════════════════
+function newNote() {
+  const id = 'n' + Date.now();
+  notes.unshift({ id, title:'New Note', type:'memory', tags:['memory'], content:'', created:Date.now(), modified:Date.now() });
+  save();
+  openNote(id);
+  setView('editor');
+  renderList();
+  renderGraph();
+  setTimeout(() => { const t = document.getElementById('ed-title'); if(t){t.select();} }, 60);
+}
+
+function openNote(id) {
+  active = id;
+  const n = getNote(id);
+  if (!n) return;
+  document.getElementById('ed-title').value = n.title;
+  document.getElementById('ed-tags').value = (n.tags||[]).map(t=>'#'+t).join(' ');
+  document.getElementById('ed-content').value = n.content;
+  wc();
+  unsaved = false;
+  pill();
+  renderList();
+  if (view === 'graph') setView('editor');
+}
+
+function saveNote() {
+  if (!active) return;
+  const n = getNote(active);
+  if (!n) return;
+  const title = document.getElementById('ed-title').value.trim() || 'Untitled';
+  const tagsRaw = document.getElementById('ed-tags').value;
+  const content = document.getElementById('ed-content').value;
+  const tags = (tagsRaw.match(/#(\w+)/g)||[]).map(t=>t.slice(1));
+  const typeMap = {person:'person',book:'book',skill:'skill',company:'company',memory:'memory',project:'project',topic:'topic'};
+  let type = 'topic';
+  for (const t of tags) { if (typeMap[t]) { type = typeMap[t]; break; } }
+  Object.assign(n, { title, tags, content, type, modified: Date.now() });
+  save();
+  renderList();
+  renderGraph();
+  updateMemCount();
+  unsaved = false;
+  pill(true);
+}
+
+function delNote() {
+  if (!active) return;
+  if (!confirm('Delete this note?')) return;
+  notes = notes.filter(n => n.id !== active);
+  active = null;
+  save();
+  renderList();
+  renderGraph();
+  ['ed-title','ed-tags','ed-content'].forEach(id => document.getElementById(id).value = '');
+  setView('graph');
+}
+
+function dirty() { unsaved = true; pill(); }
+
+function pill(saved = false) {
+  const el = document.getElementById('save-pill');
+  if (saved) {
+    el.className = 'save-pill ok'; el.textContent = '✓ saved';
+    setTimeout(() => { el.className = 'save-pill'; el.textContent = 'saved'; }, 2000);
+  } else if (unsaved) {
+    el.className = 'save-pill dirty'; el.textContent = '● unsaved';
+  } else {
+    el.className = 'save-pill'; el.textContent = 'saved';
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+// NOTE LIST
+// ════════════════════════════════════════════════════════════════
+function renderList(q = '') {
+  const el = document.getElementById('note-list');
+  let list = [...notes].sort((a,b) => b.modified - a.modified);
+  if (q) list = list.filter(n => n.title.toLowerCase().includes(q) || (n.content||'').toLowerCase().includes(q));
+  el.innerHTML = list.map(n => `
+    <div class="ni ${n.id===active?'on':''}" onclick="openNote('${n.id}')">
+      <span class="ni-ico">${ICONS[n.type]||'◈'}</span>
+      <div class="ni-body">
+        <span class="ni-title">${esc(n.title)}</span>
+        <span class="ni-time">${ago(n.modified)}</span>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('sb-foot').textContent = notes.length + ' notes';
+  updateMemCount();
+}
+
+function filterNotes(v) { renderList(v.toLowerCase()); }
+
+// ════════════════════════════════════════════════════════════════
+// GRAPH
+// ════════════════════════════════════════════════════════════════
+function getLinks() {
+  const map = {};
+  notes.forEach(n => { map[n.title.toLowerCase()] = n.id; });
+  const links = [], seen = new Set();
+  notes.forEach(n => {
+    (n.content.match(/\[\[([^\]]+)\]\]/g)||[]).forEach(m => {
+      const t = m.slice(2,-2).trim();
+      const tid = map[t.toLowerCase()];
+      if (tid && tid !== n.id) {
+        const key = [n.id,tid].sort().join('|');
+        if (!seen.has(key)) { seen.add(key); links.push({source:n.id,target:tid}); }
+      }
+    });
+  });
+  return links;
+}
+
+function renderGraph() {
+  const el = document.getElementById('gsvg');
+  if (!el) return;
+  const W = el.clientWidth || 800;
+  const H = el.clientHeight || 600;
+
+  d3.select('#gsvg').selectAll('*').remove();
+  const svgEl = d3.select('#gsvg');
+  const root = svgEl.append('g').attr('class','root');
+
+  zoom = d3.zoom().scaleExtent([0.15,5]).on('zoom', e => root.attr('transform', e.transform));
+  svgEl.call(zoom);
+
+  const glinks = getLinks();
+  const gnodes = notes.map(n => ({...n}));
+
+  // degree map for node sizing
+  const deg = {};
+  gnodes.forEach(n => deg[n.id] = 0);
+  glinks.forEach(l => {
+    const s = typeof l.source==='object'?l.source.id:l.source;
+    const t = typeof l.target==='object'?l.target.id:l.target;
+    deg[s] = (deg[s]||0)+1; deg[t] = (deg[t]||0)+1;
+  });
+
+  // Defs: glow filter
+  const defs = svgEl.append('defs');
+  const filter = defs.append('filter').attr('id','glow').attr('x','-30%').attr('y','-30%').attr('width','160%').attr('height','160%');
+  filter.append('feGaussianBlur').attr('stdDeviation','2.5').attr('result','blur');
+  const merge = filter.append('feMerge');
+  merge.append('feMergeNode').attr('in','blur');
+  merge.append('feMergeNode').attr('in','SourceGraphic');
+
+  sim = d3.forceSimulation(gnodes)
+    .force('link', d3.forceLink(glinks).id(d=>d.id).distance(d=>{
+      const s = typeof d.source==='object'?d.source.id:d.source;
+      const t = typeof d.target==='object'?d.target.id:d.target;
+      return 100 + (deg[s]||0)*8 + (deg[t]||0)*8;
+    }).strength(0.35))
+    .force('charge', d3.forceManyBody().strength(d => -250 - (deg[d.id]||0)*30))
+    .force('center', d3.forceCenter(W/2, H/2))
+    .force('collision', d3.forceCollide().radius(d => 12 + (deg[d.id]||0)*3));
+
+  const link = root.append('g')
+    .selectAll('line').data(glinks).join('line').attr('class','g-link');
+
+  const nodeG = root.append('g')
+    .selectAll('g').data(gnodes).join('g')
+    .style('cursor','pointer')
+    .call(d3.drag().on('start',ds).on('drag',dd).on('end',de))
+    .on('click',(e,d) => { e.stopPropagation(); openNote(d.id); })
+    .on('mouseover',(e,d) => showTip(e,d,glinks,deg))
+    .on('mouseout', hideTip);
+
+  nodeG.append('circle')
+    .attr('r', d => Math.max(7, Math.min(22, 7 + (deg[d.id]||0)*2.5)))
+    .attr('fill', d => NODE_CLR[d.type]||NODE_CLR.topic)
+    .attr('opacity', 0.88)
+    .attr('stroke', '#0d0e11')
+    .attr('stroke-width', 2)
+    .attr('filter', d => (deg[d.id]||0) > 2 ? 'url(#glow)' : null);
+
+  // Pulse ring for high-degree nodes
+  nodeG.filter(d => (deg[d.id]||0) >= 3).append('circle')
+    .attr('r', d => Math.max(7, Math.min(22, 7 + (deg[d.id]||0)*2.5)) + 5)
+    .attr('fill', 'none')
+    .attr('stroke', d => NODE_CLR[d.type]||NODE_CLR.topic)
+    .attr('stroke-width', 1)
+    .attr('opacity', 0.2);
+
+  nodeG.append('text')
+    .attr('class','g-label')
+    .attr('dy','2.5em')
+    .attr('text-anchor','middle')
+    .text(d => d.title.length > 16 ? d.title.slice(0,14)+'…' : d.title);
+
+  sim.on('tick', () => {
+    link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y)
+        .attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
+    nodeG.attr('transform',d=>`translate(${d.x},${d.y})`);
+  });
+
+  svgEl.on('click', () => nodeG.selectAll('circle').attr('stroke','#0d0e11').attr('stroke-width',2));
+}
+
+function ds(e,d) { if(!e.active) sim.alphaTarget(.3).restart(); d.fx=d.x; d.fy=d.y; }
+function dd(e,d) { d.fx=e.x; d.fy=e.y; }
+function de(e,d) { if(!e.active) sim.alphaTarget(0); d.fx=null; d.fy=null; }
+
+function showTip(event,d,links,deg) {
+  const tip = document.getElementById('tip');
+  const cnt = deg[d.id]||0;
+  tip.innerHTML = `<strong>${esc(d.title)}</strong><br>${d.type} · ${cnt} link${cnt!==1?'s':''}`;
+  tip.style.opacity='1';
+  tip.style.left=(event.clientX+12)+'px';
+  tip.style.top=(event.clientY-20)+'px';
+}
+function hideTip() { document.getElementById('tip').style.opacity='0'; }
+
+function zIn()  { d3.select('#gsvg').transition().call(zoom.scaleBy,1.45); }
+function zOut() { d3.select('#gsvg').transition().call(zoom.scaleBy,0.68); }
+function zFit() {
+  const W = document.getElementById('gsvg').clientWidth;
+  const H = document.getElementById('gsvg').clientHeight;
+  d3.select('#gsvg').transition().call(zoom.transform, d3.zoomIdentity.translate(W/2,H/2).scale(0.75).translate(-W/2,-H/2));
+}
+
+// ════════════════════════════════════════════════════════════════
+// VIEWS
+// ════════════════════════════════════════════════════════════════
+function setView(v) {
+  view = v;
+  document.getElementById('view-graph').classList.toggle('off', v!=='graph');
+  document.getElementById('view-editor').classList.toggle('off', v!=='editor');
+  document.getElementById('tab-graph').classList.toggle('on', v==='graph');
+  document.getElementById('tab-editor').classList.toggle('on', v==='editor');
+  if (v==='graph') setTimeout(renderGraph, 40);
+}
+
+// ════════════════════════════════════════════════════════════════
+// PREVIEW
+// ════════════════════════════════════════════════════════════════
+function togglePrev() {
+  previewing = !previewing;
+  const ta = document.getElementById('ed-content');
+  const pv = document.getElementById('ed-preview');
+  const btn = document.getElementById('prev-btn');
+  if (previewing) {
+    const raw = ta.value.replace(/\[\[([^\]]+)\]\]/g, (_,t) =>
+      `<span class="wl" onclick="openByTitle('${t.replace(/'/g,"\\'")}')">[[${t}]]</span>`);
+    pv.innerHTML = marked.parse(raw);
+    pv.classList.add('show'); ta.style.display='none'; btn.textContent='Edit';
+  } else {
+    pv.classList.remove('show'); ta.style.display=''; btn.textContent='Preview';
+  }
+}
+
+function openByTitle(title) {
+  const n = getNoteByTitle(title);
+  if (n) { openNote(n.id); return; }
+  const id = 'n'+Date.now();
+  notes.unshift({ id, title, type:'topic', tags:['topic'], content:`# ${title}\n\n`, created:Date.now(), modified:Date.now() });
+  save(); openNote(id); renderList(); renderGraph();
+}
+
+// ════════════════════════════════════════════════════════════════
+// AI CHAT
+// ════════════════════════════════════════════════════════════════
+function buildSystem() {
+  const ctx = notes.map(n =>
+    `### ${n.title} (${n.type})\nTags: ${(n.tags||[]).join(', ')}\n\n${(n.content||'').slice(0,1000)}`
+  ).join('\n\n---\n\n');
+
+  return `You are Claude, the AI assistant embedded in the personal Memory Graph of Tejas Jadhav (CFA, FRM) — AI × Finance Author, 12+ years in finance, based in Pune India.
+
+You have real-time access to Tejas's knowledge graph — interconnected notes on his career, expertise, books, and work.
+
+## Memory Graph (${notes.length} notes):
+
+${ctx}
+
+## Behaviour:
+1. Use the memory graph to give accurate, personalised responses
+2. When the user says "remember: [fact]" — it's auto-saved; acknowledge and confirm
+3. Reference specific notes using [[Note Title]] format when relevant
+4. Help with AI × Finance writing, analysis, coding, research, and strategy
+5. Keep responses concise and practical
+6. For finance questions, leverage Tejas's specific domain: risk, wealth, AI, prompt engineering`;
+}
+
+async function sendMsg() {
+  const ta = document.getElementById('chat-ta');
+  const msg = ta.value.trim();
+  if (!msg || busy) return;
+  ta.value=''; taResize(ta);
+  busy=true; document.getElementById('send-btn').disabled=true;
+
+  addMsg('u', msg);
+  history.push({ role:'user', content:msg });
+
+  // remember: shortcut
+  if (/^(remember|save|note):\s*/i.test(msg)) {
+    const body = msg.replace(/^(remember|save|note):\s*/i,'');
+    const title = 'Memory: ' + body.slice(0,45).trim();
+    const id = 'mem'+Date.now();
+    notes.unshift({
+      id, title, type:'memory', tags:['memory','auto'],
+      content: `# ${title}\n\nSaved: ${new Date().toLocaleDateString()}\n\n${body}\n\n*Auto-saved from chat*`,
+      created:Date.now(), modified:Date.now()
+    });
+    save(); renderList(); renderGraph(); updateMemCount();
+    const reply = `Memory saved ✓\n\nNote created: **"${title}"**\n\nYou can find and edit it in the sidebar.`;
+    addMsg('a', reply); history.push({role:'assistant',content:reply});
+    busy=false; document.getElementById('send-btn').disabled=false; return;
+  }
+
+  const loader = addMsg('loading','<div class="dots"><span></span><span></span><span></span></div>');
+
+  try {
+    const res = await fetch(API, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:1024,
+        system: buildSystem(),
+        messages: history.slice(-12)
+      })
+    });
+    const data = await res.json();
+    loader.remove();
+
+    if (data.content?.[0]?.text) {
+      const reply = data.content[0].text;
+      addMsg('a', reply); history.push({role:'assistant',content:reply});
+    } else if (data.error) {
+      addMsg('a','Error: '+(data.error.message||'API error. Check ANTHROPIC_API_KEY in Netlify.'));
+    } else {
+      addMsg('a','Unexpected response from API.');
+    }
+  } catch(err) {
+    loader.remove();
+    addMsg('a','Network error. The Netlify function may not be running locally. On the deployed site this uses /.netlify/functions/claude with ANTHROPIC_API_KEY.');
+  }
+
+  busy=false; document.getElementById('send-btn').disabled=false;
+}
+
+function addMsg(role, html) {
+  const c = document.getElementById('msgs');
+  const d = document.createElement('div');
+  d.className = 'msg '+role;
+  d.innerHTML = role==='loading'||role==='sys' ? html : fmt(html);
+  c.appendChild(d); c.scrollTop=c.scrollHeight;
+  return d;
+}
+
+function fmt(t) {
+  return t
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g,'<em>$1</em>')
+    .replace(/`(.*?)`/g,'<code style="background:rgba(42,47,58,.8);padding:1px 4px;border-radius:3px;font-size:.82em">$1</code>')
+    .replace(/\n/g,'<br>');
+}
+
+function clearChat() {
+  history=[];
+  document.getElementById('msgs').innerHTML='<div class="msg sys">Chat cleared. Memory graph still active.</div>';
+}
+
+function qp(t) { document.getElementById('chat-ta').value=t; sendMsg(); }
+function chatKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();} }
+function taResize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,80)+'px'; }
+
+// ════════════════════════════════════════════════════════════════
+// EXPORT
+// ════════════════════════════════════════════════════════════════
+function exportVault() {
+  const md = notes.map(n => ({
+    file: n.title.replace(/[^\w\s-]/g,'').trim()+'.md',
+    content: `---\ntitle: "${n.title}"\ntype: ${n.type}\ntags: [${(n.tags||[]).join(', ')}]\ncreated: ${new Date(n.created).toISOString()}\nmodified: ${new Date(n.modified).toISOString()}\n---\n\n${n.content}`
+  }));
+  const blob = new Blob([JSON.stringify({vault:'tejas-memory',notes:md,exported:new Date().toISOString()},null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download=`tejas-memory-${Date.now()}.json`; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ════════════════════════════════════════════════════════════════
+// UTILS
+// ════════════════════════════════════════════════════════════════
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function ago(ts) {
+  const s=(Date.now()-ts)/1000;
+  if(s<60) return 'just now';
+  if(s<3600) return Math.floor(s/60)+'m ago';
+  if(s<86400) return Math.floor(s/3600)+'h ago';
+  return Math.floor(s/86400)+'d ago';
+}
+function wc() {
+  const t = document.getElementById('ed-content').value;
+  const c = (t.trim().split(/\s+/).filter(Boolean).length);
+  document.getElementById('sb-right').textContent = c+' words';
+}
+function updateMemCount() { document.getElementById('mem-count').textContent = notes.length; }
+
+// Ctrl+S
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey||e.metaKey) && e.key==='s') { e.preventDefault(); saveNote(); }
+});
+
+// ════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════
+window.addEventListener('load', () => {
+  load();
+  renderList();
+  renderGraph();
+  updateMemCount();
+});
+
+window.addEventListener('resize', () => {
+  if (view==='graph') renderGraph();
+});
+</script>
+</body>
+</html>
