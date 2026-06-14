@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "mkdir -p ~/.claude/skills/perplexity-model-council && cp \"$CLAUDE_PROJECT_DIR/.claude/skills/perplexity-model-council/SKILL.md\" ~/.claude/skills/perplexity-model-council/SKILL.md 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}
