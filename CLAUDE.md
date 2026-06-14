@@ -83,9 +83,27 @@ All detailed notes live in `/memory/`. Files use Obsidian-style `[[wikilinks]]` 
 ## Instructions for Claude
 
 1. **Always read this file first.** It's your baseline context for every session.
-2. **Load memory files** from `/memory/` when they're relevant to the task at hand.
-3. **Save new memories** by creating/editing files in `/memory/` — don't lose insights.
-4. **Use my voice** when helping with writing: direct, professional, practical, finance-first.
-5. **For code:** I work with HTML/CSS/JS, Python, and finance tools. Prefer clean, minimal code.
-6. **For books/content:** I write for finance professionals — practitioners, not academics.
-7. **Cross-reference** — when something connects to my books, career, or expertise, say so.
+2. **Save new memories** by creating/editing files in `/memory/` — don't lose insights.
+3. **Use my voice** when helping with writing: direct, professional, practical, finance-first.
+4. **For code:** I work with HTML/CSS/JS, Python, and finance tools. Prefer clean, minimal code.
+5. **For books/content:** I write for finance professionals — practitioners, not academics.
+6. **Cross-reference** — when something connects to my books, career, or expertise, say so.
+
+### Memory Loading Rules (lazy — load only what the task needs)
+
+**Default: load 0 additional files.** This CLAUDE.md has enough for most tasks.  
+Only read a memory file when you need detail that isn't already here.  
+Never load all files at once — that wastes tokens.
+
+| Task type | Load this file |
+|-----------|---------------|
+| Writing books, prompts, content | `memory/books.md`, `memory/prompt-engineering.md` |
+| Risk, FRTB, Basel, climate | `memory/risk-management.md` |
+| Wealth management, HNI, portfolio | `memory/wealth-management.md` |
+| AI/LLM workflows, tools | `memory/ai-finance.md` |
+| Career history, employers, roles | `memory/career-companies.md` |
+| Code, dashboards, live projects | `memory/current-projects.md` |
+| Goals, strategy, next steps | `memory/goals.md` |
+| Ideas, brainstorm | `memory/ideas.md` |
+| "Who is Tejas", credentials, bio | `memory/profile.md` |
+| Revisiting past decisions | `memory/conversations.md` |
