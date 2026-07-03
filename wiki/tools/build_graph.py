@@ -1,0 +1,184 @@
+#!/usr/bin/env python3
+"""Rebuild graph.html from the current wiki pages.
+
+Scans pages/**/*.md, extracts [[wikilinks]] and page type (from folder), and writes a
+self-contained interactive force-directed graph to wiki/graph.html. Run after every
+ingest/lint pass (the schema requires it): python3 tools/build_graph.py
+"""
+import json
+import re
+from datetime import date
+from pathlib import Path
+
+WIKI = Path(__file__).resolve().parent.parent
+PAGES = WIKI / "pages"
+OUT = WIKI / "graph.html"
+
+KIND_BY_DIR = {"projects": "project", "concepts": "concept",
+               "entities": "entity", "syntheses": "synthesis"}
+
+nodes, links = [], set()
+ids = set()
+for md in sorted(PAGES.glob("*/*.md")):
+    ids.add(md.stem)
+for md in sorted(PAGES.glob("*/*.md")):
+    text = md.read_text(encoding="utf-8")
+    kind = KIND_BY_DIR.get(md.parent.name, "page")
+    if re.search(r"^tags:.*\bhub\b", text, re.M):
+        kind = "hub"
+    nodes.append({"id": md.stem, "kind": kind})
+    for target in re.findall(r"\[\[([a-z0-9-]+)\]\]", text):
+        if target in ids and target != md.stem:
+            links.add(tuple(sorted((md.stem, target))))
+        elif target not in ids:
+            print(f"  WARNING broken link [[{target}]] in {md.name}")
+
+links = sorted(links)
+stamp = date.today().isoformat()
+data = json.dumps({"nodes": nodes, "links": links}, indent=None)
+
+HTML = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wiki Graph — ~/files/wiki</title>
+<style>
+  :root { --bg:#faf9f5; --panel:#fff; --border:#ddd; --text:#1a1a1a; --muted:#6b6b6b;
+          --proj:#cfe3f7; --proj-s:#2f6bb0; --conc:#fde7c8; --conc-s:#b06a12;
+          --ent:#e4d9f5; --ent-s:#6d43ad; --hub:#d3edd8; --hub-s:#2e7d43; --syn:#f6d9df; --syn-s:#b03a56; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#1f1e1b; --panel:#282723; --border:#3d3b36; --text:#eee; --muted:#a5a29a;
+            --proj:#1d3a5c; --proj-s:#7fb2e8; --conc:#54390f; --conc-s:#eab066;
+            --ent:#3a2760; --ent-s:#b795ec; --hub:#1e4228; --hub-s:#7fc793; --syn:#54212d; --syn-s:#e88ba0; }
+  }
+  body { margin:0; font-family:-apple-system, "Segoe UI", sans-serif; background:var(--bg); color:var(--text); }
+  header { display:flex; justify-content:space-between; align-items:baseline; padding:14px 20px 8px; flex-wrap:wrap; gap:8px; }
+  h1 { font-size:17px; font-weight:500; margin:0; }
+  .meta { font-size:12.5px; color:var(--muted); }
+  .legend { display:flex; gap:14px; font-size:12px; color:var(--muted); padding:0 20px 10px; flex-wrap:wrap; }
+  .dot { display:inline-block; width:10px; height:10px; border-radius:50%; vertical-align:-1px; margin-right:4px; border:1.5px solid; }
+  #wrap { margin:0 16px 16px; background:var(--panel); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+  svg { display:block; width:100%; cursor:grab; touch-action:none; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Wiki Graph</h1>
+  <span class="meta">__COUNTS__ · generated __STAMP__ · drag nodes · hover to focus</span>
+</header>
+<div class="legend">
+  <span><span class="dot" style="background:var(--proj);border-color:var(--proj-s)"></span>project</span>
+  <span><span class="dot" style="background:var(--conc);border-color:var(--conc-s)"></span>concept</span>
+  <span><span class="dot" style="background:var(--ent);border-color:var(--ent-s)"></span>entity</span>
+  <span><span class="dot" style="background:var(--syn);border-color:var(--syn-s)"></span>synthesis</span>
+  <span><span class="dot" style="background:var(--hub);border-color:var(--hub-s)"></span>hub</span>
+</div>
+<div id="wrap"><svg id="wg" viewBox="0 0 900 620"></svg></div>
+<script>
+const DATA = __DATA__;
+(function(){
+  const W=900,H=620,CX=W/2,CY=H/2;
+  const nodes = DATA.nodes.map(n=>({...n}));
+  const byId={}; nodes.forEach(n=>byId[n.id]=n);
+  const linkObjs = DATA.links.map(([a,b])=>({s:byId[a],t:byId[b]}));
+  const deg={}; nodes.forEach(n=>deg[n.id]=0);
+  linkObjs.forEach(l=>{deg[l.s.id]++;deg[l.t.id]++;});
+  const adj={}; nodes.forEach(n=>adj[n.id]=new Set());
+  linkObjs.forEach(l=>{adj[l.s.id].add(l.t.id);adj[l.t.id].add(l.s.id);});
+  nodes.forEach((n,i)=>{
+    const a=(i/nodes.length)*Math.PI*2;
+    n.x=CX+Math.cos(a)*220; n.y=CY+Math.sin(a)*180; n.vx=0; n.vy=0;
+    n.r=8+deg[n.id]*1.9;
+  });
+  const css=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+  const fill={project:'var(--proj)',concept:'var(--conc)',entity:'var(--ent)',hub:'var(--hub)',synthesis:'var(--syn)',page:'var(--proj)'};
+  const strk={project:'var(--proj-s)',concept:'var(--conc-s)',entity:'var(--ent-s)',hub:'var(--hub-s)',synthesis:'var(--syn-s)',page:'var(--proj-s)'};
+  const svg=document.getElementById('wg'), NS='http://www.w3.org/2000/svg';
+  const gL=document.createElementNS(NS,'g'), gN=document.createElementNS(NS,'g');
+  svg.appendChild(gL); svg.appendChild(gN);
+  linkObjs.forEach(l=>{
+    l.el=document.createElementNS(NS,'line');
+    l.el.setAttribute('stroke','var(--border)'); l.el.setAttribute('stroke-width','1.2');
+    gL.appendChild(l.el);
+  });
+  nodes.forEach(n=>{
+    n.g=document.createElementNS(NS,'g'); n.g.style.cursor='pointer';
+    n.c=document.createElementNS(NS,'circle');
+    n.c.setAttribute('r',n.r); n.c.setAttribute('fill',fill[n.kind]||fill.page);
+    n.c.setAttribute('stroke',strk[n.kind]||strk.page); n.c.setAttribute('stroke-width','1.6');
+    n.t=document.createElementNS(NS,'text');
+    n.t.textContent=n.id; n.t.setAttribute('font-size','12');
+    n.t.setAttribute('fill','var(--muted)'); n.t.setAttribute('text-anchor','middle');
+    n.g.appendChild(n.c); n.g.appendChild(n.t); gN.appendChild(n.g);
+    n.g.addEventListener('mouseenter',()=>hl(n));
+    n.g.addEventListener('mouseleave',()=>hl(null));
+  });
+  function hl(f){
+    nodes.forEach(n=>{
+      const on=!f||n===f||adj[f.id].has(n.id);
+      n.g.setAttribute('opacity',on?1:0.18);
+      n.t.setAttribute('fill', f&&n===f?'var(--text)':'var(--muted)');
+      n.t.setAttribute('font-weight', f&&n===f?'600':'400');
+    });
+    linkObjs.forEach(l=>{
+      const on=!f||l.s===f||l.t===f;
+      l.el.setAttribute('opacity',on?1:0.1);
+      l.el.setAttribute('stroke', f&&on?'var(--muted)':'var(--border)');
+    });
+  }
+  let alpha=1, drag=null;
+  function tick(){
+    for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){
+      const a=nodes[i],b=nodes[j];
+      let dx=b.x-a.x,dy=b.y-a.y,d2=dx*dx+dy*dy||1,d=Math.sqrt(d2);
+      const f=4200/d2; dx/=d; dy/=d;
+      a.vx-=dx*f; a.vy-=dy*f; b.vx+=dx*f; b.vy+=dy*f;
+    }
+    linkObjs.forEach(l=>{
+      let dx=l.t.x-l.s.x,dy=l.t.y-l.s.y,d=Math.sqrt(dx*dx+dy*dy)||1;
+      const f=(d-135)*0.014; dx/=d; dy/=d;
+      l.s.vx+=dx*f; l.s.vy+=dy*f; l.t.vx-=dx*f; l.t.vy-=dy*f;
+    });
+    nodes.forEach(n=>{
+      n.vx+=(CX-n.x)*0.0045; n.vy+=(CY-n.y)*0.0045;
+      if(n!==drag){n.x+=n.vx*alpha; n.y+=n.vy*alpha;}
+      n.vx*=0.72; n.vy*=0.72;
+      const m=n.r+8;
+      n.x=Math.max(m,Math.min(W-m,n.x));
+      n.y=Math.max(m+8,Math.min(H-m-16,n.y));
+    });
+    linkObjs.forEach(l=>{
+      l.el.setAttribute('x1',l.s.x);l.el.setAttribute('y1',l.s.y);
+      l.el.setAttribute('x2',l.t.x);l.el.setAttribute('y2',l.t.y);
+    });
+    nodes.forEach(n=>{
+      n.c.setAttribute('cx',n.x); n.c.setAttribute('cy',n.y);
+      n.t.setAttribute('x',n.x); n.t.setAttribute('y',n.y+n.r+14);
+    });
+    if(alpha>0.02||drag){alpha=Math.max(alpha*0.996,0.25); requestAnimationFrame(tick);}
+  }
+  function pt(e){
+    const r=svg.getBoundingClientRect();
+    return {x:(e.clientX-r.left)*W/r.width, y:(e.clientY-r.top)*H/r.height};
+  }
+  nodes.forEach(n=>n.g.addEventListener('pointerdown',e=>{
+    drag=n; alpha=0.6; svg.setPointerCapture(e.pointerId);
+    e.preventDefault(); requestAnimationFrame(tick);
+  }));
+  svg.addEventListener('pointermove',e=>{
+    if(!drag)return; const p=pt(e); drag.x=p.x; drag.y=p.y; alpha=Math.max(alpha,0.5);
+  });
+  svg.addEventListener('pointerup',()=>{drag=null;});
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
+"""
+
+counts = f"{len(nodes)} pages · {len(links)} links"
+OUT.write_text(HTML.replace("__DATA__", data)
+                   .replace("__COUNTS__", counts)
+                   .replace("__STAMP__", stamp), encoding="utf-8")
+print(f"graph.html rebuilt: {counts}")
