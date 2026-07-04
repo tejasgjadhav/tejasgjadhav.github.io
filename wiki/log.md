@@ -64,3 +64,9 @@ institutional-trader (OBJECTIVE_SPEC.md v1: return-on-capital under ≤15% DD re
 80%-WR/5%-mo ask; gated stock fade now DEPLOYED as paper forward test, 12 open positions),
 and capital-curve-verdict (objective-spec cross-ref). Other 7 project pages verified
 current, no changes needed. index.md summaries updated; graph rebuilt.
+
+## [2026-07-04] ingest | JARVIS institutional pipeline + voice overhaul
+Rewrote pages/projects/jarvis.md: wake-word voice ("Jarvis" + 15s window, watchdog, Whisper
+STT), Opus-4.8 institutional analysis (triangulated growth, EBIT margin path, comps/SOTP/
+scenarios/football-field), 13-sheet linked Excel + Unicode PDF, Python-validates-only rule,
+public GitHub repo. Updated index entry; linked kdp-books.
