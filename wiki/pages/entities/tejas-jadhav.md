@@ -3,7 +3,7 @@ title: Tejas Jadhav — CFA, FRM
 type: entity
 tags: [person, author, finance, teaching]
 created: 2026-07-03
-updated: 2026-07-03
+updated: 2026-07-05
 sources: [~/files/scmhrd-ai-finance/index.html, ~/files/kdp-dashboard/data/books.json, ~/files/index.html]
 ---
 
@@ -19,4 +19,10 @@ Current activity streams (as of 2026-07):
 - **Domain expertise** — trade & transaction regulatory reporting ([[trade-regimes-website]])
 
 Personal sites: root `index.html` ("AI in Finance Author") and `portfolio-review.html`
-(mutual fund portfolio review) at the repo root, deployed via [[netlify]].
+(mutual fund portfolio review) at the repo root, deployed via **GitHub Pages**
+(`tejasgjadhav.github.io` — see correction on [[netlify]]), plus [[scmhrd-ai-finance]] and
+[[aifinance]] as GitHub Pages subpaths.
+
+**Identity/SEO:** Google was showing other same-name people's photos; fixed by unifying on
+one canonical portrait across all properties and overhauling the GitHub profile — full
+story and the still-open Knowledge Panel path in [[google-identity-seo]].

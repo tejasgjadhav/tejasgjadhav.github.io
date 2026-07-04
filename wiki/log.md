@@ -70,3 +70,16 @@ Rewrote pages/projects/jarvis.md: wake-word voice ("Jarvis" + 15s window, watchd
 STT), Opus-4.8 institutional analysis (triangulated growth, EBIT margin path, comps/SOTP/
 scenarios/football-field), 13-sheet linked Excel + Unicode PDF, Python-validates-only rule,
 public GitHub repo. Updated index entry; linked kdp-books.
+
+## [2026-07-05] ingest | Scheduled sync: deploy-host correction, AIFINANCE, Google identity synthesis
+Automated pass over the last 24h of Claude Code sessions. Fixed a real contradiction:
+netlify.md/files-repo.md/scmhrd-ai-finance.md/tejas-jadhav.md all claimed Netlify hosts the
+sites, but the repo remotes (tejasgjadhav.github.io, SCMHRD, AIFINANCE) confirm GitHub Pages
+is the actual host — Netlify's role is the `claude` serverless function only. Corrected all
+four pages. New page pages/projects/aifinance.md (landing page, own repo, a11y + SVG-icon
+passes). New page pages/syntheses/google-identity-seo.md (canonical-portrait rule across
+root/SCMHRD/AIFINANCE, shared Person schema @id, open Knowledge Panel path via Wikidata).
+Added institutional-trader Telegram/WhatsApp alerts + STRATEGY_SUMMARY.md canonical-doc
+note. Added dotnet-architect-book's WeasyPrint→Chrome-headless PDF fallback. Added
+scmhrd-ai-finance's teaching-deck gotcha (hand-edited .pptx is now source of truth, not the
+generator script). index.md + graph updated.

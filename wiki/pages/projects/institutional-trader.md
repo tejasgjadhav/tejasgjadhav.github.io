@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-07-04
+updated: 2026-07-05
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -38,6 +38,16 @@ not signal availability. Results: [[capital-curve-verdict]].
 strategy — `engine/stock_credit.py` with `config.STOCK_CREDIT_*`, its own dashboard PM
 tab, writing `data/stock_credit.json` / `stock_credit_positions.json` (12 open paper
 positions, 1 lot each, e.g. bear-call spreads on breakout-LONG stocks).
+
+**Alerts + canonical doc (2026-07-04):** Telegram (BotFather) and WhatsApp (free CallMeBot
+API) message alerts are wired into the signal engine. WhatsApp/phone *voice calls* per
+signal are not possible via any free API — guaranteed calling would need paid Twilio.
+`studies/STRATEGY_SUMMARY.md` is now the single canonical strategy table — kept in sync
+with the app's STUDIES tab, local CLAUDE.md, and this wiki page whenever a strategy's
+status changes. Repo remote confirmed: `github.com/tejasgjadhav/Institutional-Trader`.
+Sizing: intraday credit-spread trades same-day close/reuse, ~₹32k/day avg deployed
+capital, ~1.7 trades/day, peak day ~₹85k. Go-live bar unchanged and non-negotiable:
+≥52% win rate AND profit factor >1 over 30+ signals — "don't automate below that."
 
 ## Architecture
 
