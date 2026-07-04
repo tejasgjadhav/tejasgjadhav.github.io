@@ -1,0 +1,6 @@
+
+# Dedicated repo — has its own .git, keep website repo out of it
+institutional-trader/
+
+# Office lock files
+~$*
