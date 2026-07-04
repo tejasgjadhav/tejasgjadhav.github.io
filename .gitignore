@@ -4,3 +4,6 @@ institutional-trader/
 
 # Office lock files
 ~$*
+
+# Dedicated repo — has its own .git (tejasgjadhav/SCMHRD, deployed at /SCMHRD/)
+scmhrd-ai-finance/
