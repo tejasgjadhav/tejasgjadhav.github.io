@@ -24,6 +24,8 @@ Real bhavcopy, cleaned, 2019→Sep'24:
 | Stock fade — **ungated** | 6,844 | 56% | −1.1% |
 | Stock fade — **GATED** (credit/width ≥ 0.40, prem ≥ ₹50) | 718 | 54% | **+5.3%** |
 
+| **MIDCPNIFTY** index fade | ~15–18 | ~20% | −25 to −28% | ✗ reject — illiquid (options only from mid-2022) |
+
 Gated stock fade by year: 2019 +22.7 · 2020 +0.4 · 2021 +3.0 · 2022 +13.4 · 2023 −4.5 · 2024 +1.1.
 **The credit/width gate IS the edge and it survives out-of-time** (positive 5 of 6 years). Strip
 it and stocks lose like everything else. Real edge is **~⅓–½ of the optimistic recent-window
