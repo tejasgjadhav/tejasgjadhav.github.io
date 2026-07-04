@@ -42,3 +42,25 @@ instrument_token = exchange_token × 256, and the missing expired-instruments en
 [[nse-bhavcopy]] was used instead). Deliberately did NOT store the API key/secret/access-token in the
 wiki — it's a git repo; secrets stay in the gitignored institutional-trader/.env. Cross-linked from
 nse-bhavcopy; index + graph updated.
+
+## [2026-07-04] ingest | Voicebox local AI voice studio installed
+Cloned jamiepine/voicebox to ~/files/voicebox, full dev install verified (cloned-voice generation works).
+Created pages/projects/voicebox.md (incl. 8GB-RAM → 0.6B model rule, dep pins, build patch); cross-linked files-repo and jarvis; index updated.
+
+## [2026-07-04] ingest | BUY strategies tested on real Kite 5-min 2019→date
+Filed institutional-trader/studies/BUY_STRATEGIES_2019_REALTEST.md. New page
+syntheses/buy-strategies-real-2019: Zerodha Kite 5-min back to 2019 (the intraday data Upstox
+couldn't reach) enabled the first all-regime test of the BUY strategies. 3-Family FULL-GATE (real
+production code) = durable DIRECTION edge (50.6% hit, +0.107%/tr, +ve every year 2019→26) but −1%
+net as option-buying; ORB+VWAP thin & inconsistent (+0.04%/tr, −ve ~2/8 yrs). Revised
+trading-strategies (strategies 1 & 2) + zerodha-kite (now a key data source, not just a dead end);
+index + graph updated.
+
+## [2026-07-04] ingest | Project sweep: all pages brought current, graph refreshed
+Swept every project dir under ~/files against its wiki page. Updated jarvis (public/ front
+end, JARVIS.app → launcher.py chromeless-Chrome desktop launch, new report_engine.py —
+yfinance→DCF→Excel/PDF equity reports with claude-opus-4-8 narrative + no-LLM fallback),
+institutional-trader (OBJECTIVE_SPEC.md v1: return-on-capital under ≤15% DD replaces the
+80%-WR/5%-mo ask; gated stock fade now DEPLOYED as paper forward test, 12 open positions),
+and capital-curve-verdict (objective-spec cross-ref). Other 7 project pages verified
+current, no changes needed. index.md summaries updated; graph rebuilt.

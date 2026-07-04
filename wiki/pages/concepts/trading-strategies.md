@@ -18,18 +18,26 @@ Nifty up, short when down) · min option premium ≥ ₹30 on the OTM+1 · liqui
 OI ≥ 100). Buy OTM+1 CALL/PUT, exit +10% / −15% on premium. Gates 4 (don't-chase) and 5
 (wide-open) were **disabled 2026-06** — didn't hold on real option data.
 
-**Standing: no proven durable edge.** Looked +1.5% (64% win) on a 180-day window but came in
-at **−1.0% (55% win) over a full year** — overfit to a regime. Min-premium is kept only for
-the cost/spread benefit (~3× tighter spreads), not as a profit edge. The 13 `PRIORITY_STOCKS`
-are a UI focus tilt only (per-stock win-rate selection overfits).
+**Standing: real DIRECTION edge, but not net-profitable as option-buying.** Tested full-gate on
+REAL Kite 5-min back to 2019 ([[buy-strategies-real-2019]]): 19,454 signals, **50.6% hit,
++0.107%/trade on the underlying, positive in EVERY year 2019→2026.** The gates are real — a no-gate
+proxy is a 48% coin flip — so this is a fairer verdict than "overfit". BUT +0.107% is the *underlying*
+move; options leverage it ~10× yet theta/IV/bid-ask/−15% stops/costs eat it → the engine's real-option
+1-year test came in **−1.0% net (55% win)**. Direction durable, execution unprofitable. Min-premium is
+kept only for the cost/spread benefit (~3× tighter spreads); the 13 `PRIORITY_STOCKS` are a UI focus
+tilt only (per-stock win-rate selection overfits).
 
 ## 2. ORB+VWAP index (NIFTY/BANKNIFTY, intraday)
 
 15-min ORB + VWAP + 30-min trend + clean-trend filter → buy ATM, trend-ride exit (exit on
 VWAP reclaim after +12%, hard −15% stop).
 
-**Standing: thin but durable — the one real intraday edge.** +0.9% over 18 months
-(453 trades), positive on both train and test.
+**Standing: thin AND inconsistent — weaker than the 18-month window implied.** The +0.9%/18mo
+(train+test) looked durable, but the REAL Kite 5-min test back to 2019 ([[buy-strategies-real-2019]])
+shows only **+0.04% underlying move/trade, ~39% hit, and NEGATIVE in ~2 of 8 years per index** (NIFTY
+2020/2026; BANKNIFTY 2023/2025). Options leverage the lean but theta/IV/−15% stops/costs eat it
+(engine standing: "+0.8% gross → ~0% net"). A thin, regime-sensitive forward-test — 3-Family's
+direction edge is actually MORE consistent than this one.
 
 ## 3. Index fade credit spread (NIFTY + FINNIFTY, multi-day — "swing credit")
 

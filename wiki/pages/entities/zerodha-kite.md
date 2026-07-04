@@ -32,5 +32,14 @@ durably, use a password manager or the gitignored `.env`, never a tracked file.
 Kite Connect has **no expired-instruments endpoint** — expired option contracts drop out, so it
 cannot supply real premiums for closed contracts (the historical-candle API covers live instruments
 only, and historical candles need the paid add-on). That gap is exactly why the pre-2024 real-premium
-backtests used [[nse-bhavcopy]] instead (free, every expired contract, back to 2019). See
-[[real-data-fade-validation]].
+*credit-spread* backtests used [[nse-bhavcopy]] instead (free, every expired contract, back to 2019).
+See [[real-data-fade-validation]].
+
+## Where it WAS the key data source (2026-07)
+
+Kite's historical-data add-on IS active and returns **5-min underlying bars back to 2019** — the
+intraday data Upstox couldn't reach (~1–2 yr only). That unlocked the first multi-year test of the
+intraday BUY strategies (ORB+VWAP + 3-Family) across every regime — [[buy-strategies-real-2019]].
+Tokens: NIFTY 256265, BANKNIFTY 260105, India VIX 264969, stocks via `instruments("NSE")`. Note:
+`continuous=True` (stitched expired futures) is DAILY-only — 5-min continuous is rejected, so index
+VWAP used the spot with an equal-weight proxy.
