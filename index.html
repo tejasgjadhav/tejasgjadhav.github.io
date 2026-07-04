@@ -46,6 +46,16 @@
 <meta property="profile:username" content="tejasjadhav7" />
 <link rel="image_src" href="https://tejasgjadhav.github.io/tejas-jadhav.jpg" />
 
+<!-- HREFLANG + GEO (moved out of the stylesheet where they were unparsed) -->
+<link rel="alternate" hreflang="en-in" href="https://tejasgjadhav.github.io/" />
+<link rel="alternate" hreflang="en" href="https://tejasgjadhav.github.io/" />
+<link rel="alternate" hreflang="x-default" href="https://tejasgjadhav.github.io/" />
+<meta name="geo.region" content="IN-MH" />
+<meta name="geo.placename" content="Pune, Maharashtra, India" />
+<meta name="geo.position" content="18.5204;73.8567" />
+<meta name="ICBM" content="18.5204, 73.8567" />
+<meta property="og:locale:alternate" content="en_US" />
+
 <!-- SCHEMA.ORG JSON-LD — Full Graph for Google Knowledge Panel -->
 <script type="application/ld+json">
 {
@@ -351,9 +361,69 @@ footer{padding:2.25rem 0;border-top:1px solid var(--line);}
 .foot-copy{font-size:.68rem;font-family:'JetBrains Mono',monospace;color:var(--ink3);letter-spacing:.08em;}
 
 /* ===== REVEAL ===== */
-.rv{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s ease;}
-.rv.in{opacity:1;transform:none;}
+.rv{opacity:0;transform:translateY(30px);filter:blur(7px);transition:opacity .85s var(--eq),transform .85s var(--eq),filter .85s var(--eq);}
+.rv.in{opacity:1;transform:none;filter:none;}
 .rv-1{transition-delay:.1s;} .rv-2{transition-delay:.2s;} .rv-3{transition-delay:.3s;}
+
+/* ===== MOTION LAYER ===== */
+:root{--eq:cubic-bezier(.23,1,.32,1);}
+
+/* scroll progress */
+#prog{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));z-index:1050;pointer-events:none;}
+
+/* preloader */
+#loader{position:fixed;inset:0;z-index:1200;background:#0B0A08;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform .9s var(--eq);}
+#loader.done{transform:translateY(-101%);}
+.loader-name{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,4.5vw,2.8rem);font-weight:700;color:#CCA040;letter-spacing:.05em;overflow:hidden;}
+.loader-name span{display:block;transform:translateY(115%);animation:lup .85s var(--eq) .15s forwards;}
+.loader-sub{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.55em;color:#8a8478;text-transform:uppercase;overflow:hidden;margin-top:.5rem;}
+.loader-sub span{display:block;transform:translateY(115%);animation:lup .85s var(--eq) .32s forwards;}
+.loader-line{width:min(260px,55vw);height:1px;background:rgba(242,237,227,.14);margin-top:1.5rem;overflow:hidden;}
+.loader-line i{display:block;height:100%;background:linear-gradient(90deg,#D9503F,#CCA040);transform:scaleX(0);transform-origin:left;animation:lbar 1.05s var(--eq) .35s forwards;}
+@keyframes lup{to{transform:translateY(0);}}
+@keyframes lbar{to{transform:scaleX(1);}}
+
+/* custom cursor */
+#curd{position:fixed;top:0;left:0;width:6px;height:6px;border-radius:50%;background:var(--accent);pointer-events:none;z-index:1100;transform:translate(-50%,-50%);}
+#cur{position:fixed;top:0;left:0;width:36px;height:36px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--ink) 40%,transparent);pointer-events:none;z-index:1100;transform:translate(-50%,-50%);transition:width .3s var(--eq),height .3s var(--eq),border-color .3s,opacity .3s;}
+#cur.on{width:58px;height:58px;border-color:var(--accent);}
+@media(hover:none),(pointer:coarse){#cur,#curd{display:none;}}
+
+/* hero entrance (all states gated behind .play, added by JS) */
+.hero h1 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em;}
+.hero h1 .wi{display:inline-block;transform:translateY(115%);}
+.hero.play h1 .wi{animation:wup .95s var(--eq) both;}
+@keyframes wup{to{transform:translateY(0);}}
+.hero.play .st{animation:sup .85s var(--eq) both;}
+@keyframes sup{from{opacity:0;transform:translateY(26px);filter:blur(9px);}to{opacity:1;transform:translateY(0);filter:blur(0);}}
+.hero.play .photo-wrap{animation:pclip 1.15s var(--eq) .55s both;}
+@keyframes pclip{from{opacity:0;clip-path:inset(8% 8% 60% 8% round 12px);transform:scale(1.04);}to{opacity:1;clip-path:inset(0 0 0 0 round 8px);transform:scale(1);}}
+
+/* credentials marquee */
+.marquee{border-top:1px solid var(--line);padding:1.15rem 0;overflow:hidden;background:var(--bg);}
+.marquee-track{display:flex;width:max-content;animation:mq 38s linear infinite;will-change:transform;}
+.mq-half{display:flex;align-items:center;white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ink3);}
+.mq-half b{font-weight:500;padding:0 1.6rem;}
+.mq-half i{color:var(--accent);font-style:normal;}
+.marquee:hover .marquee-track{animation-play-state:paused;}
+@keyframes mq{to{transform:translateX(-50%);}}
+
+/* nav hide/reveal */
+nav{transition:transform .45s var(--eq),box-shadow .35s;}
+nav.hid{transform:translateY(-100%);}
+nav.scrolled{box-shadow:var(--shadow-sm);}
+
+/* press feel */
+.btn:active,.nav-buy:active,.book-buy:active,.email-row:active{transform:scale(.97);}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
+  html{scroll-behavior:auto;}
+  #loader,#cur,#curd{display:none;}
+  .marquee-track{animation:none;}
+  .rv{opacity:1;transform:none;filter:none;}
+  .hero h1 .wi{transform:none;}
+}
 
 /* ===== MOBILE ===== */
 @media(max-width:1024px){
@@ -390,14 +460,6 @@ footer{padding:2.25rem 0;border-top:1px solid var(--line);}
   .sec-inner{padding:0 1rem;}
   .hero{padding-left:1rem;padding-right:1rem;}
 }
-<link rel="alternate" hreflang="en-in" href="https://tejasgjadhav.github.io/" />
-<link rel="alternate" hreflang="en" href="https://tejasgjadhav.github.io/" />
-<link rel="alternate" hreflang="x-default" href="https://tejasgjadhav.github.io/" />
-<meta name="geo.region" content="IN-MH" />
-<meta name="geo.placename" content="Pune, Maharashtra, India" />
-<meta name="geo.position" content="18.5204;73.8567" />
-<meta name="ICBM" content="18.5204, 73.8567" />
-<meta property="og:locale:alternate" content="en_US" />
 </style>
 <!-- FAQPage + ProfilePage schema for rich results -->
 <script type="application/ld+json">
@@ -456,6 +518,15 @@ footer{padding:2.25rem 0;border-top:1px solid var(--line);}
 </script>
 </head>
 <body>
+
+<div id="loader" aria-hidden="true">
+  <div class="loader-name"><span>TEJAS JADHAV</span></div>
+  <div class="loader-sub"><span>CFA · FRM · AI × FINANCE</span></div>
+  <div class="loader-line"><i></i></div>
+</div>
+<div id="prog" aria-hidden="true"></div>
+<div id="cur" aria-hidden="true" hidden></div>
+<div id="curd" aria-hidden="true" hidden></div>
 
 <!-- NAV -->
 <nav role="navigation" aria-label="Main navigation">
@@ -523,6 +594,14 @@ footer{padding:2.25rem 0;border-top:1px solid var(--line);}
     </div>
   </div>
 </section>
+
+<!-- CREDENTIALS MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <div class="mq-half"><b>CFA Charterholder</b><i>✦</i><b>FRM Certified · GARP</b><i>✦</i><b>AI × Finance Author</b><i>✦</i><b>Featured in Mint</b><i>✦</i><b>Amazon Bestseller</b><i>✦</i><b>12+ Years Global Banking</b><i>✦</i><b>MScFE · WorldQuant</b><i>✦</i><b>Pune · India</b><i>✦</i></div>
+    <div class="mq-half"><b>CFA Charterholder</b><i>✦</i><b>FRM Certified · GARP</b><i>✦</i><b>AI × Finance Author</b><i>✦</i><b>Featured in Mint</b><i>✦</i><b>Amazon Bestseller</b><i>✦</i><b>12+ Years Global Banking</b><i>✦</i><b>MScFE · WorldQuant</b><i>✦</i><b>Pune · India</b><i>✦</i></div>
+  </div>
+</div>
 
 <!-- ABOUT -->
 <section class="sec" id="about">
@@ -842,6 +921,108 @@ var obs=new IntersectionObserver(function(entries){
 document.querySelectorAll('.rv').forEach(function(el){obs.observe(el);});
 // Year
 document.getElementById('yr').textContent=new Date().getFullYear();
+
+// ===== MOTION ENGINE =====
+const rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+const hero=document.querySelector('.hero');
+const loader=document.getElementById('loader');
+
+// Hero split-text + entrance choreography
+function playHero(){
+  if(!rm){
+    const h1=hero.querySelector('h1');
+    const words=h1.textContent.trim().split(/\s+/);
+    h1.textContent='';
+    words.forEach((w,i)=>{
+      const outer=document.createElement('span');outer.className='w';
+      const inner=document.createElement('span');inner.className='wi';inner.textContent=w;
+      inner.style.animationDelay=(.12+i*.09)+'s';
+      outer.appendChild(inner);h1.appendChild(outer);
+      if(i<words.length-1)h1.appendChild(document.createTextNode(' '));
+    });
+    [['.hero-eyebrow',.05],['.hero-desc',.45],['.hero-tags',.55],['.hero-btns',.65],['.press-badge',.75],['.photo-badge',1.05],['.stat-float',1.2]].forEach(([sel,d])=>{
+      const el=hero.querySelector(sel);
+      if(el){el.classList.add('st');el.style.animationDelay=d+'s';}
+    });
+  }
+  hero.classList.add('play');
+}
+
+// Preloader — cinematic once per session, skipped for reduced motion
+if(rm||sessionStorage.getItem('tjIntro')){
+  loader.remove();playHero();
+}else{
+  sessionStorage.setItem('tjIntro','1');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>{
+    loader.classList.add('done');
+    document.body.style.overflow='';
+    playHero();
+    setTimeout(()=>loader.remove(),1000);
+  },1550);
+}
+
+// Scroll progress + nav hide/reveal
+let lastY=0;
+const nav=document.querySelector('nav'),prog=document.getElementById('prog');
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  prog.style.width=(y/(document.documentElement.scrollHeight-window.innerHeight)*100)+'%';
+  nav.classList.toggle('scrolled',y>10);
+  nav.classList.toggle('hid',y>lastY&&y>260);
+  lastY=y;
+},{passive:true});
+
+if(!rm&&fine){
+  // Custom cursor (dot + trailing ring)
+  const cur=document.getElementById('cur'),curd=document.getElementById('curd');
+  cur.hidden=curd.hidden=false;
+  let mx=innerWidth/2,my=innerHeight/2,cx=mx,cy=my;
+  addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY;curd.style.left=mx+'px';curd.style.top=my+'px';});
+  (function loop(){cx+=(mx-cx)*.16;cy+=(my-cy)*.16;cur.style.left=cx+'px';cur.style.top=cy+'px';requestAnimationFrame(loop);})();
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('pointerenter',()=>cur.classList.add('on'));
+    el.addEventListener('pointerleave',()=>cur.classList.remove('on'));
+  });
+
+  // Magnetic buttons
+  document.querySelectorAll('.btn,.nav-buy,.book-buy,.email-row').forEach(b=>{
+    b.addEventListener('pointermove',e=>{
+      const r=b.getBoundingClientRect();
+      b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.18}px,${(e.clientY-r.top-r.height/2)*.28}px)`;
+    });
+    b.addEventListener('pointerleave',()=>{b.style.transform='';});
+  });
+
+  // Subtle 3D tilt
+  document.querySelectorAll('.photo-wrap,.book-c,.stat-c').forEach(card=>{
+    card.addEventListener('pointermove',e=>{
+      const r=card.getBoundingClientRect();
+      const rx=((e.clientY-r.top)/r.height-.5)*-4,ry=((e.clientX-r.left)/r.width-.5)*4;
+      card.style.transform=`perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-3px)`;
+    });
+    card.addEventListener('pointerleave',()=>{card.style.transform='';});
+  });
+}
+
+// Count-up stats
+if(!rm){
+  const cnt=el=>{
+    const n=el.firstChild,target=parseFloat(n.nodeValue);
+    if(isNaN(target))return;
+    const t0=performance.now(),dur=1400;
+    (function tick(now){
+      const p=Math.min((now-t0)/dur,1);
+      n.nodeValue=Math.round(target*(1-Math.pow(1-p,3)));
+      if(p<1)requestAnimationFrame(tick);
+    })(t0);
+  };
+  const cObs=new IntersectionObserver(es=>{
+    es.forEach(e=>{if(e.isIntersecting){cnt(e.target);cObs.unobserve(e.target);}});
+  },{threshold:.6});
+  document.querySelectorAll('.stat-n,.stat-float-n').forEach(el=>cObs.observe(el));
+}
 </script>
 </body>
 </html>
