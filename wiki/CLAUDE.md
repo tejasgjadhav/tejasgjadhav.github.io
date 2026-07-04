@@ -58,6 +58,9 @@ Conventions:
 4. Update `index.md` (add/adjust entries and one-line summaries).
 5. Append a `log.md` entry.
 6. Refresh the graph: `python3 tools/build_graph.py` (it also warns on broken links).
+7. **Push** (standing preference — always publish): `tools/wiki_push.sh "wiki: <summary>"`.
+   Publishes to the public github.io remote. Safe by construction (secret-scan, wiki-only stage,
+   rebase-onto-remote). If it reports a possible secret or a rebase conflict, STOP and tell the user.
 
 ### Query (answer a question from the wiki)
 1. Read `index.md` first to find relevant pages; drill into those pages.
@@ -71,7 +74,8 @@ Scan for: contradictions between pages · broken or one-way `[[wikilinks]]` · o
 (no inbound links) · stale `updated` dates vs. reality of the project dirs · pages missing
 from `index.md` or index entries whose page is gone · concepts mentioned often but lacking
 their own page. Fix what's mechanical, report what needs the user's judgment, then log the
-pass and refresh the graph (`python3 tools/build_graph.py`).
+pass, refresh the graph (`python3 tools/build_graph.py`), and **push**
+(`tools/wiki_push.sh "wiki: lint <summary>"`).
 
 ## log.md entry format
 
