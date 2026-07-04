@@ -3,8 +3,8 @@ title: Capital-curve verdict — what return is actually achievable
 type: concept
 tags: [trading, risk, capital, backtest]
 created: 2026-07-03
-updated: 2026-07-03
-sources: [~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md]
+updated: 2026-07-04
+sources: [~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md, ~/files/institutional-trader/studies/OBJECTIVE_SPEC.md]
 ---
 
 Replay of the validated index fade credit spread ([[trading-strategies]] §3) on real expired
@@ -24,5 +24,9 @@ fills shave it further (figures are gross).
 
 The one legitimate lever: more uncorrelated smaller trades (the stock fade, ~16/mo) could
 lift ~0.8%/mo toward maybe 1.5–2.5%/mo *if* it survives live fills — still well short of 5%.
+
+The objective this answers is now formalized in `studies/OBJECTIVE_SPEC.md` (v1,
+2026-06-29): optimize return on capital under the ≤15% DD cap; win rate is a reported
+output, never a target.
 
 Part of the research in [[institutional-trader]].

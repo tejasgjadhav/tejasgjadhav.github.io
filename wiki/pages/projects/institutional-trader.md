@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-07-03
+updated: 2026-07-04
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -26,6 +26,18 @@ of its optimistic backtest). The **index fade credit spread was DOWNGRADED** —
 durable. A thin **ORB+VWAP index trend-ride** (+0.9%/18 mo) survives. The 3-Family stock strategy
 has **no proven durable edge** (−1.0% over a full year). **Not proven profitable overall** — the
 project's own docs insist on saying so. The 5%/month + 80% win-rate goal is infeasible by ~3–6×.
+
+**Objective re-spec** (`studies/OBJECTIVE_SPEC.md`, v1 2026-06-29): the original
+"80% win rate + 5%/month" ask was formally replaced — win rate is gameable and
+anti-correlated with profit (rrsweep study), so the target is now **monthly return on
+fixed capital (₹1–3 L) under a HARD ≤15% drawdown cap**, win rate reported but never
+targeted. Hypothesis: the binding constraint is position concurrency under the DD budget,
+not signal availability. Results: [[capital-curve-verdict]].
+
+**Live forward test** (as of 2026-07-04): the gated stock fade runs as a deployed paper
+strategy — `engine/stock_credit.py` with `config.STOCK_CREDIT_*`, its own dashboard PM
+tab, writing `data/stock_credit.json` / `stock_credit_positions.json` (12 open paper
+positions, 1 lot each, e.g. bear-call spreads on breakout-LONG stocks).
 
 ## Architecture
 

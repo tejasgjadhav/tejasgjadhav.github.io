@@ -3,7 +3,7 @@ title: ~/files repository — overview
 type: project
 tags: [overview, hub]
 created: 2026-07-03
-updated: 2026-07-03
+updated: 2026-07-04
 sources: [~/files]
 ---
 
@@ -16,6 +16,7 @@ which also hosts a `claude` serverless function ([[claude-anthropic]]).
 
 - [[institutional-trader]] — NSE intraday options paper-trading system (the most active project)
 - [[jarvis]] — J.A.R.V.I.S. Mark VII voice assistant, local-only deployment
+- [[voicebox]] — dev checkout of the open-source local AI voice studio (cloning, TTS/STT, MCP)
 - [[dotnet-architect-book]] — "The Senior .NET Architect's Handbook", 15-part book build
 - [[kdp-dashboard]] — Amazon BSR tracking dashboard for his 5 KDP books
 - [[trade-regimes-website]] — T&T regulatory reporting reference site (EMIR, Dodd-Frank, etc.)
