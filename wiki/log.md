@@ -88,3 +88,11 @@ generator script). index.md + graph updated.
 Grid+OOS-validated upgrade (short 2-OTM/width4/TP50%/stop3x): 85.35% win +24.5% width in-sample,
 87.88% +31.9% OOS, >=79% win all 8 yrs. Deployed parallel to v1 at 1 lot; ORB+VWAP retired.
 Updated trading-strategies (new 1b section) + index. Model vs practical P&L documented in repo study.
+
+## [2026-07-06] ingest | scheduled sync — basel-analyzer + SENSEX Thursday 0DTE
+Automated memory/wiki sync from recent sessions. NEW project page basel-analyzer
+(deterministic-first Basel III/Pillar 3 analyzer, Ollama gpt-oss-120b + OpenRouter,
+Refinitiv/LSEG, 9-agent graceful-degrade pipeline; local-only repo). Added §5 to
+trading-strategies: NIFTY Tuesday 0DTE call-spread (deployed, pre-market rv5 checker) +
+SENSEX Thursday 0DTE second-payday research (88.8% win, 89 weeklies, not yet deployed).
+Indexed both; bumped trading-strategies updated date.

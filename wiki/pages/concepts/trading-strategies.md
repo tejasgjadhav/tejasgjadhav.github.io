@@ -3,7 +3,7 @@ title: Trading strategies — the 4-strategy lineup and their honest standing
 type: concept
 tags: [trading, strategy, nse, options, backtest]
 created: 2026-07-03
-updated: 2026-07-03
+updated: 2026-07-06
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/studies/STOCK_OPTIONS_NO_EDGE.md, ~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md]
 ---
 
@@ -77,6 +77,27 @@ OOS 87.88% (116W/16L), +31.9%.** Only 4 of 60 months negative; max losing streak
 median loss −51 (% width). ~4–6 trades/mo (vs v1's ~10). Runs PARALLEL to v1 at 1 lot;
 ORB+VWAP retired from the dashboard to make room. Live fills = the one unproven link.
 Study: `institutional-trader/studies/STOCK_FADE_TP50_UPGRADE.md`.
+
+## 5. Index 0DTE expiry-day call-spread — NIFTY Tuesday (deployed) + SENSEX Thursday (research)
+
+A distinct edge from the multi-day #3 index fade: an **expiry-day 0DTE** short call-spread —
+short CE ~0.5% OTM at the open, ~200-pt wing, settled the same day — gated by a **calm-week
+filter** (`rv5`, realized vol from the prior 5 closes; skip when the tape is hot). On NIFTY this
+runs on **Tuesday** weekly expiry and is **deployed** with a pre-market decision strip on the
+app's INTRADAY DECISIONS tab: because both inputs (expiry calendar + rv5) are final by 9:00, the
+strip tells you *before the open* whether today fires (🟢 signal 9:16 / 🟡 filter says skip / ⚪
+not expiry). Actual short strike = live opening price × 1.005 → nearest 50, set at 9:15–9:16.
+Averages ~₹2.3k/month/lot and takes a −₹12k week a few times a year.
+
+**Second-payday research (2026-07-06, via /loop):** the same structure ported to **BSE SENSEX
+Thursday** weekly expiry (short CE ~0.5% OTM, ~600-pt wing ≈ same %). Backtested on all **89
+expired SENSEX weeklies Oct'24→Jul'26 with real premiums: 88.8% win, +7.57%/margin, +₹67k (1
+lot); 2025 alone 90.2%, 2026 H1 92.3%.** NOT yet deployed — honest caveats: only 21 months of BSE
+history (no 2019 depth — BSE weeklies are young), Oct–Dec'24 was negative (expiry-change era), the
+NIFTY calm-filter does **not** transfer to SENSEX (it would run unfiltered or self-tuned), and BSE
+option spreads are wider than the cost model assumes. Combined "Tuesday + Thursday" ≈ ₹5.5k/mo/lot
+but paid **lumpily** (many +₹1–3k weeks, a −₹15–30k week several times/year). See
+[[capital-curve-verdict]] — 5%/mo remains infeasible; this adds paying *days*, not a bigger edge.
 
 ## Cross-cutting lessons
 
