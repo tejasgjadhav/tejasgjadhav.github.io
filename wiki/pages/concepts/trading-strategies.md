@@ -68,6 +68,16 @@ the optimistic backtest** (+16–25% → +5.3%; 65% → 54% win), so it's durabl
 variance (2023 was −4.5%). **Keep lots at 1** (live mid-cap fills erode it further). See
 [[real-data-fade-validation]].
 
+## 1b. Stock fade v2 — TP-50 (THE LEADER, deployed 2026-07-04)
+
+Same signal + gate as #4's stock fade, new geometry/exits: **short 2-OTM · width 4 · take-profit 50%
+of credit · stop 3×**. 96-config grid on real bhavcopy (entry+exit costs) then OOS on Upstox
+Oct'24→Jul'26: **in-sample 85.35% win (233W/40L), +24.5% of width, win ≥79% every year 2019–24;
+OOS 87.88% (116W/16L), +31.9%.** Only 4 of 60 months negative; max losing streak 4; median win +32 /
+median loss −51 (% width). ~4–6 trades/mo (vs v1's ~10). Runs PARALLEL to v1 at 1 lot;
+ORB+VWAP retired from the dashboard to make room. Live fills = the one unproven link.
+Study: `institutional-trader/studies/STOCK_FADE_TP50_UPGRADE.md`.
+
 ## Cross-cutting lessons
 
 - **Real option history goes back to 2019 after all** — via [[nse-bhavcopy]] (free daily CLOSE +

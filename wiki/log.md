@@ -83,3 +83,8 @@ Added institutional-trader Telegram/WhatsApp alerts + STRATEGY_SUMMARY.md canoni
 note. Added dotnet-architect-book's WeasyPrint→Chrome-headless PDF fallback. Added
 scmhrd-ai-finance's teaching-deck gotcha (hand-edited .pptx is now source of truth, not the
 generator script). index.md + graph updated.
+
+## [2026-07-04] ingest | Stock fade v2 (TP-50) deployed — the new leader
+Grid+OOS-validated upgrade (short 2-OTM/width4/TP50%/stop3x): 85.35% win +24.5% width in-sample,
+87.88% +31.9% OOS, >=79% win all 8 yrs. Deployed parallel to v1 at 1 lot; ORB+VWAP retired.
+Updated trading-strategies (new 1b section) + index. Model vs practical P&L documented in repo study.
