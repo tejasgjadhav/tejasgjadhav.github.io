@@ -3,7 +3,7 @@ title: Trading strategies — the 4-strategy lineup and their honest standing
 type: concept
 tags: [trading, strategy, nse, options, backtest]
 created: 2026-07-03
-updated: 2026-07-06
+updated: 2026-07-07
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/studies/STOCK_OPTIONS_NO_EDGE.md, ~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md]
 ---
 
@@ -78,15 +78,20 @@ median loss −51 (% width). ~4–6 trades/mo (vs v1's ~10). Runs PARALLEL to v1
 ORB+VWAP retired from the dashboard to make room. Live fills = the one unproven link.
 Study: `institutional-trader/studies/STOCK_FADE_TP50_UPGRADE.md`.
 
-## 5. Index 0DTE expiry-day call-spread — NIFTY Tuesday (deployed) + SENSEX Thursday (research)
+## 5. Index 0DTE expiry-day call-spread — NIFTY Tuesday (deployed) + SENSEX Thursday / BANKNIFTY (rolling out)
 
 A distinct edge from the multi-day #3 index fade: an **expiry-day 0DTE** short call-spread —
 short CE ~0.5% OTM at the open, ~200-pt wing, settled the same day — gated by a **calm-week
 filter** (`rv5`, realized vol from the prior 5 closes; skip when the tape is hot). On NIFTY this
-runs on **Tuesday** weekly expiry and is **deployed** with a pre-market decision strip on the
-app's INTRADAY DECISIONS tab: because both inputs (expiry calendar + rv5) are final by 9:00, the
-strip tells you *before the open* whether today fires (🟢 signal 9:16 / 🟡 filter says skip / ⚪
-not expiry). Actual short strike = live opening price × 1.005 → nearest 50, set at 9:15–9:16.
+runs on **Tuesday** weekly expiry and is **fully deployed** (commits `e0a4e9b`, `e69f827`), first
+live paper entry 2026-07-07 09:16. The INTRADAY DECISIONS tab now reads top-to-bottom: a dynamic
+pre-market **status strip** (🟢 "signal expected 9:16 · rv5 calm" / 🟡 filter says skip / ⚪ not
+expiry — both inputs, expiry calendar + rv5, are final by 9:00 so the strip is reliable pre-open),
+a one-line banner (*0DTE NIFTY CE spread · ~90% win OOS · +5.9%/margin · margin ≈ ₹14k/lot = max
+loss*), a 5-line rules card, then the trade table. The 0DTE book renders in the **same 2-leg
+swing-table format** as the credit-spread books (① SELL / ② BUY · instrument · lot · entry premium
+· now/exit · leg P&L · net/status) in BOTH the INTRADAY DECISIONS tab and a new TRADE-LOG-tab
+section. Actual short strike = live opening price × 1.005 → nearest 50, set at 9:15–9:16.
 Averages ~₹2.3k/month/lot and takes a −₹12k week a few times a year.
 
 **Second-payday research (2026-07-06, via /loop):** the same structure ported to **BSE SENSEX
@@ -98,6 +103,14 @@ NIFTY calm-filter does **not** transfer to SENSEX (it would run unfiltered or se
 option spreads are wider than the cost model assumes. Combined "Tuesday + Thursday" ≈ ₹5.5k/mo/lot
 but paid **lumpily** (many +₹1–3k weeks, a −₹15–30k week several times/year). See
 [[capital-curve-verdict]] — 5%/mo remains infeasible; this adds paying *days*, not a bigger edge.
+
+**Rollout plan (as of 2026-07-07):** a post-market (~4 PM) routine is scheduled to install the
+**SENSEX Thursday** and — *if it validates* — **BANKNIFTY** 0DTE books, each rendering in the same
+intraday 2-leg table + trade log. (Note: this is the expiry-day 0DTE CE-spread family — distinct
+from the *daily Donchian* BANKNIFTY fade that was rejected at −6.7% under #3.) The app also now
+surfaces a **consolidated monthly-PnL view** (STUDIES tab + GitHub) across the whole live lineup —
+stock fade v2 (2 lots) + stock credit (1 lot) + intraday NIFTY / SENSEX / BANKNIFTY 0DTE — so the
+blended, honestly-lumpy monthly number sits in one place.
 
 ## Cross-cutting lessons
 
