@@ -96,3 +96,11 @@ Refinitiv/LSEG, 9-agent graceful-degrade pipeline; local-only repo). Added §5 t
 trading-strategies: NIFTY Tuesday 0DTE call-spread (deployed, pre-market rv5 checker) +
 SENSEX Thursday 0DTE second-payday research (88.8% win, 89 weeklies, not yet deployed).
 Indexed both; bumped trading-strategies updated date.
+
+## [2026-07-07] ingest | 0DTE deployed + SENSEX/BANKNIFTY rollout
+Session 9e3c4735 continued past the 2026-07-06 sync. Updated trading-strategies §5:
+NIFTY Tuesday 0DTE CE-spread now FULLY deployed (pre-market status strip, banner, 5-line
+rules card, 2-leg swing-table format on INTRADAY DECISIONS + new TRADE LOG section; commits
+e0a4e9b/e69f827; first live paper entry 2026-07-07 09:16). Added rollout plan: 4 PM routine
+installs SENSEX Thursday + (if it validates) BANKNIFTY 0DTE in the same format; consolidated
+monthly-PnL view across the live lineup. Bumped updated date; refreshed index.
