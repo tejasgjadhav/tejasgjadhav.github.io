@@ -3,7 +3,7 @@ title: Google identity/SEO fix for "tejas jadhav"
 type: synthesis
 tags: [seo, identity, google, knowledge-panel]
 created: 2026-07-05
-updated: 2026-07-05
+updated: 2026-07-08
 sources: [~/files (root repo), ~/files/scmhrd-ai-finance, ~/files/aifinance]
 ---
 
@@ -35,3 +35,16 @@ the page-**footer** "Send feedback" link — the AI-Overview's own "Report a pro
 never loaded in-browser. Search Console indexing was requested for both the root domain
 and `/SCMHRD/`; impressions were already up +600% same day. Google recrawl takes days to
 weeks — re-check in ~3 weeks before escalating further.
+
+**Entity de-merge — the "many tejas jadhav now" effect is progress, not regression (2026-07-08):**
+the user noticed the plain-name query, which used to surface one person, now reads as a common name
+with many people. This is Google's remediation working: it had wrongly *merged* several same-name
+people into one entity (the user's bio stitched to another face), and the wrong-photo feedback filed on
+the 4th is exactly the signal that makes Google *split* the conflated entity — which transiently shows
+the name as generic before it re-anchors on the right person. Good signs already visible: the qualified
+query **"tejas jadhav books"** AI Overview shows the correct blue-blazer photo + the book series
+(reconciliation working on qualified queries; only the bare-name query still lags), and LinkedIn /
+github.io / Amazon own the top-3 on the qualified search. **Re-confirmed there is still NO claimable
+Knowledge Panel** across plain, qualified, and books queries — the right-hand box is the AI Overview's
+source list, not a panel, and Google's own feedback-URL entity-id returned "unknown"; the claim/verify
+flow only activates from a live panel, so the **Wikidata item remains the real lever** to mint one.
