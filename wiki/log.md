@@ -104,3 +104,14 @@ rules card, 2-leg swing-table format on INTRADAY DECISIONS + new TRADE LOG secti
 e0a4e9b/e69f827; first live paper entry 2026-07-07 09:16). Added rollout plan: 4 PM routine
 installs SENSEX Thursday + (if it validates) BANKNIFTY 0DTE in the same format; consolidated
 monthly-PnL view across the live lineup. Bumped updated date; refreshed index.
+
+## [2026-07-08] ingest | 0DTE calm-filter + fade dedup + Google entity de-merge
+Scheduled memory/wiki sync from sessions 9e3c4735 (institutional-trader) and daae2bc8 (identity).
+trading-strategies §5: quantified the 0DTE NIFTY calm-filter now DEPLOYED — skip week when rv5 ≥
+0.9% (win 85.0→87.8%, avg +3.2→+4.0%/margin, 2025 +₹1.7k→+₹23.2k, commit 91a6330); added the
+rejected 90% VWAP-flush stock-intraday idea (net −0.095%/trade, win-rate manufactured by exit
+geometry). trading-strategies §1b: stock fade v1/v2 cross-book dedup (one position/stock, v2 always
+wins, v2 scans first; phantom-strike guard; commit 334dac1). google-identity-seo: the "many tejas
+jadhav now" appearance is Google's entity DE-MERGE working, not a regression; qualified "tejas jadhav
+books" query already shows the correct photo; re-confirmed no claimable Knowledge Panel exists.
+Bumped updated dates; refreshed index.

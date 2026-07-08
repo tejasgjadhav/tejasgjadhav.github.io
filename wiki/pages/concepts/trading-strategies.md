@@ -3,8 +3,8 @@ title: Trading strategies — the 4-strategy lineup and their honest standing
 type: concept
 tags: [trading, strategy, nse, options, backtest]
 created: 2026-07-03
-updated: 2026-07-07
-sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/studies/STOCK_OPTIONS_NO_EDGE.md, ~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md]
+updated: 2026-07-08
+sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/studies/STOCK_OPTIONS_NO_EDGE.md, ~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md, ~/files/institutional-trader/studies/INTRADAY_90PCT_WINRATE.md]
 ---
 
 The strategies implemented in [[institutional-trader]], with their validation status as of
@@ -78,6 +78,12 @@ median loss −51 (% width). ~4–6 trades/mo (vs v1's ~10). Runs PARALLEL to v1
 ORB+VWAP retired from the dashboard to make room. Live fills = the one unproven link.
 Study: `institutional-trader/studies/STOCK_FADE_TP50_UPGRADE.md`.
 
+**Cross-book dedup (2026-07-07, commit `334dac1`):** because v1 and v2 share the same signal, both
+would fade the same stock and stack two positions on one name. Now enforced permanently — **one
+position per stock across both books, v2 always wins**: the runner reorders so v2 scans first (its book
+is current when v1 runs) and v1 then skips any stock v2 already holds open. Same session added a
+phantom-strike guard (rejecting bogus/non-existent strikes before they book).
+
 ## 5. Index 0DTE expiry-day call-spread — NIFTY Tuesday (deployed) + SENSEX Thursday / BANKNIFTY (rolling out)
 
 A distinct edge from the multi-day #3 index fade: an **expiry-day 0DTE** short call-spread —
@@ -93,6 +99,18 @@ swing-table format** as the credit-spread books (① SELL / ② BUY · instrumen
 · now/exit · leg P&L · net/status) in BOTH the INTRADAY DECISIONS tab and a new TRADE-LOG-tab
 section. Actual short strike = live opening price × 1.005 → nearest 50, set at 9:15–9:16.
 Averages ~₹2.3k/month/lot and takes a −₹12k week a few times a year.
+
+**Calm-filter, quantified + deployed (2026-07-07, commit `91a6330`):** the gate is **skip the week
+when NIFTY `rv5` ≥ 0.9%** — losses cluster when recent realized vol / 5-day run-ups are high; VIX
+added nothing beyond `rv5`. Filtered vs unfiltered on 2019→Jun'26: **win 85.0% → 87.8%, avg +3.2% →
++4.0% of margin, 2025 +₹1,715 → +₹23,219, max DD −₹23.9k → −₹17.3k**, ~278 trades vs 373, total 7.5-yr
+PnL within 4% (₹136k vs ₹142k). Filtered is the chosen deployed version; it passed the repo's
+robustness gates (threshold-neighborhood 0.7–1.2, untuned 0.75%-OTM sibling, mechanism = a short-gamma
+book belongs in calm regimes). A separately-tested **90% VWAP-flush stock intraday** idea (buy a stock
+≥2% below day-VWAP, TP +0.20% / stop −3.0%, EOD close) was **rejected as non-deployable** — the 90% win
+is manufactured by the risk-3%-to-make-0.2% exit geometry (a no-signal baseline already wins ~83%); net
+−0.095%/trade after costs (`studies/INTRADAY_90PCT_WINRATE.md`). Confirms the house lesson that a high
+win *rate* is not an edge.
 
 **Second-payday research (2026-07-06, via /loop):** the same structure ported to **BSE SENSEX
 Thursday** weekly expiry (short CE ~0.5% OTM, ~600-pt wing ≈ same %). Backtested on all **89
