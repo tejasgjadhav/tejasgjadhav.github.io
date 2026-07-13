@@ -115,3 +115,15 @@ wins, v2 scans first; phantom-strike guard; commit 334dac1). google-identity-seo
 jadhav now" appearance is Google's entity DE-MERGE working, not a regression; qualified "tejas jadhav
 books" query already shows the correct photo; re-confirmed no claimable Knowledge Panel exists.
 Bumped updated dates; refreshed index.
+
+## [2026-07-14] ingest | scheduled sync — 0DTE entry-time verdict, non-fade falsification, monthly long-call shelved, Telegram live, KDP books
+From recent sessions (d62dc509, fdd1caa2, c6185cc3, 65910cfe). trading-strategies: added
+§5 0DTE entry-time sweep verdict (09:16 open stays — later entry buys ~3–4pp win% but gives
+up 35–45% of profit, edge is opening theta/IV crush; ZERO_DTE_ENTRY_TIME.md); new §6 monthly
+futures REV1-v2 + its long-CALL expression SHELVED 2026-07-14 (MONTHLY_CALL_ENABLED=False; ¾ of
+the 12-mo P&L was one POLYCAB gap); cross-cutting lesson that no non-fade intraday edge is in
+reach (long straddle/gamma/debit verticals lose both eras). institutional-trader: Telegram alerts
+now LIVE (@Algotejasbot → "Algo Trader by Tejas", all 8 sources, _tg fan-out). kdp-books: "Claude
+AI for Finance Professionals" re-counted to 17ch/135+ prompts, added "Claude Cowork for Finance"
+(11 caps + capstone + limits, 112pp), hardcover live-text-layer cover gotcha. Bumped updated dates;
+refreshed index.

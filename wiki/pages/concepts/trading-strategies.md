@@ -3,8 +3,8 @@ title: Trading strategies — the 4-strategy lineup and their honest standing
 type: concept
 tags: [trading, strategy, nse, options, backtest]
 created: 2026-07-03
-updated: 2026-07-08
-sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/studies/STOCK_OPTIONS_NO_EDGE.md, ~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md, ~/files/institutional-trader/studies/INTRADAY_90PCT_WINRATE.md]
+updated: 2026-07-14
+sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/studies/STOCK_OPTIONS_NO_EDGE.md, ~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md, ~/files/institutional-trader/studies/INTRADAY_90PCT_WINRATE.md, ~/files/institutional-trader/studies/ZERO_DTE_ENTRY_TIME.md, ~/files/institutional-trader/studies/monthly_fut/MAX_TRADES_OPTIONS.md]
 ---
 
 The strategies implemented in [[institutional-trader]], with their validation status as of
@@ -100,6 +100,14 @@ swing-table format** as the credit-spread books (① SELL / ② BUY · instrumen
 section. Actual short strike = live opening price × 1.005 → nearest 50, set at 9:15–9:16.
 Averages ~₹2.3k/month/lot and takes a −₹12k week a few times a year.
 
+**Entry-time verdict — the 09:16 open entry stays (2026-07-13, `studies/ZERO_DTE_ENTRY_TIME.md`):**
+a sweep of 10 entry times 9:16→14:00 on real 1-min premiums across all 92 NIFTY weeklies
+Oct'24→Jul'26 (09:16 reproduced the deployed numbers exactly — 90.4% win, +5.85%/margin,
++₹49.5k/lot — validating the harness). Moving entry later (9:45 → 93.2%/+2.88%; 10:00 →
+94.5%/+2.48%) buys ~3–4pp of win rate (noise on n=73) but **surrenders 35–45% of the profit with no
+tail reduction** — the edge IS the opening theta/IV crush (median credit decays 13.2→11.1 pts by
+10:00); 11:00+ goes rupee-negative. Deployed config untouched: 09:16 entry, 09:45 cutoff.
+
 **Calm-filter, quantified + deployed (2026-07-07, commit `91a6330`):** the gate is **skip the week
 when NIFTY `rv5` ≥ 0.9%** — losses cluster when recent realized vol / 5-day run-ups are high; VIX
 added nothing beyond `rv5`. Filtered vs unfiltered on 2019→Jun'26: **win 85.0% → 87.8%, avg +3.2% →
@@ -130,8 +138,30 @@ surfaces a **consolidated monthly-PnL view** (STUDIES tab + GitHub) across the w
 stock fade v2 (2 lots) + stock credit (1 lot) + intraday NIFTY / SENSEX / BANKNIFTY 0DTE — so the
 blended, honestly-lumpy monthly number sits in one place.
 
+## 6. Monthly futures REV1-v2 (deployed) + its long-CALL expression (SHELVED 2026-07-14)
+
+Buy the 5–8 worst 1-month losers trading above their 200DMA when NIFTY>200DMA, front-month future,
+TP +2% (decaying to +1% after day 12) / SL −5% — **75.7% OOS win, 3.91%/mo on margin, −20% DD**
+(`engine/monthly_fut.py`, regime-gated). Deployed as a signals-only paper book;
+[[monthly-futures-verdict|full study here]] (10%/mo is infeasible on real data).
+
+The same signal expressed as **buying a monthly ATM call** was **SHELVED 2026-07-14**
+(`MONTHLY_CALL_ENABLED=False`, kept dormant). Its 12-month +₹63,815 / 65% win was **¾ a single trade**
+(POLYCAB +₹47k off a real +8.2% one-day gap, not a repeatable edge); ex-POLYCAB the year was +₹16.5k
+across 40 trades (noise). Buying calls tops out ~67–70% win and leans on lucky gaps — so the reliable
+core stays the **sell-side defined-risk credit spreads (~86% win, positive every year, no gap needed)**.
+Study: `studies/monthly_fut/MAX_TRADES_OPTIONS.md` (now leads with a SHELVED banner).
+
 ## Cross-cutting lessons
 
+- **No non-fade intraday edge is in reach (2026-07-13 falsification).** The structural opposite of the
+  fade family — long ATM straddle / long gamma / gap-follow + trend-follow debit verticals — **loses on
+  real premiums in both eras** (bhavcopy 2019→Sep'24, 282 expiries + 1-min Oct'24→Jul'26, 92 expiries;
+  straddle 33–34% win, −13.2%/−9.8%/trade). The calm filter earns its keep by *skipping* hot weeks —
+  flipping to long gamma on those skipped weeks is the **worst** cell (IV is already marked up by expiry
+  morning). Every edge here is short-premium / mean-reversion; don't re-mine long-premium structures.
+- **A high win *rate* keeps not being an edge.** The 0DTE entry-time sweep is the latest case: later
+  entries post higher win% while making less money. Report win rate, never optimize it.
 - **Real option history goes back to 2019 after all** — via [[nse-bhavcopy]] (free daily CLOSE +
   OI for every contract, incl. expired), the data no broker API exposes. This unlocked the true
   pre-2024 backtests that overturned the index-fade "validation." Upstox expired-instruments

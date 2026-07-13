@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-07-05
+updated: 2026-07-14
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -39,8 +39,12 @@ strategy — `engine/stock_credit.py` with `config.STOCK_CREDIT_*`, its own dash
 tab, writing `data/stock_credit.json` / `stock_credit_positions.json` (12 open paper
 positions, 1 lot each, e.g. bear-call spreads on breakout-LONG stocks).
 
-**Alerts + canonical doc (2026-07-04):** Telegram (BotFather) and WhatsApp (free CallMeBot
-API) message alerts are wired into the signal engine. WhatsApp/phone *voice calls* per
+**Alerts + canonical doc (2026-07-04; Telegram LIVE 2026-07-13):** Telegram and WhatsApp (free
+CallMeBot API) message alerts are wired into the signal engine. **Telegram is now live** — bot
+**@Algotejasbot** → channel *"Algo Trader by Tejas"*; `notifications.send_telegram()` fans out to
+comma-separated chat/channel ids and `engine_runner._tg()` pushes **all 8 signal sources** once each
+on a new open (README + in-app manual both say "TELEGRAM ALERTS — LIVE"; token/channel id in
+gitignored `.env`). WhatsApp/phone *voice calls* per
 signal are not possible via any free API — guaranteed calling would need paid Twilio.
 `studies/STRATEGY_SUMMARY.md` is now the single canonical strategy table — kept in sync
 with the app's STUDIES tab, local CLAUDE.md, and this wiki page whenever a strategy's
