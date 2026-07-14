@@ -127,3 +127,12 @@ now LIVE (@Algotejasbot → "Algo Trader by Tejas", all 8 sources, _tg fan-out).
 AI for Finance Professionals" re-counted to 17ch/135+ prompts, added "Claude Cowork for Finance"
 (11 caps + capstone + limits, 112pp), hardcover live-text-layer cover gotcha. Bumped updated dates;
 refreshed index.
+
+## [2026-07-14] ingest | algo-trading book page + global-first reorientation
+Scheduled sync from recent sessions. New page pages/projects/claude-algo-trading-book.md
+for the "Claude for Algo Trading" book (built off institutional-trader): pipeline, real
+GitHub+Qt screenshots, CFA no-advice voice, and the 2026-07-14 global-first reorientation
+(India→US translation table, inline glosses, README re-captured at 235 commits). Indexed.
+Monthly long-call SHELVED and 0DTE NIFTY facts already recorded in the prior run — no
+trading-page change needed. (Job daily-application routine at 9:35 AM filed to memory only —
+no wiki home.)
