@@ -3,8 +3,8 @@ title: Google identity/SEO fix for "tejas jadhav"
 type: synthesis
 tags: [seo, identity, google, knowledge-panel]
 created: 2026-07-05
-updated: 2026-07-08
-sources: [~/files (root repo), ~/files/scmhrd-ai-finance, ~/files/aifinance]
+updated: 2026-07-15
+sources: [~/files (root repo), ~/files/scmhrd-ai-finance, ~/files/aifinance, ~/files/HANDOFF-seo-photo.md]
 ---
 
 Google search for "tejas jadhav" was showing other same-name people's photos (a barista,
@@ -48,3 +48,38 @@ github.io / Amazon own the top-3 on the qualified search. **Re-confirmed there i
 Knowledge Panel** across plain, qualified, and books queries — the right-hand box is the AI Overview's
 source list, not a panel, and Google's own feedback-URL entity-id returned "unknown"; the claim/verify
 flow only activates from a live panel, so the **Wikidata item remains the real lever** to mint one.
+
+**Wikidata item now EXISTS — the priority-1 lever is DONE (2026-07-15):** created
+**Tejas Jadhav ([Q140561693](https://www.wikidata.org/wiki/Q140561693))**, "Indian finance professional
+and author on AI in finance". Built out via the authenticated Wikidata API (far faster than the finicky
+web form) to **16 properties / 23 statements** — instance-of human, occupation writer + financial analyst,
+citizenship India, official website, LinkedIn/GitHub/Facebook/Amazon-author IDs, employers Citigroup +
+Wipro + HDFC, educated-at SIMSREE + University of Pune, family name Jadhav, languages, and **P18 image =
+`Tejas Jadhav CFA FRM.png`** (user uploaded a self-portrait to Wikimedia Commons under CC-BY-4.0, the only
+way to feed the correct blue-blazer photo into Google's Knowledge Graph). First **independently-sourced**
+statement added: P463 member-of CFA Institute, cited to *Mint* newspaper (2 Feb 2026, p.13) — a CFA
+Society India charterholder listing (name-in-a-list, not an editorial feature; "Featured in Mint" on the
+site overstates it). The QID is now in the Person-schema `sameAs` on **all three** sites (root, SCMHRD,
+AIFINANCE), bidirectionally linked. Notability caveat stands (self-created, mostly self-published
+sources) — the Amazon-published books + the Mint citation give it a fighting chance if AfD'd.
+
+**ORCID cross-link (2026-07-15):** user created ORCID **0009-0000-9407-6871**, wired as a two-way
+citation — Wikidata P496 = ORCID, ORCID URL in Person `sameAs` on all 3 sites, and the ORCID record
+carries website backlink + Employment (Wipro, Pune) + 5 books. ORCID ↔ Wikidata ↔ sites now all
+cross-confirm the same person. Fact corrections applied from the résumé: works from **Pune** (not
+Bengaluru), BE from **University of Pune**, Master's is **MMS** (WorldQuant University removed as P69 — not
+his school).
+
+**Monitor cadence now WEEKLY (2026-07-15):** the `seo-rank-monitor` scheduled task was switched from daily
+to **Mondays ~08:01** — the build work (photo, entity, ORCID) is finished, so what remains is a patient
+wait on Google's recrawl clock. It was also upgraded from monitor-only to an active improver that
+auto-applies SAFE structural fixes (entity/`sameAs`/portrait consistency, JSON-LD, dead links) and pushes;
+credential/account actions and on-page keyword churn / re-indexing stay hard-forbidden (re-indexing resets
+Google's eval clock). Standing lesson: **off-page authority is the durable lever; stop churning on-page**.
+
+**Ranking as of 2026-07-15 — IMPROVED:** all three qualified queries (`+cfa`, `+author`, `+finance`) are
+fully owned in the top-3 by github.io / LinkedIn / Amazon; on the bare-name query the user rose to the
+**#1 AI Overview bullet**. The one residual issue is the bare-name entity thumbnail still showing a wrong
+same-name person's photo (the blue-blazer portrait not yet adopted as the entity image) — consistent with
+the entity de-merge still settling; the new Wikidata P18 image is the fix, now a days-to-weeks recrawl
+wait the weekly monitor watches. Full session handoff: `~/files/HANDOFF-seo-photo.md`.
