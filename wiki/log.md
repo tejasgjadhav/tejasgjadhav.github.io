@@ -136,3 +136,17 @@ GitHub+Qt screenshots, CFA no-advice voice, and the 2026-07-14 global-first reor
 Monthly long-call SHELVED and 0DTE NIFTY facts already recorded in the prior run — no
 trading-page change needed. (Job daily-application routine at 9:35 AM filed to memory only —
 no wiki home.)
+
+## [2026-07-15] ingest | scheduled sync — Wikidata/ORCID identity build, SEO weekly, Telegram 7-not-8, watchlist 3:05 PM
+From recent sessions (daae2bc8 photo/Wikidata, c4726db8 SEO reschedule, d62dc509 trader).
+google-identity-seo: priority-1 lever DONE — Wikidata item Q140561693 created + built to 16
+properties/23 statements incl. P18 image (Commons upload) and first independent source (P463
+member-of CFA Institute cited to Mint 2026-02-02 p.13); ORCID 0009-0000-9407-6871 created and
+two-way cross-linked (P496 + sameAs on all 3 sites); résumé fact corrections (Pune / Univ of Pune
+/ MMS, WorldQuant removed as P69); seo-rank-monitor rescheduled daily→WEEKLY (Mondays ~08:01) and
+upgraded to active safe-fix improver; ranking IMPROVED (qualified queries fully owned, bare-name
+#1 AI Overview bullet, entity-thumbnail recrawl pending). tejas-jadhav: added Wikidata + ORCID
+identifiers. institutional-trader: Telegram effective coverage corrected to 7 live books (3-Family
+SCAN_3FAMILY_ENABLED=False + rejected, never fires); watchlist UI discipline — union_watchlist.json
+builds 3:05 PM, on-demand scans stay terminal-only. Bumped updated dates; refreshed index.
+(Job-search Naukri-now-works correction filed to memory only — no wiki home, per prior runs.)

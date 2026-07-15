@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-07-14
+updated: 2026-07-15
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -42,9 +42,11 @@ positions, 1 lot each, e.g. bear-call spreads on breakout-LONG stocks).
 **Alerts + canonical doc (2026-07-04; Telegram LIVE 2026-07-13):** Telegram and WhatsApp (free
 CallMeBot API) message alerts are wired into the signal engine. **Telegram is now live** — bot
 **@Algotejasbot** → channel *"Algo Trader by Tejas"*; `notifications.send_telegram()` fans out to
-comma-separated chat/channel ids and `engine_runner._tg()` pushes **all 8 signal sources** once each
-on a new open (README + in-app manual both say "TELEGRAM ALERTS — LIVE"; token/channel id in
-gitignored `.env`). WhatsApp/phone *voice calls* per
+comma-separated chat/channel ids and `engine_runner._tg()` pushes once each on a new open (README +
+in-app manual both say "TELEGRAM ALERTS — LIVE"; token/channel id in gitignored `.env`). The wiring
+covers 8 sources but **effective coverage is 7 live books** (2026-07-15 correction): the 8th, 3-Family,
+is `SCAN_3FAMILY_ENABLED = False` **and** rejected (−1.0% net), so it never fires and never sends — its
+send-wiring is dormant. WhatsApp/phone *voice calls* per
 signal are not possible via any free API — guaranteed calling would need paid Twilio.
 `studies/STRATEGY_SUMMARY.md` is now the single canonical strategy table — kept in sync
 with the app's STUDIES tab, local CLAUDE.md, and this wiki page whenever a strategy's
@@ -60,6 +62,12 @@ Two decoupled processes, both launchd jobs:
   paper trades, 15:30 EOD-book; writes `engine.db`, `signals.db`, `trade_log.json`, etc.
 - **Viewer** (`main.py`) — read-only desktop dashboard, re-reads disk every 15 s. Trading
   logic never goes in the GUI.
+
+**Watchlist UI build-time discipline (2026-07-15):** the engine builds `data/union_watchlist.json` at
+**3:05 PM** (near the close); before then the PM DECISIONS panel must read "no scan yet today". An
+on-demand intraday "check now" / "run" scan stays **terminal-only** — a manual `build_watchlist` run must
+NOT overwrite the persisted file, or the UI wrongly shows morning data (fix: delete the file, the viewer
+re-reads on its 15 s timer).
 
 Current research/backtests live in `studies/`; `How_We_Built_The_Strategy.pdf` and
 `BACKTEST_RESULTS.md` are the historical build journey (superseded).
