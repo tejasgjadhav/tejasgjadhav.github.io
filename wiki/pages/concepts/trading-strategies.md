@@ -3,8 +3,8 @@ title: Trading strategies — the 4-strategy lineup and their honest standing
 type: concept
 tags: [trading, strategy, nse, options, backtest]
 created: 2026-07-03
-updated: 2026-07-14
-sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/studies/STOCK_OPTIONS_NO_EDGE.md, ~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md, ~/files/institutional-trader/studies/INTRADAY_90PCT_WINRATE.md, ~/files/institutional-trader/studies/ZERO_DTE_ENTRY_TIME.md, ~/files/institutional-trader/studies/monthly_fut/MAX_TRADES_OPTIONS.md]
+updated: 2026-07-16
+sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/studies/STOCK_OPTIONS_NO_EDGE.md, ~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md, ~/files/institutional-trader/studies/INTRADAY_90PCT_WINRATE.md, ~/files/institutional-trader/studies/ZERO_DTE_ENTRY_TIME.md, ~/files/institutional-trader/studies/CW_BUCKET_ANALYSIS.md, ~/files/institutional-trader/studies/STOCK_FADE_V2_UNION_VS_D10.md, ~/files/institutional-trader/studies/monthly_fut/MAX_TRADES_OPTIONS.md]
 ---
 
 The strategies implemented in [[institutional-trader]], with their validation status as of
@@ -83,6 +83,24 @@ would fade the same stock and stack two positions on one name. Now enforced perm
 position per stock across both books, v2 always wins**: the runner reorders so v2 scans first (its book
 is current when v1 runs) and v1 then skips any stock v2 already holds open. Same session added a
 phantom-strike guard (rejecting bogus/non-existent strikes before they book).
+
+**UNION beats D10-only, keep UNION (2026-07-16, `studies/STOCK_FADE_V2_UNION_VS_D10.md`, commit
+`0b1e37d`):** the v2 scanner is `UNION = D10+D5+D15+D20` Donchian breakouts — a **superset** of D10, so
+"run both" is meaningless. UNION yields **+34% more signals (~8/mo vs ~6/mo) at statistically identical
+win rate** (84% IS / 87% OOS vs 85/88). The `credit/width ≥ 0.40` gate, not the scanner, is the
+bottleneck. **The CALL side (bear-call, up-breaks) is the majority and stronger side**: on 203 real
+Oct'24→Jul'26 trades, CALL 118× 88% win +38.7% of width vs PUT 85× 86% +21.2%.
+
+**The credit/width gate IS the edge — two-tier split found but DEFERRED (2026-07-16,
+`studies/CW_BUCKET_ANALYSIS.md`, commit `36b0cc1`):** 629 real v2-UNION trades bucketed by c/w —
+**≥0.40 (deployed): 86% win, +34% of width · 0.35–0.40: 77% win, +9.2% · 0.30–0.35: 78% win, +1.1%.**
+Key insight: win rate barely falls below the gate (TP-50 books wins early) but **net money collapses
+~10×** because the payoff turns lopsided (small early wins vs full-width losses) — a 77%-win 0.35 spread
+is ≈ breakeven after slippage. So `c/w ≥ 0.40` is a **proxy for elevated post-breakout IV** (the actual
+edge), not merely a payoff ratio. The 0.35–0.40 band's +9.2% is promising but **one regime only
+(~2 yrs); could NOT be validated on 2019–24** (stock-option bhavcopy purged). Per the approval-first
+rule ([[institutional-trader]]) the two-tier split is spec'd but **un-deployed** pending a 2019–24
+re-run — don't loosen the live gate on this alone.
 
 ## 5. Index 0DTE expiry-day call-spread — NIFTY Tuesday (deployed) + SENSEX Thursday / BANKNIFTY (rolling out)
 

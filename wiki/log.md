@@ -150,3 +150,14 @@ identifiers. institutional-trader: Telegram effective coverage corrected to 7 li
 SCAN_3FAMILY_ENABLED=False + rejected, never fires); watchlist UI discipline — union_watchlist.json
 builds 3:05 PM, on-demand scans stay terminal-only. Bumped updated dates; refreshed index.
 (Job-search Naukri-now-works correction filed to memory only — no wiki home, per prior runs.)
+
+## [2026-07-16] ingest | trader portfolio reframe + c/w-gate finding; algo book cover badge
+From recent sessions. institutional-trader: reframed as a 6-book multi-strategy portfolio
+(3-Family retired, README 5290cd5); watchlist consolidated to one daily 3:05 PM build (bd485a6,
+removed 15-min sweep); 0DTE result Telegram moved to ~15:35 (a1251c3, watcher runs after settlement);
+full Telegram cadence 9:16/15:05/15:10/15:35. trading-strategies: v2 UNION kept over D10-only (0b1e37d,
+superset, +34% signals same win rate; CALL side stronger 88%/+38.7%); c/w-gate two-tier finding
+(CW_BUCKET_ANALYSIS.md, 36b0cc1) — c/w≥0.40 IS the edge, below-gate money collapses ~10× at ~77% win,
+0.35–0.40 band deferred pending 2019–24 validation. claude-algo-trading-book: cover GitHub badge +
+Amazon platform-name-not-URL rule. Touched institutional-trader, trading-strategies,
+claude-algo-trading-book pages; bumped updated dates; refreshed index.

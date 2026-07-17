@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-07-15
+updated: 2026-07-16
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -68,6 +68,22 @@ Two decoupled processes, both launchd jobs:
 on-demand intraday "check now" / "run" scan stays **terminal-only** — a manual `build_watchlist` run must
 NOT overwrite the persisted file, or the UI wrongly shows morning data (fix: delete the file, the viewer
 re-reads on its 15 s timer).
+
+**2026-07-16 — portfolio reframe, cadence + timing fixes:**
+- **README reframed as a multi-strategy portfolio** (commit 5290cd5): no longer led by "v2 fade (the
+  winner)" but by "a portfolio of independent, individually-validated books" — six live: stock fades
+  v1/v2, 0DTE NIFTY/SENSEX/BANKNIFTY, monthly futures. v2 stays flagged ★ leader but is one row of six.
+  The retired 3-Family's stale "intraday window 09:45–13:00" NOW banner was removed from PM DECISIONS.
+- **Watchlist consolidated to ONE daily 3:05 PM build** (commit bd485a6): the every-15-min 100-stock
+  sweep was removed (25 engine passes/day → 1). `notify_nearmiss()` now rebuilds `union_watchlist.json`
+  **and** sends the ⛔ DO-NOT-TRADE Telegram digest together at 3:05 — justified because breakouts are
+  defined by the *daily close* and the stock spreads are held-to-expiry, so nothing needs placing before
+  the 3:30 close.
+- **0DTE result Telegram now arrives ~15:35, not ~15:40** (commit a1251c3): the outcome watcher runs
+  *after* the settlement steps in each post-close 5-min cycle (previously before, costing an extra cycle).
+- **Full daily Telegram timeline:** ~9:16 0DTE entry · 15:05 DO-NOT-TRADE watchlist digest · ~15:10
+  stock credit v1/v2 signals · ~15:35 0DTE WIN/LOSS result.
+- **New c/w-gate two-tier finding** (deferred, not deployed) — see [[trading-strategies]].
 
 Current research/backtests live in `studies/`; `How_We_Built_The_Strategy.pdf` and
 `BACKTEST_RESULTS.md` are the historical build journey (superseded).
