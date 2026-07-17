@@ -3,7 +3,7 @@ title: Claude for Algo Trading (book build)
 type: project
 tags: [book, kdp, algo-trading, writing]
 created: 2026-07-14
-updated: 2026-07-14
+updated: 2026-07-16
 sources: [~/files/claude-algo-trading-book]
 ---
 
@@ -38,5 +38,12 @@ bhavcopy→(no cheap US equivalent), ₹1 lakh→~$1,200, ₹15 lakh→~$18,000,
 fees, 0DTE→same term — backed by inline glosses at first mention. GitHub screenshots were
 re-captured against the updated README (now framed as a multi-strategy paper-trading system
 with Windows installers and a strategy table, **235 commits**).
+
+**Cover badge + Amazon platform-name rule (2026-07-16).** All three covers (Kindle ebook,
+paperback wrap, hardcover) now carry a badge — **"INCLUDES THE COMPLETE OPEN-SOURCE SYSTEM ON
+GITHUB."** — and the back-cover bio says the code/studies are "published openly on GitHub." This
+applies a non-obvious KDP rule: **naming a platform ("GitHub") is allowed; printing a URL/link is
+what Amazon prohibits** — so reference the repo by platform name, never as a `github.com/...` link,
+on any cover or interior.
 
 One of the KDP titles alongside those tracked in [[kdp-dashboard]]. Part of [[files-repo]].
