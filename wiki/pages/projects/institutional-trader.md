@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-07-20
+updated: 2026-07-23
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -107,6 +107,27 @@ re-reads on its 15 s timer).
 - **Watchlist timing → build 14:45 / send digest 15:05** (commits 01dc6d3, 6c20f32, supersedes the single
   3:05 PM build): digest sends from a pre-built file for reliable timing; gate cells now show actual
   **C/W + PREM** numbers, not a bare tick.
+
+**2026-07-23 — per-trade portfolio summary + "Saavi" branding, data ceiling, queued job:**
+- **Running portfolio summary on Telegram after every trade RESULT** (deployed):
+  `engine_runner._portfolio_summary_text()` tallies **closed** W/L / win% / realized P&L plus the
+  **open count** across all six outcome books, and sends once per cycle right after any genuinely-new
+  WIN/LOSS (guarded so a summary failure can't disturb trading; 60 s throttle; win% stays closed-only).
+- **Branding header the user chose:** *"📈 Tejas's Saavi Institutional Trader has till date delivered
+  for live trade-"*. Claude flagged that "delivered for live trade" overstates a **paper/forward-test**
+  (no real orders) and offered accurate softenings; the user kept the original wording — a branding call,
+  but the honesty caveat stands (cf. the no-overstatement discipline elsewhere in [[tejas-jadhav]]'s work).
+- **Intraday option-premium data ceiling (why long hourly backtests are impossible):** real intraday
+  (1-min) stock-option premiums exist **only Oct'24→now (~2 yrs)** via [[upstox]] expired-instruments;
+  **2019→Sep'24 = [[nse-bhavcopy]] daily-close only** (no intraday c/w computable); **pre-2019 = no
+  stock-option data at all**. Any hourly-c/w study is capped at ~2 yrs / single regime — the 10-yr answer
+  is the daily-close c/w that is already the deployed gate.
+- **Stock credit engine scans exactly once/day at 15:10** (`STOCK_CREDIT_SCAN_AFTER = "15:10"`, guarded
+  once-per-date) — no hourly loop; "fire the first intraday touch of 0.40" is a likely trap (selling into
+  reverting IV spikes), which is why the close-gate is intentional. See [[trading-strategies]].
+- **Queued validation-only job "Backtest hourly-touch vs close-gate 0.40 (v2+v1)"** → will write
+  `HOURLY_VS_CLOSE_ENTRY.md` + a UI card, no live-engine change; measures whether the extra signals the
+  hourly rule catches are reverting-spike noise or real edge, over the ~2 yrs of intraday data. Not yet run.
 
 Current research/backtests live in `studies/`; `How_We_Built_The_Strategy.pdf` and
 `BACKTEST_RESULTS.md` are the historical build journey (superseded).

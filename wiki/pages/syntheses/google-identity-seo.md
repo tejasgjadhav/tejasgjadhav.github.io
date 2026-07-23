@@ -3,7 +3,7 @@ title: Google identity/SEO fix for "tejas jadhav"
 type: synthesis
 tags: [seo, identity, google, knowledge-panel]
 created: 2026-07-05
-updated: 2026-07-15
+updated: 2026-07-23
 sources: [~/files (root repo), ~/files/scmhrd-ai-finance, ~/files/aifinance, ~/files/HANDOFF-seo-photo.md]
 ---
 
@@ -83,3 +83,14 @@ fully owned in the top-3 by github.io / LinkedIn / Amazon; on the bare-name quer
 same-name person's photo (the blue-blazer portrait not yet adopted as the entity image) — consistent with
 the entity de-merge still settling; the new Wikidata P18 image is the fix, now a days-to-weeks recrawl
 wait the weekly monitor watches. Full session handoff: `~/files/HANDOFF-seo-photo.md`.
+
+**2026-07-23 monitor + role audit:** health GREEN, structure unchanged (nothing manufactured to edit). On
+the bare-name query the AI Overview is now **fully on-message** ("CFA Charterholder, FRM-certified finance
+professional, published author… Citi, HDFC, Swiss banks… AI and financial analysis") and github.io is **#1
+organic** — but on **mobile** the entity-panel slot is **hijacked by a Google Maps "place" entity**
+("Tejas Jadhav — Housing complex… Permanently closed", Pune) rather than a person Knowledge Panel (still no
+claimable panel). Photo still not adopted (KG recrawl lag). Remaining levers are all user-gated Google-account
+actions: report/claim the wrong Maps place, wait on the P18 recrawl, earn genuine backlinks. **Role audit:**
+"author" is fully covered everywhere; **"business analyst" was missing** from Wikidata + schema — plan is
+Wikidata **P106 += business analyst (Q1017553)** with a source (safe off-page statement), *not* an on-page
+keyword; blocked at session end on the logged-in Chrome being connected, not yet applied. See [[tejas-jadhav]].

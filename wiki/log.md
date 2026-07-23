@@ -178,3 +178,17 @@ fix ACOS), India account-balance throttle watch-item. kdp-books: added spine-on-
 barcode + exact-per-binding-dimension cover gotchas. New pages: amazon-ads. Touched institutional-trader,
 trading-strategies, kdp-dashboard, kdp-books; bumped updated dates; refreshed index. Memory: new
 amazon-ads-campaign + kdp-cover-gotchas, updated bsr-dashboard + institutional-trader-status.
+
+## [2026-07-23] ingest | Telegram portfolio summary + Saavi branding, data ceiling, BA occupation, interview prep
+institutional-trader: per-trade running portfolio summary on Telegram (_portfolio_summary_text, closed
+W/L/win%/realized P&L + open count across 6 books) with user-chosen "Tejas's Saavi Institutional Trader"
+branding (honesty caveat: paper/forward-test, "delivered for live trade" overstates); intraday
+option-premium data ceiling = only Oct'24→now ~2yr real intraday (bhavcopy daily-close 2019→Sep'24, none
+pre-2019) so hourly-c/w backtests cap at ~2yr; stock credit scans once/day at 15:10 (no hourly loop),
+close-gate intentional; queued validation-only job "hourly-touch vs close-gate 0.40" → HOURLY_VS_CLOSE_ENTRY.md.
+tejas-jadhav / google-identity-seo: 2026-07-23 monitor GREEN, AI Overview on-message + #1 organic, but
+mobile entity slot hijacked by a Google Maps "place" entity; role audit — "business analyst" (Q1017553)
+missing from Wikidata P106, plan to add (safe off-page), not yet applied; actively interviewing for
+capital-markets BA/PO roles incl. UBS Corporate Actions PO. Touched projects/institutional-trader,
+entities/tejas-jadhav, syntheses/google-identity-seo; bumped updated dates; refreshed index. Memory:
+new interview-prep-assets, updated institutional-trader-status + google-photo-identity-fix + MEMORY.md.

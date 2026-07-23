@@ -3,7 +3,7 @@ title: Tejas Jadhav — CFA, FRM
 type: entity
 tags: [person, author, finance, teaching]
 created: 2026-07-03
-updated: 2026-07-15
+updated: 2026-07-23
 sources: [~/files/scmhrd-ai-finance/index.html, ~/files/kdp-dashboard/data/books.json, ~/files/index.html]
 ---
 
@@ -17,6 +17,11 @@ Current activity streams (as of 2026-07):
   tracked in [[kdp-dashboard]]) plus [[dotnet-architect-book]]
 - **Trading** — building and forward-testing [[institutional-trader]] via [[upstox]]
 - **Domain expertise** — trade & transaction regulatory reporting ([[trade-regimes-website]])
+- **Job search** — actively interviewing for capital-markets **BA / Product-Owner** roles (incl. a
+  **UBS "PO for Corporate Actions"** interview, Jul 2026); self-identifies as *author and business
+  analyst*. Reusable prep digests built: a Corporate-Actions income-processing BA digest and a SQL-for-BA
+  Q&A (both under [[files-repo]]). Occupation follow-up: adding **business analyst (Q1017553)** to the
+  Wikidata item's P106 (author + financial analyst already present) — see [[google-identity-seo]].
 
 Personal sites: root `index.html` ("AI in Finance Author") and `portfolio-review.html`
 (mutual fund portfolio review) at the repo root, deployed via **GitHub Pages**
