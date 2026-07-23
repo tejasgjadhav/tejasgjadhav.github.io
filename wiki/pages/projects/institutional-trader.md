@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-07-16
+updated: 2026-07-20
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -84,6 +84,29 @@ re-reads on its 15 s timer).
 - **Full daily Telegram timeline:** ~9:16 0DTE entry · 15:05 DO-NOT-TRADE watchlist digest · ~15:10
   stock credit v1/v2 signals · ~15:35 0DTE WIN/LOSS result.
 - **New c/w-gate two-tier finding** (deferred, not deployed) — see [[trading-strategies]].
+
+**2026-07-20 — watchlist-preview vs binding-scan, UNION=D5, live bug sweep, timing:**
+- **Watchlist "PASS" is a live PREVIEW snapshot, not a fired signal — only the ~15:10 scan is binding.**
+  A c/w-boundary-hugger (OFSS flickering 0.383↔0.43 around the 0.40 gate) can show "PASS" in the union
+  watchlist yet correctly not fire, because at the binding scan instant its c/w was below 0.40 — so
+  PASS + no book entry + no Telegram are consistent, not a bug. The ~82% win in the 0.35–0.40 c/w bucket
+  is **conditional on the TP-50 exit** (buy back at ~half the entry credit, stop at 3× credit);
+  hold-to-expiry is materially lower — a discretionary sub-gate trade held to expiry isn't the
+  backtested setup. See [[trading-strategies]].
+- **UNION scanner = D5** (Donchian standalone D5/D10/D15/D20 study, validation-only worktree): the runner
+  checks D5 first and D10/D15/D20 breaks are a strict subset of D5's, so live UNION is mathematically the
+  loosest (D5) definition — running stricter D-values alongside is a no-op; the credit/width gate remains
+  the bottleneck.
+- **Live bug sweep (commit 5a7a18b):** settlement fabrication fixed in BOTH 0DTE books
+  (`zero_dte.py`/`dte_multi.py` used `spot = _spot() or entry_spot or 0` → a 15:30 quote failure gave
+  spot 0 → intrinsic 0 → **fabricated WIN + wrong Telegram**; now settle on the expiry-day daily close).
+  **"M&M" silently lost every alert** — Mahindra's `&` breaks Telegram HTML mode (400) while the position
+  was marked "seen" before the send → lost forever; durable rule: HTML-escape all dynamic Telegram fields
+  and mark "seen" only AFTER a successful send (+ plain-text retry on 400). `monthly_fut` now books expiry
+  at the MOC close, not midnight.
+- **Watchlist timing → build 14:45 / send digest 15:05** (commits 01dc6d3, 6c20f32, supersedes the single
+  3:05 PM build): digest sends from a pre-built file for reliable timing; gate cells now show actual
+  **C/W + PREM** numbers, not a bare tick.
 
 Current research/backtests live in `studies/`; `How_We_Built_The_Strategy.pdf` and
 `BACKTEST_RESULTS.md` are the historical build journey (superseded).
