@@ -3,7 +3,7 @@ title: KDP book catalog — AI and Practical Finance Series
 type: concept
 tags: [kdp, books, writing, amazon]
 created: 2026-07-03
-updated: 2026-07-14
+updated: 2026-07-20
 sources: [~/files/kdp-dashboard/data/books.json]
 ---
 
@@ -31,6 +31,20 @@ flattened image with a *live text layer* (author bio + spine title painted over 
 render to 300 DPI first to bake the text in before widening the spine, else editing wipes it; sized
 14.346 × 10.417" for the 248-pp block.
 
-Ranks tracked daily across 15 countries in [[kdp-dashboard]]. A further book is in build:
+**More cover-rejection gotchas (2026-07-20, from Stop Losing Money + Wealth Code wraps):**
+- **Spine text touching KDP's spine fold guide gets rejected — a blank spine never does.** KDP
+  rejected "Stop Losing Money" repeatedly because the vertical spine title sat on the fold line with
+  letters spilling out of the ~7 mm spine into the back panel, while our own overlay kept "passing".
+  Fix = remove spine text entirely (verify 0.0000% ink in the spine channel); default thin books to a
+  clean blank spine.
+- **Keep the back-cover byline/bio off the lower back panel — it collides with KDP's auto-added ISBN
+  barcode.** Move authorship to the front cover + spine instead. The barcode in KDP's preview is
+  KDP's own (expected; don't add your own).
+- **Dimensions are exact and per-binding/page-count.** e.g. Wealth Code B2: paperback 12.597×9.250",
+  hardcover 14.111×10.417"; even a ~0.2" mismatch triggers the "cover size" error. When a cover is
+  rejected, zoom into KDP's own error preview — the local overlay can lie.
+
+Catalog now spans multiple editions (Spanish + German added 2026-07); ranks tracked daily in
+[[kdp-dashboard]]. A further book is in build:
 [[dotnet-architect-book]] (not yet in the catalog JSON as of 2026-07). See [[claude-algo-trading-book]]
 for the algo-trading title.

@@ -3,7 +3,7 @@ title: Trading strategies — the 4-strategy lineup and their honest standing
 type: concept
 tags: [trading, strategy, nse, options, backtest]
 created: 2026-07-03
-updated: 2026-07-16
+updated: 2026-07-20
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/studies/STOCK_OPTIONS_NO_EDGE.md, ~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md, ~/files/institutional-trader/studies/INTRADAY_90PCT_WINRATE.md, ~/files/institutional-trader/studies/ZERO_DTE_ENTRY_TIME.md, ~/files/institutional-trader/studies/CW_BUCKET_ANALYSIS.md, ~/files/institutional-trader/studies/STOCK_FADE_V2_UNION_VS_D10.md, ~/files/institutional-trader/studies/monthly_fut/MAX_TRADES_OPTIONS.md]
 ---
 
@@ -193,6 +193,18 @@ Study: `studies/monthly_fut/MAX_TRADES_OPTIONS.md` (now leads with a SHELVED ban
   free-float-mcap top-100 lost head-to-head (61% vs 67%).
 - House rule: honesty over optimism — frame everything gross-vs-net, sample size,
   out-of-sample fragility. Backtest before deploying any tunable change.
+
+**2026-07-20 refinements:**
+- **UNION scanner = D5, exactly.** A standalone Donchian D5/D10/D15/D20 study confirmed the runner
+  checks D5 first and D10/D15/D20 breaks are a strict subset of D5's, so the live UNION scanner *is*
+  the loosest (D5) breakout definition — running stricter D-values alongside is a no-op. The
+  credit/width gate, not the breakout window, is the bottleneck.
+- **The 0.35–0.40 c/w bucket's ~82% win is conditional on the TP-50 exit** (buy the spread back at
+  ~half the entry credit, stop at 3× credit). Held to expiry it is materially lower — a common trap
+  when a discretionary sub-gate trade is placed and then held. And that ~82% still comes with big
+  losers (~−65% of width on the ~18% that lose) and is one regime only (unvalidated pre-2024).
+- **Watchlist "PASS" is a preview, not a signal** — it snapshots continuously and can flicker PASS
+  on a c/w-boundary stock; only the binding ~15:10 scan decides. See [[institutional-trader]].
 
 Research trail: `institutional-trader/studies/` (STOCK_OPTIONS_NO_EDGE.md Parts 10–11 hold the
 real-bhavcopy verdicts + the failed index-fade gate) + reproducible scripts. Synthesis:

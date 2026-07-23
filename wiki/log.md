@@ -161,3 +161,20 @@ superset, +34% signals same win rate; CALL side stronger 88%/+38.7%); c/w-gate t
 0.35–0.40 band deferred pending 2019–24 validation. claude-algo-trading-book: cover GitHub badge +
 Amazon platform-name-not-URL rule. Touched institutional-trader, trading-strategies,
 claude-algo-trading-book pages; bumped updated dates; refreshed index.
+
+## [2026-07-20] ingest | scheduled sync — watchlist-preview, UNION=D5, BSR/launchd+honesty, Amazon Ads, cover gotchas
+From recent sessions. institutional-trader: watchlist "PASS" is a live PREVIEW snapshot — only the
+~15:10 scan is binding (OFSS boundary-hugger flickered PASS but correctly didn't fire); UNION scanner
+= D5 exactly (Donchian D5/D10/D15/D20 study — D10/15/20 are a subset of D5, scanner checks D5 first);
+live bug sweep 5a7a18b (0DTE settlement fabrication in zero_dte.py/dte_multi.py via `spot ... or 0` →
+fake WINs; "M&M" `&` broke Telegram HTML mode + marked-seen-before-send → alerts lost forever → rule:
+HTML-escape fields + mark seen only after send; monthly_fut expiry now MOC close); watchlist timing →
+build 14:45 / send 15:05 (01dc6d3, 6c20f32). trading-strategies: 0.35–0.40 c/w ~82% win is conditional
+on the TP-50 exit, lower held-to-expiry. kdp-dashboard: scraper moved off GitHub Actions to local
+launchd + Playwright headless Chrome (Amazon blocks curl_cffi/CI since ~Jul 17); honesty-first UI shows
+real rank age + stale flags (917f7a1); catalog now 8 books incl Spanish+German editions. NEW page
+amazon-ads: Sponsored Products for the flagship book — underspend from bids too low (don't cut bids to
+fix ACOS), India account-balance throttle watch-item. kdp-books: added spine-on-fold + back-byline-vs-
+barcode + exact-per-binding-dimension cover gotchas. New pages: amazon-ads. Touched institutional-trader,
+trading-strategies, kdp-dashboard, kdp-books; bumped updated dates; refreshed index. Memory: new
+amazon-ads-campaign + kdp-cover-gotchas, updated bsr-dashboard + institutional-trader-status.
