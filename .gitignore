@@ -7,3 +7,10 @@ institutional-trader/
 
 # Dedicated repo — has its own .git (tejasgjadhav/SCMHRD, deployed at /SCMHRD/)
 scmhrd-ai-finance/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
