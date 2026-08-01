@@ -192,3 +192,11 @@ missing from Wikidata P106, plan to add (safe off-page), not yet applied; active
 capital-markets BA/PO roles incl. UBS Corporate Actions PO. Touched projects/institutional-trader,
 entities/tejas-jadhav, syntheses/google-identity-seo; bumped updated dates; refreshed index. Memory:
 new interview-prep-assets, updated institutional-trader-status + google-photo-identity-fix + MEMORY.md.
+
+## [2026-08-01] ingest | catch-up sync — 8 new project pages + KDP listing operations
+Wiki had drifted since 2026-07-23. Added pages/projects/{vt-ocs, in-eq, ninja,
+endowment-advisor, clearframe-studio, kalpana, globalaar-ops, claude-code-finance-book}
+and pages/concepts/kdp-listing-operations. Updated files-repo (project list),
+kdp-books (new titles + cover-claim compliance rule), index.md, graph.html.
+Note: index.md was found overwritten in the working tree with free-text book notes;
+restored from git and the notes handed back to the user separately.

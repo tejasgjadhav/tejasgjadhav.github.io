@@ -3,7 +3,7 @@ title: KDP book catalog — AI and Practical Finance Series
 type: concept
 tags: [kdp, books, writing, amazon]
 created: 2026-07-03
-updated: 2026-07-20
+updated: 2026-08-01
 sources: [~/files/kdp-dashboard/data/books.json]
 ---
 
@@ -48,3 +48,21 @@ Catalog now spans multiple editions (Spanish + German added 2026-07); ranks trac
 [[kdp-dashboard]]. A further book is in build:
 [[dotnet-architect-book]] (not yet in the catalog JSON as of 2026-07). See [[claude-algo-trading-book]]
 for the algo-trading title.
+
+## Added since 2026-07-23
+
+Build directories now under `~/files/kdp-books/`: `claude-finance-professionals`,
+`claude-finance-german`, `ai-prompts-book`, `german-a1-mastery`, `teen-money-playbook`,
+`stop-losing-money`, `wealth-code`, plus shared `aplus-assets`.
+
+- **AI Prompts for Financial Analysis** rebuilt 2026-07-12 from `kdp-books/ai-prompts-book`.
+- **German A1 Mastery** rebuilt 2026-07-26 — 269-page PDF + EPUB. No audio companion yet.
+- **Teen Money Playbook** — original teen personal-finance title, 97 pages, PDF + EPUB +
+  covers, 2026-07-26. Written from scratch, not derived from any existing teen-finance book.
+- [[claude-code-finance-book]] — "Claude Code for Finance", v3 delivered 2026-07-25 (172 pp),
+  cover and upload still outstanding.
+
+The listing side of all this — descriptions, editorial reviews, A+ modules, and the Amazon
+policy that constrains them — is its own page: [[kdp-listing-operations]]. The binding rule
+from 2026-07-30 is that **a cover or blurb may only claim what the manuscript delivers**,
+verified by grepping the manuscript, not by trusting the previous cover.

@@ -3,7 +3,7 @@ title: ~/files repository — overview
 type: project
 tags: [overview, hub]
 created: 2026-07-03
-updated: 2026-07-05
+updated: 2026-08-01
 sources: [~/files]
 ---
 
@@ -16,9 +16,10 @@ software. [[scmhrd-ai-finance]] and AIFINANCE are separate repos deployed as Git
 subpaths (`/SCMHRD/`, `/AIFINANCE/`) of the same site — never commit them into `~/files`
 itself (a gitlink got in once and had to be removed).
 
-## Projects (as of 2026-07)
+## Projects (as of 2026-08)
 
 - [[institutional-trader]] — NSE intraday options paper-trading system (the most active project)
+- [[vt-ocs]] — ORB → Turtle → CPPI cash-equity system, paper engine deployed via launchd
 - [[jarvis]] — J.A.R.V.I.S. Mark VII voice assistant, local-only deployment
 - [[voicebox]] — dev checkout of the open-source local AI voice studio (cloning, TTS/STT, MCP)
 - [[dotnet-architect-book]] — "The Senior .NET Architect's Handbook", 15-part book build
@@ -27,6 +28,16 @@ itself (a gitlink got in once and had to be removed).
 - [[scmhrd-ai-finance]] — personal professional site: AI Finance expert / SCMHRD guest faculty
 - [[aifinance]] — AI-in-finance landing page, own repo deployed at `/AIFINANCE/`
 - [[upstox-data]] — shared Upstox instrument/options JSON supporting the trading work
+- [[basel-analyzer]] — Basel III / Pillar 3 report analyzer (local-only repo)
+- [[in-eq]] — multi-agent equity research MVP, keyless template mode, own repo
+- [[ninja]] — institutional wealth advisory platform (IPS + portfolio engines), own repo
+- [[endowment-advisor]] — multi-agent endowment chatbot with .pptx deck generation
+- [[amazon-ads]] — Sponsored Products campaign state for the flagship KDP title
+- [[clearframe-studio]] — free multilingual AI video suite (prototype and parser seed)
+- [[kalpana]] — the engineered AI film studio that replaced it, milestone-gated
+- [[globalaar-ops]] — LAN factory shop-floor operations app (the one non-finance project)
+- [[claude-code-finance-book]] — "Claude Code for Finance" book build
+- [[claude-algo-trading-book]] — "Claude for Algo Trading" book build
 
 Repo root also holds `index.html` (personal site: "Tejas Jadhav CFA FRM | AI in Finance
 Author | Pune India"), `portfolio-review.html` (mutual fund portfolio review), `logs/`,
