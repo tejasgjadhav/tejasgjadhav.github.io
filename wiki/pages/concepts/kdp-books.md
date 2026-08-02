@@ -35,6 +35,10 @@ sources: [~/files/kdp-dashboard/data/books.json]
    and About the Author moved to the BACK behind a short front notice, so Ch.1 moved p14 -> p10
    and the Delegation Test now lands on p11, inside the sample. Slash commands (/goal, /loop)
    deliberately NOT added - they are Claude Code features covered in [[claude-code-finance-book]].
+   A one-page **"Why This Book Is Different"** now sits on p4, right after the TOC and before any
+   setup material: five checkable differentiators, the case against (no independent validation),
+   and a "do not buy this if..." close. 111 pp; Ch.1 p10 and the Delegation Test p11, both inside
+   the pre-read.
    Build source now lives at `~/files/kdp-books/claude-cowork-finance/` (`src/*.xhtml` +
    `build.py`, Playwright/Chromium two-pass TOC). Interior `COWORK_PRINT_INTERIOR_v5.pdf`;
    EPUB `COWORK_EPUB_v5.epub`. Covers Claude's Cowork mode for finance workflows
