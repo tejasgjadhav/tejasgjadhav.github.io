@@ -31,7 +31,10 @@ sources: [~/files/kdp-dashboard/data/books.json]
    the Institutional-Trader repo's pre-registered OBJECTIVE_SPEC.md, the CAPITAL_CURVE_RESULTS
    breach of its own drawdown cap, and BANKNIFTY_0DTE_REJECTION / DATA_AVAILABILITY_LIMITS as
    checkable public stress tests; stale counts corrected 212 commits/eight studies -> **383
-   commits, 56 studies** (verified against the local clone). 112 pp, exactly page-neutral vs v4.
+   commits, 56 studies** (verified against the local clone). 111 pp. **Front matter restructured for the Amazon pre-read** (~10% sample): full disclaimers
+   and About the Author moved to the BACK behind a short front notice, so Ch.1 moved p14 -> p10
+   and the Delegation Test now lands on p11, inside the sample. Slash commands (/goal, /loop)
+   deliberately NOT added - they are Claude Code features covered in [[claude-code-finance-book]].
    Build source now lives at `~/files/kdp-books/claude-cowork-finance/` (`src/*.xhtml` +
    `build.py`, Playwright/Chromium two-pass TOC). Interior `COWORK_PRINT_INTERIOR_v5.pdf`;
    EPUB `COWORK_EPUB_v5.epub`. Covers Claude's Cowork mode for finance workflows
