@@ -20,10 +20,18 @@ sources: [~/files/kdp-dashboard/data/books.json]
 3. **AI Prompts for Financial Analysis — Equity Research Edition**
 4. **Stop Losing Money** (Kindle 2026-04-07)
 5. **The Wealth Code of Chhatrapati Shivaji Maharaj** (Kindle 2026-04-09)
-6. **Claude Cowork for Finance** (in finalization 2026-07) — restructured to **eleven capabilities
-   + a capstone chapter + an honest closing chapter on the tool's limits** (front matter corrected
-   from stale "twelve capabilities"). Interior `COWORK_PRINT_INTERIOR_v4.pdf` 112 pp; EPUB
-   `COWORK_EPUB_v4.epub`. Covers Claude's Cowork mode for finance workflows ([[claude-anthropic]]).
+6. **Claude Cowork for Finance** (v5 rebuild 2026-08-02) — eleven capabilities + capstone +
+   an honest closing chapter on the tool's limits. **v5 voice/credibility pass:** em-dash density
+   cut 16.4 → 5.3 per 1000 words, all 13 templated "Why Cowork, in plain terms" closing boxes
+   removed, employer names scrubbed from the author bio, and three original decision frameworks
+   added (Delegation Test Ch.1, Verification Tier Ch.2, Automation Payback Line Ch.3), plus a
+   "When Not to Use Cowork" table and an honest tool comparison in Ch.13, Appendix C (46-code
+   failure catalogue, 14 flagged silent) and Appendix D (measurement protocol for every Time
+   Impact figure + Amazon-compliant honest-review ask). 111 pp, page-neutral vs v4.
+   Build source now lives at `~/files/kdp-books/claude-cowork-finance/` (`src/*.xhtml` +
+   `build.py`, Playwright/Chromium two-pass TOC). Interior `COWORK_PRINT_INTERIOR_v5.pdf`;
+   EPUB `COWORK_EPUB_v5.epub`. Covers Claude's Cowork mode for finance workflows
+   ([[claude-anthropic]]).
 
 Both #1 and #6 print PDFs pass the full KDP font audit after each rebuild; deliverables replace the
 same filenames in `~/Downloads/`. **Hardcover cover gotcha:** the AI-book hardcover cover is a
