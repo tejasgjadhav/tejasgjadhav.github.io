@@ -27,7 +27,11 @@ sources: [~/files/kdp-dashboard/data/books.json]
    added (Delegation Test Ch.1, Verification Tier Ch.2, Automation Payback Line Ch.3), plus a
    "When Not to Use Cowork" table and an honest tool comparison in Ch.13, Appendix C (46-code
    failure catalogue, 14 flagged silent) and Appendix D (measurement protocol for every Time
-   Impact figure + Amazon-compliant honest-review ask). 111 pp, page-neutral vs v4.
+   Impact figure + Amazon-compliant honest-review ask). Ch.9 gained "The Public Record", citing
+   the Institutional-Trader repo's pre-registered OBJECTIVE_SPEC.md, the CAPITAL_CURVE_RESULTS
+   breach of its own drawdown cap, and BANKNIFTY_0DTE_REJECTION / DATA_AVAILABILITY_LIMITS as
+   checkable public stress tests; stale counts corrected 212 commits/eight studies -> **383
+   commits, 56 studies** (verified against the local clone). 112 pp, exactly page-neutral vs v4.
    Build source now lives at `~/files/kdp-books/claude-cowork-finance/` (`src/*.xhtml` +
    `build.py`, Playwright/Chromium two-pass TOC). Interior `COWORK_PRINT_INTERIOR_v5.pdf`;
    EPUB `COWORK_EPUB_v5.epub`. Covers Claude's Cowork mode for finance workflows
