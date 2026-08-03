@@ -7,3 +7,11 @@ institutional-trader/
 
 # Dedicated repo — has its own .git (tejasgjadhav/SCMHRD, deployed at /SCMHRD/)
 scmhrd-ai-finance/
+
+# Commercial book sources — manuscripts, print PDFs, EPUBs, cover art.
+# This repo is the PUBLIC GitHub Pages site. These must never be tracked here.
+# Files stay on disk locally; they are simply not part of the published repo.
+kdp-books/
+claude-code-finance-book/
+claude-algo-trading-book/
+dotnet-architect-book/
