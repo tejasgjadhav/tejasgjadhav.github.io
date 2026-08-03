@@ -1,0 +1,484 @@
+<meta charset="utf-8">
+<title>SQL for BA Interview — Complete Guide</title>
+<style>
+  @page { size: A4; margin: 15mm 13mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 10.3px; line-height: 1.48; color: #1a1a1a; margin: 0;
+  }
+  h1 {
+    font-size: 23px; color: #0b3d64; margin: 0 0 2px;
+    border-bottom: 3px solid #d12e2e; padding-bottom: 6px;
+  }
+  .sub { color: #555; font-size: 11px; margin: 0 0 6px; }
+  .toc {
+    background: #f4f6f8; border: 1px solid #dfe4e8; border-radius: 4px;
+    padding: 8px 12px; margin: 10px 0 4px; font-size: 9.8px; column-count: 2; column-gap: 20px;
+  }
+  .toc b { color: #0b3d64; }
+  h2 {
+    font-size: 15px; color: #fff; background: #0b3d64;
+    padding: 5px 9px; margin: 20px 0 8px; border-radius: 3px;
+    page-break-after: avoid;
+  }
+  h3 { font-size: 12px; color: #0b3d64; margin: 12px 0 4px; page-break-after: avoid; }
+  h4 { font-size: 11px; color: #333; margin: 9px 0 3px; page-break-after: avoid; }
+  p { margin: 5px 0; }
+  code, pre { font-family: "SF Mono", Menlo, Consolas, monospace; }
+  pre {
+    background: #f4f6f8; border: 1px solid #dfe4e8; border-left: 3px solid #0b3d64;
+    padding: 8px 10px; margin: 6px 0; border-radius: 3px;
+    font-size: 9.3px; line-height: 1.42; white-space: pre-wrap;
+    page-break-inside: avoid;
+  }
+  code { background: #eef1f4; padding: 1px 4px; border-radius: 3px; font-size: 9.4px; }
+  pre code { background: none; padding: 0; }
+  table {
+    border-collapse: collapse; width: 100%; margin: 6px 0 10px;
+    font-size: 9.3px; page-break-inside: avoid;
+  }
+  th { background: #0b3d64; color: #fff; text-align: left; padding: 4px 7px; }
+  td { border: 1px solid #dfe4e8; padding: 3px 7px; vertical-align: top; }
+  tr:nth-child(even) td { background: #f4f6f8; }
+  .out { font-weight: 600; color: #0b6b3a; font-size: 9.4px; margin: 4px 0 2px; }
+  .trap {
+    background: #fff5f5; border-left: 3px solid #d12e2e;
+    padding: 6px 10px; margin: 7px 0; border-radius: 3px; font-size: 9.9px;
+  }
+  .note {
+    background: #f0f7ff; border-left: 3px solid #2b7cd3;
+    padding: 6px 10px; margin: 7px 0; border-radius: 3px; font-size: 9.9px;
+  }
+  .kw { color: #0b3d64; font-weight: 600; }
+  .qa p { margin: 3px 0 8px; }
+  .qa b { color: #0b3d64; }
+  ul { margin: 4px 0; padding-left: 18px; }
+  li { margin: 2px 0; }
+  .cols2 { column-count: 2; column-gap: 16px; }
+  .avoid { page-break-inside: avoid; }
+  .pb { page-break-before: always; }
+  hr { border: none; border-top: 1px solid #dfe4e8; margin: 14px 0; }
+</style>
+
+<h1>SQL for Business Analysts — Complete Interview Guide</h1>
+<p class="sub">DDL &middot; DML &middot; DCL &middot; TCL &middot; DQL &middot; Keys &middot; Constraints &middot; Joins &middot; Windows &middot; Normalization &middot; ACID &middot; Q&amp;A. Capital-markets / corporate-actions flavored.</p>
+<div class="toc">
+<b>1.</b> SQL command categories &middot; <b>2.</b> Data types &middot; <b>3.</b> DDL (CREATE/ALTER/DROP/TRUNCATE) &middot; <b>4.</b> Keys (all types) &middot; <b>5.</b> Constraints &middot; <b>6.</b> DML (INSERT/UPDATE/DELETE/MERGE) &middot; <b>7.</b> TCL &middot; <b>8.</b> DCL &middot; <b>9.</b> Sample tables &middot; <b>10.</b> SELECT basics &middot; <b>11.</b> Operators &amp; NULL &middot; <b>12.</b> Aggregation &middot; <b>13.</b> Joins &middot; <b>14.</b> Set operations &middot; <b>15.</b> Subqueries &middot; <b>16.</b> Window functions &middot; <b>17.</b> CTEs &middot; <b>18.</b> Built-in functions &middot; <b>19.</b> Views/Index/Proc/Trigger &middot; <b>20.</b> Normalization &middot; <b>21.</b> ACID &amp; transactions &middot; <b>22.</b> Conceptual Q&amp;A &middot; <b>23.</b> Practice prompts
+</div>
+
+<h2>1. SQL Command Categories</h2>
+<p>Every SQL statement falls into one of five families. Being able to name them and give an example is a guaranteed BA question.</p>
+<table>
+<tr><th>Category</th><th>Full form</th><th>Purpose</th><th>Commands</th><th>Auto-commit?</th></tr>
+<tr><td><b>DDL</b></td><td>Data Definition Language</td><td>Define / change structure (schema)</td><td>CREATE, ALTER, DROP, TRUNCATE, RENAME</td><td>Yes (implicit commit)</td></tr>
+<tr><td><b>DML</b></td><td>Data Manipulation Language</td><td>Change the data in tables</td><td>INSERT, UPDATE, DELETE, MERGE</td><td>No</td></tr>
+<tr><td><b>DQL</b></td><td>Data Query Language</td><td>Read data</td><td>SELECT</td><td>No</td></tr>
+<tr><td><b>DCL</b></td><td>Data Control Language</td><td>Permissions / access</td><td>GRANT, REVOKE</td><td>Yes</td></tr>
+<tr><td><b>TCL</b></td><td>Transaction Control Language</td><td>Manage transactions</td><td>COMMIT, ROLLBACK, SAVEPOINT</td><td>&mdash;</td></tr>
+</table>
+<div class="note"><b>Memory hook:</b> DDL = structure, DML = data, DQL = read, DCL = who-can-do-what, TCL = save-or-undo. DDL is auto-committed — you cannot ROLLBACK a DROP/TRUNCATE.</div>
+
+<h2>2. Common Data Types</h2>
+<table>
+<tr><th>Group</th><th>Types</th><th>Notes</th></tr>
+<tr><td>Numeric</td><td>INT, BIGINT, SMALLINT, DECIMAL(p,s)/NUMERIC, FLOAT, REAL</td><td>Use DECIMAL for money (exact); never FLOAT for currency.</td></tr>
+<tr><td>Character</td><td>CHAR(n), VARCHAR(n), TEXT</td><td>CHAR = fixed length (padded), VARCHAR = variable.</td></tr>
+<tr><td>Date/Time</td><td>DATE, TIME, DATETIME/TIMESTAMP</td><td>TIMESTAMP often stores timezone/UTC.</td></tr>
+<tr><td>Boolean / Binary</td><td>BOOLEAN, BLOB, BYTEA</td><td>Boolean stored as 0/1 in some engines.</td></tr>
+</table>
+<div class="trap"><b>Trap:</b> <code>CHAR(10)</code> for "AB" stores "AB␣␣␣␣␣␣␣␣" (padded to 10). Use VARCHAR unless the length is truly fixed (e.g., ISIN = 12 chars, currency code = 3 chars).</div>
+
+<h2>3. DDL — Data Definition Language</h2>
+
+<h3>3.1 CREATE TABLE (with constraints inline)</h3>
+<pre><code>CREATE TABLE clients (
+    client_id    INT           PRIMARY KEY,
+    client_name  VARCHAR(100)  NOT NULL,
+    country      CHAR(2)       DEFAULT 'US',
+    email        VARCHAR(150)  UNIQUE,
+    aum          DECIMAL(18,2) CHECK (aum &gt;= 0),
+    created_at   TIMESTAMP     DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+
+<h3>3.2 CREATE with a FOREIGN KEY (referential integrity)</h3>
+<pre><code>CREATE TABLE trades (
+    trade_id   INT PRIMARY KEY,
+    client_id  INT NOT NULL,
+    symbol     VARCHAR(10) NOT NULL,
+    qty        INT CHECK (qty &gt; 0),
+    price      DECIMAL(12,2),
+    trade_date DATE DEFAULT CURRENT_DATE,
+    CONSTRAINT fk_client
+      FOREIGN KEY (client_id) REFERENCES clients(client_id)
+      ON DELETE CASCADE ON UPDATE CASCADE
+);</code></pre>
+<div class="note"><b>Referential actions:</b> <code>ON DELETE CASCADE</code> deletes child rows when the parent is deleted; <code>SET NULL</code> nulls the FK; <code>RESTRICT/NO ACTION</code> blocks the delete if children exist.</div>
+
+<h3>3.3 ALTER TABLE — the most-asked DDL</h3>
+<pre><code>ALTER TABLE clients ADD  COLUMN risk_rating VARCHAR(10);      -- add column
+ALTER TABLE clients DROP COLUMN risk_rating;                  -- remove column
+ALTER TABLE clients ALTER COLUMN country SET DEFAULT 'GB';    -- change default
+ALTER TABLE clients RENAME COLUMN aum TO assets_under_mgmt;   -- rename column
+ALTER TABLE trades  ADD CONSTRAINT chk_price CHECK (price &gt; 0); -- add constraint
+ALTER TABLE trades  DROP CONSTRAINT fk_client;               -- drop constraint</code></pre>
+
+<h3>3.4 DROP / TRUNCATE / RENAME</h3>
+<pre><code>TRUNCATE TABLE trades;      -- delete ALL rows, fast, keep structure, no WHERE
+DROP TABLE trades;          -- delete table entirely (structure + data)
+ALTER TABLE trades RENAME TO trade_book;</code></pre>
+<div class="trap"><b>Classic 3-way question — DELETE vs TRUNCATE vs DROP:</b>
+<table>
+<tr><th></th><th>DELETE</th><th>TRUNCATE</th><th>DROP</th></tr>
+<tr><td>Type</td><td>DML</td><td>DDL</td><td>DDL</td></tr>
+<tr><td>Removes</td><td>Rows (WHERE allowed)</td><td>All rows</td><td>Whole table</td></tr>
+<tr><td>WHERE clause</td><td>Yes</td><td>No</td><td>No</td></tr>
+<tr><td>Rollback</td><td>Yes</td><td>No (auto-commit)</td><td>No</td></tr>
+<tr><td>Resets identity</td><td>No</td><td>Yes</td><td>N/A</td></tr>
+<tr><td>Speed / logging</td><td>Slow, fully logged</td><td>Fast, minimal log</td><td>Fast</td></tr>
+<tr><td>Fires triggers</td><td>Yes</td><td>No</td><td>No</td></tr>
+</table></div>
+
+<h2>4. Keys — Every Type a BA Should Name</h2>
+<table>
+<tr><th>Key</th><th>Definition</th><th>Example (trades/clients)</th></tr>
+<tr><td><b>Super key</b></td><td>Any set of columns that uniquely identifies a row (may have extra cols)</td><td>{client_id}, {client_id, email}</td></tr>
+<tr><td><b>Candidate key</b></td><td>Minimal super key — no redundant column</td><td>client_id, email (both can identify a client)</td></tr>
+<tr><td><b>Primary key</b></td><td>The chosen candidate key; UNIQUE + NOT NULL; one per table</td><td>client_id</td></tr>
+<tr><td><b>Alternate key</b></td><td>Candidate keys not chosen as PK</td><td>email</td></tr>
+<tr><td><b>Composite key</b></td><td>PK made of 2+ columns together</td><td>(client_id, symbol, trade_date)</td></tr>
+<tr><td><b>Foreign key</b></td><td>Column referencing a PK in another table; enforces referential integrity</td><td>trades.client_id &rarr; clients.client_id</td></tr>
+<tr><td><b>Unique key</b></td><td>Enforces uniqueness; allows one NULL; many per table</td><td>email</td></tr>
+<tr><td><b>Surrogate key</b></td><td>System-generated meaningless id (auto-increment/GUID)</td><td>trade_id (identity)</td></tr>
+<tr><td><b>Natural key</b></td><td>Business-meaningful column used as identifier</td><td>ISIN, SWIFT/BIC, PAN</td></tr>
+</table>
+<div class="note"><b>PK vs Unique (asked constantly):</b> Primary key = NOT NULL + unique, exactly one per table, defines the row's identity. Unique key = unique but allows a single NULL, and you can have many per table.</div>
+
+<h2>5. Constraints</h2>
+<table>
+<tr><th>Constraint</th><th>Enforces</th></tr>
+<tr><td><code>NOT NULL</code></td><td>Column must have a value</td></tr>
+<tr><td><code>UNIQUE</code></td><td>No duplicate values (one NULL allowed)</td></tr>
+<tr><td><code>PRIMARY KEY</code></td><td>UNIQUE + NOT NULL; row identity</td></tr>
+<tr><td><code>FOREIGN KEY</code></td><td>Value must exist in referenced table (referential integrity)</td></tr>
+<tr><td><code>CHECK</code></td><td>Value must satisfy a condition, e.g. <code>CHECK (qty &gt; 0)</code></td></tr>
+<tr><td><code>DEFAULT</code></td><td>Value used when none supplied</td></tr>
+</table>
+
+<h2>6. DML — Data Manipulation Language</h2>
+
+<h3>6.1 INSERT</h3>
+<pre><code>-- Single row
+INSERT INTO clients (client_id, client_name, country)
+VALUES (5, 'Quantum Partners', 'SG');
+
+-- Multiple rows
+INSERT INTO clients (client_id, client_name, country) VALUES
+  (6, 'Rhea Capital', 'US'),
+  (7, 'Sterling AM',  'GB');
+
+-- Insert from another table (INSERT ... SELECT)
+INSERT INTO archived_trades
+SELECT * FROM trades WHERE trade_date &lt; '2023-01-01';</code></pre>
+
+<h3>6.2 UPDATE</h3>
+<pre><code>UPDATE clients
+SET country = 'UK'
+WHERE client_id = 1;
+
+-- Update using a join / correlated subquery
+UPDATE trades
+SET price = price * 1.02
+WHERE client_id IN (SELECT client_id FROM clients WHERE country = 'US');</code></pre>
+<div class="trap"><b>#1 real-world disaster:</b> <code>UPDATE trades SET price = 0;</code> with <b>no WHERE</b> updates <b>every row</b>. Same for DELETE. Always write the WHERE first, and SELECT it before you run the UPDATE.</div>
+
+<h3>6.3 DELETE</h3>
+<pre><code>DELETE FROM trades WHERE trade_date &lt; '2020-01-01';
+DELETE FROM trades;          -- deletes all rows (but rollback-able, unlike TRUNCATE)</code></pre>
+
+<h3>6.4 MERGE / UPSERT (insert-or-update)</h3>
+<pre><code>-- ANSI MERGE (Oracle, SQL Server)
+MERGE INTO clients c
+USING staging s ON (c.client_id = s.client_id)
+WHEN MATCHED THEN UPDATE SET c.client_name = s.client_name
+WHEN NOT MATCHED THEN INSERT (client_id, client_name)
+                       VALUES (s.client_id, s.client_name);
+
+-- Postgres / MySQL style
+INSERT INTO clients (client_id, client_name) VALUES (5,'Quantum')
+ON CONFLICT (client_id) DO UPDATE SET client_name = EXCLUDED.client_name;</code></pre>
+
+<h2>7. TCL — Transaction Control</h2>
+<pre><code>BEGIN;                              -- start transaction
+UPDATE accounts SET bal = bal - 100 WHERE id = 1;   -- debit
+SAVEPOINT after_debit;              -- checkpoint
+UPDATE accounts SET bal = bal + 100 WHERE id = 2;   -- credit
+ROLLBACK TO after_debit;            -- undo only the credit
+COMMIT;                             -- make changes permanent
+-- ROLLBACK;                        -- undo the whole transaction</code></pre>
+<p>A transfer is the textbook transaction: both the debit and credit must succeed, or neither should. That "all-or-nothing" guarantee is <b>Atomicity</b> (see §21).</p>
+
+<h2>8. DCL — Data Control</h2>
+<pre><code>GRANT  SELECT, INSERT ON trades TO analyst_role;   -- give permission
+REVOKE INSERT ON trades FROM analyst_role;         -- take it back</code></pre>
+
+<h2 class="pb">9. Sample Tables (used from here on)</h2>
+<div class="cols2">
+<p><b>employees</b></p>
+<table>
+<tr><th>emp_id</th><th>name</th><th>dept</th><th>mgr</th><th>salary</th></tr>
+<tr><td>1</td><td>Asha</td><td>Operations</td><td>NULL</td><td>95000</td></tr>
+<tr><td>2</td><td>Ben</td><td>Operations</td><td>1</td><td>62000</td></tr>
+<tr><td>3</td><td>Carol</td><td>Settlements</td><td>1</td><td>68000</td></tr>
+<tr><td>4</td><td>Dev</td><td>Settlements</td><td>3</td><td>54000</td></tr>
+<tr><td>5</td><td>Ella</td><td>Reconciliation</td><td>1</td><td>71000</td></tr>
+<tr><td>6</td><td>Faisal</td><td>Reconciliation</td><td>5</td><td>48000</td></tr>
+</table>
+<p><b>clients</b></p>
+<table>
+<tr><th>client_id</th><th>client_name</th><th>country</th></tr>
+<tr><td>1</td><td>Meridian Capital</td><td>UK</td></tr>
+<tr><td>2</td><td>Nova Funds</td><td>US</td></tr>
+<tr><td>3</td><td>Orion AM</td><td>India</td></tr>
+<tr><td>4</td><td>Pallas LLP</td><td>US</td></tr>
+</table>
+</div>
+<p><b>trades</b></p>
+<table>
+<tr><th>trade_id</th><th>client_id</th><th>symbol</th><th>qty</th><th>price</th><th>trade_date</th></tr>
+<tr><td>101</td><td>1</td><td>AAPL</td><td>100</td><td>180.00</td><td>2024-01-05</td></tr>
+<tr><td>102</td><td>1</td><td>MSFT</td><td>50</td><td>400.00</td><td>2024-01-06</td></tr>
+<tr><td>103</td><td>2</td><td>AAPL</td><td>200</td><td>182.00</td><td>2024-01-06</td></tr>
+<tr><td>104</td><td>3</td><td>TSLA</td><td>75</td><td>210.00</td><td>2024-01-07</td></tr>
+<tr><td>105</td><td>2</td><td>MSFT</td><td>30</td><td>405.00</td><td>2024-01-08</td></tr>
+</table>
+
+<h2>10. SELECT Basics (DQL)</h2>
+<pre><code>SELECT name, dept, salary FROM employees WHERE salary &gt; 60000;
+SELECT name, salary FROM employees ORDER BY salary DESC LIMIT 3;   -- top 3
+SELECT DISTINCT dept FROM employees;                              -- unique depts</code></pre>
+<p class="out">WHERE salary &gt; 60000 &rarr; Asha, Ben, Carol, Ella</p>
+
+<h2>11. Operators &amp; NULL Handling</h2>
+<pre><code>WHERE dept IN ('Settlements','Reconciliation')       -- set membership
+WHERE salary BETWEEN 50000 AND 70000                 -- inclusive range
+WHERE name LIKE 'C%'      -- starts with C    _ = one char, % = any chars
+WHERE manager_id IS NULL  -- NULL test (never use = NULL)</code></pre>
+<div class="trap"><b>NULL logic (favourite trick):</b> <code>NULL = NULL</code> is <b>unknown</b>, not true. <code>WHERE x = NULL</code> returns nothing — use <code>IS NULL</code>. Also <code>COUNT(col)</code> ignores NULLs but <code>COUNT(*)</code> counts every row.</div>
+
+<h2>12. Aggregation (GROUP BY / HAVING)</h2>
+<pre><code>SELECT dept, COUNT(*) AS headcount, AVG(salary) AS avg_sal, MAX(salary) AS top
+FROM employees
+GROUP BY dept
+HAVING AVG(salary) &gt; 60000;</code></pre>
+<p class="out">Output</p>
+<table>
+<tr><th>dept</th><th>headcount</th><th>avg_sal</th><th>top</th></tr>
+<tr><td>Operations</td><td>2</td><td>78500</td><td>95000</td></tr>
+<tr><td>Settlements</td><td>2</td><td>61000</td><td>68000</td></tr>
+</table>
+<div class="note"><b>WHERE vs HAVING:</b> WHERE filters rows <i>before</i> grouping (no aggregates). HAVING filters groups <i>after</i> aggregation. Aggregate functions: COUNT, SUM, AVG, MIN, MAX.</div>
+<pre><code>SELECT symbol, SUM(qty*price) AS notional FROM trades GROUP BY symbol;
+-- AAPL 54400 (100*180 + 200*182), MSFT 32150, TSLA 15750</code></pre>
+
+<h2>13. Joins</h2>
+<pre><code>-- INNER: only matching rows (Pallas LLP has no trades -> excluded)
+SELECT t.trade_id, c.client_name, t.symbol
+FROM trades t INNER JOIN clients c ON t.client_id = c.client_id;
+
+-- LEFT + IS NULL: the "anti-join" -> clients with NO trades
+SELECT c.client_name
+FROM clients c LEFT JOIN trades t ON c.client_id = t.client_id
+WHERE t.trade_id IS NULL;              -- Pallas LLP
+
+-- SELF JOIN: employee -> manager
+SELECT e.name AS employee, m.name AS manager
+FROM employees e LEFT JOIN employees m ON e.manager_id = m.emp_id;</code></pre>
+<div class="note avoid"><b>Join types:</b>
+<ul>
+<li><span class="kw">INNER</span> — only rows matching in both tables.</li>
+<li><span class="kw">LEFT (OUTER)</span> — all left rows + matches (NULL where none).</li>
+<li><span class="kw">RIGHT (OUTER)</span> — all right rows + matches.</li>
+<li><span class="kw">FULL OUTER</span> — everything from both sides.</li>
+<li><span class="kw">CROSS</span> — Cartesian product (every combination; rows = m &times; n).</li>
+</ul></div>
+<div class="trap"><b>Why did INNER JOIN return fewer rows?</b> Non-matching keys and NULL keys are dropped. Conversely, a many-to-many join <i>inflates</i> rows ("row explosion") — check your join keys.</div>
+
+<h2>14. Set Operations</h2>
+<table>
+<tr><th>Operator</th><th>Returns</th><th>Dedups?</th></tr>
+<tr><td><code>UNION</code></td><td>All rows from both queries</td><td>Yes (slower)</td></tr>
+<tr><td><code>UNION ALL</code></td><td>All rows incl. duplicates</td><td>No (faster)</td></tr>
+<tr><td><code>INTERSECT</code></td><td>Rows in <i>both</i> queries</td><td>Yes</td></tr>
+<tr><td><code>EXCEPT</code> / <code>MINUS</code></td><td>Rows in 1st but not 2nd</td><td>Yes</td></tr>
+</table>
+<pre><code>SELECT client_id FROM trades WHERE symbol='AAPL'
+INTERSECT
+SELECT client_id FROM trades WHERE symbol='MSFT';   -- clients trading both</code></pre>
+<div class="note">All set operators require the same number of columns with compatible data types. UNION vs JOIN: UNION stacks rows <i>vertically</i>; JOIN adds columns <i>horizontally</i>.</div>
+
+<h2>15. Subqueries</h2>
+<pre><code>-- Scalar: above overall average
+SELECT name, salary FROM employees
+WHERE salary &gt; (SELECT AVG(salary) FROM employees);        -- Asha, Carol, Ella
+
+-- Correlated: top earner per department (runs per outer row)
+SELECT name, dept, salary FROM employees e
+WHERE salary = (SELECT MAX(salary) FROM employees e2 WHERE e2.dept = e.dept);
+
+-- EXISTS: clients who have traded
+SELECT client_name FROM clients c
+WHERE EXISTS (SELECT 1 FROM trades t WHERE t.client_id = c.client_id);</code></pre>
+
+<h2>16. Window Functions (advanced — the senior differentiator)</h2>
+<p>Aggregate across a set of rows <b>without collapsing them</b> (unlike GROUP BY). Syntax: <code>func() OVER (PARTITION BY ... ORDER BY ...)</code>.</p>
+<pre><code>SELECT name, dept, salary,
+   ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC) AS rn,
+   RANK()       OVER (ORDER BY salary DESC) AS rnk,
+   DENSE_RANK() OVER (ORDER BY salary DESC) AS drnk
+FROM employees;</code></pre>
+<div class="note"><b>ROW_NUMBER vs RANK vs DENSE_RANK:</b> ROW_NUMBER = unique 1,2,3,4 even on ties. RANK = ties share, then skips (1,1,3). DENSE_RANK = ties share, no gap (1,1,2).</div>
+<h4>Nth-highest salary (the classic)</h4>
+<pre><code>SELECT salary FROM (
+  SELECT salary, DENSE_RANK() OVER (ORDER BY salary DESC) AS rk FROM employees
+) x WHERE rk = 2;                                  -- 2nd highest = 71000</code></pre>
+<h4>Running total &amp; LAG/LEAD</h4>
+<pre><code>SELECT trade_date, qty*price AS value,
+   SUM(qty*price) OVER (ORDER BY trade_date, trade_id) AS running_total
+FROM trades;
+
+SELECT symbol, trade_date, price,
+   LAG(price)  OVER (PARTITION BY symbol ORDER BY trade_date) AS prev_price,
+   LEAD(price) OVER (PARTITION BY symbol ORDER BY trade_date) AS next_price
+FROM trades;</code></pre>
+
+<h2>17. CTEs (Common Table Expressions)</h2>
+<pre><code>-- Readability: employees above their OWN dept average
+WITH dept_avg AS (
+   SELECT dept, AVG(salary) AS avg_sal FROM employees GROUP BY dept
+)
+SELECT e.name, e.dept, e.salary
+FROM employees e JOIN dept_avg d ON e.dept = d.dept
+WHERE e.salary &gt; d.avg_sal;                         -- Asha, Carol, Ella
+
+-- Recursive: org hierarchy levels
+WITH RECURSIVE org AS (
+   SELECT emp_id, name, manager_id, 1 AS lvl FROM employees WHERE manager_id IS NULL
+   UNION ALL
+   SELECT e.emp_id, e.name, e.manager_id, o.lvl+1
+   FROM employees e JOIN org o ON e.manager_id = o.emp_id
+)
+SELECT name, lvl FROM org ORDER BY lvl;</code></pre>
+<div class="note"><b>CTE vs subquery:</b> A CTE is a named, reusable subquery declared with WITH — more readable, can be referenced multiple times, and supports recursion. Functionally similar to a derived table.</div>
+
+<h2>18. Built-in Functions Cheat Sheet</h2>
+<div class="cols2 avoid">
+<h4>String</h4>
+<pre><code>UPPER(s) LOWER(s)
+LENGTH(s)
+SUBSTRING(s,1,3)
+CONCAT(a,b)  -- or a||b
+TRIM(s) LTRIM RTRIM
+REPLACE(s,'a','b')
+LEFT(s,3) RIGHT(s,2)</code></pre>
+<h4>Date</h4>
+<pre><code>CURRENT_DATE  NOW()
+EXTRACT(YEAR FROM d)
+DATEDIFF(d1,d2)
+DATE_ADD(d, INTERVAL 1 DAY)
+DATE_TRUNC('month', d)</code></pre>
+</div>
+<div class="cols2 avoid">
+<h4>Numeric</h4>
+<pre><code>ROUND(x,2) CEIL(x) FLOOR(x)
+ABS(x) MOD(a,b)
+POWER(x,2) SQRT(x)</code></pre>
+<h4>Conditional / NULL</h4>
+<pre><code>CASE WHEN ... THEN ... ELSE ... END
+COALESCE(a,b,0)  -- 1st non-null
+NULLIF(a,b)      -- NULL if a=b
+ISNULL / IFNULL</code></pre>
+</div>
+<pre><code>-- CASE bucketing + pivot via conditional aggregation
+SELECT client_id,
+   SUM(CASE WHEN symbol='AAPL' THEN qty ELSE 0 END) AS aapl_qty,
+   SUM(CASE WHEN symbol='MSFT' THEN qty ELSE 0 END) AS msft_qty
+FROM trades GROUP BY client_id;</code></pre>
+
+<h2>19. Views, Indexes, Procedures, Triggers</h2>
+<table>
+<tr><th>Object</th><th>What it is</th><th>BA-level why</th></tr>
+<tr><td><b>View</b></td><td>Saved SELECT that behaves like a virtual table</td><td>Simplify complex joins, restrict columns for security. <code>CREATE VIEW v AS SELECT ...</code></td></tr>
+<tr><td><b>Materialized view</b></td><td>View whose result is physically stored &amp; refreshed</td><td>Faster reads on heavy aggregations (reporting).</td></tr>
+<tr><td><b>Index</b></td><td>Lookup structure on column(s)</td><td>Speeds reads (WHERE/JOIN/ORDER BY); slows writes; uses storage.</td></tr>
+<tr><td><b>Stored procedure</b></td><td>Saved, reusable block of SQL logic</td><td>Encapsulate business logic, run as one call.</td></tr>
+<tr><td><b>Trigger</b></td><td>Code that auto-runs on INSERT/UPDATE/DELETE</td><td>Audit trails, enforce rules (e.g., log every price change).</td></tr>
+</table>
+<pre><code>CREATE VIEW us_client_trades AS
+  SELECT t.* FROM trades t JOIN clients c ON t.client_id=c.client_id
+  WHERE c.country='US';
+
+CREATE INDEX idx_trades_client ON trades(client_id);   -- speed up joins/filters
+-- Clustered index = table physically sorted by key (one per table).
+-- Non-clustered = separate structure pointing to rows (many allowed).</code></pre>
+
+<h2 class="pb">20. Normalization</h2>
+<p>Organizing tables to reduce redundancy and avoid update/insert/delete anomalies.</p>
+<table>
+<tr><th>Form</th><th>Rule</th></tr>
+<tr><td><b>1NF</b></td><td>Atomic values only — no repeating groups or multi-valued cells.</td></tr>
+<tr><td><b>2NF</b></td><td>1NF + no partial dependency (non-key cols depend on the <i>whole</i> composite key).</td></tr>
+<tr><td><b>3NF</b></td><td>2NF + no transitive dependency (non-key cols depend only on the key, not on another non-key col).</td></tr>
+<tr><td><b>BCNF</b></td><td>Stronger 3NF — every determinant is a candidate key.</td></tr>
+</table>
+<div class="note"><b>Denormalization</b> deliberately reintroduces redundancy (merging tables, storing computed totals) to cut joins and speed up read-heavy reporting/data-warehouse queries. Trade-off: faster reads, harder writes &amp; risk of inconsistency.</div>
+<p><b>Anomalies normalization prevents:</b> Update (change a value in many rows), Insert (can't add data without unrelated data), Delete (removing one fact loses another).</p>
+
+<h2>21. ACID &amp; Transactions</h2>
+<table>
+<tr><th>Property</th><th>Meaning</th><th>Corporate-actions example</th></tr>
+<tr><td><b>A</b>tomicity</td><td>All steps commit or none do</td><td>Dividend debit from issuer + credit to holders — all or nothing.</td></tr>
+<tr><td><b>C</b>onsistency</td><td>DB moves from one valid state to another (constraints hold)</td><td>Total units after a stock split stay reconciled.</td></tr>
+<tr><td><b>I</b>solation</td><td>Concurrent transactions don't corrupt each other</td><td>Two settlements on the same account don't interleave.</td></tr>
+<tr><td><b>D</b>urability</td><td>Committed data survives crashes</td><td>A booked trade persists after a system restart.</td></tr>
+</table>
+<p><b>Isolation levels (low&rarr;high):</b> Read Uncommitted &rarr; Read Committed &rarr; Repeatable Read &rarr; Serializable. Higher = fewer anomalies (dirty/non-repeatable/phantom reads) but less concurrency.</p>
+<p><b>SQL vs NoSQL (one-liner):</b> SQL = structured, relational, schema-on-write, strong ACID (Oracle, SQL Server, Postgres). NoSQL = flexible schema, horizontal scale, eventual consistency (MongoDB, Cassandra).</p>
+
+<h2>22. Conceptual Q&amp;A (rapid fire)</h2>
+<div class="qa">
+<p><b>Q1. DDL vs DML?</b> DDL defines/changes structure (CREATE/ALTER/DROP, auto-committed); DML changes data (INSERT/UPDATE/DELETE, needs COMMIT).</p>
+<p><b>Q2. WHERE vs HAVING?</b> WHERE filters rows before grouping (no aggregates); HAVING filters groups after aggregation.</p>
+<p><b>Q3. DELETE vs TRUNCATE vs DROP?</b> DELETE = rows, WHERE-able, rollback-able (DML). TRUNCATE = all rows, fast, resets identity, no rollback (DDL). DROP = removes the table itself.</p>
+<p><b>Q4. Primary vs Unique key?</b> PK: NOT NULL + unique, one per table. Unique: allows one NULL, many per table.</p>
+<p><b>Q5. Candidate vs Primary vs Alternate key?</b> Candidate = all minimal unique identifiers; Primary = the one chosen; Alternate = the remaining candidates.</p>
+<p><b>Q6. Primary vs Foreign key?</b> PK identifies a row within its table; FK references a PK in another table to enforce referential integrity.</p>
+<p><b>Q7. UNION vs UNION ALL?</b> UNION removes duplicates (sort cost); UNION ALL keeps them (faster).</p>
+<p><b>Q8. UNION vs JOIN?</b> UNION stacks rows vertically (same columns); JOIN combines columns horizontally by matching keys.</p>
+<p><b>Q9. INNER vs LEFT JOIN?</b> INNER returns only matches; LEFT returns all left rows plus matches (NULLs where none).</p>
+<p><b>Q10. Join vs Subquery?</b> Joins combine columns across tables (usually faster for returning data); subqueries suit existence checks / single values; correlated subqueries can be slow.</p>
+<p><b>Q11. Clustered vs Non-clustered index?</b> Clustered sorts the table physically (one per table); non-clustered is a separate lookup structure (many allowed).</p>
+<p><b>Q12. What is an index trade-off?</b> Faster reads, slower writes, extra storage.</p>
+<p><b>Q13. View vs Table?</b> A table stores data; a view is a saved query (virtual table) — no data of its own (unless materialized).</p>
+<p><b>Q14. SQL logical execution order?</b> FROM &rarr; WHERE &rarr; GROUP BY &rarr; HAVING &rarr; SELECT &rarr; DISTINCT &rarr; ORDER BY &rarr; LIMIT (why a SELECT alias can't be used in WHERE).</p>
+<p><b>Q15. Window function vs GROUP BY?</b> Both aggregate; GROUP BY collapses to one row per group, a window keeps every row and adds the value alongside.</p>
+<p><b>Q16. ROW_NUMBER vs RANK vs DENSE_RANK?</b> Unique numbering; ties-share-then-skip; ties-share-no-gap.</p>
+<p><b>Q17. Nth highest value?</b> DENSE_RANK filtered to N, or MAX(x) WHERE x &lt; (SELECT MAX(x)).</p>
+<p><b>Q18. CHAR vs VARCHAR?</b> CHAR = fixed length (space-padded); VARCHAR = variable length (stores only what's needed).</p>
+<p><b>Q19. Normalization vs Denormalization?</b> Normalize to remove redundancy (integrity, writes); denormalize to reduce joins (read/reporting speed).</p>
+<p><b>Q20. ACID?</b> Atomicity, Consistency, Isolation, Durability — the guarantees that keep transactions reliable.</p>
+<p><b>Q21. DELETE + IS NULL anti-join use?</b> LEFT JOIN + WHERE right.key IS NULL finds unmatched rows (e.g., unsettled trades, clients with no orders).</p>
+<p><b>Q22. Can you ROLLBACK a TRUNCATE?</b> Generally no — it's DDL and auto-commits (engine-dependent). DELETE can be rolled back within a transaction.</p>
+</div>
+
+<h2>23. Practice Prompts (rehearse on the sample tables)</h2>
+<ul>
+<li>Total notional per client, highest first &rarr; JOIN + SUM(qty*price) + GROUP BY + ORDER BY.</li>
+<li>Each employee with their dept's average salary &rarr; window <code>AVG() OVER (PARTITION BY dept)</code>.</li>
+<li>Clients trading only AAPL &rarr; GROUP BY client HAVING <code>COUNT(DISTINCT symbol)=1 AND MAX(symbol)='AAPL'</code>.</li>
+<li>Largest trade per symbol &rarr; <code>ROW_NUMBER() OVER (PARTITION BY symbol ORDER BY qty*price DESC)=1</code>.</li>
+<li>Day-over-day change in daily notional &rarr; daily SUM in a CTE, then <code>LAG()</code>.</li>
+<li>Write the DDL for a <code>corporate_actions</code> table (PK, FK to a securities table, CHECK on ratio &gt; 0, DEFAULT status 'ANNOUNCED').</li>
+<li>Second-highest-paid employee per department &rarr; DENSE_RANK partitioned by dept, filter rk=2.</li>
+<li>Clients who traded AAPL but never MSFT &rarr; EXCEPT of two client_id sets.</li>
+</ul>

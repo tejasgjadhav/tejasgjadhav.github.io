@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Operators · GlobalAAR{% endblock %}
+{% block heading %}Operator efficiency &amp; incentive{% endblock %}
+{% block content %}
+<form class="filter-bar" method="get">
+  <div class="f"><label>From</label><input type="date" name="start" value="{{ start }}"></div>
+  <div class="f"><label>To</label><input type="date" name="end" value="{{ end }}"></div>
+  <button class="btn sm">Apply</button>
+</form>
+<div class="card">
+<table>
+  <tr><th>Operator</th><th class="r">Shifts</th><th class="r">Production</th><th class="r">OK</th>
+      <th class="r">Rejection</th><th class="r">Avg Eff %</th><th class="r">Avg OEE</th><th>Incentive (≥ {{ thr|pct }})</th></tr>
+  {% for r in rows %}
+  <tr>
+    <td><b>{{ r.operator }}</b></td><td class="r">{{ r.n }}</td>
+    <td class="r">{{ r.p|num }}</td><td class="r">{{ r.ok|num }}</td><td class="r">{{ r.rej|num }}</td>
+    <td class="r">{{ r.eff|pct }}</td><td class="r">{{ r.oee|pct }}</td>
+    <td>{% if r.eff and r.eff >= thr %}<span class="pill ok">YES ✔</span>{% else %}<span class="pill mut">NO</span>{% endif %}</td>
+  </tr>
+  {% else %}<tr><td colspan="8" class="empty">No data.</td></tr>{% endfor %}
+</table>
+</div>
+{% endblock %}

@@ -1,0 +1,458 @@
+<meta charset="utf-8">
+<title>SQL Interview Q&A — Worked Examples</title>
+<style>
+  @page { size: A4; margin: 15mm 13mm; }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 10.3px; line-height: 1.48; color: #1a1a1a; margin: 0; }
+  h1 { font-size: 22px; color: #0b3d64; margin: 0 0 2px; border-bottom: 3px solid #d12e2e; padding-bottom: 6px; }
+  .sub { color: #555; font-size: 11px; margin: 0 0 12px; }
+  h2 { font-size: 15px; color: #fff; background: #0b3d64; padding: 5px 9px; margin: 20px 0 8px; border-radius: 3px; page-break-after: avoid; }
+  .q { background: #eef4fb; border-left: 3px solid #2b7cd3; padding: 6px 10px; margin: 12px 0 5px;
+       border-radius: 3px; font-weight: 600; color: #0b3d64; page-break-after: avoid; }
+  .q .n { color: #d12e2e; }
+  .a { margin: 4px 0 6px; }
+  code, pre { font-family: "SF Mono", Menlo, Consolas, monospace; }
+  pre { background: #f4f6f8; border: 1px solid #dfe4e8; border-left: 3px solid #0b3d64;
+    padding: 7px 10px; margin: 5px 0; border-radius: 3px; font-size: 9.3px; line-height: 1.42;
+    white-space: pre-wrap; page-break-inside: avoid; }
+  code { background: #eef1f4; padding: 1px 4px; border-radius: 3px; font-size: 9.4px; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: auto; min-width: 40%; margin: 5px 0 8px; font-size: 9.3px; page-break-inside: avoid; }
+  th { background: #0b3d64; color: #fff; text-align: left; padding: 3px 9px; }
+  td { border: 1px solid #dfe4e8; padding: 3px 9px; }
+  tr:nth-child(even) td { background: #f4f6f8; }
+  .out { font-weight: 600; color: #0b6b3a; font-size: 9.3px; margin: 3px 0 1px; }
+  .cols2 { column-count: 2; column-gap: 16px; }
+  .tables { display: flex; gap: 18px; flex-wrap: wrap; }
+  ul { margin: 4px 0; padding-left: 18px; } li { margin: 2px 0; }
+  .pb { page-break-before: always; }
+  .avoid { page-break-inside: avoid; }
+</style>
+
+<h1>SQL Interview Q&amp;A — Worked Examples</h1>
+<p class="sub">40 questions, answered example-by-example with queries and outputs &middot; Basic &rarr; Advanced &rarr; Scenario &middot; Capital-markets flavored</p>
+
+<h2>Reference Tables</h2>
+<div class="tables">
+<div>
+<b>employees</b>
+<table>
+<tr><th>emp_id</th><th>name</th><th>dept</th><th>mgr</th><th>salary</th></tr>
+<tr><td>1</td><td>Asha</td><td>Operations</td><td>NULL</td><td>95000</td></tr>
+<tr><td>2</td><td>Ben</td><td>Operations</td><td>1</td><td>62000</td></tr>
+<tr><td>3</td><td>Carol</td><td>Settlements</td><td>1</td><td>68000</td></tr>
+<tr><td>4</td><td>Dev</td><td>Settlements</td><td>3</td><td>54000</td></tr>
+<tr><td>5</td><td>Ella</td><td>Reconciliation</td><td>1</td><td>71000</td></tr>
+<tr><td>6</td><td>Faisal</td><td>Reconciliation</td><td>5</td><td>48000</td></tr>
+</table>
+</div>
+<div>
+<b>clients</b>
+<table>
+<tr><th>client_id</th><th>client_name</th><th>country</th></tr>
+<tr><td>1</td><td>Meridian Capital</td><td>UK</td></tr>
+<tr><td>2</td><td>Nova Funds</td><td>US</td></tr>
+<tr><td>3</td><td>Orion AM</td><td>India</td></tr>
+<tr><td>4</td><td>Pallas LLP</td><td>US</td></tr>
+</table>
+<b>trades</b>
+<table>
+<tr><th>trade_id</th><th>client</th><th>symbol</th><th>qty</th><th>price</th><th>date</th></tr>
+<tr><td>101</td><td>1</td><td>AAPL</td><td>100</td><td>180</td><td>01-05</td></tr>
+<tr><td>102</td><td>1</td><td>MSFT</td><td>50</td><td>400</td><td>01-06</td></tr>
+<tr><td>103</td><td>2</td><td>AAPL</td><td>200</td><td>182</td><td>01-06</td></tr>
+<tr><td>104</td><td>3</td><td>TSLA</td><td>75</td><td>210</td><td>01-07</td></tr>
+<tr><td>105</td><td>2</td><td>MSFT</td><td>30</td><td>405</td><td>01-08</td></tr>
+</table>
+</div>
+</div>
+
+<h2>Part A — Basic (1–12)</h2>
+
+<div class="q"><span class="n">Q1.</span> Select all employees earning more than 60,000.</div>
+<div class="a">
+<pre><code>SELECT name, salary FROM employees WHERE salary &gt; 60000;</code></pre>
+<p class="out">Output: Asha 95000, Ben 62000, Carol 68000, Ella 71000</p>
+</div>
+
+<div class="q"><span class="n">Q2.</span> Find the 3 highest-paid employees.</div>
+<div class="a">
+<pre><code>SELECT name, salary FROM employees ORDER BY salary DESC LIMIT 3;</code></pre>
+<p class="out">Output: Asha 95000, Ella 71000, Carol 68000</p>
+<p>(SQL Server: <code>SELECT TOP 3 ...</code>; Oracle: <code>FETCH FIRST 3 ROWS ONLY</code>.)</p>
+</div>
+
+<div class="q"><span class="n">Q3.</span> List the distinct departments.</div>
+<div class="a">
+<pre><code>SELECT DISTINCT dept FROM employees;</code></pre>
+<p class="out">Output: Operations, Settlements, Reconciliation</p>
+</div>
+
+<div class="q"><span class="n">Q4.</span> Find employees whose name starts with "C".</div>
+<div class="a">
+<pre><code>SELECT name FROM employees WHERE name LIKE 'C%';</code></pre>
+<p class="out">Output: Carol &nbsp;&mdash;&nbsp; <code>%</code> = any characters, <code>_</code> = exactly one character.</p>
+</div>
+
+<div class="q"><span class="n">Q5.</span> Which employees have no manager?</div>
+<div class="a">
+<pre><code>SELECT name FROM employees WHERE manager_id IS NULL;   -- Asha</code></pre>
+<p>Why not <code>= NULL</code>? Because NULL means "unknown" — no value equals it. Comparisons to NULL yield <i>unknown</i>, so <code>WHERE manager_id = NULL</code> returns zero rows. Always use <code>IS NULL</code> / <code>IS NOT NULL</code>.</p>
+</div>
+
+<div class="q"><span class="n">Q6.</span> Count employees per department.</div>
+<div class="a">
+<pre><code>SELECT dept, COUNT(*) AS headcount FROM employees GROUP BY dept;</code></pre>
+<table>
+<tr><th>dept</th><th>headcount</th></tr>
+<tr><td>Operations</td><td>2</td></tr><tr><td>Settlements</td><td>2</td></tr><tr><td>Reconciliation</td><td>2</td></tr>
+</table>
+</div>
+
+<div class="q"><span class="n">Q7.</span> What's the difference between <code>COUNT(*)</code>, <code>COUNT(col)</code>, and <code>COUNT(DISTINCT col)</code>?</div>
+<div class="a">
+<ul>
+<li><code>COUNT(*)</code> — every row, including NULLs. On employees = 6.</li>
+<li><code>COUNT(manager_id)</code> — non-NULL values only. = 5 (Asha's is NULL).</li>
+<li><code>COUNT(DISTINCT dept)</code> — unique non-NULL values. = 3.</li>
+</ul>
+</div>
+
+<div class="q"><span class="n">Q8.</span> Show departments whose average salary exceeds 60,000.</div>
+<div class="a">
+<pre><code>SELECT dept, AVG(salary) AS avg_sal
+FROM employees GROUP BY dept HAVING AVG(salary) &gt; 60000;</code></pre>
+<p class="out">Output: Operations 78500, Settlements 61000</p>
+<p><b>WHERE vs HAVING:</b> WHERE can't be used here because the filter is on an <i>aggregate</i> — WHERE runs before grouping, HAVING runs after.</p>
+</div>
+
+<div class="q"><span class="n">Q9.</span> Total value (notional) traded per symbol.</div>
+<div class="a">
+<pre><code>SELECT symbol, SUM(qty*price) AS notional
+FROM trades GROUP BY symbol ORDER BY notional DESC;</code></pre>
+<table>
+<tr><th>symbol</th><th>notional</th></tr>
+<tr><td>AAPL</td><td>54400</td></tr><tr><td>MSFT</td><td>32150</td></tr><tr><td>TSLA</td><td>15750</td></tr>
+</table>
+<p>AAPL = 100&times;180 + 200&times;182 = 54,400.</p>
+</div>
+
+<div class="q"><span class="n">Q10.</span> Employees hired... sorry, order employees by salary, lowest first, but show NULL-manager rows last.</div>
+<div class="a">
+<pre><code>SELECT name, salary FROM employees
+ORDER BY salary ASC;   -- add NULLS LAST when sorting a nullable column</code></pre>
+<p>Postgres/Oracle support <code>ORDER BY manager_id NULLS LAST</code>. In MySQL, NULLs sort first on ASC by default.</p>
+</div>
+
+<div class="q"><span class="n">Q11.</span> Bucket employees into salary bands.</div>
+<div class="a">
+<pre><code>SELECT name, salary,
+  CASE WHEN salary &gt;= 80000 THEN 'Band A'
+       WHEN salary &gt;= 60000 THEN 'Band B'
+       ELSE 'Band C' END AS band
+FROM employees;</code></pre>
+<table>
+<tr><th>name</th><th>salary</th><th>band</th></tr>
+<tr><td>Asha</td><td>95000</td><td>Band A</td></tr>
+<tr><td>Carol</td><td>68000</td><td>Band B</td></tr>
+<tr><td>Faisal</td><td>48000</td><td>Band C</td></tr>
+</table>
+</div>
+
+<div class="q"><span class="n">Q12.</span> Replace NULL manager with 0 in the output.</div>
+<div class="a">
+<pre><code>SELECT name, COALESCE(manager_id, 0) AS mgr FROM employees;</code></pre>
+<p><code>COALESCE</code> returns the first non-NULL argument. Asha's mgr shows as 0.</p>
+</div>
+
+<h2 class="pb">Part B — Joins &amp; Subqueries (13–24)</h2>
+
+<div class="q"><span class="n">Q13.</span> Show each trade with the client's name.</div>
+<div class="a">
+<pre><code>SELECT t.trade_id, c.client_name, t.symbol, t.qty
+FROM trades t INNER JOIN clients c ON t.client_id = c.client_id;</code></pre>
+<p>Returns 5 rows. Pallas LLP (client 4) has no trades, so INNER JOIN excludes it.</p>
+</div>
+
+<div class="q"><span class="n">Q14.</span> Which clients have never traded?</div>
+<div class="a">
+<pre><code>SELECT c.client_name
+FROM clients c LEFT JOIN trades t ON c.client_id = t.client_id
+WHERE t.trade_id IS NULL;</code></pre>
+<p class="out">Output: Pallas LLP</p>
+<p>This is the <b>anti-join</b> pattern — LEFT JOIN keeps all clients, and the unmatched ones have NULL trade columns. In corporate actions this is how you find <i>unsettled</i> or <i>unmatched</i> instructions.</p>
+</div>
+
+<div class="q"><span class="n">Q15.</span> Count trades per client, including clients with zero.</div>
+<div class="a">
+<pre><code>SELECT c.client_name, COUNT(t.trade_id) AS num_trades
+FROM clients c LEFT JOIN trades t ON c.client_id = t.client_id
+GROUP BY c.client_name;</code></pre>
+<table>
+<tr><th>client_name</th><th>num_trades</th></tr>
+<tr><td>Meridian Capital</td><td>2</td></tr><tr><td>Nova Funds</td><td>2</td></tr>
+<tr><td>Orion AM</td><td>1</td></tr><tr><td>Pallas LLP</td><td>0</td></tr>
+</table>
+<p>Note <code>COUNT(t.trade_id)</code> not <code>COUNT(*)</code> — the latter would count the NULL row as 1 for Pallas.</p>
+</div>
+
+<div class="q"><span class="n">Q16.</span> Show each employee next to their manager's name.</div>
+<div class="a">
+<pre><code>SELECT e.name AS employee, m.name AS manager
+FROM employees e LEFT JOIN employees m ON e.manager_id = m.emp_id;</code></pre>
+<p>A <b>self join</b> — the table joined to itself with two aliases. Ben&rarr;Asha, Dev&rarr;Carol, Faisal&rarr;Ella, Asha&rarr;NULL.</p>
+</div>
+
+<div class="q"><span class="n">Q17.</span> Explain INNER vs LEFT vs RIGHT vs FULL with row counts.</div>
+<div class="a">
+<ul>
+<li><b>INNER</b> — only matching rows in both. (trades&times;clients = 5)</li>
+<li><b>LEFT</b> — all clients + matches; Pallas gets NULLs. (rows &ge; left table)</li>
+<li><b>RIGHT</b> — all trades + matches (mirror of LEFT).</li>
+<li><b>FULL OUTER</b> — everything from both, NULLs where no match.</li>
+<li><b>CROSS</b> — every combination: 4 clients &times; 5 trades = 20 rows.</li>
+</ul>
+</div>
+
+<div class="q"><span class="n">Q18.</span> Find employees earning above the company average.</div>
+<div class="a">
+<pre><code>SELECT name, salary FROM employees
+WHERE salary &gt; (SELECT AVG(salary) FROM employees);</code></pre>
+<p class="out">Avg ≈ 66,333 &rarr; Asha, Carol, Ella</p>
+<p>The inner query is a <b>scalar subquery</b> — returns a single value used by the outer WHERE.</p>
+</div>
+
+<div class="q"><span class="n">Q19.</span> Find the top earner in each department.</div>
+<div class="a">
+<pre><code>SELECT name, dept, salary FROM employees e
+WHERE salary = (SELECT MAX(salary) FROM employees e2 WHERE e2.dept = e.dept);</code></pre>
+<p class="out">Asha (Ops 95000), Carol (Settlements 68000), Ella (Recon 71000)</p>
+<p>This is a <b>correlated subquery</b> — the inner query references the outer row (<code>e.dept</code>) and re-runs per row.</p>
+</div>
+
+<div class="q"><span class="n">Q20.</span> List clients who have at least one trade — using EXISTS.</div>
+<div class="a">
+<pre><code>SELECT client_name FROM clients c
+WHERE EXISTS (SELECT 1 FROM trades t WHERE t.client_id = c.client_id);</code></pre>
+<p>Returns Meridian, Nova, Orion. <code>EXISTS</code> stops at the first match — often faster than <code>IN</code> for large subqueries.</p>
+</div>
+
+<div class="q"><span class="n">Q21.</span> IN vs EXISTS vs JOIN — which to use?</div>
+<div class="a">
+<ul>
+<li><b>IN</b> — clean for a small, static list of values.</li>
+<li><b>EXISTS</b> — best for correlated existence checks; short-circuits; NULL-safe.</li>
+<li><b>JOIN</b> — when you also need columns from the other table.</li>
+</ul>
+<p>Trap: <code>NOT IN</code> with a subquery that can return NULL gives wrong/empty results — prefer <code>NOT EXISTS</code>.</p>
+</div>
+
+<div class="q"><span class="n">Q22.</span> Clients who traded both AAPL and MSFT.</div>
+<div class="a">
+<pre><code>SELECT client_id FROM trades WHERE symbol='AAPL'
+INTERSECT
+SELECT client_id FROM trades WHERE symbol='MSFT';</code></pre>
+<p class="out">Output: 1 (Meridian), 2 (Nova)</p>
+<p>Or with GROUP BY: <code>HAVING COUNT(DISTINCT symbol) = 2</code> over those two symbols.</p>
+</div>
+
+<div class="q"><span class="n">Q23.</span> Clients who traded AAPL but never TSLA.</div>
+<div class="a">
+<pre><code>SELECT client_id FROM trades WHERE symbol='AAPL'
+EXCEPT
+SELECT client_id FROM trades WHERE symbol='TSLA';   -- 1, 2</code></pre>
+<p><code>EXCEPT</code> (Oracle: <code>MINUS</code>) = rows in the first set not in the second.</p>
+</div>
+
+<div class="q"><span class="n">Q24.</span> UNION vs UNION ALL — show the difference.</div>
+<div class="a">
+<pre><code>SELECT country FROM clients      -- UK, US, India, US
+UNION       SELECT country FROM clients;   -- UK, US, India   (dedup)
+-- UNION ALL keeps duplicates: UK, US, India, US, UK, US, India, US</code></pre>
+<p>Use UNION ALL when you know there are no dupes (or want them) — it skips the expensive de-duplication sort.</p>
+</div>
+
+<h2 class="pb">Part C — Window Functions &amp; CTEs (25–33)</h2>
+
+<div class="q"><span class="n">Q25.</span> Rank employees by salary. Show ROW_NUMBER, RANK, DENSE_RANK together.</div>
+<div class="a">
+<pre><code>SELECT name, salary,
+  ROW_NUMBER() OVER (ORDER BY salary DESC) AS rn,
+  RANK()       OVER (ORDER BY salary DESC) AS rnk,
+  DENSE_RANK() OVER (ORDER BY salary DESC) AS drnk
+FROM employees;</code></pre>
+<p>If two salaries tied at rank 2: ROW_NUMBER &rarr; 2,3; RANK &rarr; 2,2,4 (skips 3); DENSE_RANK &rarr; 2,2,3 (no gap). ROW_NUMBER is always unique.</p>
+</div>
+
+<div class="q"><span class="n">Q26.</span> Find the 2nd highest salary. (asked in ~every SQL interview)</div>
+<div class="a">
+<pre><code>-- Method 1: DENSE_RANK
+SELECT salary FROM (
+  SELECT salary, DENSE_RANK() OVER (ORDER BY salary DESC) AS rk FROM employees
+) x WHERE rk = 2;                         -- 71000
+
+-- Method 2: subquery
+SELECT MAX(salary) FROM employees
+WHERE salary &lt; (SELECT MAX(salary) FROM employees);
+
+-- Method 3: OFFSET
+SELECT DISTINCT salary FROM employees ORDER BY salary DESC LIMIT 1 OFFSET 1;</code></pre>
+<p>For the <b>Nth</b> highest, change to <code>rk = N</code> (DENSE_RANK handles ties correctly).</p>
+</div>
+
+<div class="q"><span class="n">Q27.</span> Highest-paid employee <i>within each department</i>.</div>
+<div class="a">
+<pre><code>WITH ranked AS (
+  SELECT name, dept, salary,
+     ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC) AS rn
+  FROM employees
+)
+SELECT name, dept, salary FROM ranked WHERE rn = 1;</code></pre>
+<p class="out">Asha / Carol / Ella. <code>PARTITION BY</code> restarts the numbering per department.</p>
+</div>
+
+<div class="q"><span class="n">Q28.</span> Running (cumulative) total of trade value by date.</div>
+<div class="a">
+<pre><code>SELECT trade_date, qty*price AS value,
+  SUM(qty*price) OVER (ORDER BY trade_date, trade_id) AS running_total
+FROM trades;</code></pre>
+<table>
+<tr><th>date</th><th>value</th><th>running_total</th></tr>
+<tr><td>01-05</td><td>18000</td><td>18000</td></tr>
+<tr><td>01-06</td><td>20000</td><td>38000</td></tr>
+<tr><td>01-06</td><td>36400</td><td>74400</td></tr>
+<tr><td>01-07</td><td>15750</td><td>90150</td></tr>
+<tr><td>01-08</td><td>12150</td><td>102300</td></tr>
+</table>
+</div>
+
+<div class="q"><span class="n">Q29.</span> Day-over-day price change per symbol (LAG).</div>
+<div class="a">
+<pre><code>SELECT symbol, trade_date, price,
+  LAG(price) OVER (PARTITION BY symbol ORDER BY trade_date) AS prev,
+  price - LAG(price) OVER (PARTITION BY symbol ORDER BY trade_date) AS chg
+FROM trades;</code></pre>
+<p>AAPL: 180 &rarr; 182 (chg +2). MSFT: 400 &rarr; 405 (chg +5). First row per symbol = NULL prev. <code>LEAD</code> does the same looking forward.</p>
+</div>
+
+<div class="q"><span class="n">Q30.</span> Each employee alongside their department's average salary (without collapsing rows).</div>
+<div class="a">
+<pre><code>SELECT name, dept, salary,
+  AVG(salary) OVER (PARTITION BY dept) AS dept_avg
+FROM employees;</code></pre>
+<p>This is the key win of window functions over GROUP BY: you keep all 6 rows <i>and</i> get the group aggregate on each.</p>
+</div>
+
+<div class="q"><span class="n">Q31.</span> Employees earning above their own department's average.</div>
+<div class="a">
+<pre><code>WITH dept_avg AS (
+  SELECT dept, AVG(salary) AS avg_sal FROM employees GROUP BY dept
+)
+SELECT e.name, e.dept, e.salary
+FROM employees e JOIN dept_avg d ON e.dept = d.dept
+WHERE e.salary &gt; d.avg_sal;                -- Asha, Carol, Ella</code></pre>
+<p>A <b>CTE</b> (<code>WITH</code>) names the aggregate once and makes the query readable.</p>
+</div>
+
+<div class="q"><span class="n">Q32.</span> Walk the org hierarchy and show each person's level (recursive CTE).</div>
+<div class="a">
+<pre><code>WITH RECURSIVE org AS (
+  SELECT emp_id, name, manager_id, 1 AS lvl
+  FROM employees WHERE manager_id IS NULL          -- anchor: top boss
+  UNION ALL
+  SELECT e.emp_id, e.name, e.manager_id, o.lvl+1   -- recursive step
+  FROM employees e JOIN org o ON e.manager_id = o.emp_id
+)
+SELECT name, lvl FROM org ORDER BY lvl;</code></pre>
+<p class="out">Asha (1); Ben, Carol, Ella (2); Dev, Faisal (3)</p>
+</div>
+
+<div class="q"><span class="n">Q33.</span> CTE vs subquery vs temp table — when each?</div>
+<div class="a">
+<ul>
+<li><b>Subquery</b> — one-off, inline, used once.</li>
+<li><b>CTE</b> — readable, referenced multiple times in one statement, supports recursion. Not persisted.</li>
+<li><b>Temp table</b> — materialized, reused across statements, can be indexed; good for multi-step ETL.</li>
+</ul>
+</div>
+
+<h2 class="pb">Part D — DDL/DML &amp; Concepts (34–40)</h2>
+
+<div class="q"><span class="n">Q34.</span> Write DDL for a corporate_actions table with the right keys &amp; constraints.</div>
+<div class="a">
+<pre><code>CREATE TABLE corporate_actions (
+  ca_id       INT PRIMARY KEY,
+  isin        CHAR(12) NOT NULL,
+  ca_type     VARCHAR(20) NOT NULL
+                CHECK (ca_type IN ('DIVIDEND','SPLIT','MERGER','RIGHTS')),
+  ratio       DECIMAL(10,4) CHECK (ratio &gt; 0),
+  ex_date     DATE NOT NULL,
+  record_date DATE NOT NULL,
+  status      VARCHAR(12) DEFAULT 'ANNOUNCED',
+  CONSTRAINT fk_sec FOREIGN KEY (isin) REFERENCES securities(isin)
+);</code></pre>
+<p>Shows: PK, FK (referential integrity), CHECK (domain rules), DEFAULT, NOT NULL — exactly what a corporate-actions PO would design.</p>
+</div>
+
+<div class="q"><span class="n">Q35.</span> Increase price by 2% for all US-client trades. Then explain the safety step.</div>
+<div class="a">
+<pre><code>-- 1) SELECT first to confirm scope
+SELECT * FROM trades WHERE client_id IN
+  (SELECT client_id FROM clients WHERE country='US');
+-- 2) Then UPDATE
+UPDATE trades SET price = price * 1.02
+WHERE client_id IN (SELECT client_id FROM clients WHERE country='US');</code></pre>
+<p>The safety habit: never run UPDATE/DELETE without first proving the WHERE with a SELECT — a missing WHERE hits every row.</p>
+</div>
+
+<div class="q"><span class="n">Q36.</span> Insert-or-update a client record (upsert).</div>
+<div class="a">
+<pre><code>-- Postgres/MySQL
+INSERT INTO clients (client_id, client_name) VALUES (2,'Nova Global')
+ON CONFLICT (client_id) DO UPDATE SET client_name = EXCLUDED.client_name;
+
+-- ANSI MERGE (Oracle/SQL Server)
+MERGE INTO clients c USING staging s ON (c.client_id = s.client_id)
+WHEN MATCHED THEN UPDATE SET c.client_name = s.client_name
+WHEN NOT MATCHED THEN INSERT VALUES (s.client_id, s.client_name);</code></pre>
+</div>
+
+<div class="q"><span class="n">Q37.</span> DELETE vs TRUNCATE vs DROP — one example each and the key difference.</div>
+<div class="a">
+<pre><code>DELETE FROM trades WHERE trade_date &lt; '2020-01-01';  -- rows, WHERE, rollback-able (DML)
+TRUNCATE TABLE trades;   -- all rows, fast, resets identity, no rollback (DDL)
+DROP TABLE trades;       -- removes the table entirely (DDL)</code></pre>
+<p>Only DELETE can be undone inside a transaction; TRUNCATE and DROP auto-commit.</p>
+</div>
+
+<div class="q"><span class="n">Q38.</span> Find and remove duplicate trades (same client, symbol, date).</div>
+<div class="a">
+<pre><code>-- Find
+SELECT client_id, symbol, trade_date, COUNT(*)
+FROM trades GROUP BY client_id, symbol, trade_date HAVING COUNT(*) &gt; 1;
+
+-- Delete duplicates, keep the lowest trade_id
+DELETE FROM trades a USING trades b
+WHERE a.trade_id &gt; b.trade_id
+  AND a.client_id=b.client_id AND a.symbol=b.symbol AND a.trade_date=b.trade_date;</code></pre>
+</div>
+
+<div class="q"><span class="n">Q39.</span> Explain a transaction with a transfer, and which ACID property guarantees it.</div>
+<div class="a">
+<pre><code>BEGIN;
+UPDATE accounts SET bal = bal - 100 WHERE id = 1;   -- debit
+UPDATE accounts SET bal = bal + 100 WHERE id = 2;    -- credit
+COMMIT;   -- both succeed, or ROLLBACK undoes both</code></pre>
+<p><b>Atomicity</b> guarantees all-or-nothing. Consistency keeps balances valid, Isolation stops concurrent transfers interfering, Durability keeps the committed result after a crash.</p>
+</div>
+
+<div class="q"><span class="n">Q40.</span> What is the logical order of execution of a SELECT, and why can't you use a SELECT alias in WHERE?</div>
+<div class="a">
+<p>Execution order: <code>FROM &rarr; WHERE &rarr; GROUP BY &rarr; HAVING &rarr; SELECT &rarr; DISTINCT &rarr; ORDER BY &rarr; LIMIT</code>.</p>
+<pre><code>-- Fails: alias 'notional' not yet created at WHERE stage
+SELECT qty*price AS notional FROM trades WHERE notional &gt; 20000;   -- ERROR
+-- Fix: repeat the expression, or filter in HAVING/an outer query
+SELECT qty*price AS notional FROM trades WHERE qty*price &gt; 20000;</code></pre>
+<p>WHERE is evaluated before SELECT, so the alias doesn't exist yet. ORDER BY (last) <i>can</i> use the alias.</p>
+</div>

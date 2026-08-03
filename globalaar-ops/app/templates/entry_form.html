@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Shift entry · GlobalAAR{% endblock %}
+{% block heading %}{{ 'Edit' if entry and entry.id else 'New' }} shift entry{% endblock %}
+{% block content %}
+{% if error %}<div class="err">{{ error }}</div>{% endif %}
+<form method="post" action="/entry">
+  {% if entry and entry.id %}<input type="hidden" name="entry_id" value="{{ entry.id }}">{% endif %}
+  <div class="grid cols-2">
+    <div class="card">
+      <h2>Shift details</h2>
+      <div class="grid cols-2">
+        <div><label>Date *</label><input type="date" name="date" required value="{{ entry.date if entry else today }}"></div>
+        <div><label>Shift</label><select name="shift">
+          {% for s in ['A','B'] %}<option {{ 'selected' if entry and entry.shift==s }}>{{ s }}</option>{% endfor %}</select></div>
+        <div><label>Machine</label><select name="machine">
+          {% for x in m.machines %}<option {{ 'selected' if entry and entry.machine==x }}>{{ x }}</option>{% endfor %}</select></div>
+        <div><label>Supervisor</label><select name="supervisor"><option value=""></option>
+          {% for x in m.supervisors %}<option {{ 'selected' if entry and entry.supervisor==x }}>{{ x }}</option>{% endfor %}</select></div>
+        <div><label>Operator</label><select name="operator"><option value=""></option>
+          {% for x in m.operators %}<option {{ 'selected' if entry and entry.operator==x }}>{{ x }}</option>{% endfor %}</select></div>
+        <div><label>Planned min (blank = full shift)</label>
+          <input type="number" step="1" min="0" name="planned_min" value="{{ entry.planned_min if entry and entry.planned_min else '' }}"></div>
+      </div>
+      <label>Part *</label>
+      <select name="part" required>
+        <option value=""></option>
+        {% for p in m.parts %}<option value="{{ p.name }}" {{ 'selected' if entry and entry.part==p.name }}>{{ p.name }} — {{ p.material_grade }}</option>{% endfor %}
+      </select>
+      <div class="grid cols-2">
+        <div><label>Production (shots × cavity) *</label>
+          <input type="number" step="1" min="0" name="production" required value="{{ entry.production if entry and entry.production is not none else '' }}"></div>
+        <div><label>Remarks</label><input name="remarks" value="{{ entry.remarks or '' if entry else '' }}"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Computed (Excel-identical formulas)</h2>
+      {% if computed %}
+      <table>
+        <tr><td>Target qty</td><td class="r">{{ computed.tgt_qty|num }}</td>
+            <td>OK qty</td><td class="r">{{ computed.ok_qty|num }}</td></tr>
+        <tr><td>Rejection</td><td class="r">{{ computed.rejection|num }}</td>
+            <td>Rej %</td><td class="r">{{ computed.rej_pct|pct }}</td></tr>
+        <tr><td>Efficiency</td><td class="r">{{ computed.eff_pct|pct }}</td>
+            <td>Total downtime</td><td class="r">{{ computed.total_dt|num }} min</td></tr>
+        <tr><td>Availability</td><td class="r">{{ computed.availability|pct }}</td>
+            <td>Performance</td><td class="r">{{ computed.performance|pct }}</td></tr>
+        <tr><td>Quality</td><td class="r">{{ computed.quality|pct }}</td>
+            <td><b>OEE</b></td><td class="r"><b>{{ computed.oee|pct }}</b></td></tr>
+        <tr><td>RM total</td><td class="r">{{ computed.total_rm_kg|num }} kg</td>
+            <td>Runner</td><td class="r">{{ computed.runner_kg|num }} kg</td></tr>
+      </table>
+      {% else %}<p class="empty">Fill the form and press <b>Preview calculations</b> to see target, OEE and RM before saving.</p>{% endif %}
+      <div style="margin-top:12px;display:flex;gap:10px">
+        <button class="btn sec" name="action" value="preview">Preview calculations</button>
+        <button class="btn" name="action" value="save">Save entry</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Defect-wise rejection (qty)</h2>
+      <div class="mini-grid">
+        {% for d in m.defect_types %}
+        <div><label>{{ d }}</label><input type="number" min="0" step="1" name="def__{{ d }}" value="{{ defects.get(d,'') }}"></div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="card">
+      <h2>Downtime (minutes)</h2>
+      <div class="mini-grid">
+        {% for d in m.downtime_reasons %}
+        <div><label>{{ d }}</label><input type="number" min="0" step="1" name="dt__{{ d }}" value="{{ downtime.get(d,'')|num if downtime.get(d) else '' }}"></div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

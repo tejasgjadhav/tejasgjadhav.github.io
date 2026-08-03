@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Daily report · GlobalAAR{% endblock %}
+{% block heading %}Daily production report{% endblock %}
+{% block content %}
+<form class="filter-bar no-print" method="get">
+  <div class="f"><label>Date</label><input type="date" name="date" value="{{ d }}"></div>
+  <button class="btn sm">Load</button>
+  <button class="btn sm sec" type="button" onclick="window.print()">🖨 Print</button>
+</form>
+
+<div class="print-doc">
+  <div class="doc-head">
+    <div><h2>DAILY PRODUCTION REPORT</h2>
+      <div style="font-size:12px;color:var(--muted)">{{ company }} · {{ plant }}</div></div>
+    <div style="text-align:right"><b>{{ d }}</b><br><span style="font-size:12px;color:var(--muted)">{{ rows|length }} machine-shift entries</span></div>
+  </div>
+
+  <div class="grid cols-4" style="margin-bottom:14px">
+    <div class="card kpi"><h2>Production</h2><div class="v">{{ k.p|num }}</div></div>
+    <div class="card kpi good"><h2>OK qty</h2><div class="v">{{ k.ok|num }}</div></div>
+    <div class="card kpi"><h2>Rejection</h2><div class="v">{{ k.rej|num }}</div>
+      <div class="s">{{ (k.rej/k.p if k.p else None)|pct }}</div></div>
+    <div class="card kpi"><h2>Avg OEE</h2><div class="v">{{ k.oee|pct }}</div>
+      <div class="s">DT {{ k.dt|num }} min · RM {{ k.rm|num }} kg</div></div>
+  </div>
+
+  <table style="margin-bottom:16px">
+    <tr><th>MC</th><th>Sh</th><th>Part</th><th>Operator</th><th class="r">Tgt</th><th class="r">Prod</th>
+        <th class="r">OK</th><th class="r">Rej</th><th class="r">Eff %</th><th class="r">DT</th><th class="r">OEE</th><th>Remarks</th></tr>
+    {% for r in rows %}
+    <tr><td>{{ r.machine }}</td><td>{{ r.shift }}</td><td>{{ r.part[:28] }}</td><td>{{ r.operator or '—' }}</td>
+        <td class="r">{{ r.tgt_qty|num }}</td><td class="r">{{ r.production|num }}</td>
+        <td class="r">{{ r.ok_qty|num }}</td><td class="r">{{ r.rejection|num }}</td>
+        <td class="r">{{ r.eff_pct|pct }}</td><td class="r">{{ r.total_dt|num }}</td>
+        <td class="r">{{ r.oee|pct }}</td><td style="font-size:11px">{{ r.remarks or '' }}</td></tr>
+    {% else %}<tr><td colspan="12" class="empty">No entries for this date.</td></tr>{% endfor %}
+  </table>
+
+  <div class="grid cols-2">
+    <div><h2 style="font-size:13px">Downtime of the day (min)</h2>{{ hbar(dts, color='var(--c2)', width=480, label_w=190)|safe }}</div>
+    <div><h2 style="font-size:13px">Defects of the day (qty)</h2>{{ hbar(defs, color='var(--bad)', width=480, label_w=190)|safe }}</div>
+  </div>
+
+  <div class="sig-row">
+    <div class="sig">Prepared by (Shift Supervisor)</div>
+    <div class="sig">Reviewed by (Production Head)</div>
+    <div class="sig">Approved by (Plant Head)</div>
+  </div>
+</div>
+{% endblock %}

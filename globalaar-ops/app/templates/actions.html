@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Actions · GlobalAAR{% endblock %}
+{% block heading %}Action tracker (PDCA){% endblock %}
+{% block content %}
+<div class="filter-bar">
+  <a class="btn sm {{ 'sec' if show!='OPEN' }}" href="/actions?show=OPEN">Open</a>
+  <a class="btn sm {{ 'sec' if show!='CLOSED' }}" href="/actions?show=CLOSED">Closed</a>
+  <a class="btn sm {{ 'sec' if show!='ALL' }}" href="/actions?show=ALL">All</a>
+  <form method="post" action="/actions/run" class="inline-form">
+    <button class="btn sm warn">⟳ Run problem engine now</button>
+  </form>
+  {% if request.query_params.get('ran') is not none %}
+    <span class="pill ok">Engine ran — {{ request.query_params.get('ran') }} new card(s)</span>{% endif %}
+</div>
+
+<details class="card" style="margin-bottom:14px">
+  <summary>＋ Add manual action</summary>
+  <form method="post" action="/actions/new" class="grid cols-3" style="margin-top:8px">
+    <div style="grid-column:1/-1"><label>Title</label><input name="title" required></div>
+    <div><label>Category</label><select name="category">
+      {% for c in ['DOWNTIME','QUALITY','OEE','MANPOWER','PLANNING','SAFETY','5S'] %}<option>{{ c }}</option>{% endfor %}
+    </select></div>
+    <div><label>Owner</label><input name="owner"></div>
+    <div><label>Due date</label><input type="date" name="due_date"></div>
+    <div style="grid-column:1/-1"><label>Problem description</label><textarea name="problem" rows="2"></textarea></div>
+    <div><button class="btn">Add action</button></div>
+  </form>
+</details>
+
+<div class="grid">
+{% for r in rows %}
+  <div class="card action-card {{ r.category }}">
+    <h3>{{ r.title }}</h3>
+    <div class="meta">
+      <span class="pill mut">{{ r.category }}</span>
+      <span class="pill {{ 'ok' if r.source=='ENGINE' else 'mut' }}">{{ r.source }}</span>
+      <span class="pill {{ 'warn' if r.pdca in ['PLAN','DO'] else 'ok' }}">PDCA: {{ r.pdca }}</span>
+      {% if r.status=='CLOSED' %}<span class="pill ok">CLOSED {{ r.closed_date }}</span>{% endif %}
+      · raised {{ r.date }} · owner <b>{{ r.owner or 'unassigned' }}</b>
+      {% if r.due_date %} · due {{ r.due_date }}{% endif %}
+    </div>
+    {% if r.problem %}<p style="margin:4px 0">{{ r.problem }}</p>{% endif %}
+    {% if r.evidence %}<div class="ev">📊 {{ r.evidence }}</div>{% endif %}
+    {% if r.root_causes %}
+      <details><summary>Likely root causes</summary>
+        <ul>{% for c in r.root_causes|j %}<li>{{ c }}</li>{% endfor %}</ul></details>{% endif %}
+    {% if r.countermeasures %}
+      <details open><summary>Recommended countermeasures</summary>
+        <ul>{% for c in r.countermeasures|j %}<li>{{ c }}</li>{% endfor %}</ul></details>{% endif %}
+    {% if r.result %}<div class="ev">✔ Result: {{ r.result }}</div>{% endif %}
+    <form method="post" action="/actions/{{ r.id }}/update" class="filter-bar" style="margin:8px 0 0">
+      <div class="f"><label>PDCA</label><select name="pdca">
+        {% for s in ['PLAN','DO','CHECK','ACT'] %}<option {{ 'selected' if r.pdca==s }}>{{ s }}</option>{% endfor %}</select></div>
+      <div class="f"><label>Owner</label><input name="owner" value="{{ r.owner or '' }}" style="width:130px"></div>
+      <div class="f"><label>Due</label><input type="date" name="due_date" value="{{ r.due_date or '' }}"></div>
+      <div class="f"><label>Result / verification</label><input name="result" value="{{ r.result or '' }}" style="width:200px"></div>
+      <button class="btn sm">Update</button>
+      {% if r.status=='OPEN' %}<button class="btn sm sec" name="status" value="CLOSED">Close</button>
+      {% else %}<button class="btn sm sec" name="status" value="OPEN">Reopen</button>{% endif %}
+    </form>
+  </div>
+{% else %}<div class="card"><p class="empty">No {{ show|lower }} actions. Run the problem engine or add one manually.</p></div>{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Machines · GlobalAAR{% endblock %}
+{% block heading %}Machine-wise summary &amp; OEE{% endblock %}
+{% block content %}
+<form class="filter-bar" method="get">
+  <div class="f"><label>From</label><input type="date" name="start" value="{{ start }}"></div>
+  <div class="f"><label>To</label><input type="date" name="end" value="{{ end }}"></div>
+  <button class="btn sm">Apply</button>
+</form>
+<div class="card" style="overflow-x:auto">
+<table>
+  <tr><th>Machine</th><th class="r">Shifts</th><th class="r">Production</th><th class="r">OK</th>
+      <th class="r">Rej</th><th class="r">Rej %</th><th class="r">Avg Eff</th><th class="r">Downtime</th>
+      <th class="r">RM kg</th><th class="r">Avail</th><th class="r">Perf</th><th class="r">Qual</th><th class="r">OEE</th></tr>
+  {% for r in rows %}
+  <tr>
+    <td><b>{{ r.machine }}</b></td><td class="r">{{ r.n }}</td>
+    <td class="r">{{ r.p|num }}</td><td class="r">{{ r.ok|num }}</td>
+    <td class="r">{{ r.rej|num }}</td><td class="r">{{ (r.rej/r.p if r.p else None)|pct }}</td>
+    <td class="r">{{ r.eff|pct }}</td><td class="r">{{ r.dt|num }} min</td>
+    <td class="r">{{ r.rm|num }}</td>
+    <td class="r">{{ r.a|pct }}</td><td class="r">{{ r.pf|pct }}</td><td class="r">{{ r.q|pct }}</td>
+    <td class="r"><span class="pill {{ 'ok' if r.oee and r.oee>=oee_target else ('warn' if r.oee and r.oee>=0.6 else 'bad') }}">{{ r.oee|pct }}</span></td>
+  </tr>
+  {% else %}<tr><td colspan="13" class="empty">No data.</td></tr>{% endfor %}
+</table>
+</div>
+<p class="note">OEE = Availability × Performance × Quality, computed per shift with the plant's Excel-identical
+formulas (power-failure minutes excluded from effective time). Machines below {{ oee_target|pct }} are auto-raised in the
+<a href="/actions">action tracker</a>.</p>
+{% endblock %}

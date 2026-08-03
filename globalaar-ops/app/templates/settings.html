@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Settings · GlobalAAR{% endblock %}
+{% block heading %}Settings{% endblock %}
+{% block content %}
+<div class="card" style="max-width:520px">
+  <form method="post">
+    {% for r in rows %}
+    <label>{{ r.key.replace('_',' ') }}</label>
+    <input name="{{ r.key }}" value="{{ r.value }}" {{ 'type=password' if r.key=='admin_pin' }}>
+    {% endfor %}
+    <div style="margin-top:12px"><button class="btn">Save settings</button></div>
+  </form>
+</div>
+<p class="note" style="max-width:520px;margin-top:12px">shift_minutes = planned minutes per shift (default 720 = 12 h).
+incentive_threshold and oee_target are fractions (0.85 = 85%). Changing the admin PIN logs everyone out on next check.</p>
+{% endblock %}

@@ -1,0 +1,2 @@
+[2026-08-03T03:45:05.171Z] TradingView CDP not reachable on 127.0.0.1:9222 (fetch failed).
+Launch it with: ~/tradingview-mcp-jackson/scripts/launch_tv_debug_mac.sh

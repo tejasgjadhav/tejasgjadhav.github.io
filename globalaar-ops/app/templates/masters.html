@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Masters · GlobalAAR{% endblock %}
+{% block heading %}Master data{% endblock %}
+{% block content %}
+<div class="grid cols-2" style="margin-bottom:14px">
+  {% for table, title, items in [
+      ('machines','Machines', m.machines), ('supervisors','Supervisors', m.supervisors),
+      ('operators','Operators', m.operators), ('defect_types','Defect types', m.defect_types),
+      ('downtime_reasons','Downtime reasons', m.downtime_reasons)] %}
+  <div class="card">
+    <h2>{{ title }} ({{ items|length }})</h2>
+    <div style="max-height:180px;overflow-y:auto;font-size:13px;margin-bottom:8px">
+      {% for x in items %}
+        <form class="inline-form" method="post" action="/masters/list">
+          <input type="hidden" name="table" value="{{ table }}"><input type="hidden" name="name" value="{{ x }}">
+          <span class="pill mut" title="click ✕ to deactivate">{{ x }}
+            <button name="op" value="deactivate" style="all:unset;cursor:pointer">✕</button></span>
+        </form>
+      {% endfor %}
+    </div>
+    <form method="post" action="/masters/list" class="filter-bar">
+      <input type="hidden" name="table" value="{{ table }}">
+      <input name="name" placeholder="Add new…" required style="width:180px">
+      <button class="btn sm" name="op" value="add">Add</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="card" style="margin-bottom:14px">
+  <h2>Add / edit part</h2>
+  <form method="post" action="/masters/part" class="grid cols-4">
+    <div><label>Edit existing (blank = new)</label>
+      <select name="part_id" onchange="if(this.value)location='/masters?edit='+this.value">
+        <option value=""></option>
+        {% for p in all_parts %}<option value="{{ p.id }}" {{ 'selected' if request.query_params.get('edit')|int(0) == p.id }}>{{ p.name }}</option>{% endfor %}
+      </select></div>
+    {% set e = (all_parts | selectattr('id','equalto', request.query_params.get('edit')|int(0)) | first) if request.query_params.get('edit') else None %}
+    <div><label>Part name *</label><input name="name" required value="{{ e.name if e else '' }}"></div>
+    <div><label>Part no.</label><input name="part_no" value="{{ e.part_no or '' if e else '' }}"></div>
+    <div><label>Customer</label><input name="customer" value="{{ e.customer or '' if e else '' }}"></div>
+    <div><label>Project</label><input name="project" value="{{ e.project or '' if e else '' }}"></div>
+    <div><label>Material grade</label><input name="material_grade" value="{{ e.material_grade or '' if e else '' }}"></div>
+    <div><label>Cycle time (s)</label><input type="number" step="0.1" name="cycle_time_s" value="{{ e.cycle_time_s or '' if e else '' }}"></div>
+    <div><label>Total cavity</label><input type="number" name="total_cavity" value="{{ e.total_cavity or '' if e else '' }}"></div>
+    <div><label>Running cavity</label><input type="number" name="running_cavity" value="{{ e.running_cavity or '' if e else '' }}"></div>
+    <div><label>Shot wt (g)</label><input type="number" step="0.1" name="shot_wt_g" value="{{ e.shot_wt_g or '' if e else '' }}"></div>
+    <div><label>Part wt (g)</label><input type="number" step="0.1" name="part_wt_g" value="{{ e.part_wt_g or '' if e else '' }}"></div>
+    <div><label>Runner wt (g)</label><input type="number" step="0.1" name="runner_wt_g" value="{{ e.runner_wt_g or '' if e else '' }}"></div>
+    <div><label>Active</label><input type="checkbox" name="active" style="width:auto" {{ 'checked' if not e or e.active }}></div>
+    <div><button class="btn">Save part</button></div>
+  </form>
+</div>
+
+<div class="card" style="overflow-x:auto">
+  <h2>Part master ({{ all_parts|length }})</h2>
+  <table>
+    <tr><th>Part</th><th>Customer</th><th>Material</th><th class="r">Cycle s</th><th class="r">Cav</th>
+        <th class="r">Shot g</th><th class="r">Part g</th><th class="r">Runner g</th><th>Active</th><th></th></tr>
+    {% for p in all_parts %}
+    <tr><td><b>{{ p.name }}</b></td><td>{{ p.customer or '—' }}</td><td>{{ p.material_grade or '—' }}</td>
+        <td class="r">{{ p.cycle_time_s|num }}</td><td class="r">{{ p.running_cavity|num }}</td>
+        <td class="r">{{ p.shot_wt_g|num }}</td><td class="r">{{ p.part_wt_g|num }}</td><td class="r">{{ p.runner_wt_g|num }}</td>
+        <td>{{ '✔' if p.active else '—' }}</td><td><a href="/masters?edit={{ p.id }}">edit</a></td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

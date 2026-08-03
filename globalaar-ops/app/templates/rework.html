@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Rework · GlobalAAR{% endblock %}
+{% block heading %}Rework / offline work{% endblock %}
+{% block content %}
+<div class="grid cols-2">
+  <div class="card">
+    <h2>New rework entry</h2>
+    <form method="post" action="/rework" class="grid cols-2">
+      <div><label>Date</label><input type="date" name="date" value="{{ today }}" required></div>
+      <div><label>Shift</label><select name="shift"><option>A</option><option>B</option></select></div>
+      <div><label>Operator</label><select name="operator" required>
+        {% for x in m.operators %}<option>{{ x }}</option>{% endfor %}</select></div>
+      <div><label>Work type</label><select name="work_type">
+        {% for w in ['REWORK','SORTING','PACKING','ASSEMBLY','INSPECTION','OTHER'] %}<option>{{ w }}</option>{% endfor %}</select></div>
+      <div style="grid-column:1/-1"><label>Part / job description</label><input name="description"></div>
+      <div><label>Target qty</label><input type="number" name="target_qty" min="0" required></div>
+      <div><label>Actual OK qty</label><input type="number" name="ok_qty" min="0" required></div>
+      <div><label>Rework rejects</label><input type="number" name="rej_qty" min="0" value="0"></div>
+      <div><label>Remarks</label><input name="remarks"></div>
+      <div><button class="btn">Save</button></div>
+    </form>
+  </div>
+  <div class="card">
+    <h2>Operator-wise summary</h2>
+    <table>
+      <tr><th>Operator</th><th class="r">Entries</th><th class="r">Target</th><th class="r">OK</th>
+          <th class="r">Rej</th><th class="r">Eff %</th><th>Incentive (≥ {{ thr|pct }})</th></tr>
+      {% for r in summary %}
+      {% set eff = (r.ok/r.t if r.t else None) %}
+      <tr><td>{{ r.operator }}</td><td class="r">{{ r.n }}</td><td class="r">{{ r.t|num }}</td>
+          <td class="r">{{ r.ok|num }}</td><td class="r">{{ r.rej|num }}</td><td class="r">{{ eff|pct }}</td>
+          <td>{% if eff and eff>=thr %}<span class="pill ok">YES ✔</span>{% else %}<span class="pill mut">NO</span>{% endif %}</td></tr>
+      {% else %}<tr><td colspan="7" class="empty">No rework yet.</td></tr>{% endfor %}
+    </table>
+  </div>
+</div>
+<div class="card" style="margin-top:14px">
+  <h2>Recent entries</h2>
+  <table>
+    <tr><th>Date</th><th>Operator</th><th>Sh</th><th>Type</th><th>Description</th>
+        <th class="r">Target</th><th class="r">OK</th><th class="r">Rej</th><th class="r">Eff %</th><th>Remarks</th></tr>
+    {% for r in rows %}
+    <tr><td>{{ r.date }}</td><td>{{ r.operator }}</td><td>{{ r.shift }}</td><td>{{ r.work_type }}</td>
+        <td>{{ r.description }}</td><td class="r">{{ r.target_qty|num }}</td><td class="r">{{ r.ok_qty|num }}</td>
+        <td class="r">{{ r.rej_qty|num }}</td>
+        <td class="r">{{ calc.rework_eff(r.target_qty, r.ok_qty)|pct }}</td><td>{{ r.remarks or '' }}</td></tr>
+    {% else %}<tr><td colspan="10" class="empty">No entries.</td></tr>{% endfor %}
+  </table>
+</div>
+{% endblock %}

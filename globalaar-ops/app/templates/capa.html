@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}{{ c.capa_no }} · GlobalAAR{% endblock %}
+{% block heading %}8D problem-solving report — {{ c.capa_no }}{% endblock %}
+{% block content %}
+<div class="filter-bar no-print">
+  <a class="btn sm sec" href="/quality">← Back to register</a>
+  <button class="btn sm sec" type="button" onclick="window.print()">🖨 Print</button>
+</div>
+<form method="post" action="/quality/capa/{{ c.id }}">
+<div class="print-doc">
+  <div class="doc-head">
+    <div><h2>8D CORRECTIVE ACTION REPORT</h2>
+      <div style="font-size:12px;color:var(--muted)">{{ company }}</div></div>
+    <div style="text-align:right"><b>{{ c.capa_no }}</b><br>
+      <span style="font-size:12px;color:var(--muted)">Date: {{ c.date }}
+      {% if ncr %} · Ref: {{ ncr.ncr_no }} ({{ ncr.source }}){% endif %}</span></div>
+  </div>
+  <div class="grid cols-3">
+    <div style="grid-column:1/-1"><label>Title / problem name</label><input name="title" value="{{ c.title or '' }}"></div>
+    <div><label>Owner</label><input name="owner" value="{{ c.owner or '' }}"></div>
+    <div><label>Due date</label><input type="date" name="due_date" value="{{ c.due_date or '' }}"></div>
+    <div><label>Status</label><select name="status">
+      <option {{ 'selected' if c.status=='OPEN' }}>OPEN</option>
+      <option {{ 'selected' if c.status=='CLOSED' }}>CLOSED</option></select></div>
+  </div>
+  {% for code, name, hint in [
+    ('d1_team','D1 — Team','Cross-functional: production, quality, maintenance, toolroom'),
+    ('d2_problem','D2 — Problem description','What / where / when / how many (use data: qty, dates, machines)'),
+    ('d3_containment','D3 — Containment action','Protect the customer NOW: segregation, 100% inspection, stock check'),
+    ('d4_root_cause','D4 — Root cause (5-Why)','Why did it occur? Why was it not detected? Verify by turning the cause on/off'),
+    ('d5_corrective','D5 — Corrective action chosen','Action that removes the root cause, not the symptom'),
+    ('d6_implemented','D6 — Implementation & validation','When implemented, evidence it works (data before/after)'),
+    ('d7_prevent','D7 — Prevention / horizontal deployment','Update PFMEA, control plan, SOP; apply to similar parts/moulds'),
+    ('d8_closure','D8 — Team recognition & closure','Verified by whom, closing remarks')] %}
+  <div style="margin-top:10px">
+    <label>{{ name }} <span style="text-transform:none;color:var(--muted)">— {{ hint }}</span></label>
+    <textarea name="{{ code }}" rows="3">{{ c[code] or '' }}</textarea>
+  </div>
+  {% endfor %}
+  <div class="sig-row">
+    <div class="sig">Prepared (CAPA owner)</div>
+    <div class="sig">Quality Head</div>
+    <div class="sig">Plant Head</div>
+  </div>
+</div>
+<div style="margin-top:12px" class="no-print"><button class="btn">Save 8D</button></div>
+</form>
+{% endblock %}

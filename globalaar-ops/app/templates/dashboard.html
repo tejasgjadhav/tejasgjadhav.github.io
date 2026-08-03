@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · GlobalAAR{% endblock %}
+{% block heading %}Production MIS Dashboard{% endblock %}
+{% block content %}
+<form class="filter-bar" method="get">
+  <div class="f"><label>From</label><input type="date" name="start" value="{{ start }}"></div>
+  <div class="f"><label>To</label><input type="date" name="end" value="{{ end }}"></div>
+  <button class="btn sm">Apply</button>
+  {% if open_actions %}<a class="btn sm warn" href="/actions">⚑ {{ open_actions }} open actions</a>{% endif %}
+</form>
+
+<div class="grid cols-4" style="margin-bottom:14px">
+  <div class="card kpi"><h2>Total production</h2><div class="v">{{ k.p|num }}</div><div class="s">{{ k.n }} shift entries</div></div>
+  <div class="card kpi good"><h2>OK quantity</h2><div class="v">{{ k.ok|num }}</div><div class="s">{{ k.rm|num }} kg RM used</div></div>
+  <div class="card kpi {{ 'bad' if k.rej and k.p and k.rej/k.p > 0.03 }}"><h2>Rejection</h2><div class="v">{{ k.rej|num }}</div>
+    <div class="s">{{ (k.rej/k.p if k.p else None)|pct }} of production</div></div>
+  <div class="card kpi {{ 'good' if k.oee and k.oee >= oee_target else 'warn' }}"><h2>Avg OEE</h2><div class="v">{{ k.oee|pct }}</div>
+    <div class="s">target {{ oee_target|pct }} · downtime {{ k.dt|num }} min</div></div>
+</div>
+
+<div class="grid cols-2">
+  <div class="card"><h2>Daily production trend</h2>{{ line_trend(prod_trend)|safe }}</div>
+  <div class="card"><h2>Daily OEE trend</h2>{{ line_trend(oee_trend, fmt_pct=True)|safe }}</div>
+  <div class="card"><h2>Top downtime reasons (min) · <a href="/downtime">full Pareto</a></h2>{{ hbar(top_dt, color='var(--c2)')|safe }}</div>
+  <div class="card"><h2>Top defects (qty) · <a href="/defects">full Pareto</a></h2>{{ hbar(top_def, color='var(--bad)')|safe }}</div>
+  <div class="card" style="grid-column:1/-1"><h2>Machine OEE % · <a href="/machines">detail</a></h2>{{ hbar(mach_oee)|safe }}</div>
+</div>
+{% endblock %}

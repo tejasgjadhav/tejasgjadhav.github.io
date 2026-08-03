@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Parts · GlobalAAR{% endblock %}
+{% block heading %}Part-wise production summary{% endblock %}
+{% block content %}
+<form class="filter-bar" method="get">
+  <div class="f"><label>From</label><input type="date" name="start" value="{{ start }}"></div>
+  <div class="f"><label>To</label><input type="date" name="end" value="{{ end }}"></div>
+  <button class="btn sm">Apply</button>
+</form>
+<div class="card" style="overflow-x:auto">
+<table>
+  <tr><th>#</th><th>Part</th><th>Customer</th><th>Material</th><th class="r">Entries</th>
+      <th class="r">Production</th><th class="r">OK</th><th class="r">Rej</th><th class="r">Rej %</th>
+      <th class="r">Avg Eff</th><th class="r">RM kg</th></tr>
+  {% for r in rows %}
+  <tr>
+    <td>{{ loop.index }}</td><td><b>{{ r.part }}</b></td><td>{{ r.customer or '—' }}</td>
+    <td>{{ r.material or '—' }}</td><td class="r">{{ r.n }}</td>
+    <td class="r">{{ r.prod|num }}</td><td class="r">{{ r.ok|num }}</td><td class="r">{{ r.rej|num }}</td>
+    <td class="r">{% set rp = r.rej/r.prod if r.prod else None %}
+      <span class="pill {{ 'bad' if rp and rp>0.05 else ('warn' if rp and rp>0.02 else 'ok') }}">{{ rp|pct }}</span></td>
+    <td class="r">{{ r.eff|pct }}</td><td class="r">{{ r.rm|num }}</td>
+  </tr>
+  {% else %}<tr><td colspan="11" class="empty">No data.</td></tr>{% endfor %}
+</table>
+</div>
+{% endblock %}

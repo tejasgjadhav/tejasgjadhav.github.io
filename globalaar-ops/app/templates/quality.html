@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Quality · GlobalAAR{% endblock %}
+{% block heading %}Quality — NCR &amp; CAPA register{% endblock %}
+{% block content %}
+<details class="card" style="margin-bottom:14px" {{ 'open' if not ncrs }}>
+  <summary>＋ Raise NCR / customer complaint</summary>
+  <form method="post" action="/quality/ncr" class="grid cols-3" style="margin-top:8px">
+    <div><label>Date</label><input type="date" name="date" value="{{ today }}" required></div>
+    <div><label>Source</label><select name="source">
+      {% for s in ['IN-PROCESS','CUSTOMER COMPLAINT','INCOMING','FINAL INSPECTION'] %}<option>{{ s }}</option>{% endfor %}</select></div>
+    <div><label>Customer</label><input name="customer"></div>
+    <div><label>Part</label><select name="part"><option value=""></option>
+      {% for p in m.parts %}<option>{{ p.name }}</option>{% endfor %}</select></div>
+    <div><label>Defect</label><select name="defect"><option value=""></option>
+      {% for d in m.defect_types %}<option>{{ d }}</option>{% endfor %}</select></div>
+    <div><label>Qty</label><input type="number" name="qty" min="0"></div>
+    <div style="grid-column:1/-1"><label>Description</label><input name="description"></div>
+    <div><label>Disposition</label><select name="disposition">
+      {% for s in ['REWORK','SCRAP','USE-AS-IS','RETURN TO SUPPLIER','SEGREGATE'] %}<option>{{ s }}</option>{% endfor %}</select></div>
+    <div><label>Raised by</label><input name="raised_by"></div>
+    <div><button class="btn">Save NCR</button></div>
+  </form>
+</details>
+
+<div class="card" style="margin-bottom:14px">
+  <h2>NCR register</h2>
+  <table>
+    <tr><th>NCR no</th><th>Date</th><th>Source</th><th>Part</th><th>Defect</th><th class="r">Qty</th>
+        <th>Disposition</th><th>Status</th><th></th></tr>
+    {% for r in ncrs %}
+    <tr><td><b>{{ r.ncr_no }}</b></td><td>{{ r.date }}</td><td>{{ r.source }}</td>
+        <td>{{ (r.part or '—')[:26] }}</td><td>{{ r.defect or '—' }}</td><td class="r">{{ r.qty|num }}</td>
+        <td>{{ r.disposition or '—' }}</td>
+        <td><span class="pill {{ 'warn' if r.status=='OPEN' else 'ok' }}">{{ r.status }}</span></td>
+        <td style="white-space:nowrap">
+          <form class="inline-form" method="post" action="/quality/capa/new">
+            <input type="hidden" name="ncr_id" value="{{ r.id }}"><button class="btn sm sec">8D</button></form>
+          {% if r.status=='OPEN' %}
+          <form class="inline-form" method="post" action="/quality/ncr/{{ r.id }}/close"><button class="btn sm sec">Close</button></form>
+          {% endif %}
+        </td></tr>
+    {% else %}<tr><td colspan="9" class="empty">No NCRs raised yet.</td></tr>{% endfor %}
+  </table>
+</div>
+
+<div class="card">
+  <h2>CAPA / 8D register</h2>
+  <table>
+    <tr><th>CAPA no</th><th>Date</th><th>Title</th><th>Owner</th><th>Due</th><th>Status</th><th></th></tr>
+    {% for r in capas %}
+    <tr><td><b>{{ r.capa_no }}</b></td><td>{{ r.date }}</td><td>{{ r.title or '—' }}</td>
+        <td>{{ r.owner or '—' }}</td><td>{{ r.due_date or '—' }}</td>
+        <td><span class="pill {{ 'warn' if r.status=='OPEN' else 'ok' }}">{{ r.status }}</span></td>
+        <td><a href="/quality/capa/{{ r.id }}">open 8D</a></td></tr>
+    {% else %}<tr><td colspan="7" class="empty">No CAPAs. Create one from an NCR with the 8D button.</td></tr>{% endfor %}
+  </table>
+</div>
+{% endblock %}

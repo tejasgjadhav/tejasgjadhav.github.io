@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}GlobalAAR TPS Ops{% endblock %}</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<aside class="nav no-print">
+  <div class="brand">
+    <div class="brand-mark">AAR</div>
+    <div>
+      <div class="brand-name">GlobalAAR</div>
+      <div class="brand-sub">TPS Ops</div>
+    </div>
+  </div>
+  <nav>
+    <div class="nav-sec">Daily work</div>
+    <a href="/entry" class="{{ 'on' if request.url.path.startswith('/entry') and not request.url.path.startswith('/entries') }}">＋ Shift entry</a>
+    <a href="/entries" class="{{ 'on' if request.url.path.startswith('/entries') }}">Entries log</a>
+    <a href="/rework" class="{{ 'on' if request.url.path.startswith('/rework') }}">Rework / offline</a>
+    <a href="/daily" class="{{ 'on' if request.url.path.startswith('/daily') }}">Daily report</a>
+    <div class="nav-sec">Analysis</div>
+    <a href="/" class="{{ 'on' if request.url.path == '/' }}">Dashboard</a>
+    <a href="/machines" class="{{ 'on' if request.url.path.startswith('/machines') }}">Machines / OEE</a>
+    <a href="/parts-summary" class="{{ 'on' if request.url.path.startswith('/parts-summary') }}">Parts</a>
+    <a href="/operators" class="{{ 'on' if request.url.path.startswith('/operators') }}">Operators</a>
+    <a href="/defects" class="{{ 'on' if request.url.path.startswith('/defects') }}">Defect Pareto</a>
+    <a href="/downtime" class="{{ 'on' if request.url.path.startswith('/downtime') }}">Downtime Pareto</a>
+    <a href="/materials" class="{{ 'on' if request.url.path.startswith('/materials') }}">Materials</a>
+    <div class="nav-sec">Improve</div>
+    <a href="/actions" class="{{ 'on' if request.url.path.startswith('/actions') }}">Action tracker</a>
+    <a href="/quality" class="{{ 'on' if request.url.path == '/quality' or request.url.path.startswith('/quality/capa') }}">Quality · NCR / CAPA</a>
+    <a href="/quality/checklists" class="{{ 'on' if request.url.path.startswith('/quality/check') }}">Checklists</a>
+    <div class="nav-sec">Admin</div>
+    <a href="/import" class="{{ 'on' if request.url.path.startswith('/import') }}">Import Excel</a>
+    <a href="/masters" class="{{ 'on' if request.url.path.startswith('/masters') }}">Masters</a>
+    <a href="/settings" class="{{ 'on' if request.url.path.startswith('/settings') }}">Settings</a>
+    {% if admin %}<a href="/logout">Log out (admin)</a>{% else %}<a href="/login">Admin login</a>{% endif %}
+  </nav>
+</aside>
+<main>
+  <header class="topbar no-print">
+    <h1>{% block heading %}{% endblock %}</h1>
+    <div class="co">{{ company }}</div>
+  </header>
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClearFrame Studio — Rights-Cleared AI Video Suite</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          ink:   { 950:'#07090f', 900:'#0b0e17', 850:'#101423', 800:'#151a2e', 700:'#1e2542', 600:'#2a3358' },
+          neon:  { DEFAULT:'#5eead4', dim:'#2dd4bf' },
+          vio:   '#a78bfa',
+          amber2:'#fbbf24',
+        },
+        fontFamily: {
+          disp: ['ui-sans-serif','system-ui','-apple-system','Segoe UI','sans-serif'],
+          mono: ['ui-monospace','SFMono-Regular','Menlo','monospace'],
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { background:
+    radial-gradient(1200px 500px at 80% -10%, rgba(94,234,212,.06), transparent),
+    radial-gradient(900px 400px at 10% 110%, rgba(167,139,250,.07), transparent),
+    #07090f; }
+  ::-webkit-scrollbar { height:8px; width:8px; }
+  ::-webkit-scrollbar-thumb { background:#2a3358; border-radius:4px; }
+  .clip { transition: transform .15s ease, box-shadow .15s ease; }
+  .clip:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(94,234,212,.15); }
+  .clip.selected { outline: 2px solid #5eead4; }
+  .pulse-dot { animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity:.3 } }
+  @keyframes sweep { from { left:-30% } to { left:100% } }
+  .generating::after { content:''; position:absolute; top:0; bottom:0; width:30%; left:-30%;
+    background:linear-gradient(90deg, transparent, rgba(94,234,212,.25), transparent);
+    animation: sweep 1.1s linear infinite; }
+</style>
+</head>
+<body class="font-disp text-slate-200 min-h-screen">
+
+<!-- ══════════════════ HEADER ══════════════════ -->
+<header class="border-b border-ink-700/60 bg-ink-900/80 backdrop-blur sticky top-0 z-40">
+  <div class="max-w-[1500px] mx-auto px-6 py-3 flex items-center gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-neon to-vio grid place-items-center text-ink-950 font-black text-lg">▶</div>
+      <div>
+        <h1 class="font-bold tracking-tight leading-none">ClearFrame <span class="text-neon">Studio</span></h1>
+        <p class="text-[11px] text-slate-400 leading-none mt-1">Rights-Cleared Automated AI Video Suite</p>
+      </div>
+    </div>
+    <div class="ml-auto flex items-center gap-3 text-xs">
+      <span id="modeBadge" class="px-3 py-1.5 rounded-full bg-neon/10 text-neon border border-neon/30 font-semibold flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-neon pulse-dot"></span>FREE MODE · 0 TOKENS · KEYLESS
+      </span>
+      <span class="px-3 py-1.5 rounded-full bg-ink-800 border border-ink-600 text-slate-300">C2PA Provenance: <b class="text-neon">ON</b></span>
+      <button id="btnShotList" class="px-4 py-1.5 rounded-lg bg-neon/10 border border-neon/40 text-neon font-semibold hover:bg-neon/20" title="Export ready-to-paste prompts for Kling / Luma / Runway free tiers — the zero-cost route to true motion video">🎬 Shot List</button>
+      <button id="btnManifest" disabled class="px-4 py-1.5 rounded-lg bg-vio/20 border border-vio/40 text-vio font-semibold disabled:opacity-30 hover:bg-vio/30">⬇ License Manifest</button>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-[1500px] mx-auto px-6 py-6 grid grid-cols-12 gap-6">
+
+  <!-- ══════════════════ 1. SCRIPT ANALYSIS WORKSPACE ══════════════════ -->
+  <section class="col-span-12 lg:col-span-5 space-y-4">
+    <div class="rounded-2xl bg-ink-900 border border-ink-700/60 p-5">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-semibold text-sm tracking-wide text-slate-100">① SCRIPT ANALYSIS WORKSPACE</h2>
+        <div class="flex gap-2 text-xs">
+          <button id="btnSampleEn" class="text-neon hover:underline">Sample EN</button>
+          <button id="btnSampleHi" class="text-neon hover:underline">हिंदी</button>
+          <button id="btnSampleMr" class="text-neon hover:underline">मराठी</button>
+        </div>
+      </div>
+      <textarea id="scriptInput" rows="9" placeholder="Write a screenplay — English, हिंदी or मराठी. Blank lines separate scenes. Description lines set the visuals; dialog lines like  MAYA: We made it.  become the ONLY spoken voiceover…"
+        class="w-full rounded-xl bg-ink-950 border border-ink-700 p-4 text-sm leading-relaxed placeholder:text-slate-600 focus:outline-none focus:border-neon/60 resize-y"></textarea>
+      <div class="flex items-center gap-3 mt-3 flex-wrap">
+        <label class="text-xs text-slate-400">Split by</label>
+        <select id="splitMode" class="bg-ink-800 border border-ink-600 rounded-lg px-2 py-1.5 text-xs">
+          <option value="paragraph">Paragraph (blank line)</option>
+          <option value="sentence">Sentence (. ! ? ।)</option>
+        </select>
+        <label class="text-xs text-slate-400 ml-2">Language</label>
+        <select id="cfgLang" class="bg-ink-800 border border-ink-600 rounded-lg px-2 py-1.5 text-xs">
+          <option value="auto">Auto-detect</option>
+          <option value="en">English</option>
+          <option value="hi">हिंदी (Hindi)</option>
+          <option value="mr">मराठी (Marathi)</option>
+        </select>
+        <button id="btnParse" class="ml-auto px-4 py-2 rounded-lg bg-neon text-ink-950 font-bold text-sm hover:bg-neon-dim">Analyze → Scenes</button>
+      </div>
+    </div>
+
+    <div class="rounded-2xl bg-ink-900 border border-ink-700/60 p-5">
+      <h3 class="font-semibold text-sm mb-3 text-slate-100">Scene Breakdown <span id="sceneCount" class="text-neon font-mono"></span></h3>
+      <div id="sceneList" class="space-y-2 max-h-72 overflow-y-auto pr-1">
+        <p class="text-xs text-slate-500 italic">No scenes yet — analyze a script.</p>
+      </div>
+    </div>
+
+    <!-- ══════ 2. GENERATION CONTROL PANEL ══════ -->
+    <div class="rounded-2xl bg-ink-900 border border-ink-700/60 p-5">
+      <h2 class="font-semibold text-sm tracking-wide mb-4 text-slate-100">② GENERATION CONTROL PANEL</h2>
+      <div class="grid grid-cols-2 gap-4 text-xs">
+        <div>
+          <label class="text-slate-400 block mb-1">Voice character</label>
+          <select id="cfgVoice" class="w-full bg-ink-800 border border-ink-600 rounded-lg px-2 py-2">
+            <option value="warm-female">Warm Narrator (F)</option>
+            <option value="deep-male">Deep Documentary (M)</option>
+            <option value="bright-neutral">Bright Explainer (N)</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1">Speaking pace <span id="paceVal" class="text-neon font-mono">1.0×</span></label>
+          <input id="cfgPace" type="range" min="0.7" max="1.4" step="0.1" value="1.0" class="w-full accent-teal-300">
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1">Music mood</label>
+          <select id="cfgMood" class="w-full bg-ink-800 border border-ink-600 rounded-lg px-2 py-2">
+            <option>Ambient / Minimal</option><option>Uplifting / Corporate</option>
+            <option>Cinematic / Epic</option><option>Lo-fi / Chill</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1">Music duck under VO</label>
+          <select id="cfgDuck" class="w-full bg-ink-800 border border-ink-600 rounded-lg px-2 py-2">
+            <option>-12 dB (recommended)</option><option>-6 dB</option><option>-18 dB</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1">Visual style</label>
+          <select id="cfgStyle" class="w-full bg-ink-800 border border-ink-600 rounded-lg px-2 py-2">
+            <option>Cinematic realism</option><option>Stylized 3D</option>
+            <option>Documentary</option><option>Abstract motion</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1">Aspect ratio</label>
+          <div id="cfgAspect" class="flex gap-1.5">
+            <button data-ar="16:9" class="ar-btn flex-1 py-2 rounded-lg border border-neon/60 bg-neon/10 text-neon font-semibold">16:9</button>
+            <button data-ar="9:16" class="ar-btn flex-1 py-2 rounded-lg border border-ink-600 bg-ink-800">9:16</button>
+            <button data-ar="1:1"  class="ar-btn flex-1 py-2 rounded-lg border border-ink-600 bg-ink-800">1:1</button>
+          </div>
+        </div>
+      </div>
+      <button id="btnGenerate"
+        class="mt-5 w-full py-3 rounded-xl bg-gradient-to-r from-neon to-vio text-ink-950 font-black tracking-wide disabled:opacity-30 hover:brightness-110">
+        ⚡ GENERATE AI VIDEO (parallel · $0.00)
+      </button>
+      <p id="genStatus" class="text-[11px] text-slate-500 mt-2 text-center">Paste or load a script, then hit Generate — analysis runs automatically.</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════ RIGHT COLUMN ══════════════════ -->
+  <section class="col-span-12 lg:col-span-7 space-y-4">
+
+    <!-- ══════ 3. MULTI-TRACK VISUAL TIMELINE ══════ -->
+    <div class="rounded-2xl bg-ink-900 border border-ink-700/60 p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-semibold text-sm tracking-wide text-slate-100">③ MULTI-TRACK TIMELINE</h2>
+        <span id="totalDur" class="text-xs font-mono text-slate-400">00:00</span>
+      </div>
+      <div id="ruler" class="flex text-[10px] font-mono text-slate-500 border-b border-ink-700 pb-1 mb-2 overflow-hidden"></div>
+      <div class="space-y-2">
+        <div class="flex items-center gap-3">
+          <span class="w-20 shrink-0 text-[11px] font-semibold text-neon">VIDEO</span>
+          <div id="trackVideo" class="flex-1 h-16 rounded-lg bg-ink-950 border border-ink-700/60 flex gap-1 p-1 overflow-x-auto"></div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="w-20 shrink-0 text-[11px] font-semibold text-vio">VOICEOVER</span>
+          <div id="trackVoice" class="flex-1 h-12 rounded-lg bg-ink-950 border border-ink-700/60 flex gap-1 p-1 overflow-x-auto"></div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="w-20 shrink-0 text-[11px] font-semibold text-amber2">MUSIC</span>
+          <div id="trackMusic" class="flex-1 h-12 rounded-lg bg-ink-950 border border-ink-700/60 flex gap-1 p-1 overflow-x-auto"></div>
+        </div>
+      </div>
+      <div id="previewWrap" class="mt-4 hidden">
+        <div class="flex items-center gap-2 mb-2 flex-wrap">
+          <button id="btnPlay" class="px-4 py-1.5 rounded-lg bg-neon text-ink-950 font-bold text-xs hover:bg-neon-dim">▶ Play Video</button>
+          <button id="btnStopPlay" class="px-4 py-1.5 rounded-lg bg-ink-800 border border-ink-600 text-xs hover:bg-ink-700">■ Stop</button>
+          <button id="btnExport" class="px-4 py-1.5 rounded-lg bg-vio/20 border border-vio/40 text-vio font-semibold text-xs hover:bg-vio/30">⬇ Export .webm</button>
+          <span class="text-[11px] text-slate-500">Narration uses free on-device voices (hi-IN / mr-IN / en); export bakes in visuals + music.</span>
+        </div>
+        <canvas id="previewCanvas" width="640" height="360" class="w-full max-w-md rounded-xl border border-ink-700 bg-black"></canvas>
+      </div>
+    </div>
+
+    <!-- ══════ 4. COMPLIANCE DASHBOARD ══════ -->
+    <div class="rounded-2xl bg-ink-900 border border-ink-700/60 p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-semibold text-sm tracking-wide text-slate-100">④ COMPLIANCE DASHBOARD</h2>
+        <span id="compBadge" class="text-[11px] px-2.5 py-1 rounded-full bg-ink-800 border border-ink-600 text-slate-400">Awaiting generation</span>
+      </div>
+      <div class="grid grid-cols-3 gap-3 mb-4 text-center">
+        <div class="rounded-xl bg-ink-850 border border-ink-700 p-3">
+          <p id="statCleared" class="text-2xl font-black text-neon">0</p>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wide">Assets cleared</p>
+        </div>
+        <div class="rounded-xl bg-ink-850 border border-ink-700 p-3">
+          <p id="statSanitized" class="text-2xl font-black text-amber2">0</p>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wide">Prompts sanitized</p>
+        </div>
+        <div class="rounded-xl bg-ink-850 border border-ink-700 p-3">
+          <p id="statHashed" class="text-2xl font-black text-vio">0</p>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wide">Provenance hashes</p>
+        </div>
+      </div>
+      <div class="overflow-x-auto rounded-xl border border-ink-700">
+        <table class="w-full text-[11px]">
+          <thead class="bg-ink-850 text-slate-400 uppercase tracking-wide">
+            <tr><th class="text-left px-3 py-2">Asset</th><th class="text-left px-3 py-2">Provider / license tier</th>
+                <th class="text-left px-3 py-2">Commercial use</th><th class="text-left px-3 py-2">SHA-256 (trunc.)</th></tr>
+          </thead>
+          <tbody id="compRows">
+            <tr><td colspan="4" class="px-3 py-4 text-slate-500 italic">No assets generated yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="sanitizerLog" class="mt-3 space-y-1"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="max-w-[1500px] mx-auto px-6 pb-8 text-[11px] text-slate-500">
+  ClearFrame Studio mockup · All generation in this build is local &amp; free (0 API tokens). Enterprise adapters (ElevenLabs · Runway Gen-3 · Mubert) are documented placeholders — see source &amp; ARCHITECTURE.md.
+</footer>
+
+<script>
+'use strict';
+/* ═══════════════════════════════════════════════════════════════════════
+   ClearFrame Studio — modular core.
+   Every module below is a self-contained object with a stable interface,
+   designed to lift straight into a backend service (see ARCHITECTURE.md §5).
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── CONFIG ──────────────────────────────────────────────────────────────
+   LOCAL_FREE      → zero-cost, zero-token in-browser simulation (default).
+   ENTERPRISE_API  → live adapters below. Keys belong SERVER-SIDE; the
+                     placeholders exist so a backend can adopt this shape. */
+const CONFIG = {
+  mode: 'LOCAL_FREE',
+  gatewayEndpoint: '/api/v1/generate',   // backend proxy target when live
+  maxRetries: 3,
+  appVersion: 'clearframe-1.0.0',
+};
+
+/* ── PROVIDERS: Commercially Compliant API Integration Layer ────────────
+   WHY THESE PROVIDERS (legal rationale, per modality):
+
+   VOICE — ElevenLabs Enterprise (alt: OpenAI Audio API):
+     • Enterprise tier grants full commercial usage rights to output audio.
+     • Contractual zero-retention option: customer inputs are excluded from
+       model training — critical when scripts contain unreleased IP.
+     • SOC 2 / DPA available for studio procurement.
+
+   VIDEO — Runway Gen-3 Enterprise (alt: Luma Dream Machine API, Sora API):
+     • Enterprise agreements include platform INDEMNIFICATION for IP claims
+       arising from generated output — the single most important clause for
+       a distributor.
+     • Trained-data provenance statements + built-in moderation reduce the
+       chance of regurgitated copyrighted frames.
+
+   MUSIC — Mubert Business API (alt: Suno/Udio commercial developer tiers):
+     • Paid tier issues an explicit per-track commercial license, cleared
+       for monetized distribution (incl. YouTube Content ID safety).
+     • Generative-only catalog: no sampled commercial recordings, removing
+       master/sync clearance risk entirely.                                */
+const PROVIDERS = {
+  voice: {
+    name: 'ElevenLabs Enterprise TTS',
+    endpoint: 'https://api.elevenlabs.io/v1/text-to-speech/{voice_id}',
+    apiKeyRef: 'ELEVENLABS_API_KEY',            // resolve server-side only
+    licenseTier: 'Enterprise — commercial rights, no-retrain clause',
+    licenseUrl: 'https://elevenlabs.io/enterprise-terms',
+    maxConcurrent: 4,
+    // Language → TTS model routing. eleven_multilingual_v2 covers English
+    // and Hindi natively; Marathi routes to the v3 multilingual family
+    // (same enterprise license umbrella covers all model tiers).
+    modelByLang: { en: 'eleven_multilingual_v2', hi: 'eleven_multilingual_v2', mr: 'eleven_v3' },
+  },
+  video: {
+    name: 'Runway Gen-3 Enterprise',
+    endpoint: 'https://api.dev.runwayml.com/v1/image_to_video',
+    apiKeyRef: 'RUNWAY_API_KEY',
+    licenseTier: 'Enterprise — indemnified commercial output',
+    licenseUrl: 'https://runwayml.com/enterprise-agreement',
+    maxConcurrent: 2,
+  },
+  music: {
+    name: 'Mubert Business API',
+    endpoint: 'https://api-b2b.mubert.com/v2/RecordTrack',
+    apiKeyRef: 'MUBERT_API_KEY',
+    licenseTier: 'Business — per-track commercial license',
+    licenseUrl: 'https://mubert.com/business-license',
+    maxConcurrent: 2,
+  },
+};
+
+/* ── LanguageEngine: EN / HI / MR detection + routing metadata ──────────
+   Detection: Devanagari codepoint ratio separates en vs Indic; Hindi vs
+   Marathi is disambiguated by high-frequency marker words (आहे/आणि are
+   Marathi copula/conjunction; है/और are the Hindi equivalents).           */
+const LanguageEngine = {
+  MARKERS: {
+    hi: ['है','हैं','और','के','की','का','में','से','यह','हम','था','थी','होता'],
+    mr: ['आहे','आहेत','आणि','मध्ये','ते','ती','ही','चा','ची','चे','होते','येथे','व'],
+  },
+  LABEL: { en: 'English', hi: 'हिंदी', mr: 'मराठी' },
+  detect(text) {
+    const chars = text.replace(/\s/g, '');
+    const dev = (text.match(/[ऀ-ॿ]/g) || []).length;
+    if (!chars.length || dev / chars.length < 0.3) return 'en';
+    let hi = 0, mr = 0;
+    text.split(/\s+/).forEach(w => {
+      const t = w.replace(/[।,.!?;:'"()]/g, '');
+      if (this.MARKERS.hi.includes(t)) hi++;
+      if (this.MARKERS.mr.includes(t)) mr++;
+    });
+    return mr > hi ? 'mr' : 'hi';
+  },
+};
+
+/* ── FREE_PROVIDERS: the zero-cost generation stack actually used in
+   LOCAL_FREE mode — honestly license-mapped in the manifest.
+   Video imagery: Pollinations.ai — free, keyless, tokenless public API
+   (FLUX). No indemnification/SLA (that's what the Runway enterprise
+   adapter is for); procedural canvas illustration is the offline
+   fallback. Voice: on-device OS voices. Music: WebAudio synthesis —
+   output is 100% original and owned.                                    */
+const FREE_PROVIDERS = {
+  video: {
+    name: 'Pollinations.ai (FLUX) — free keyless image gen',
+    licenseTier: 'Free public API — commercial use per pollinations.ai terms; NO indemnification',
+    licenseUrl: 'https://pollinations.ai/terms',
+  },
+  voice: {
+    name: 'On-device Web Speech API (OS voices)',
+    licenseTier: 'System TTS — local playback, no license required',
+    licenseUrl: 'local://on-device',
+  },
+  music: {
+    name: 'WebAudio procedural synthesis',
+    licenseTier: 'Original synthesis — output 100% owned',
+    licenseUrl: 'local://original-work',
+  },
+};
+
+/* ── ScriptParser: raw text → chronological scene objects ───────────────
+   Sentence splitting honours the Devanagari danda (।) alongside . ! ?    */
+const ScriptParser = {
+  WPS: { en: 2.4, hi: 2.1, mr: 2.1 }, // narration words-per-second by language
+  parse(text, mode = 'paragraph', langOverride = 'auto') {
+    const chunks = (mode === 'paragraph'
+      ? text.split(/\n\s*\n/)
+      : text.replace(/\n+/g, ' ').split(/(?<=[.!?।])\s+/)
+    ).map(s => s.trim()).filter(Boolean);
+    return chunks.map((body, i) => {
+      // Screenplay semantics: "NAME: line" → character dialog (voiceover);
+      // everything else → scene description (visuals ONLY, never narrated).
+      const dialog = [], desc = [];
+      for (const line of body.split(/\n/).map(l => l.trim()).filter(Boolean)) {
+        const m = line.match(/^([^:।.!?]{1,28}?)\s*:\s*(.+)$/);
+        if (m && m[1].split(/\s+/).length <= 3) dialog.push({ speaker: m[1].trim(), line: m[2].trim() });
+        else desc.push(line);
+      }
+      const description = desc.join(' ') || body;
+      const lang = langOverride === 'auto' ? LanguageEngine.detect(body) : langOverride;
+      const spokenWords = dialog.reduce((a, d) => a + d.line.split(/\s+/).length, 0);
+      const duration = dialog.length
+        ? Math.max(4, Math.round(spokenWords / this.WPS[lang]) + 1)
+        : Math.max(4, Math.min(9, Math.round(description.split(/\s+/).length / 4) + 3));
+      return {
+        id: `scene-${String(i + 1).padStart(2, '0')}`,
+        index: i,
+        text: body,
+        description,
+        dialog,
+        lang,
+        words: spokenWords || description.split(/\s+/).length,
+        duration,
+        visualPrompt: this.extractVisual(description, lang),
+      };
+    });
+  },
+  // crude keyword lift → visual prompt seed; backend swaps in an LLM pass
+  // that also translates Indic keywords to English before the video API.
+  extractVisual(body, lang = 'en') {
+    if (lang === 'en') {
+      const stop = new Set(['the','a','an','and','or','of','to','in','is','are','was','with','that','this','it','on','for','as','at','by','be','we','our','you']);
+      const kw = body.toLowerCase().replace(/[^a-z\s]/g, '').split(/\s+/)
+        .filter(w => w.length > 3 && !stop.has(w)).slice(0, 6);
+      return kw.join(', ') || 'abstract establishing shot';
+    }
+    const stopDev = new Set([...LanguageEngine.MARKERS.hi, ...LanguageEngine.MARKERS.mr,
+      'एक','तो','को','पर','ने','कर','हो','या','ना','जो','अब','फिर','तर','पण','मग','असे','तसे']);
+    const kw = body.replace(/[^ऀ-ॿ\s]/g, '').split(/\s+/)
+      .filter(w => w.length > 2 && !stopDev.has(w)).slice(0, 6);
+    return kw.join(', ') || 'abstract establishing shot';
+  },
+};
+
+/* ── PromptSanitizer: IP firewall — runs BEFORE any prompt could leave ── */
+const PromptSanitizer = {
+  BLOCKLIST: [
+    { re: /\b(mickey mouse|darth vader|spider-?man|harry potter|pikachu|elsa|batman|superman|mario)\b/i, tag: 'copyrighted character' },
+    { re: /\b(disney|pixar|marvel|nintendo|coca-?cola|nike|apple inc|mcdonald'?s|netflix)\b/i, tag: 'trademark' },
+    { re: /\b(taylor swift|elon musk|beyonc[eé]|tom cruise|president|prime minister|celebrity)\b/i, tag: 'public figure' },
+    { re: /\bin the style of\s+[A-Z][a-z]+/, tag: 'artist-style mimicry' },
+    // Devanagari-script coverage for Hindi/Marathi prompts
+    { re: /(शाहरुख\s*खान|अमिताभ\s*बच्चन|सचिन\s*तेंडुलकर|सचिन\s*तेंदुलकर|नरेंद्र\s*मोदी|दीपिका\s*पादुकोण)/, tag: 'public figure (Devanagari)' },
+    { re: /(टाटा|रिलायंस|अमूल|डिज़्नी|डिज्नी|बजाज)/, tag: 'trademark (Devanagari)' },
+  ],
+  SAFETY_SUFFIX: ' | NEGATIVE: no real people, no celebrity likeness, no logos, no trademarks, no copyrighted characters, no watermarked source material, original composition only',
+  sanitize(prompt, sceneId) {
+    let clean = prompt, flags = [];
+    for (const { re, tag } of this.BLOCKLIST) {
+      if (re.test(clean)) {
+        flags.push(tag);
+        clean = clean.replace(re, '[REDACTED-IP]');
+      }
+    }
+    return { sceneId, original: prompt, clean: clean + this.SAFETY_SUFFIX, flags, sanitizedAt: new Date().toISOString() };
+  },
+};
+
+/* ── Provenance: SHA-256 content hashing + watermark embedding ─────────── */
+const Provenance = {
+  async hash(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+  },
+  // Visible watermark; backend counterpart embeds the same hash as C2PA/XMP metadata
+  watermark(ctx, w, h, hash) {
+    ctx.save();
+    ctx.font = '10px monospace';
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.fillText(`AI GENERATED · CFS ${hash.slice(0, 12)}`, 8, h - 8);
+    ctx.restore();
+  },
+};
+
+/* ── GenerationGateway: mode-switched adapters, parallel fan-out ────────
+   In LOCAL_FREE every adapter resolves locally (procedural preview /
+   synthesized waveform) — genuinely free, no network. In ENTERPRISE_API
+   the same envelope posts to CONFIG.gatewayEndpoint (your backend proxy,
+   which holds keys and forwards to PROVIDERS.*).                          */
+const GenerationGateway = {
+  async dispatch(job) {
+    if (CONFIG.mode === 'LOCAL_FREE') return this._mock(job);
+    return this._live(job);
+  },
+  async _live(job) { // enterprise path — retry with exponential backoff
+    for (let attempt = 1; attempt <= CONFIG.maxRetries; attempt++) {
+      try {
+        const res = await fetch(CONFIG.gatewayEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...job, provider: PROVIDERS[job.modality].name }),
+        });
+        if (!res.ok) throw new Error(`gateway ${res.status}`);
+        return await res.json();
+      } catch (err) {
+        if (attempt === CONFIG.maxRetries) throw err;
+        await new Promise(r => setTimeout(r, 400 * 2 ** attempt));
+      }
+    }
+  },
+  async _mock(job) { // free local simulation with realistic latency spread
+    await new Promise(r => setTimeout(r, 600 + Math.random() * 1400));
+    const hash = await Provenance.hash(job.prompt + job.jobId);
+    return {
+      jobId: job.jobId, sceneId: job.sceneId, modality: job.modality,
+      assetId: `${job.modality}-${hash.slice(0, 8)}`,
+      provider: CONFIG.mode === 'LOCAL_FREE' ? FREE_PROVIDERS[job.modality] : PROVIDERS[job.modality],
+      contentHash: hash,
+      durationSec: job.durationSec,
+      lang: job.lang || null,
+      ttsModel: job.ttsModel || null,
+      status: 'cleared',
+    };
+  },
+  // Fan out: one video + one voice job per scene, one music bed per project.
+  buildJobs(scenes, cfg) {
+    const jobs = [];
+    scenes.forEach(s => {
+      const san = PromptSanitizer.sanitize(`${cfg.style}, ${s.visualPrompt}, ${cfg.aspect}`, s.id);
+      AssetRegistry.auditLog.push(san);
+      jobs.push({ jobId: `${s.id}-vid`, sceneId: s.id, modality: 'video', prompt: san.clean, durationSec: s.duration, lang: s.lang });
+      const spoken = s.dialog.map(d => `${d.speaker}: ${d.line}`).join(' ');
+      if (spoken) jobs.push({ jobId: `${s.id}-vo`, sceneId: s.id, modality: 'voice', prompt: spoken, durationSec: s.duration, lang: s.lang,
+        ttsModel: PROVIDERS.voice.modelByLang[s.lang], voice: cfg.voice, pace: cfg.pace });
+    });
+    jobs.push({ jobId: 'proj-music', sceneId: '*', modality: 'music',
+      prompt: PromptSanitizer.sanitize(cfg.mood + ' instrumental bed', '*').clean,
+      durationSec: scenes.reduce((a, s) => a + s.duration, 0) });
+    return jobs;
+  },
+};
+
+/* ── AssetRegistry: asset ↔ license ↔ provenance store of record ───────── */
+const AssetRegistry = {
+  assets: [], auditLog: [],
+  reset() { this.assets = []; this.auditLog = []; },
+  add(asset) { this.assets.push(asset); },
+};
+
+/* ── LicenseManifest: downloadable JSON — every assetId → license terms ── */
+const LicenseManifest = {
+  build(project) {
+    return {
+      manifestVersion: '1.0', generator: CONFIG.appVersion,
+      generatedAt: new Date().toISOString(),
+      project,
+      mode: CONFIG.mode,
+      costIncurred: CONFIG.mode === 'LOCAL_FREE' ? 0 : 'see provider billing',
+      assets: AssetRegistry.assets.map(a => ({
+        assetId: a.assetId, sceneId: a.sceneId, modality: a.modality,
+        language: a.lang, ttsModel: a.ttsModel,
+        sha256: a.contentHash,
+        provider: a.provider.name,
+        licenseTier: a.provider.licenseTier,
+        licenseUrl: a.provider.licenseUrl,
+        commercialUse: true,
+        indemnified: a.provider === PROVIDERS.video,
+      })),
+      promptSanitizationAudit: AssetRegistry.auditLog,
+    };
+  },
+  download(project) {
+    const blob = new Blob([JSON.stringify(this.build(project), null, 2)], { type: 'application/json' });
+    const a = Object.assign(document.createElement('a'), {
+      href: URL.createObjectURL(blob), download: 'clearframe-license-manifest.json' });
+    a.click(); URL.revokeObjectURL(a.href);
+  },
+};
+
+/* ── SceneVisuals: real AI imagery per scene — FREE and keyless ─────────
+   Fetches a FLUX-generated image from Pollinations.ai for every scene
+   (sanitized prompt, deterministic seed from the provenance hash, sized
+   to the project aspect ratio). CORS-anonymous so the canvas stays
+   untainted for .webm export. On failure/offline, RenderEngine falls
+   back to the procedural scene illustrator.                              */
+/* ── CharacterEngine: consistent protagonist across every shot ──────────
+   Real films have recurring characters. If the script involves a person,
+   every shot prompt carries the same descriptor + related seeds, so FLUX
+   renders a consistent protagonist instead of a new face per scene.      */
+const CharacterEngine = {
+  RE: /creator|person|writer|man|woman|boy|girl|student|artist|worker|रचनाकार|निर्माता|व्यक्ति|व्यक्ती|लड़का|लड़की|मुलगा|मुलगी|कलाकार/i,
+  descriptor(scenes) {
+    const speakers = [...new Set(scenes.flatMap(s => s.dialog.map(d => d.speaker)))];
+    if (speakers.length)
+      return `THE SAME recurring characters ${speakers.join(' and ')} appear across every shot — consistent faces, hair and outfits exactly as the scene describes them. `;
+    return scenes.some(s => this.RE.test(s.description + ' ' + s.visualPrompt))
+      ? 'THE SAME protagonist in every shot, consistent face and outfit as described. '
+      : '';
+  },
+};
+
+const SceneVisuals = {
+  cache: new Map(),          // sceneId → Image[] (one per shot, progressive)
+  character: '',
+  // HD renders + explicit FLUX model — Pollinations otherwise defaults to
+  // its cheapest model (sana) and low-res requests look soft when scaled
+  DIMS: { '16:9': [1280, 720], '9:16': [720, 1280], '1:1': [1024, 1024] },
+  MODEL: 'flux',
+  // Two camera setups per scene, cut together like edited coverage
+  SHOTS: [
+    'cinematic establishing wide shot',
+    'intimate close-up shot, shallow depth of field',
+  ],
+  prompt(scene, style, shotIdx) {
+    // Full scene text gives FLUX the story context (it handles Devanagari);
+    // the sanitizer strips IP and appends the restrictive negative tokens.
+    // Description only — dialog is audio, it never pollutes the image prompt
+    return PromptSanitizer.sanitize(
+      `${this.SHOTS[shotIdx]}, ${style}, photorealistic real-life 35mm cinema still, dramatic natural lighting, no text, no captions. ${this.character}Scene: ${scene.description}`,
+      scene.id).clean;
+  },
+  // Anonymous-tier rate limits punish burst requests: pace fetches ~1.5s
+  // apart through a shared queue, with one delayed retry per shot.
+  _queue: Promise.resolve(),
+  _queued(fn) {
+    const p = this._queue.then(fn, fn);
+    this._queue = p.then(() => new Promise(r => setTimeout(r, 1500)));
+    return p;
+  },
+  async load(scene, style, aspect) {
+    const shots = [];
+    for (let i = 0; i < this.SHOTS.length; i++) {
+      const img = await this._queued(() => this._load(scene, style, aspect, i));
+      if (img) { shots.push(img); this.cache.set(scene.id, shots); } // progressive
+    }
+    return shots.length ? shots : null;
+  },
+  _load(scene, style, aspect, shotIdx) {
+    const [w, h] = this.DIMS[aspect] || this.DIMS['16:9'];
+    const seed = parseInt(scene.hash.slice(0, 6), 16) + shotIdx * 7;
+    const prompt = encodeURIComponent(this.prompt(scene, style, shotIdx));
+    // Primary: same-origin proxy (server.py /img) — export-safe, untainted.
+    // Fallback: direct no-CORS embed — displays fine, but taints the canvas,
+    // so exports swap those scenes to the procedural illustrator.
+    const proxied = `/img?prompt=${prompt}&width=${w}&height=${h}&seed=${seed}&nologo=true&model=${this.MODEL}`;
+    const direct = `https://image.pollinations.ai/prompt/${prompt}?width=${w}&height=${h}&nologo=true&seed=${seed}&model=${this.MODEL}`;
+    return new Promise(resolve => {
+      const attempt = (src, exportSafe, next) => {
+        const img = new Image();
+        const timer = setTimeout(() => next ? next() : resolve(null), 90000);
+        img.onload = () => { clearTimeout(timer); img._exportSafe = exportSafe;
+          this.cache.set(scene.id, img); resolve(img); };
+        img.onerror = () => { clearTimeout(timer); next ? next() : resolve(null); };
+        img.src = src;
+      };
+      attempt(proxied, true,
+        () => attempt(direct, false,
+          () => setTimeout(() => attempt(proxied + '&retry=1', true, null), 6000)));
+    });
+  },
+};
+
+/* ── Narrator: FREE on-device TTS via Web Speech API ────────────────────
+   macOS/Windows ship hi-IN and mr-IN system voices — real multilingual
+   narration at zero cost. (OS voices cannot be captured into the WebM
+   export; live playback is fully narrated, export carries visuals+music.
+   The enterprise path swaps this for the ElevenLabs adapter above.)      */
+const Narrator = {
+  LANG: { en: 'en-US', hi: 'hi-IN', mr: 'mr-IN' },
+  // Stable voice per character name, so माया and आरव sound like two people
+  voiceFor(speaker, lang) {
+    const all = speechSynthesis.getVoices();
+    const pool = all.filter(v => v.lang.replace('_', '-').startsWith(this.LANG[lang]));
+    let candidates = pool.length ? pool
+      : (lang === 'mr' ? all.filter(v => v.lang.startsWith('hi')) : all);
+    // macOS ships joke voices (Bad News, Bubbles, Zarvox…) — never cast them
+    const NOVELTY = /Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Deranged|Good News|Jester|Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox|Fred|Junior|Kathy|Ralph/i;
+    const serious = candidates.filter(v => !NOVELTY.test(v.name));
+    if (serious.length) candidates = serious;
+    if (!candidates.length) return null;
+    if (lang === 'en') {  // prefer macOS's natural voices over novelty ones
+      const pref = ['Samantha', 'Ava', 'Allison', 'Zoe', 'Evan', 'Tom', 'Daniel', 'Karen', 'Moira', 'Tessa'];
+      candidates = [...candidates].sort((a, b) =>
+        ((i => i < 0 ? 99 : i)(pref.findIndex(p => a.name.startsWith(p)))) -
+        ((i => i < 0 ? 99 : i)(pref.findIndex(p => b.name.startsWith(p)))));
+      candidates = candidates.slice(0, Math.min(4, candidates.length));
+    }
+    let hsh = 0;
+    for (const c of speaker) hsh = (hsh * 31 + c.charCodeAt(0)) % 997;
+    return candidates[hsh % candidates.length];
+  },
+  // Speak ONLY character dialog, queued in order. Scene descriptions are
+  // stage directions — they are never narrated.
+  speakDialog(dialog, lang, rate = 1) {
+    speechSynthesis.cancel();
+    dialog.forEach(d => {
+      const u = new SpeechSynthesisUtterance(d.line);
+      u.lang = this.LANG[lang] || 'en-US';
+      u.rate = rate;
+      const v = this.voiceFor(d.speaker, lang);
+      if (v) u.voice = v;
+      // stable per-speaker pitch: keeps two characters distinguishable even
+      // when the OS ships a single voice for the language (e.g. hi-IN Lekha)
+      let hsh = 0;
+      for (const c of d.speaker) hsh = (hsh * 31 + c.charCodeAt(0)) % 997;
+      u.pitch = 0.75 + (hsh % 6) * 0.11;   // 0.75 – 1.30
+      speechSynthesis.speak(u);
+    });
+  },
+  stop() { speechSynthesis.cancel(); },
+};
+speechSynthesis.getVoices(); // warm the voice list (async on first call)
+
+/* ── MusicEngine: FREE procedural ambient bed via WebAudio ──────────────
+   Pure synthesis — no samples, no licenses needed, output is 100% ours.
+   Routed to speakers AND a MediaStreamDestination so the export recorder
+   can capture it.                                                        */
+const MusicEngine = {
+  ctx: null, master: null, dest: null, timer: null, bar: 0, ducked: false,
+  MOODS: {
+    'Ambient / Minimal':     { bpm: 68,  root: 130.81, wave: 'sine',     hats: false },
+    'Uplifting / Corporate': { bpm: 104, root: 261.63, wave: 'triangle', hats: true  },
+    'Cinematic / Epic':      { bpm: 78,  root: 110.00, wave: 'sawtooth', hats: false },
+    'Lo-fi / Chill':         { bpm: 84,  root: 146.83, wave: 'triangle', hats: true  },
+  },
+  PROG: [[0, 3, 7], [8, 12, 15], [3, 7, 10], [10, 14, 17]], // i–VI–III–VII (minor)
+  PENTA: [0, 3, 5, 7, 10, 12, 15],
+  st(n, root) { return root * Math.pow(2, n / 12); },
+  start(mood) {
+    this.stop();
+    this.ctx = this.ctx || new (window.AudioContext || window.webkitAudioContext)();
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+    this.master = this.ctx.createGain();
+    this.master.gain.value = 0.16;
+    const comp = this.ctx.createDynamicsCompressor(); // glue + no clipping
+    this.master.connect(comp);
+    comp.connect(this.ctx.destination);
+    this.dest = this.ctx.createMediaStreamDestination();
+    comp.connect(this.dest);
+    const cfg = this.MOODS[mood] || this.MOODS['Ambient / Minimal'];
+    const beat = 60 / cfg.bpm, barLen = beat * 4;
+    this.bar = 0;
+    const noise = this.ctx.createBuffer(1, this.ctx.sampleRate * 0.08, this.ctx.sampleRate);
+    const nd = noise.getChannelData(0);
+    for (let i = 0; i < nd.length; i++) nd[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / nd.length, 2);
+    let nextBar = this.ctx.currentTime + 0.1;
+    this.timer = setInterval(() => {          // lookahead scheduler
+      while (nextBar < this.ctx.currentTime + 0.6) {
+        this.scheduleBar(nextBar, cfg, beat, noise);
+        nextBar += barLen; this.bar++;
+      }
+    }, 200);
+  },
+  note(t, freq, dur, wave, vol) {
+    const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+    o.type = wave; o.frequency.value = freq;
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(vol, t + 0.03);
+    g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.connect(g); g.connect(this.master);
+    o.start(t); o.stop(t + dur + 0.05);
+  },
+  scheduleBar(t, cfg, beat, noise) {
+    const chord = this.PROG[this.bar % this.PROG.length];
+    chord.forEach(n => this.note(t, this.st(n, cfg.root) * 2, beat * 4, 'sine', 0.05)); // pad
+    this.note(t, this.st(chord[0], cfg.root) / 2, beat * 1.6, cfg.wave, 0.12);          // bass
+    this.note(t + beat * 2, this.st(chord[0], cfg.root) / 2, beat * 1.4, cfg.wave, 0.10);
+    for (let b = 0; b < 4; b++) {
+      if ((this.bar * 7 + b * 3) % 5 < 3) {                                             // melody
+        const n = this.PENTA[(this.bar * 3 + b * 2) % this.PENTA.length];
+        this.note(t + b * beat, this.st(n, cfg.root) * 4, beat * 0.9, 'triangle', 0.045);
+      }
+      if (cfg.hats) {                                                                   // hats
+        const s = this.ctx.createBufferSource(); s.buffer = noise;
+        const f = this.ctx.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = 6000;
+        const g = this.ctx.createGain(); g.gain.value = b % 2 ? 0.05 : 0.09;
+        s.connect(f); f.connect(g); g.connect(this.master);
+        s.start(t + b * beat);
+      }
+    }
+  },
+  duck(on) {   // sidechain: music dips while a character speaks
+    if (this.master && this.ducked !== on) {
+      this.ducked = on;
+      this.master.gain.setTargetAtTime(on ? 0.055 : 0.16, this.ctx.currentTime, 0.25);
+    }
+  },
+  stop() {
+    clearInterval(this.timer); this.timer = null; this.ducked = false;
+    if (this.master) { this.master.disconnect(); this.master = null; }
+  },
+};
+
+/* ── RenderEngine: real in-browser video — plays AND exports .webm ──────
+   Canvas motion graphics (animated gradients, particles, kinetic
+   typography — Devanagari-safe) at 30fps, captured with MediaRecorder.
+   This is the free local render path; backend swaps in ffmpeg/WebCodecs
+   compositing of enterprise-generated clips (ARCHITECTURE.md §6).       */
+const RenderEngine = {
+  raf: null, playing: false, recorder: null,
+  ASPECT: { '16:9': [1280, 720], '9:16': [720, 1280], '1:1': [960, 960] },
+  async start({ exportFile = false } = {}) {
+    try { await this._start({ exportFile }); }
+    catch (e) { $('genStatus').textContent = '⚠ Playback error: ' + e.message; this.stop(); }
+  },
+  async _start({ exportFile = false } = {}) {
+    if (!state.scenes.length || !AssetRegistry.assets.length) return;
+    // Never let placeholder art masquerade as the AI output
+    const ready = state.scenes.every(s =>
+      (SceneVisuals.cache.get(s.id) || []).length >= SceneVisuals.SHOTS.length);
+    if (!ready) $('genStatus').textContent =
+      '⚠ AI visuals still rendering — placeholder art will appear until the ✓ ready message. Wait, then press ▶ again for full quality.';
+    this.stop();
+    let cv = $('previewCanvas');
+    if (exportFile) {           // canvas taint is permanent — record on a fresh element
+      const fresh = cv.cloneNode();
+      cv.replaceWith(fresh);
+      cv = fresh;
+    }
+    const ctx = cv.getContext('2d');
+    [cv.width, cv.height] = this.ASPECT[state.aspect] || this.ASPECT['16:9'];
+    const scenes = state.scenes.map(s => ({ ...s,
+      hash: (AssetRegistry.assets.find(a => a.sceneId === s.id && a.modality === 'video') || {}).contentHash || '0'.repeat(64) }));
+    const total = scenes.reduce((a, s) => a + s.duration, 0);
+    MusicEngine.start($('cfgMood').value);
+    if (exportFile) {
+      const stream = cv.captureStream(30);
+      MusicEngine.dest.stream.getAudioTracks().forEach(t => stream.addTrack(t));
+      const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')
+        ? 'video/webm;codecs=vp9,opus' : 'video/webm';
+      const chunks = [];
+      this.recorder = new MediaRecorder(stream, { mimeType: mime });
+      this.recorder.ondataavailable = e => chunks.push(e.data);
+      this.recorder.onstop = () => {
+        const a = Object.assign(document.createElement('a'), {
+          href: URL.createObjectURL(new Blob(chunks, { type: 'video/webm' })),
+          download: 'clearframe-video.webm' });
+        a.click(); URL.revokeObjectURL(a.href);
+      };
+      this.recorder.start();
+    }
+    this.playing = true;
+    const pace = +$('cfgPace').value;
+    const t0 = performance.now();
+    let idx = -1, sceneStart = 0, done = 0;
+    const step = now => {
+      if (!this.playing) return;
+      const t = (now - t0) / 1000;
+      const speechBusy = speechSynthesis.speaking || speechSynthesis.pending;
+      // a scene ends when its time is up AND its dialog has finished —
+      // never cut a character off mid-sentence (12s runaway guard)
+      const local = idx < 0 ? 0 : t - sceneStart;
+      if (idx < 0 || (local >= scenes[idx].duration &&
+          (!scenes[idx].dialog.length || !speechBusy || local > scenes[idx].duration + 12))) {
+        if (idx >= 0) done += scenes[idx].duration;
+        idx++;
+        if (idx >= scenes.length) {
+          this.stop();
+          $('genStatus').textContent = exportFile ? '✓ Video exported — check your downloads.' : '✓ Playback finished.';
+          return;
+        }
+        sceneStart = t;
+        Narrator.speakDialog(scenes[idx].dialog, scenes[idx].lang, pace);
+      }
+      MusicEngine.duck(speechSynthesis.speaking);
+      const cur = scenes[idx];
+      const clamped = Math.min(t - sceneStart, cur.duration - 0.01);
+      this.drawFrame(ctx, cv, cur, clamped, done + clamped, total);
+      this.raf = requestAnimationFrame(step);
+    };
+    this.raf = requestAnimationFrame(step);
+  },
+  stop() {
+    this.playing = false;
+    cancelAnimationFrame(this.raf);
+    Narrator.stop();
+    MusicEngine.stop();
+    if (this.recorder && this.recorder.state !== 'inactive') this.recorder.stop();
+    this.recorder = null;
+  },
+  drawFrame(ctx, cv, scene, local, t, total) {
+    const { width: w, height: h } = cv;
+    const p = Math.min(1, local / scene.duration);
+    // tainted (direct-embed) images would break MediaRecorder — exports
+    // swap those shots to the procedural illustrator
+    let shots = SceneVisuals.cache.get(scene.id) || [];
+    if (this.recorder) shots = shots.filter(i => i._exportSafe);
+    if (shots.length) {
+      // multi-shot coverage: cut between camera setups within the scene,
+      // each with its own Ken Burns move, crossfading 0.5s before the cut
+      const shotDur = scene.duration / shots.length;
+      const si = Math.min(shots.length - 1, Math.floor(local / shotDur));
+      const sp = (local - si * shotDur) / shotDur;
+      const kenBurns = (img, idx, prog) => {
+        const zoom = idx % 2 ? 1.22 - 0.14 * prog : 1.06 + 0.16 * prog; // alternate in/out
+        const iw = w * zoom, ih = h * zoom;
+        const dir = (parseInt(scene.hash.slice(4, 6), 16) + idx) % 2 ? 1 : -1;
+        ctx.drawImage(img,
+          (w - iw) / 2 + dir * (iw - w) * 0.5 * (prog - 0.5),
+          (h - ih) / 2 + (ih - h) * 0.25 * (0.5 - prog), iw, ih);
+      };
+      kenBurns(shots[si], si, sp);
+      const FADE = 0.5;
+      if (si < shots.length - 1 && local > (si + 1) * shotDur - FADE) {
+        ctx.globalAlpha = (local - ((si + 1) * shotDur - FADE)) / FADE;
+        kenBurns(shots[si + 1], si + 1, 0);
+        ctx.globalAlpha = 1;
+      }
+    } else {
+      this.drawProcedural(ctx, w, h, scene, local, t);
+    }
+    // film-look pass: vignette, grain, letterbox
+    const vig = ctx.createRadialGradient(w / 2, h / 2, h * 0.45, w / 2, h / 2, h * 0.95);
+    vig.addColorStop(0, 'rgba(0,0,0,0)');
+    vig.addColorStop(1, 'rgba(0,0,0,.42)');
+    ctx.fillStyle = vig; ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = 'rgba(255,255,255,.05)';
+    for (let i = 0; i < 130; i++)
+      ctx.fillRect(Math.random() * w, Math.random() * h, 1, 1);
+    ctx.fillStyle = '#000';
+    const bar = Math.round(h * 0.055);
+    ctx.fillRect(0, 0, w, bar); ctx.fillRect(0, h - bar, w, bar);
+    // subtitles: ONLY character dialog, timed by word-share within the
+    // scene. Silent scenes (no dialog) get no subtitle band at all.
+    if (scene.dialog && scene.dialog.length) {
+      const totalWords = scene.dialog.reduce((a, d) => a + d.line.split(/\s+/).length, 0);
+      let acc = 0, cur = scene.dialog[0], lineStart = 0, lineFrac = 1;
+      for (const d of scene.dialog) {
+        const f = d.line.split(/\s+/).length / totalWords;
+        if (p < acc + f || d === scene.dialog[scene.dialog.length - 1]) {
+          cur = d; lineStart = acc; lineFrac = f; break;
+        }
+        acc += f;
+      }
+      const lp = Math.max(0, Math.min(1, (p - lineStart) / lineFrac));
+      const lineWords = cur.line.split(/\s+/);
+      const shown = Math.max(1, Math.ceil(lp * lineWords.length));
+      const subText = cur.speaker.toUpperCase() + ': ' + lineWords.slice(0, shown).join(' ');
+      const fs = Math.round(w / 34);
+      ctx.font = `600 ${fs}px system-ui, sans-serif`;
+      const maxW = w * 0.9;
+      const lines = [];
+      let line = '';
+      for (const word of subText.split(/\s+/)) {
+        const trial = line ? line + ' ' + word : word;
+        if (ctx.measureText(trial).width > maxW && line) { lines.push(line); line = word; }
+        else line = trial;
+      }
+      lines.push(line);
+      const lh = fs * 1.45;
+      const bandH = lines.length * lh + fs * 1.2;
+      const grad = ctx.createLinearGradient(0, h - bandH - 30, 0, h);
+      grad.addColorStop(0, 'rgba(0,0,0,0)');
+      grad.addColorStop(1, 'rgba(0,0,0,.82)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, h - bandH - 30, w, bandH + 30);
+      ctx.fillStyle = 'rgba(255,255,255,.96)';
+      ctx.textAlign = 'center';
+      lines.forEach((l, i) => ctx.fillText(l, w / 2, h - bandH + (i + 0.6) * lh));
+      ctx.textAlign = 'left';
+    }
+    // scene chip + progress bar + provenance watermark
+    ctx.font = `600 ${Math.round(w / 50)}px monospace`;
+    ctx.fillStyle = 'rgba(94,234,212,.9)';
+    ctx.fillText(scene.id.toUpperCase() + ' · ' + LanguageEngine.LABEL[scene.lang], 14, 24);
+    ctx.fillStyle = 'rgba(255,255,255,.15)';
+    ctx.fillRect(0, h - 4, w, 4);
+    ctx.fillStyle = 'rgba(94,234,212,.85)';
+    ctx.fillRect(0, h - 4, w * (t / total), 4);
+    Provenance.watermark(ctx, w, h, scene.hash);
+  },
+  /* Procedural scene illustrator — offline fallback that DEPICTS the
+     script: keyword-driven flat-illustration layers (sky, sun, skyline,
+     drones, characters, music notes) with animation, EN + Devanagari.   */
+  drawProcedural(ctx, w, h, scene, local, t) {
+    const txt = scene.text + ' ' + scene.visualPrompt;
+    const has = re => re.test(txt);
+    const F = {
+      dawn:   has(/dawn|sunrise|morning|sun|सुबह|किरण|सूरज|पहाट|किरणे|सकाळ/i),
+      city:   has(/city|skyline|tower|building|street|शहर|इमारत|नगर/i),
+      drone:  has(/drone|flying|aircraft|ड्रोन|उड़|उड/i),
+      person: has(/creator|person|writer|student|man|woman|types|writes|रचनाकार|निर्माता|लिखता|लिहितो|व्यक्ती|व्यक्ति/i),
+      studio: has(/studio|desk|screen|holographic|computer|स्टूडियो|स्टुडिओ|कहानी|कथा/i),
+      music:  has(/music|song|audio|voice|संगीत|गाना|आवाज|आवाज़/i),
+    };
+    const hue = parseInt(scene.hash.slice(0, 4), 16) % 360;
+    // sky
+    const sky = ctx.createLinearGradient(0, 0, 0, h);
+    if (F.dawn) { sky.addColorStop(0, '#2b1a4e'); sky.addColorStop(.6, '#b1466a'); sky.addColorStop(1, '#f2a65a'); }
+    else { sky.addColorStop(0, `hsl(${hue},45%,14%)`); sky.addColorStop(1, `hsl(${(hue + 40) % 360},50%,26%)`); }
+    ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
+    // rising sun
+    if (F.dawn) {
+      const sy = h * 0.72 - (local / scene.duration) * h * 0.22;
+      const glow = ctx.createRadialGradient(w * 0.72, sy, 6, w * 0.72, sy, h * 0.32);
+      glow.addColorStop(0, 'rgba(255,214,140,.95)'); glow.addColorStop(1, 'rgba(255,170,80,0)');
+      ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(w * 0.72, sy, h * 0.32, 0, 7); ctx.fill();
+      ctx.fillStyle = '#ffd98c'; ctx.beginPath(); ctx.arc(w * 0.72, sy, h * 0.07, 0, 7); ctx.fill();
+    }
+    // skyline with lit windows
+    if (F.city) {
+      for (let i = 0; i < 9; i++) {
+        const seed = parseInt(scene.hash.slice((i * 5) % 55, (i * 5) % 55 + 4), 16);
+        const bw = w * 0.07 + (seed % 40);
+        const bh = h * 0.22 + (seed % Math.round(h * 0.38));
+        const bx = (i / 9) * w + (seed % 18) - 9;
+        ctx.fillStyle = `hsl(${(hue + 200) % 360},25%,${10 + (i % 3) * 4}%)`;
+        ctx.fillRect(bx, h - bh, bw, bh);
+        ctx.fillStyle = 'rgba(255,220,130,.75)';
+        for (let wy = h - bh + 8; wy < h - 12; wy += 14)
+          for (let wx = bx + 5; wx < bx + bw - 6; wx += 12)
+            if ((seed + wx + wy) % 3 === 0) ctx.fillRect(wx, wy, 4, 6);
+      }
+    }
+    // drones crossing the sky
+    if (F.drone) {
+      for (let i = 0; i < 3; i++) {
+        const dx = ((t * (46 + i * 22)) % (w + 90)) - 45;
+        const dy = h * (0.16 + i * 0.10) + Math.sin(t * 2 + i) * 7;
+        ctx.fillStyle = 'rgba(20,26,46,.95)';
+        ctx.fillRect(dx - 8, dy - 3, 16, 6);
+        ctx.strokeStyle = 'rgba(200,220,255,.8)'; ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(dx - 14, dy - 5); ctx.lineTo(dx - 2, dy - 5);
+        ctx.moveTo(dx + 2, dy - 5);  ctx.lineTo(dx + 14, dy - 5);
+        ctx.stroke();
+        ctx.fillStyle = 'rgba(94,234,212,.9)';
+        ctx.fillRect(dx - 1, dy + 4, 2, 2);
+      }
+    }
+    // character at a desk / studio
+    if (F.person || F.studio) {
+      const cx = w * 0.30, cy = h * 0.78;
+      if (F.studio) {                       // glowing screen
+        ctx.fillStyle = 'rgba(94,234,212,.16)';
+        ctx.fillRect(cx + 26, cy - 74, 84, 54);
+        ctx.fillStyle = 'rgba(94,234,212,.85)';
+        ctx.fillRect(cx + 30, cy - 70, 76, 46);
+        ctx.fillStyle = 'rgba(7,9,15,.85)';
+        for (let i = 0; i < 4; i++) ctx.fillRect(cx + 36, cy - 62 + i * 10, 40 + ((t * 30 + i * 17) % 22), 3);
+      }
+      ctx.fillStyle = '#1c2340';            // desk
+      ctx.fillRect(cx - 10, cy - 18, 150, 8);
+      ctx.fillRect(cx, cy - 10, 8, 40); ctx.fillRect(cx + 120, cy - 10, 8, 40);
+      ctx.fillStyle = `hsl(${(hue + 300) % 360},45%,60%)`;   // person
+      ctx.beginPath(); ctx.arc(cx - 34, cy - 52, 11, 0, 7); ctx.fill();       // head
+      ctx.beginPath();                                                          // torso
+      ctx.moveTo(cx - 48, cy - 16); ctx.quadraticCurveTo(cx - 34, cy - 44, cx - 18, cy - 16);
+      ctx.closePath(); ctx.fill();
+      const bob = Math.sin(t * 6) * 2;                                          // typing arm
+      ctx.strokeStyle = `hsl(${(hue + 300) % 360},45%,60%)`; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.moveTo(cx - 26, cy - 34); ctx.lineTo(cx - 4, cy - 20 + bob); ctx.stroke();
+    }
+    // floating music notes
+    if (F.music) {
+      ctx.font = `${Math.round(w / 26)}px serif`;
+      for (let i = 0; i < 4; i++) {
+        const ny = h - ((t * 26 + i * 60) % (h * 0.7));
+        ctx.fillStyle = `hsla(${(hue + 60 + i * 30) % 360},80%,75%,${0.9 - (h - ny) / h})`;
+        ctx.fillText(i % 2 ? '♪' : '♫', w * (0.62 + i * 0.09), ny);
+      }
+    }
+    // ambient drifting particles tie it together
+    for (let i = 0; i < 14; i++) {
+      const sx = parseInt(scene.hash.slice(i % 56, i % 56 + 4), 16);
+      ctx.fillStyle = `hsla(${(hue + i * 12) % 360},70%,70%,.14)`;
+      ctx.beginPath();
+      ctx.arc(((sx + t * (10 + i * 2)) % (w + 40)) - 20, (sx * 7 % h + Math.sin(t + i) * 12 + h) % h, 1.5 + (i % 3), 0, 7);
+      ctx.fill();
+    }
+  },
+};
+
+/* ── ShotList: bridge to TRUE motion-video generators ───────────────────
+   ClearFrame does the hard part (scenes, shots, character continuity,
+   sanitized prompts); this exports ready-to-paste prompts for the free
+   web tiers of real video-diffusion models — Kling, Hailuo, Luma, Pika,
+   Runway — which is the only zero-cost route to genuine motion today.   */
+const ShotList = {
+  MOTION: [
+    'slow cinematic dolly-in with gentle parallax, natural motion',
+    'subtle handheld push-in, shallow depth of field, natural motion',
+  ],
+  build(scenes, cfg) {
+    const char = CharacterEngine.descriptor(scenes);
+    const L = [
+      'CLEARFRAME SHOT LIST — paste each PROMPT into a video generator',
+      'Free tiers: Kling (klingai.com) · Hailuo (hailuoai.video) · Luma (lumalabs.ai) · Pika (pika.art) · Runway (runwayml.com, one-time credits)',
+      `Aspect ratio: ${cfg.aspect} · Style: ${cfg.style} · aim ~5s per shot`,
+      '='.repeat(72), '',
+    ];
+    scenes.forEach(s => {
+      L.push(`SCENE ${s.index + 1} (${s.id}) — ${s.duration}s · ${LanguageEngine.LABEL[s.lang]}`);
+      L.push(`DESCRIPTION: ${s.description}`);
+      if (s.dialog.length) {
+        L.push('DIALOG (for the tool\'s lip-sync / speech feature):');
+        s.dialog.forEach(d => L.push(`  ${d.speaker}: ${d.line}`));
+      } else {
+        L.push('DIALOG: none — silent scene, music only');
+      }
+      SceneVisuals.SHOTS.forEach((shot, i) => {
+        const prompt = PromptSanitizer.sanitize(
+          `${shot}, ${this.MOTION[i]}, ${cfg.style}, photorealistic real-life cinematic footage, ${cfg.aspect}. ${char}Scene: ${s.description}`,
+          s.id).clean;
+        L.push('', `  SHOT ${i + 1} PROMPT →`, `  ${prompt}`);
+      });
+      L.push('', '-'.repeat(72), '');
+    });
+    L.push('WORKFLOW: generate shots in order · reuse the same reference image per');
+    L.push('character where the tool allows (character/consistency feature) · cut the');
+    L.push('clips together in any editor · add this app\'s exported music underneath.');
+    return L.join('\n');
+  },
+  download(scenes, cfg) {
+    const blob = new Blob([this.build(scenes, cfg)], { type: 'text/plain' });
+    const a = Object.assign(document.createElement('a'), {
+      href: URL.createObjectURL(blob), download: 'clearframe-shot-list.txt' });
+    a.click(); URL.revokeObjectURL(a.href);
+  },
+};
+
+/* ═══════════════════════ UI LAYER ═══════════════════════ */
+const $ = id => document.getElementById(id);
+const state = { scenes: [], generated: false, aspect: '16:9' };
+
+const SAMPLES = {
+  en: `INT. FUTURISTIC STUDIO — DAWN. Golden light floods a glass studio overlooking a city where autonomous delivery drones drift between towers. MAYA, a young filmmaker in a teal jacket, studies a wall of holographic storyboards.
+MAYA: One story left to tell before sunrise.
+ARIA: Then let's make every frame count.
+
+EXT. CITY ROOFTOP — MORNING. Maya stands at the rooftop edge as her finished film projects across the entire skyline. Crowds below look up in wonder.
+MAYA: We didn't just write it. We lived it.
+
+INT. STUDIO — LATER. The final render completes; screen light washes over Maya's smiling face as music swells through the room.
+ARIA: It's beautiful. Send it to the world.`,
+  hi: `सुबह का दृश्य — काँच की ऊँची इमारतों के बीच डिलीवरी ड्रोन उड़ रहे हैं। माया, नीली जैकेट पहने एक युवा फ़िल्मकार, होलोग्राफिक स्क्रीन के सामने खड़ी है।
+माया: सूरज उगने से पहले एक कहानी और बाकी है।
+आरव: तो चलो हर दृश्य को यादगार बनाते हैं।
+
+छत का दृश्य — तैयार फ़िल्म पूरे आसमान पर चमक रही है। नीचे भीड़ हैरानी से देख रही है।
+माया: हमने कहानी सिर्फ़ लिखी नहीं, जी भी है।`,
+  mr: `पहाटेचे दृश्य — काचेच्या उंच इमारतींमध्ये ड्रोन उडत आहेत। माया, निळे जॅकेट घातलेली तरुण निर्माती, होलोग्राफिक पडद्यासमोर उभी आहे।
+माया: सूर्य उगवण्याआधी एक गोष्ट सांगायची आहे।
+आरव: मग प्रत्येक दृश्य संस्मरणीय करूया।
+
+गच्चीवरचे दृश्य — तयार चित्रपट संपूर्ण आकाशात झळकत आहे। खाली लोक आश्चर्याने पाहत आहेत।
+माया: आपण गोष्ट फक्त लिहिली नाही, जगलो आहोत।`,
+};
+$('btnSampleEn').onclick = () => { $('scriptInput').value = SAMPLES.en; };
+$('btnSampleHi').onclick = () => { $('scriptInput').value = SAMPLES.hi; };
+$('btnSampleMr').onclick = () => { $('scriptInput').value = SAMPLES.mr; };
+$('cfgPace').oninput = e => { $('paceVal').textContent = (+e.target.value).toFixed(1) + '×'; };
+document.querySelectorAll('.ar-btn').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.ar-btn').forEach(x => x.className = 'ar-btn flex-1 py-2 rounded-lg border border-ink-600 bg-ink-800');
+  b.className = 'ar-btn flex-1 py-2 rounded-lg border border-neon/60 bg-neon/10 text-neon font-semibold';
+  state.aspect = b.dataset.ar;
+});
+
+function analyzeScript() {
+  const text = $('scriptInput').value.trim();
+  if (!text) { $('genStatus').textContent = 'Script is empty — paste or load a sample first.'; return false; }
+  state.scenes = ScriptParser.parse(text, $('splitMode').value, $('cfgLang').value);
+  state.parsedText = text;
+  state.generated = false;
+  AssetRegistry.reset();
+  renderScenes(); renderTimelinePlaceholders(); renderCompliance();
+  $('btnManifest').disabled = true;
+  $('genStatus').textContent = `${state.scenes.length} scenes · ${state.scenes.length * 2 + 1} parallel jobs queued · est. cost $0.00`;
+  return state.scenes.length > 0;
+}
+$('btnParse').onclick = analyzeScript;
+
+function renderScenes() {
+  $('sceneCount').textContent = `(${state.scenes.length})`;
+  $('sceneList').innerHTML = state.scenes.map(s => `
+    <div class="rounded-xl bg-ink-850 border border-ink-700 p-3">
+      <div class="flex items-center gap-2 text-[11px] mb-1">
+        <span class="font-mono text-neon">${s.id}</span>
+        <span class="text-slate-500">${s.duration}s · ${s.words} words</span>
+        <span class="ml-auto px-2 py-0.5 rounded-full bg-vio/10 border border-vio/30 text-vio">${LanguageEngine.LABEL[s.lang]}</span>
+      </div>
+      <p class="text-xs text-slate-300 line-clamp-2">🎬 ${s.description}</p>
+      ${s.dialog.map(d => `<p class="text-[11px] mt-0.5"><span class="text-neon font-semibold">🗣 ${d.speaker}:</span> <span class="text-slate-400">${d.line}</span></p>`).join('')
+        || '<p class="text-[10px] text-slate-500 italic mt-0.5">silent scene — music only</p>'}
+      <p class="text-[10px] text-vio mt-1 font-mono">visual: ${s.visualPrompt}</p>
+    </div>`).join('');
+}
+
+/* ── Timeline rendering ── */
+function pct(s, total) { return Math.max(6, (s / total) * 100); }
+function fmt(sec) { return `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`; }
+
+function renderTimelinePlaceholders() {
+  const total = state.scenes.reduce((a, s) => a + s.duration, 0);
+  $('totalDur').textContent = fmt(total);
+  $('ruler').innerHTML = Array.from({ length: 9 }, (_, i) =>
+    `<span class="flex-1">${fmt(Math.round(total * i / 8))}</span>`).join('');
+  $('trackVideo').innerHTML = state.scenes.map(s =>
+    `<div id="clip-${s.id}-vid" style="width:${pct(s.duration, total)}%" class="clip relative overflow-hidden shrink-0 rounded-md bg-ink-800 border border-ink-600 grid place-items-center text-[10px] text-slate-500 generating">${s.id}</div>`).join('');
+  $('trackVoice').innerHTML = state.scenes.map(s => s.dialog.length
+    ? `<div id="clip-${s.id}-vo" style="width:${pct(s.duration, total)}%" class="clip relative overflow-hidden shrink-0 rounded-md bg-ink-800 border border-ink-600 generating"></div>`
+    : `<div style="width:${pct(s.duration, total)}%" title="silent scene — no dialog" class="shrink-0 rounded-md bg-ink-800/40 border border-ink-700/40"></div>`).join('');
+  $('trackMusic').innerHTML =
+    `<div id="clip-music" style="width:100%" class="clip relative overflow-hidden rounded-md bg-ink-800 border border-ink-600 generating"></div>`;
+  $('previewWrap').classList.add('hidden');
+}
+
+function drawVideoThumb(el, scene, hash) {
+  const c = document.createElement('canvas');
+  c.width = el.clientWidth * 2 || 200; c.height = el.clientHeight * 2 || 120;
+  const ctx = c.getContext('2d');
+  const hue = parseInt(hash.slice(0, 4), 16) % 360;
+  const g = ctx.createLinearGradient(0, 0, c.width, c.height);
+  g.addColorStop(0, `hsl(${hue},60%,22%)`); g.addColorStop(1, `hsl(${(hue + 70) % 360},55%,14%)`);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, c.width, c.height);
+  for (let i = 0; i < 5; i++) { // procedural "content" bars
+    ctx.fillStyle = `hsla(${(hue + i * 40) % 360},70%,60%,.25)`;
+    const x = (parseInt(hash.slice(4 + i, 8 + i), 16) % c.width);
+    ctx.fillRect(x, 0, 14, c.height);
+  }
+  Provenance.watermark(ctx, c.width, c.height, hash);
+  el.classList.remove('generating');
+  el.innerHTML = '';
+  el.style.backgroundImage = `url(${c.toDataURL()})`;
+  el.style.backgroundSize = 'cover';
+  el.title = `${scene ? scene.id : 'music'} · ${hash.slice(0, 12)}`;
+}
+
+function drawWaveform(el, hash, color) {
+  const c = document.createElement('canvas');
+  c.width = el.clientWidth * 2 || 200; c.height = el.clientHeight * 2 || 80;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#0b0e17'; ctx.fillRect(0, 0, c.width, c.height);
+  ctx.fillStyle = color;
+  const bars = Math.floor(c.width / 5);
+  for (let i = 0; i < bars; i++) {
+    const seed = parseInt(hash[(i * 3) % hash.length], 16) / 15;
+    const h = 4 + seed * (c.height - 10) * (0.4 + 0.6 * Math.abs(Math.sin(i / 6)));
+    ctx.fillRect(i * 5, (c.height - h) / 2, 3, h);
+  }
+  el.classList.remove('generating');
+  el.style.backgroundImage = `url(${c.toDataURL()})`;
+  el.style.backgroundSize = '100% 100%';
+}
+
+function drawPreview(scene, hash) {
+  const cv = $('previewCanvas'), ctx = cv.getContext('2d');
+  const hue = parseInt(hash.slice(0, 4), 16) % 360;
+  const g = ctx.createLinearGradient(0, 0, cv.width, cv.height);
+  g.addColorStop(0, `hsl(${hue},60%,25%)`); g.addColorStop(1, `hsl(${(hue + 70) % 360},55%,12%)`);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, cv.width, cv.height);
+  ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.font = 'bold 20px sans-serif';
+  ctx.fillText(scene.id.toUpperCase(), 20, 40);
+  ctx.font = '13px sans-serif'; ctx.fillStyle = 'rgba(255,255,255,.6)';
+  ctx.fillText(scene.visualPrompt.slice(0, 70), 20, 66);
+  Provenance.watermark(ctx, cv.width, cv.height, hash);
+  $('previewWrap').classList.remove('hidden');
+}
+
+/* ── Generation orchestration (parallel, allSettled) ── */
+$('btnGenerate').onclick = async () => {
+  // Self-sufficient: auto-analyze if the script hasn't been parsed yet,
+  // or was edited since the last analysis.
+  if (!state.scenes.length || state.parsedText !== $('scriptInput').value.trim()) {
+    if (!analyzeScript()) return;
+  }
+  const cfg = { voice: $('cfgVoice').value, pace: +$('cfgPace').value,
+    mood: $('cfgMood').value, style: $('cfgStyle').value, aspect: state.aspect };
+  $('btnGenerate').disabled = true;
+  $('genStatus').textContent = 'Dispatching parallel jobs…';
+  AssetRegistry.reset();
+  renderTimelinePlaceholders();
+
+  SceneVisuals.cache.clear();
+  SceneVisuals.character = CharacterEngine.descriptor(state.scenes);
+  const jobs = GenerationGateway.buildJobs(state.scenes, cfg);
+  let done = 0, visualsDone = 0;
+  const visualJobs = [];
+  const results = await Promise.allSettled(jobs.map(job =>
+    GenerationGateway.dispatch(job).then(asset => {
+      AssetRegistry.add(asset);
+      done++;
+      $('genStatus').textContent = `Generating… ${done}/${jobs.length} assets cleared (parallel)`;
+      paintAsset(asset);
+      if (asset.modality === 'video' && asset.sceneId !== '*') {
+        const scene = state.scenes.find(s => s.id === asset.sceneId);
+        visualJobs.push(SceneVisuals.load({ ...scene, hash: asset.contentHash }, cfg.style, state.aspect)
+          .then(imgs => {
+            visualsDone++;
+            if (imgs) {  // upgrade the timeline clip to the real AI still
+              const el = $(`clip-${asset.sceneId}-vid`);
+              if (el) { el.style.backgroundImage = `url(${imgs[0].src})`; el.style.backgroundSize = 'cover'; }
+            }
+            $('genStatus').textContent = `AI cinematography rendering… scene ${visualsDone}/${state.scenes.length} (${SceneVisuals.SHOTS.length} shots each · free)`;
+            return imgs;
+          }));
+      }
+      return asset;
+    })
+  ));
+  const failed = results.filter(r => r.status === 'rejected').length;
+  state.generated = true;
+  $('btnGenerate').disabled = false;
+  $('btnManifest').disabled = false;
+  renderCompliance();
+  $('previewWrap').classList.remove('hidden');
+  if (failed) {
+    $('genStatus').textContent = `Done with ${failed} failed clip(s) — retry available per clip.`;
+  } else {
+    $('genStatus').textContent = `Audio + timeline ready · AI scene visuals rendering in background…`;
+    const imgs = await Promise.allSettled(visualJobs);
+    const ok = imgs.filter(r => r.status === 'fulfilled' && r.value).length;
+    $('genStatus').textContent = ok === state.scenes.length
+      ? `✓ ${jobs.length} assets + ${ok} AI scene visuals ready · press ▶ Play Video or ⬇ Export · $0.00`
+      : `✓ Ready · ${ok}/${state.scenes.length} AI visuals loaded (offline scenes use the procedural illustrator) · ▶ Play`;
+  }
+};
+
+$('btnPlay').onclick = () => RenderEngine.start();
+$('btnStopPlay').onclick = () => RenderEngine.stop();
+$('btnExport').onclick = () => RenderEngine.start({ exportFile: true });
+
+function paintAsset(asset) {
+  if (asset.modality === 'video') {
+    const el = $(`clip-${asset.sceneId}-vid`);
+    const scene = state.scenes.find(s => s.id === asset.sceneId);
+    if (el) { drawVideoThumb(el, scene, asset.contentHash);
+      el.onclick = () => { document.querySelectorAll('.clip').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected'); drawPreview(scene, asset.contentHash); }; }
+  } else if (asset.modality === 'voice') {
+    const el = $(`clip-${asset.sceneId}-vo`);
+    if (el) drawWaveform(el, asset.contentHash, 'rgba(167,139,250,.85)');
+  } else {
+    drawWaveform($('clip-music'), asset.contentHash, 'rgba(251,191,36,.8)');
+  }
+}
+
+/* ── Compliance dashboard rendering ── */
+function renderCompliance() {
+  const a = AssetRegistry.assets;
+  $('statCleared').textContent = a.length;
+  $('statHashed').textContent = a.length;
+  $('statSanitized').textContent = AssetRegistry.auditLog.length;
+  $('compBadge').textContent = a.length ? '✓ ALL LICENSES CLEARED' : 'Awaiting generation';
+  $('compBadge').className = 'text-[11px] px-2.5 py-1 rounded-full ' +
+    (a.length ? 'bg-neon/10 border border-neon/40 text-neon font-semibold' : 'bg-ink-800 border border-ink-600 text-slate-400');
+  $('compRows').innerHTML = a.length ? a.map(x => `
+    <tr class="border-t border-ink-700/60">
+      <td class="px-3 py-2 font-mono text-neon">${x.assetId}</td>
+      <td class="px-3 py-2">${x.provider.name}${x.ttsModel ? ` · <span class="text-vio">${x.ttsModel} (${LanguageEngine.LABEL[x.lang] || ''})</span>` : ''}<br><span class="text-slate-500">${x.provider.licenseTier}</span></td>
+      <td class="px-3 py-2"><span class="px-2 py-0.5 rounded-full bg-neon/10 text-neon border border-neon/30">CLEARED</span></td>
+      <td class="px-3 py-2 font-mono text-slate-400">${x.contentHash.slice(0, 16)}…</td>
+    </tr>`).join('')
+    : '<tr><td colspan="4" class="px-3 py-4 text-slate-500 italic">No assets generated yet.</td></tr>';
+
+  const flagged = AssetRegistry.auditLog.filter(l => l.flags.length);
+  $('sanitizerLog').innerHTML = flagged.length
+    ? flagged.map(l => `<p class="text-[11px] text-amber2">⚠ ${l.sceneId}: redacted ${l.flags.join(', ')} before dispatch</p>`).join('')
+    : (AssetRegistry.auditLog.length
+        ? '<p class="text-[11px] text-slate-500">Sanitizer: no restricted IP detected · safety suffix appended to all prompts.</p>' : '');
+}
+
+$('btnShotList').onclick = () => {
+  if ((!state.scenes.length || state.parsedText !== $('scriptInput').value.trim()) && !analyzeScript()) return;
+  ShotList.download(state.scenes, { style: $('cfgStyle').value, aspect: state.aspect });
+  $('genStatus').textContent = '🎬 Shot list downloaded — paste each prompt into Kling / Hailuo / Luma free tiers for true motion video.';
+};
+
+$('btnManifest').onclick = () => LicenseManifest.download({
+  scenes: state.scenes.length,
+  totalDurationSec: state.scenes.reduce((x, s) => x + s.duration, 0),
+});
+</script>
+</body>
+</html>

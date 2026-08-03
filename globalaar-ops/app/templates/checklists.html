@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Checklists · GlobalAAR{% endblock %}
+{% block heading %}Printable quality checklists{% endblock %}
+{% block content %}
+<div class="filter-bar no-print">
+  <button class="btn sm sec" type="button" onclick="window.print()">🖨 Print both forms</button>
+</div>
+
+<div class="print-doc" style="margin-bottom:18px">
+  <div class="doc-head">
+    <div><h2>FIRST PIECE APPROVAL REPORT</h2>
+      <div style="font-size:12px;color:var(--muted)">{{ company }} · {{ plant }}</div></div>
+    <div style="text-align:right;font-size:12px;color:var(--muted)">Doc: QA-F-01<br>Rev 0</div>
+  </div>
+  <table class="blank-tbl" style="margin-bottom:12px">
+    <tr><th style="width:18%">Date / Shift</th><td></td><th style="width:18%">Machine</th><td></td></tr>
+    <tr><th>Part name / no.</th><td></td><th>Material grade &amp; lot</th><td></td></tr>
+    <tr><th>Reason</th><td colspan="3">☐ Startup &nbsp; ☐ Mould change &nbsp; ☐ Material change &nbsp; ☐ After breakdown &nbsp; ☐ Setting change</td></tr>
+  </table>
+  <table class="blank-tbl">
+    <tr><th>#</th><th>Check point</th><th>Standard</th><th>Observed</th><th>OK / NG</th></tr>
+    {% for c in ['Appearance — no short shot / sink / silver / flash','Colour match vs master sample',
+                 'Weight (g) vs standard shot weight','Critical dimensions per drawing / gauge',
+                 'Fitment check (if applicable)','Insert position / count (if applicable)',
+                 'Process parameters vs master parameter sheet','Packing & identification correct'] %}
+    <tr><td>{{ loop.index }}</td><td>{{ c }}</td><td></td><td></td><td></td></tr>
+    {% endfor %}
+  </table>
+  <p style="font-size:12px;margin-top:8px"><b>Decision:</b> ☐ APPROVED — start production &nbsp;&nbsp; ☐ REJECTED — re-set &amp; resubmit</p>
+  <div class="sig-row"><div class="sig">Operator</div><div class="sig">Supervisor</div><div class="sig">Quality Inspector</div></div>
+</div>
+
+<div class="print-doc">
+  <div class="doc-head">
+    <div><h2>HOURLY PATROL INSPECTION SHEET</h2>
+      <div style="font-size:12px;color:var(--muted)">{{ company }} · {{ plant }}</div></div>
+    <div style="text-align:right;font-size:12px;color:var(--muted)">Doc: QA-F-02<br>Rev 0</div>
+  </div>
+  <table class="blank-tbl" style="margin-bottom:12px">
+    <tr><th style="width:18%">Date / Shift</th><td></td><th style="width:18%">Machine / Part</th><td></td></tr>
+  </table>
+  <table class="blank-tbl">
+    <tr><th>Hour</th><th>Appearance</th><th>Weight</th><th>Dimension</th><th>Parameters</th><th>Rej qty</th><th>Inspector</th></tr>
+    {% for h in range(1, 13) %}<tr><td>H{{ h }}</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>{% endfor %}
+  </table>
+  <div class="sig-row"><div class="sig">Quality Inspector</div><div class="sig">Quality Head</div></div>
+</div>
+{% endblock %}

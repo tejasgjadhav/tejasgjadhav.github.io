@@ -1,0 +1,71 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "globalaar-ops",
+      "runtimeExecutable": "globalaar-ops/.venv/bin/uvicorn",
+      "runtimeArgs": ["app.main:app", "--app-dir", "globalaar-ops", "--port", "8035"],
+      "port": 8035
+    },
+    {
+      "name": "scmhrd-site",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "3456", "--directory", "scmhrd-ai-finance"],
+      "port": 3456
+    },
+    {
+      "name": "aifinance-site",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "3457", "--directory", "aifinance"],
+      "port": 3457
+    },
+    {
+      "name": "endowment-advisor",
+      "runtimeExecutable": "endowment-advisor/venv/bin/uvicorn",
+      "runtimeArgs": ["backend.main:app", "--app-dir", "endowment-advisor", "--port", "8000"],
+      "port": 8000
+    },
+    {
+      "name": "in-eq-backend",
+      "runtimeExecutable": "IN-EQ/backend/.venv/bin/uvicorn",
+      "runtimeArgs": ["app.main:app", "--app-dir", "IN-EQ/backend", "--port", "8010", "--reload"],
+      "port": 8010
+    },
+    {
+      "name": "in-eq-frontend",
+      "runtimeExecutable": "/Users/sayali/.nvm/versions/node/v24.18.0/bin/node",
+      "runtimeArgs": ["IN-EQ/frontend/node_modules/next/dist/bin/next", "dev", "IN-EQ/frontend", "-p", "3010"],
+      "port": 3010
+    },
+    {
+      "name": "root-site",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "3458", "--directory", "."],
+      "port": 3458
+    },
+    {
+      "name": "basel-analyzer",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "3461", "--directory", "basel-analyzer"],
+      "port": 3461
+    },
+    {
+      "name": "clearframe-studio",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["clearframe-studio/server.py"],
+      "port": 3462
+    },
+    {
+      "name": "jarvis",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["JARVIS/server.py"],
+      "port": 3000
+    },
+    {
+      "name": "ninja",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "3460", "--directory", "NINJA/.preview-root"],
+      "port": 3460
+    }
+  ]
+}

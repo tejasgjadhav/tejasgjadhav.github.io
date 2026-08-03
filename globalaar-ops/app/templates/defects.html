@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Defects · GlobalAAR{% endblock %}
+{% block heading %}Defect Pareto (rejection analysis){% endblock %}
+{% block content %}
+<form class="filter-bar" method="get">
+  <div class="f"><label>From</label><input type="date" name="start" value="{{ start }}"></div>
+  <div class="f"><label>To</label><input type="date" name="end" value="{{ end }}"></div>
+  <div class="f"><label>Machine</label><select name="machine"><option value="">All</option>
+    {% for x in m.machines %}<option {{ 'selected' if machine==x }}>{{ x }}</option>{% endfor %}</select></div>
+  <button class="btn sm">Apply</button>
+</form>
+<div class="card"><h2>Defect Pareto — qty with cumulative %</h2>{{ pareto(items, color='var(--bad)')|safe }}</div>
+<div class="grid cols-2" style="margin-top:14px">
+  <div class="card"><h2>All defects</h2>{{ hbar(items, color='var(--bad)')|safe }}</div>
+  <div class="card"><h2>Rejection by part (top 12)</h2>{{ hbar(by_part, color='var(--c2)')|safe }}</div>
+</div>
+{% endblock %}

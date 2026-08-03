@@ -206,3 +206,38 @@ Checks, every time:
    which superseded ones must not be.
 
 Run the same check on the interior when a claim appears in front matter.
+
+### Amazon preview zone (binding, added 2026-08-02)
+
+**Amazon shows the manuscript from page 1 through roughly the first one or two chapters as a
+pre-read. That stretch sells the book. It gets the highest standard of any prose in the
+manuscript, and it gets re-checked after EVERY edit.**
+
+**This applies to EVERY format, not just Kindle.** The Kindle sample is ~10% of the file, and
+"Look Inside" runs on the PAPERBACK and HARDCOVER listings too, showing the same front matter
+and opening chapters from the print interior. So front-matter bloat costs sales on all three
+listings at once. Never treat this as a Kindle-only concern.
+
+Corollary, learned 2026-08-02 on the Cowork book: front matter EATS the pre-read. Title +
+disclaimers + copyright + TOC + author bio consumed 6 of 11 sample pages, and Chapter 1 began
+on p14 — outside the sample entirely. Default layout for these books: title, copyright page
+carrying a SHORT notice, TOC, then straight into the introduction and Chapter 1. Full
+disclaimers and About the Author go to the BACK, with the front notice pointing to them.
+
+The preview zone = title page, disclaimers, About the Author, front matter, introduction /
+"Before You Start", Chapter 1, and usually part of Chapter 2.
+
+Rules for that zone specifically:
+1. HIS VOICE, not a template. Plain spoken prose, one fact per sentence, sequential. If a
+   paragraph could open any AI book, rewrite it.
+2. ZERO fluff. No conceptual preamble, no "in today's fast-paced world", no restating the
+   subtitle, no promises the chapter does not immediately pay off.
+3. Concrete on the first page of real content. A named file, a real path, a real number, a
+   real failure — something checkable before the sample runs out.
+4. No templated section skeleton visible yet. If every chapter opens with the same four boxes,
+   vary the first one so the sample does not read as generated.
+5. Kill list + em-dash budget apply doubly here (target <= 3 per 1000 words in this zone).
+6. The strongest differentiator in the book goes EARLY, inside the sample, not in a late
+   chapter. A reader who never buys still has to see what makes it different.
+7. After any manuscript change, re-read the preview zone end to end before declaring done.
+

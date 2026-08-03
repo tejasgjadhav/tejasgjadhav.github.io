@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Materials · GlobalAAR{% endblock %}
+{% block heading %}Raw material consumption{% endblock %}
+{% block content %}
+<form class="filter-bar" method="get">
+  <div class="f"><label>From</label><input type="date" name="start" value="{{ start }}"></div>
+  <div class="f"><label>To</label><input type="date" name="end" value="{{ end }}"></div>
+  <button class="btn sm">Apply</button>
+</form>
+<div class="card">
+<table>
+  <tr><th>Material grade</th><th class="r">OK parts kg</th><th class="r">Rejection kg</th>
+      <th class="r">Runner kg</th><th class="r">Total RM kg</th><th class="r">Scrap+runner %</th></tr>
+  {% for r in rows %}
+  <tr>
+    <td><b>{{ r.material }}</b></td>
+    <td class="r">{{ r.ok|num }}</td><td class="r">{{ r.rej|num }}</td><td class="r">{{ r.run|num }}</td>
+    <td class="r"><b>{{ r.total|num }}</b></td>
+    <td class="r">{{ (((r.rej or 0)+(r.run or 0))/r.total if r.total else None)|pct }}</td>
+  </tr>
+  {% else %}<tr><td colspan="6" class="empty">No data.</td></tr>{% endfor %}
+</table>
+</div>
+<p class="note">Runner weight is potential regrind — track the scrap+runner share per material to size regrind
+reuse and resin purchasing. Weights derive from the part master (part wt / runner wt per shot).</p>
+{% endblock %}
