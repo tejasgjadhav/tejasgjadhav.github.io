@@ -15,3 +15,19 @@ kdp-books/
 claude-code-finance-book/
 claude-algo-trading-book/
 dotnet-architect-book/
+
+# Dedicated repos — each has its own .git. Committed here they became gitlinks
+# with no .gitmodules, which breaks the GitHub Pages build for this site
+# (build stalled 2026-08-02 → 2026-08-09 because of exactly this).
+Backtesting_SnP500/
+IN-EQ/
+JARVIS/
+NINJA/
+aifinance/
+basel-analyzer/
+endowment-advisor/
+kalpana/
+kdp-dashboard/
+trade-regimes-website/
+voicebox/
+vt-ocs/
