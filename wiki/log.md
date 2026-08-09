@@ -207,3 +207,19 @@ link graph). Updated projects/jarvis (Max-CLI latency measured, terminal-value n
 coherence gate removed → DCF-first, 900-char speech truncation and trade/trading router bugs) and
 projects/aifinance (ISBMS course site, Module 1 as delivered, Colab dropped for a Codex lab).
 index.md entries refreshed for both.
+
+## [2026-08-09] ingest | scheduled sync — memory durability layer; permissions now config, not manual
+Second sweep of the day (an earlier run at 06:47 already filed JARVIS DCF/speech, ISBMS Module 1
+and the ai-memory-layers concept — not repeated here). Sessions reviewed: memory-vault recovery,
+Chrome-extension profiles, JARVIS mic/Swiggy routing, HDMI projector, M&M Q1 FY27 summary.
+Only genuinely new material was filed. concepts/ai-memory-layers gained a durability section:
+the layers are worthless unless each is backed up on a schedule, and the published layer (this
+wiki) must never carry content from the private auto-memory layer. Everything else from those
+sessions was already recorded — mic recovery and the projector Extended-display fix landed in
+memory earlier today, and the FinBERT character-limit lesson was filed on 2026-08-08.
+Deliberately NOT published: the Google Sheet credential from the ISBMS session, and the local
+permission-mode configuration — both are machine/private facts, memory-only.
+Memory: updated always-bypass-permissions-mode (bypass is now set in ~/.claude/settings.json via
+defaultMode + skipDangerousModePermissionPrompt, so scheduled routines no longer stall on
+prompts — the old "Claude cannot set this" note was stale), new chrome-extension-profiles, and
+restored the missing four-layers-of-memory pointer in MEMORY.md.
