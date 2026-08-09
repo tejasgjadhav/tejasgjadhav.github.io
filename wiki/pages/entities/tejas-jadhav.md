@@ -28,11 +28,13 @@ Personal sites: root `index.html` ("AI in Finance Author") and `portfolio-review
 (`tejasgjadhav.github.io` — see correction on [[netlify]]), plus [[scmhrd-ai-finance]] and
 [[aifinance]] as GitHub Pages subpaths.
 
-**Structured identity (as of 2026-07-15):** now has a **Wikidata item —
-[Q140561693](https://www.wikidata.org/wiki/Q140561693)** (16 properties, portrait set as P18, one
-Mint-sourced statement) and an **ORCID — 0009-0000-9407-6871**, both cross-linked with the sites'
-Person-schema `sameAs`. Note the résumé-verified facts: works from **Pune**, BE from **University of
-Pune**, Master's is **MMS** (Sydenham/SIMSREE), employers Citi + Wipro + HDFC.
+**Structured identity (corrected 2026-08-09):** the Wikidata item built on 2026-07-15
+(Q140561693 — 16 properties, portrait as P18, one Mint-sourced statement) was **deleted on
+2026-08-08 for failing Wikidata's notability policy**, and the dead `sameAs` reference has been
+removed from the site schema. What remains is the **ORCID — 0009-0000-9407-6871**, cross-linked with
+the sites' Person-schema `sameAs`. Note the résumé-verified facts: works from **Pune**, BE from
+**PVG's COET, University of Pune**, Master's is **MMS** (Sydenham/SIMSREE, degree awarded by
+University of Mumbai — not an MBA), employers Citi + Wipro + HDFC. See [[google-identity-seo]].
 
 **Identity/SEO:** Google was showing other same-name people's photos; fixed by unifying on
 one canonical portrait across all properties and overhauling the GitHub profile. The Wikidata item +

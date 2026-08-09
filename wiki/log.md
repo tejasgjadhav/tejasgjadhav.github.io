@@ -223,3 +223,18 @@ Memory: updated always-bypass-permissions-mode (bypass is now set in ~/.claude/s
 defaultMode + skipDangerousModePermissionPrompt, so scheduled routines no longer stall on
 prompts — the old "Claude cannot set this" note was stale), new chrome-extension-profiles, and
 restored the missing four-layers-of-memory pointer in MEMORY.md.
+
+## [2026-08-09] ingest | scheduled sync — Wikidata item deleted, gitlinks froze the Pages build, company-finance-app
+Third sweep of the day; the 06:47 and 10:10 runs are not repeated here. Sessions reviewed: the
+global remote-job drive, the Naukri drive, the Google-photo escalation, and today's commits.
+Filed: **Wikidata Q140561693 was deleted 2026-08-08** for failing notability — the priority-1
+Knowledge-Panel lever from 2026-07-15 is gone along with its P18 portrait, and the dead sameAs was
+removed from index.html (25acf88); he reported the wrong photo again the same day. Also filed the
+**gitlink breakage**: 12 sub-repos committed as mode-160000 entries broke the GitHub Pages build,
+freezing the live site on its 2026-08-02 deploy until 486dc75 untracked them. New page:
+projects/company-finance-app (Flask + yfinance lookup). Touched syntheses/google-identity-seo,
+entities/tejas-jadhav, projects/files-repo; bumped updated dates; index.md refreshed.
+Deliberately NOT published: the whole job-search layer — accepted-offer comp, the 38 LPA / USD 60k
+quoting rule, and the application queue are private-memory facts and this wiki is public.
+Memory: new files-repo-gitlinks-pages + company-finance-app, updated google-photo-identity-fix and
+usd-remote-job-search (accepted Accenture offer joining 7 Sep 2026, no-Mumbai, salary rule, 29 applied).

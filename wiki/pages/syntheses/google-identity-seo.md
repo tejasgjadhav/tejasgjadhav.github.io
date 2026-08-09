@@ -3,7 +3,7 @@ title: Google identity/SEO fix for "tejas jadhav"
 type: synthesis
 tags: [seo, identity, google, knowledge-panel]
 created: 2026-07-05
-updated: 2026-07-23
+updated: 2026-08-09
 sources: [~/files (root repo), ~/files/scmhrd-ai-finance, ~/files/aifinance, ~/files/HANDOFF-seo-photo.md]
 ---
 
@@ -94,3 +94,21 @@ actions: report/claim the wrong Maps place, wait on the P18 recrawl, earn genuin
 "author" is fully covered everywhere; **"business analyst" was missing** from Wikidata + schema — plan is
 Wikidata **P106 += business analyst (Q1017553)** with a source (safe off-page statement), *not* an on-page
 keyword; blocked at session end on the logged-in Chrome being connected, not yet applied. See [[tejas-jadhav]].
+
+**Wikidata item DELETED — the priority-1 lever is gone (2026-08-08):** Q140561693 was deleted for
+failing Wikidata's notability policy, roughly three weeks after it was built. Everything hanging off
+it went with it: the P18 portrait that was meant to feed Google's Knowledge Graph, the P106
+occupations (including the business-analyst addition planned on 2026-07-23, which was never applied),
+the Mint-sourced P463 membership statement, and the queued P2963 / P648 / P213 identifiers. The
+`sameAs` edge now resolves 404 and was removed from the root site's Person schema on 2026-08-09
+(commit `25acf88`, `index.html` only — dead reference removed, no copy or keyword churn). The
+notability caveat recorded on 2026-07-15 turned out to be the whole story: a self-created item
+sourced mostly to self-published books does not survive. **Do not recreate the item until genuine
+independent coverage exists** — a second deletion is harder to come back from.
+
+On **2026-08-09 [[tejas-jadhav]] reported again that the photo Google shows for his name is not him**,
+so the wrong-thumbnail problem has outlived the July fix by more than a month, and the route that was
+supposed to solve it no longer exists. The surviving levers are the ones that never depended on
+Wikidata: ORCID 0009-0000-9407-6871, Google Books Partner Center, OpenLibrary / Goodreads author
+records, and real third-party coverage. Off-page authority remains the durable lever; on-page churn
+still is not.
