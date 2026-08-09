@@ -200,3 +200,10 @@ and pages/concepts/kdp-listing-operations. Updated files-repo (project list),
 kdp-books (new titles + cover-claim compliance rule), index.md, graph.html.
 Note: index.md was found overwritten in the working tree with free-text book notes;
 restored from git and the notes handed back to the user separately.
+
+## [2026-08-09] ingest | scheduled sync — JARVIS DCF purity + speech bugs, Module 1 shipped, memory-layers concept
+Swept sessions from 2026-08-07/08. New page: concepts/ai-memory-layers (four-layer memory model +
+link graph). Updated projects/jarvis (Max-CLI latency measured, terminal-value normalization,
+coherence gate removed → DCF-first, 900-char speech truncation and trade/trading router bugs) and
+projects/aifinance (ISBMS course site, Module 1 as delivered, Colab dropped for a Codex lab).
+index.md entries refreshed for both.
