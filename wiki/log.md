@@ -238,3 +238,22 @@ Deliberately NOT published: the whole job-search layer — accepted-offer comp, 
 quoting rule, and the application queue are private-memory facts and this wiki is public.
 Memory: new files-repo-gitlinks-pages + company-finance-app, updated google-photo-identity-fix and
 usd-remote-job-search (accepted Accenture offer joining 7 Sep 2026, no-Mumbai, salary rule, 29 applied).
+
+## [2026-08-10] ingest | scheduled sync — v0 credit book, Turtle Soup rejected, the voice pass becomes a gate
+Reviewed the sessions from the last 24 hours: the Saavi low-c/w work, the Cowork book review and
+rebuild, the humanizer-versus-voice-pass comparison, the Instagram-reel strategy backtest, and the
+remote-job drive. New pages: syntheses/turtle-soup-verdict (the reel's EA is Raschke and Connors'
+Turtle Soup; 54,189 setups across NSE indices, 54 stocks and MCX say it is a coin flip after costs,
+the 80% win-rate zone needs 46.7 points of edge, and one 90.77% result was a lookahead bug) and
+concepts/voice-pass (the sentence-level grammar gate, the fragment ban beating the aphorism ban,
+the humanizer skill demoted to structure, and the US-default audience). Updated
+projects/institutional-trader (the v0 book on 0.35–0.40, the cross-book 3-day re-entry gap, the
+15:15–15:40 deployment freeze, scan moved to 15:36, bhavcopy verification at 33 of 34 exact),
+concepts/trading-strategies (0.30–0.35 is dead in all 432 configs; the win-rate arithmetic) and
+concepts/kdp-books (Cowork v9 shipped for internal consistency, ten aphorisms restored, page counts
+held). Bumped updated dates and refreshed index.md.
+Deliberately NOT published: the job-search layer stays private-memory only — this wiki is public.
+Memory: new turtle-soup-strategy-verdict and book-audience-us-default; updated
+institutional-trader-status, kdp-finance-book-series, humanizer-skill-location and
+usd-remote-job-search (the silent-no-op submit means throttling, and Lever needs its /thanks
+confirmation).

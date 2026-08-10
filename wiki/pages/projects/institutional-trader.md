@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-07-23
+updated: 2026-08-10
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -133,3 +133,27 @@ Current research/backtests live in `studies/`; `How_We_Built_The_Strategy.pdf` a
 `BACKTEST_RESULTS.md` are the historical build journey (superseded).
 
 Part of [[files-repo]].
+
+**2026-08-10 — the v0 book, one cross-book re-entry rule, and a deployment freeze:**
+- **STOCK CREDIT v0 is the third stock book** (`engine/stock_credit_v0.py`, live paper since
+  2026-07-31). The v2 gate takes credit/width at or above 0.40, so names kept piling up in the
+  watchlist just underneath it. v0 runs v2's exact geometry on the 0.35–0.40 band with the exits
+  that band wants: take profit at 40% of credit, no stop. It imports v2's module through importlib,
+  so every v2 fix reaches it automatically. The evidence is deliberately thin and the page for it
+  says so: in-sample 2019→Sep'24 wins 77.4% and is positive in only 4 of 6 years (n=310), while
+  out-of-sample Oct'24→Jul'26 wins 90.7% and is positive in all 3 years on just 43 trades.
+- **The band below is dead and stays rejected.** A 432-configuration sweep over geometries, strike
+  steps, widths, targets and stops found 0.30–0.35 negative in every test (+0.2% in-sample, −5.2%
+  out-of-sample). See [[trading-strategies]].
+- **The 3-day re-entry gap is now cross-book.** No book fires on a name that any book entered within
+  `STOCK_CREDIT_REENTRY_GAP_DAYS`. One function, `data_utils.recent_entry_symbols()`, reads all three
+  book files, so the rule cannot drift between books. This matches the backtest, where the gap was
+  per symbol with no notion of separate books. A repeat entry at new levels is allowed once the gap
+  expires; consecutive days are not.
+- **The engine is frozen for deployments between 15:15 and 15:40.** Day markers live in memory, so
+  restarting inside the scan window makes it re-scan. Deploy after the close.
+- **Timings moved:** the watchlist digest rebuilds at 15:31 on the post-auction close and the stock
+  credit scan runs once at 15:36. The 15:10 figure recorded above is stale.
+- **Watchlist prices are verified against [[nse-bhavcopy]], 33 of 34 exact over two sessions.** When a
+  specific name is challenged, compare its signal price to `ClsPric` in the bhavcopy rather than
+  reasoning from the code. That is what settled both HAL and GRASIM.

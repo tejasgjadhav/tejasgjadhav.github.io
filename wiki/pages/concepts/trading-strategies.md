@@ -3,7 +3,7 @@ title: Trading strategies — the 4-strategy lineup and their honest standing
 type: concept
 tags: [trading, strategy, nse, options, backtest]
 created: 2026-07-03
-updated: 2026-07-20
+updated: 2026-08-10
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/studies/STOCK_OPTIONS_NO_EDGE.md, ~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md, ~/files/institutional-trader/studies/INTRADAY_90PCT_WINRATE.md, ~/files/institutional-trader/studies/ZERO_DTE_ENTRY_TIME.md, ~/files/institutional-trader/studies/CW_BUCKET_ANALYSIS.md, ~/files/institutional-trader/studies/STOCK_FADE_V2_UNION_VS_D10.md, ~/files/institutional-trader/studies/monthly_fut/MAX_TRADES_OPTIONS.md]
 ---
 
@@ -209,3 +209,17 @@ Study: `studies/monthly_fut/MAX_TRADES_OPTIONS.md` (now leads with a SHELVED ban
 Research trail: `institutional-trader/studies/` (STOCK_OPTIONS_NO_EDGE.md Parts 10–11 hold the
 real-bhavcopy verdicts + the failed index-fade gate) + reproducible scripts. Synthesis:
 [[real-data-fade-validation]].
+
+**2026-08-10 — the low-c/w band, resolved:**
+- **0.35–0.40 became its own book (v0); 0.30–0.35 is dead.** A 432-configuration sweep across
+  geometries, strike steps, widths, targets and stops settled the band that sits just under the
+  0.40 gate. The upper half survives at v2's geometry with a TP-40 exit and no stop, and now runs
+  as a live paper book. The lower half loses in every configuration tested (+0.2% in-sample, −5.2%
+  out-of-sample) and is rejected. Full wiring in [[institutional-trader]].
+- **A high win rate is the most expensive thing to chase, and here is the arithmetic.** Win rate is
+  set by where the target sits relative to the stop. A 0.25R target produces about an 80% win rate,
+  and at that geometry each percentage point of edge is worth the least, so costs eat the most. To
+  clear 3% a month on margin at 7x leverage over roughly 20 trades, a 0.25R target needs 46.7
+  percentage points above baseline while a 5R target with a 30 bps stop needs 2.4. This is the
+  quantitative form of the house rule already on this page: report win rate, never optimize it.
+  Worked example: [[turtle-soup-verdict]].

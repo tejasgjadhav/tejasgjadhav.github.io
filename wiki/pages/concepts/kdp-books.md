@@ -3,7 +3,7 @@ title: KDP book catalog — AI and Practical Finance Series
 type: concept
 tags: [kdp, books, writing, amazon]
 created: 2026-07-03
-updated: 2026-08-01
+updated: 2026-08-10
 sources: [~/files/kdp-dashboard/data/books.json]
 ---
 
@@ -89,3 +89,24 @@ The listing side of all this — descriptions, editorial reviews, A+ modules, an
 policy that constrains them — is its own page: [[kdp-listing-operations]]. The binding rule
 from 2026-07-30 is that **a cover or blurb may only claim what the manuscript delivers**,
 verified by grepping the manuscript, not by trusting the previous cover.
+
+## Cowork book, reviewed and rebuilt 2026-08-10
+
+A month after publishing, [[tejas-jadhav]] read **Claude Cowork for Finance** back and rejected it.
+His objections were that it is not in his voice, that a non-developer cannot follow it, that it
+never says plainly what to do, and that it reads as AI-written. He also flagged that ECAS and a
+mutual-fund dashboard mean nothing to an American reader, which is most of his audience. The
+rebuild ran under a hard constraint that paperback and hardcover page counts must not change, and
+they held at 114 and 120.
+
+**The version that shipped is v9, and the reason is accuracy rather than prose.** ChatGPT and
+Gemini both preferred the earlier v6, but they were rating the writing of one file. v6 contradicts
+itself in seven places: Chapter 1 says the Pro plan covers everything while Chapter 5 needs a
+separately billed API key, one chapter's own arithmetic is wrong by a factor of two, the same job
+costs two hours in a table and an afternoon in the prose two pages later, and Google Drive is used
+by four chapters but installed by none. The book sells on the claim that every number traces back
+to something, so the reader who follows it hits a wall and stops trusting the rest.
+
+Ten sharp lines were restored into v9 after the voice pass over-flattened it, and three were left
+out because they are staccato fragments. The general rule that came out of this — the fragment ban
+wins, a complete sentence carrying one fact stays — is now [[voice-pass]].

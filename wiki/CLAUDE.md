@@ -92,3 +92,27 @@ One or two lines: what was done, which pages were touched.
 - Never let `index.md` or `log.md` drift — they are updated in the same pass as the pages.
 - Keep pages concise and factual; the value is in the links and the currency, not length.
 - The wiki lives in the `~/files` git repo — commits are welcome after substantial passes.
+
+
+## Voice pass (binding, added 2026-08-10)
+
+Any prose written in his name — notes, docs, commit bodies, READMEs, book text — gets the
+sentence-level voice pass defined in `~/.claude/CLAUDE.md` ("Sentence-level voice pass"):
+every sentence needs a subject and a verb and one fact, no verbless caption lists, plain verbs,
+concrete places and moments. He may write examples with grammar slips; copy the voice, correct
+the grammar.
+
+## THE VOICE PASS GATE (strict, added 2026-08-10)
+
+**No prose written in his name ships without the sentence-level voice pass.** Standing
+instruction from 2026-08-10, covering every book, article, KDP asset, post, note and doc.
+The gate is grammatical: every sentence needs a subject, a verb and one fact. No verbless
+sentences, no caption lists used as prose, no staccato fragments. Plain verbs, concrete places,
+"Example:" to signpost an example. Imperatives are fine and disclaimers are exempt.
+Grep cannot detect a fragment, so read every sentence. Full rule and worked example:
+`~/.claude/CLAUDE.md`, sections "THE VOICE PASS GATE" and "Sentence-level voice pass".
+He may write examples with grammar slips; copy the voice and correct the grammar.
+
+
+Polish without the AI feel: a sharp line that is a complete sentence carrying one fact is his
+voice and stays. Cut fragments, not personality. Full rule in `~/.claude/CLAUDE.md`.
