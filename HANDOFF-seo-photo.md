@@ -80,6 +80,15 @@ restore bare "bestselling"; the defensible form names the category scope and lin
 `scmhrd-ai-finance/index.html` still carries "Bestsellers" as a stat tile and "an Amazon bestseller"
 in the bio. No rank number, so softer than what was removed, but it is not audit-linked either.
 
+## Browser rule for this project (set 2026-08-11)
+
+**Rank checks run in Chrome incognito. Everything else runs in his Chrome profile `Tejas(bia)`.**
+His words: "for seo only use chrome incognito mode to just check rank rest use my tejas bia profile".
+A signed-in SERP is personalised and location-biased, so it does not give the real position; every
+other SEO action (Search Console, Maps, Author Central, Goodreads, LinkedIn, ORCID, KDP) needs his
+logged-in session. Full rule is in `CLAUDE.md` under section 7. Hard limits are unchanged — never
+sign in, enter a password, or solve a CAPTCHA in any profile.
+
 ## Standing gotchas
 
 - **Facebook now returns 400 to curl** (was 200). It is anti-bot, not a dead link — `facebook.com/zuck`
