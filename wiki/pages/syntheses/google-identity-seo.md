@@ -3,7 +3,7 @@ title: Google identity/SEO fix for "tejas jadhav"
 type: synthesis
 tags: [seo, identity, google, knowledge-panel]
 created: 2026-07-05
-updated: 2026-08-09
+updated: 2026-08-11
 sources: [~/files (root repo), ~/files/scmhrd-ai-finance, ~/files/aifinance, ~/files/HANDOFF-seo-photo.md]
 ---
 
@@ -112,3 +112,21 @@ supposed to solve it no longer exists. The surviving levers are the ones that ne
 Wikidata: ORCID 0009-0000-9407-6871, Google Books Partner Center, OpenLibrary / Goodreads author
 records, and real third-party coverage. Off-page authority remains the durable lever; on-page churn
 still is not.
+
+## The claims on the site were audited and two of them were false (2026-08-11)
+
+The site had been carrying a `NewsArticle` node that claimed a Mint-published article about him,
+sourced to a PressReader URL. That URL returns a generic homepage and mentions his name nowhere, so
+the node came out, along with the `Person.award` value "Featured in Mint Newspaper" and the
+PressReader entry in `Person.sameAs` (commit `7117375`). What Mint actually carries is his name in
+CFA Society India's 2025 charterholder roll on 2 February 2026, and that is how the site states it
+now. The wording "#1 Bestseller in India" came out of the FAQ answers, the `Book` description and
+the meta descriptions in the same pass, because it is not true.
+
+The first cut went too far, and the category ranks went back in the next commit (`e972553`). Those
+ranks are real and publicly tracked at [[kdp-dashboard]] — 8 books, 20 formats, 17 countries, 85
+live rankings, best category rank #5 — so every restored claim names the category scope and points
+at the audit page. A stranger can open it and check.
+
+The rule this leaves behind is simple. A claim that cannot be opened and checked does not go on the
+site. A claim that can be checked gets scoped and linked rather than deleted.

@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-08-10
+updated: 2026-08-11
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -157,3 +157,24 @@ Part of [[files-repo]].
 - **Watchlist prices are verified against [[nse-bhavcopy]], 33 of 34 exact over two sessions.** When a
   specific name is challenged, compare its signal price to `ClsPric` in the bhavcopy rather than
   reasoning from the code. That is what settled both HAL and GRASIM.
+
+**2026-08-11 — index prices get their own source file, and the message wording is his:**
+- **An index close is verified against NSE's index file, not the bhavcopy.** The CM bhavcopy carries
+  equities only and has no NIFTY row, so it can never settle an index price. The official closes sit
+  at `nsearchives.nseindia.com/content/indices/ind_close_all_DDMMYYYY.csv`. All three checked exact
+  to the paisa that day: NIFTY 24,471.70, FINNIFTY 26,432.40 and BANKNIFTY 57,446.25. So
+  `todays_close()` is correct for indices as well as stocks. Use the file that covers the instrument
+  class before arguing about a price. See [[nse-bhavcopy]].
+- **The swing credit book is switched off and stays off.** `SWING_CREDIT_ENABLED` has been False
+  since 2026-07-24, when the index fade failed out-of-sample at −1.4% of width. Its three open
+  positions all date from July and predate the stale-bar fix, so they carry no signal price and no
+  swing signal can fire until the flag flips. Anyone reading the book count should know that.
+- **The Telegram wording is a spec, not a preference.** The NIFTY and SENSEX books say INTRADAY and
+  never "0DTE" in anything a person reads. A result message names the execution date as an ordinal.
+  The closing summary reads "TOTAL TRADES = 8 OUT OF WHICH OUR SYSTEM ACHIEVED 8 WINS AND 0 LOSSES",
+  with no ticks and no crosses, and it bolds the win count, the percentage and the realized amount.
+- **A higher credit/width is not always a better entry.** The 09:30 re-check splits the credit into
+  time value and intrinsic before it says anything. Example: a credit of ₹29.50 at 0.492 was ₹9.80 of
+  time value and ₹19.70 of intrinsic, because spot had moved ₹16.60 through the short strike, while
+  the same ₹24.85 at entry was all time value. The edge this book trades is in the time value, so
+  that is a do-not-buy even though the headline number improved.

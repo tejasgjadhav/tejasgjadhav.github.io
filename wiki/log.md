@@ -257,3 +257,26 @@ Memory: new turtle-soup-strategy-verdict and book-audience-us-default; updated
 institutional-trader-status, kdp-finance-book-series, humanizer-skill-location and
 usd-remote-job-search (the silent-no-op submit means throttling, and Lever needs its /thanks
 confirmation).
+
+## [2026-08-11] ingest | scheduled sync — the cover pipeline, index-price sources, and a claims audit
+Reviewed 15 transcripts from the last 24 hours, including the cover worktree, the Saavi engine
+session, the SEO and schema session, and the job-search runs. New page: concepts/book-covers — the
+three-agent pipeline (designer writes a spec, executor builds and pixel-verifies it, compliance gate
+is the only reviewer that can block), the click test at a phone thumbnail, outcomes on the front and
+counts on the back, the ranking Claude register copied without Anthropic's mark, and KDP's
+calculator as the only authority on hardcover dimensions. Updated concepts/kdp-books (cover J ships
+for the Cowork book, palette nudged off Anthropic's published values, 114/120pp unchanged),
+projects/institutional-trader (an index close is verified against NSE's index file because the CM
+bhavcopy is equities only; the swing book has been off since 2026-07-24; the Telegram wording spec;
+a rising credit/width can be intrinsic rather than time value and that kills the entry),
+syntheses/google-identity-seo (the Mint feature claim and the "#1 Bestseller in India" wording were
+audited off as unsupported, and the category ranks went back scoped and linked to the BSR audit) and
+projects/kdp-dashboard (that audit is now the evidence behind the site's rank claims: 8 books, 20
+formats, 17 countries, 85 live rankings, best category rank #5). index.md refreshed for all five.
+Deliberately NOT published: the whole job-search layer, including application counts, salary
+figures and the LinkedIn and Naukri throttling mechanics. This wiki is public and those are
+private-memory facts.
+Memory: new author-site-claim-accuracy; updated institutional-trader-status, kdp-finance-book-series,
+kdp-cover-gotchas, usd-remote-job-search and naukri-bulk-apply-routine.
+Correction worth keeping: he discussed raising the stock-credit exposure cap to Rs60,000 on
+2026-08-11 and the config was not changed — STOCK_CREDIT_MAX_EXPOSURE is still 0, no cap.

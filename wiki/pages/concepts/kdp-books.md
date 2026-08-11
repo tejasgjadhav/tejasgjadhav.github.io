@@ -3,7 +3,7 @@ title: KDP book catalog — AI and Practical Finance Series
 type: concept
 tags: [kdp, books, writing, amazon]
 created: 2026-07-03
-updated: 2026-08-10
+updated: 2026-08-11
 sources: [~/files/kdp-dashboard/data/books.json]
 ---
 
@@ -110,3 +110,14 @@ to something, so the reader who follows it hits a wall and stops trusting the re
 Ten sharp lines were restored into v9 after the voice pass over-flattened it, and three were left
 out because they are staccato fragments. The general rule that came out of this — the fragment ban
 wins, a complete sentence carrying one fact stays — is now [[voice-pass]].
+
+## The Cowork cover, settled 2026-08-11
+
+Ten rounds ran through the cover pipeline described in [[book-covers]], and cover **J** ships. It
+sits in the register the ranking Claude titles use, a cream ground with a clay accent and the title
+alone, with the palette deliberately nudged off Anthropic's published values so the cover carries
+the recognition without wearing their trade dress. It prints no starburst and no vendor badge. The
+files are `COWORK_EBOOK_Cover_J.jpg`, `COWORK_PAPERBACK_Cover_J_114pp.pdf` and
+`COWORK_HARDCOVER_Cover_J_120pp.pdf` under `~/files/kdp-books/claude-cowork-finance/cover/`, and
+covers A through H are superseded. Page counts are unchanged at 114 and 120, so the spine widths
+came straight off KDP's calculator.

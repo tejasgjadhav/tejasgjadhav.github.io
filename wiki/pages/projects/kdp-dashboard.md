@@ -3,7 +3,7 @@ title: KDP Dashboard — Amazon BSR tracker
 type: project
 tags: [kdp, amazon, dashboard, launchd, playwright]
 created: 2026-07-03
-updated: 2026-07-21
+updated: 2026-08-11
 sources: [~/files/kdp-dashboard/README.md, ~/files/kdp-dashboard/HANDOFF.md]
 ---
 
@@ -33,3 +33,10 @@ fresh, and don't bypass bot-detection or buy a paid proxy/API without laying out
 first. Feeds the ad-spend decisions in [[amazon-ads]].
 
 Part of [[files-repo]].
+
+**The audit page is now the evidence behind the author site's rank claims (2026-08-11).** The root
+site says the books are "ranked in multiple Amazon best seller categories" and links here, because
+this dashboard is the public record: 8 books, 20 formats, 17 countries, 85 live rankings, and a
+best category rank of #5. The unverifiable claims on that site were removed in the same pass, and
+the reasoning is on [[google-identity-seo]]. Anything the dashboard cannot show should not be
+claimed anywhere else.
