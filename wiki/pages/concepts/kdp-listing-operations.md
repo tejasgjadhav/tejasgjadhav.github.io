@@ -3,7 +3,7 @@ title: KDP listing operations — descriptions, editorial reviews, A+ content
 type: concept
 tags: [kdp, amazon, policy, marketing, listings]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-13
 sources: [~/files/HANDOFF.md, ~/files/kdp-books/DESCRIPTIONS-rewrite-2026-07-27.md, ~/files/kdp-books/EDITORIAL-REVIEW-blurbs-draft.md]
 ---
 
@@ -50,3 +50,29 @@ and credential rules apply to the back-cover bio exactly as they do to the inter
   the toast, which vanishes.
 
 Ranks for all of this are tracked in [[kdp-dashboard]]; paid demand in [[amazon-ads]].
+
+## Backend keywords: what the evidence actually is (2026-08-13)
+
+He challenged a keyword list with a fair question — had anyone typed the terms into Amazon and
+checked? The answer was no, and the check changed the list. **Probe Amazon's own autocomplete in
+the Books category, signed out, from the US**, because those suggestions are what a buyer sees
+while typing. It confirmed most of the live slots as real searches and it exposed three things no
+advertising report could:
+
+- `claude ai bible` is Amazon's second suggestion after "claude ai", and his ads had already sold a
+  $24.99 copy to a "beginners bible" query. No slot held the word.
+- `anthropic` completes to "anthropic mug", which is merchandise intent rather than book intent.
+  It was the weakest hardcover slot and it was replaced.
+- `ai for financial advisors` is a real suggested completion carrying buyer-role intent, and it sat
+  in no slot on any book.
+
+**Advertising search terms tell you what converted; autocomplete tells you what buyers type.** Use
+both, and never claim a term is searched without checking the search bar. The older rules still
+hold: short head phrases only, never delete a proven winner, and stage a change on one format
+first. See [[kdp-books]] and [[amazon-ads]].
+
+**Two operational facts about the KDP keyword fields.** Setting a value synthetically does not
+commit, because the form model discards it and the field reverts on reload, so the save has to fire
+through a direct handler call and every save must be verified by reloading the page and re-reading
+the value from the server. And his live listings do not always match the session notes, because he
+edits slots himself between sessions. Read the live page and treat it as the baseline.

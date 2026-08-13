@@ -3,7 +3,7 @@ title: Trading strategies — the 4-strategy lineup and their honest standing
 type: concept
 tags: [trading, strategy, nse, options, backtest]
 created: 2026-07-03
-updated: 2026-08-10
+updated: 2026-08-13
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/studies/STOCK_OPTIONS_NO_EDGE.md, ~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md, ~/files/institutional-trader/studies/INTRADAY_90PCT_WINRATE.md, ~/files/institutional-trader/studies/ZERO_DTE_ENTRY_TIME.md, ~/files/institutional-trader/studies/CW_BUCKET_ANALYSIS.md, ~/files/institutional-trader/studies/STOCK_FADE_V2_UNION_VS_D10.md, ~/files/institutional-trader/studies/monthly_fut/MAX_TRADES_OPTIONS.md]
 ---
 
@@ -223,3 +223,19 @@ real-bhavcopy verdicts + the failed index-fade gate) + reproducible scripts. Syn
   percentage points above baseline while a 5R target with a 30 bps stop needs 2.4. This is the
   quantitative form of the house rule already on this page: report win rate, never optimize it.
   Worked example: [[turtle-soup-verdict]].
+
+**2026-08-13 — the expiry-eve region is closed, and entry time is settled:**
+- **T-1 (expiry-eve) entry is rejected on every index.** NIFTY earns ₹6,180 a year at 1% out of the
+  money, loses in 3 of 8 years, and its direction inverts out of sample. SENSEX has weeklies only
+  from Oct-2024 and its whole history is one falling regime, so it cannot be tested. BANKNIFTY was
+  the only survivor and it was priced on weekly expiries that no longer exist. Full record in
+  `studies/T1_CLOSE_ENTRY.md` and `studies/T1_EXPIRY_EVE.md`; see [[institutional-trader]].
+- **Later entry always sells the theta edge.** Median credit decays from 13.2 at 09:16 to 11.1 by
+  10:00, so a later entry buys 3 to 4 percentage points of win rate and gives up 35 to 45% of the
+  profit. The tail does not shrink either: the worst trade is −₹11,771 at 10:00 against −₹11,703 at
+  the open, because disaster days trend all day. The mechanism is time of day rather than expiry
+  day, so it answers the entry-time question on every book. Within T-1 the 09:16 entry earns more
+  than the close on every index and geometry, and wins less often.
+- **A backtest can be invalidated by something no statistical test measures.** The BANKNIFTY result
+  died on expiry cadence, not on any ₹/trade figure. Check that the instrument still trades the way
+  the backtest assumed before trusting seven years of history.

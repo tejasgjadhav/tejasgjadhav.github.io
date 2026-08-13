@@ -3,7 +3,7 @@ title: KDP book catalog — AI and Practical Finance Series
 type: concept
 tags: [kdp, books, writing, amazon]
 created: 2026-07-03
-updated: 2026-08-11
+updated: 2026-08-13
 sources: [~/files/kdp-dashboard/data/books.json]
 ---
 
@@ -121,3 +121,15 @@ files are `COWORK_EBOOK_Cover_J.jpg`, `COWORK_PAPERBACK_Cover_J_114pp.pdf` and
 `COWORK_HARDCOVER_Cover_J_120pp.pdf` under `~/files/kdp-books/claude-cowork-finance/cover/`, and
 covers A through H are superseded. Page counts are unchanged at 114 and 120, so the spine widths
 came straight off KDP's calculator.
+
+## Two additions from 2026-08-13
+
+**"Claude AI for Absolute Beginners" reached a full draft.** All 75 chapters are written, the book
+runs to 243 pages with 13 real product screenshots, and it is the first title outside finance. It
+carries its own byline rule, its own interior identity and its own register rule, so it has its own
+page: [[claude-beginners-book]].
+
+**A Claude job-search book was assessed and rejected as a lead title.** A rival shipped the same
+concept on 1 August 2026 and sits at 1.4 million in the Kindle store, and the winner of that whole
+category sells two or three copies a day. The evidence and the one honest angle are in
+[[job-search-book-verdict]].

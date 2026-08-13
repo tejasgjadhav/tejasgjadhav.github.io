@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-08-11
+updated: 2026-08-13
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -178,3 +178,31 @@ Part of [[files-repo]].
   time value and ₹19.70 of intrinsic, because spot had moved ₹16.60 through the short strike, while
   the same ₹24.85 at entry was all time value. The edge this book trades is in the time value, so
   that is a do-not-buy even though the headline number improved.
+
+## 2026-08-13 — T-1 closed, and a lesson about what a backtest cannot see
+
+- **The T-1 (expiry-eve) entry is rejected and the region is closed.** Two studies record it so
+  nobody mines it again. `studies/T1_EXPIRY_EVE.md` covers a 09:16 entry at 2% or more out of the
+  money, which produces win rates of 95 to 100% on credits of about ₹3.70, at a credit/width of
+  0.01 to 0.10 against the proven 0.40 gate. `studies/T1_CLOSE_ENTRY.md` is the main record, with
+  1,405 trades and a true in-sample and out-of-sample split. NIFTY fails on money and on a
+  direction that inverts out of sample. SENSEX cannot be tested before Oct-2024. Both are indexed
+  in `studies/README.md`. Nothing was ever deployed.
+- **A cadence change can invalidate a seven-year backtest, and no ₹/trade test will catch it.**
+  BANKNIFTY held the only edge in that study that spanned both regimes, and it was priced on
+  roughly 52 expiries a year. Weeklies have ended and the count is now 12 a year, so ₹38,446 a year
+  becomes ₹9,612. Every statistical check ran on ₹/trade and none of them could have found this.
+  Confirm that the instrument still trades on the cadence the backtest assumed. The re-open
+  condition is recorded: BANKNIFTY weeklies returning.
+- **Intraday option premiums exist from Oct-2024 onward.** An earlier claim that they cannot be
+  tested at all was too strong. The hard boundary is pre-Oct-2024, which is a smaller claim. See
+  [[upstox]].
+- **The ₹60,000 exposure cap has now been asked for twice and still is not in the config.** He
+  raised it on 2026-08-11 and again on 2026-08-13, and `engine/config.py` still reads
+  `STOCK_CREDIT_MAX_EXPOSURE = 0`. Read the config before telling him a cap is live.
+- **The viewer's watchlist table taught a Qt lesson worth keeping.** Turning the horizontal
+  scrollbar off makes Qt compress columns whenever their total exceeds the viewport, so every
+  fixed width in the code was silently overridden and six rounds of pixel-tuning changed nothing.
+  Columns now take shares of the measured viewport and wrap to a second line rather than clip.
+  The general point is that his screenshots found three defects that every code check had passed,
+  so verify the render rather than the source.

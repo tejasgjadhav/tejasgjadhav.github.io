@@ -280,3 +280,12 @@ Memory: new author-site-claim-accuracy; updated institutional-trader-status, kdp
 kdp-cover-gotchas, usd-remote-job-search and naukri-bulk-apply-routine.
 Correction worth keeping: he discussed raising the stock-credit exposure cap to Rs60,000 on
 2026-08-11 and the config was not changed — STOCK_CREDIT_MAX_EXPOSURE is still 0, no cap.
+
+## [2026-08-13] ingest | Session sync — T-1 closed, the August sales slide, and the beginners book draft
+Swept the day's transcripts. Trading: appended the T-1 rejection, the expiry-cadence lesson and the
+entry-time finding to institutional-trader and trading-strategies, and recorded that the ₹60,000
+exposure cap has been asked for twice while the config still reads 0. KDP: filed the two-phase BSR
+diagnosis of the August royalty slide on amazon-ads, and the Amazon-autocomplete keyword method plus
+the KDP save mechanics on kdp-listing-operations. New pages: projects/claude-beginners-book (full
+75-chapter draft, 243pp) and syntheses/job-search-book-verdict. kdp-books links both. Index updated,
+graph regenerated.
