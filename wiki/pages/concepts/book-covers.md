@@ -3,7 +3,7 @@ title: Book covers — the pipeline, the click test, and the shelf they sell on
 type: concept
 tags: [kdp, covers, design, amazon, compliance]
 created: 2026-08-11
-updated: 2026-08-16
+updated: 2026-08-17
 sources: [~/.claude/CLAUDE.md, ~/files/kdp-books/claude-cowork-finance/cover/]
 ---
 
@@ -134,3 +134,35 @@ margins on the large file directly rather than scaling them from the small one.
 **KDP's own spec is 300 DPI and PDF is their preferred print-cover format.** An 800 DPI JPEG buys
 nothing for a KDP upload and is the right file only when a different printer or distributor asks
 for raster.
+
+## The hardcover has no formula, and the one we used was wrong (2026-08-17)
+
+A hardcover case is not a bigger paperback. The arithmetic in `CLAUDE.md` —
+`pages × 0.0025 + 0.06` for the spine — produced a sheet of 13.050 × 9.250 in for the 296-page
+[[claude-beginners-book]], and KDP rejected it and stated the size it wanted: **14.458 × 10.417 in**.
+The spine was never the main error. That formula omits the turn-in, the hinge and the board overhang
+entirely, and **KDP's hardcover geometry is metric — a 15 mm turn-in, a 5 mm hinge and a 3 mm board
+overhang — so no inch formula was ever going to land on it.** Build every hardcover to the sheet size
+KDP's own Cover Calculator or its error message states, term by term. The formula has been withdrawn
+from `CLAUDE.md`.
+
+The paperback maths is sound and rebuilt pixel-identical at 12.9031 × 9.25 in on a 0.6531 in spine.
+Two further measurements are worth keeping: the fore-edge turn-in is 0.5906 in rather than the 0.85 in
+that was guessed, and KDP wants text 0.635 in inside a hardcover's edge because the case curves over
+the board there.
+
+**KDP accepts a JPG for the Kindle cover only.** Paperback and hardcover want a print-ready PDF and
+reject a JPG at the upload step, so keep the wrap JPGs for looking at and never for uploading.
+
+## Never build a pattern by cropping the finished artwork
+
+The beginners book shipped a back panel with a mirrored ghost of its own front cover underneath the
+description — the title reversed, the badge flipped, a feature label upside down. Two helpers had
+built the back's halftone field by cropping rectangles out of the finished front artwork and pasting
+them mirrored, and those rectangles contained type rather than only dots. The fix draws the halftone
+procedurally and reads no artwork pixels at all, with the pitch and dot size measured off the one
+type-free field in the source image.
+
+**The verification suite reported CLEAR on that visibly broken wrap.** A suite that passes broken
+output is worse than no suite, because it converts a defect into a signed-off defect. Add a gate that
+tests the thing that actually broke before trusting the next pass.

@@ -3,7 +3,7 @@ title: Research scripts are production code — the backtest harness audit rule
 type: concept
 tags: [trading, backtesting, verification, research]
 created: 2026-08-16
-updated: 2026-08-16
+updated: 2026-08-17
 sources: [~/files/institutional-trader/studies/, ~/files/institutional-trader/HANDOFF.md]
 ---
 
@@ -38,6 +38,23 @@ change can invalidate a seven-year result without moving any per-trade number at
 
 **Re-audit after every material fix.** A harness audited before a change is not an audited harness
 after it, and the parity fix on this repo is currently unreviewed.
+
+**Name the gate your data cannot model, and treat it as the ceiling.** A harness is limited by its
+inputs before it is limited by its code. The [[institutional-trader]] backtest runs on end-of-day
+exchange files that carry a close and an open-interest figure and no bid or ask, while the live
+engine refuses any trade whose spread is worse than 6% — a gate that rejected 59% of candidates on
+the day it was measured. Perfect code on incomplete data still returns an answer that does not
+describe live trading. So score the harness against what it could ever achieve rather than against
+perfection: every known bug fixed and both windows re-run is the honest maximum, and getting past it
+needs data that does not exist or a forward record of real fills. **A forward record of fifty
+resolved trades is worth more than another week of harness work**, because it is the only
+measurement that includes the spread gate, the fills and the slippage.
+
+**A parameter frozen into a record at entry outlives the policy that set it.** One live position
+carried a stop for nineteen days after the books stopped using stops, because the stop level was
+written into the position when it opened and nothing re-read the configuration afterwards. Audit
+stored parameters against current config at load time, and prefer reading a live value to freezing
+a copy.
 
 Related: [[institutional-trader]], [[trading-strategies]], [[capital-curve-verdict]],
 [[nse-bhavcopy]], [[upstox]].

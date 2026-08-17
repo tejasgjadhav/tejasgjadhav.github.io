@@ -3,7 +3,7 @@ title: Claude AI for Absolute Beginners — the first non-finance book
 type: project
 tags: [kdp, book, claude, writing]
 created: 2026-08-13
-updated: 2026-08-16
+updated: 2026-08-17
 sources: [~/files/kdp-books/claude-beginners/HANDOFF.md]
 ---
 
@@ -77,3 +77,41 @@ book and the finance credentials belong on the finance books. See [[kdp-listing-
 The book now points readers at his personal site rather than the BSR dashboard, and the Anthropic
 relationship is stated as a trademark notice with the book positioned as an independent education
 guide.
+
+## Where it stands (2026-08-17)
+
+The book is built and the upload files are cut. Page counts hold at 290 for the paperback and 296 for
+the hardcover, which puts the spines at 0.6531 in and 0.8000 in. Three files sit in `~/Downloads`
+ready for KDP: a 1600 × 2560 Kindle cover at the ratio Amazon actually asks for, and a PDF wrap for
+each print format. The wrap JPGs beside them are for looking at, because KDP rejects a JPG for a print
+cover.
+
+The hardcover was rejected once on sheet size, and the cause became a standing rule on
+[[book-covers]]: the arithmetic spine formula omits the turn-in, the hinge and the board overhang, so
+a hardcover gets built to the size KDP itself states. The back panel's mirrored-ghost defect was
+traced to helpers cropping rectangles out of the finished front artwork, and the halftone is drawn
+procedurally now.
+
+**The EPUB had no package file at all** — no manifest, no spine, no navigation document and no
+stylesheet — so the validator aborted with a fatal error before it ever reached the nineteen orphan
+images, and KDP returned only a generic "problem processing your file". Rebuilding it at the source
+gives zero fatals, zero errors and zero warnings, and takes the file from 21.4 MB to 10.5 MB, which
+clears about $1.94 a copy in delivery fees. The killed series mark now appears zero times in all three
+files.
+
+**Two back-cover claims were false and were corrected.** "Every skill arrives as a numbered
+walkthrough" overclaimed, because 67 of the 75 chapters carry a numbered list and eight do not. "The
+pictures are photographs of real screens" was false as a blanket statement, because the book runs 26
+real screenshots alongside 34 drawn figures. Narrowing the subject to the screenshots makes it true.
+Both are the same class of error as the integration claim that [[book-covers]] was written to prevent.
+
+The listing package is built and its keyword work is on [[kdp-listing-operations]]. Slots one through
+six are identical across all three formats, only the seventh differs, and every phrase was verified
+against Amazon's autocomplete with a control test first. Categories are set per format because the
+Kindle tree uses different labels for the same shelves. The author bio carries no CFA or FRM on this
+book, which is the rule for the non-finance titles.
+
+Two figures are still pending. Landing them moves the page count and forces a spine re-cut, so the
+covers are only final while they stay out. The cover artwork prints at 166 DPI, so the large serif
+edges will be softer than they look on screen, and regenerating the source image larger is the clean
+fix whenever he wants it.

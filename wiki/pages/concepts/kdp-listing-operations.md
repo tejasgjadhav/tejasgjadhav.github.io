@@ -3,7 +3,7 @@ title: KDP listing operations — descriptions, editorial reviews, A+ content
 type: concept
 tags: [kdp, amazon, policy, marketing, listings]
 created: 2026-08-01
-updated: 2026-08-13
+updated: 2026-08-17
 sources: [~/files/HANDOFF.md, ~/files/kdp-books/DESCRIPTIONS-rewrite-2026-07-27.md, ~/files/kdp-books/EDITORIAL-REVIEW-blurbs-draft.md]
 ---
 
@@ -76,3 +76,43 @@ commit, because the form model discards it and the field reverts on reload, so t
 through a direct handler call and every save must be verified by reloading the page and re-reading
 the value from the server. And his live listings do not always match the session notes, because he
 edits slots himself between sessions. Read the live page and treat it as the baseline.
+
+## Re-fetch the policy pages, because they moved again (2026-08-17)
+
+Building the listing package for [[claude-beginners-book]] turned up four changes that a memory-based
+answer would have got wrong. The Kindle **70% royalty band is now $2.99–$12.99**, not $2.99–$9.99;
+that moved on 7 July 2026 and it widens the pricing room considerably. **Categories are three per
+format**, BISAC is no longer mentioned on the categories page, and the old browse-node email route is
+gone from the documentation. Four KDP URLs this catalogue had on file now return 404. Fetch the live
+pages every time rather than trusting any of the above six months from now.
+
+**EPUB file size is a per-sale cost.** A 20.94 MB file carries a $3.14 delivery fee, which at $9.99
+nearly makes the 35% royalty option beat the 70% one. Compressing that book to 10.5 MB is worth about
+$1.94 a copy. Check the size before choosing a royalty band.
+
+**Declare AI for both the text and the cover art.** KDP's definition explicitly catches content that
+had substantial edits applied afterwards, so heavy editing is not an exemption.
+
+## Keywords: run a control, then probe the exact phrase
+
+Amazon's autocomplete is real search-log evidence, but only after you prove the endpoint is not
+echoing back whatever it is fed. **Probe a nonsense string first.** `zxqvbn ai` returns empty, which
+establishes that a returned phrase means something. Sixteen plausible-sounding candidates for the
+beginners book came back empty against that control and were discarded.
+
+**Probe the compound exactly as it will be pasted.** `claude mcp servers` and `claude skills and
+projects` both returned empty even though `claude mcp`, `mcp servers`, `claude skills` and `claude
+projects` are all live. Assembling a phrase out of real parts does not make the phrase real, and both
+of those had already been handed over before the probe ran.
+
+**Kindle and print share one keyword corpus.** A 56-term sweep found that every phrase existing in one
+store exists in the other, and only the ranking differs. Paperback and hardcover are the same store,
+the same corpus and the same buyer, so their keyword sets should be identical unless there is a
+genuine buyer-intent reason to differ, such as a gift framing on print. Print-specific framings mostly
+do not exist: an illustrated-guide phrasing, a large-print phrasing and a seniors phrasing all
+returned zero.
+
+**A high-volume term that is a competing book's title stays out.** One such phrase ranked third on the
+bare product-name prefix, the highest volume seen in the whole session, and KDP's keyword rules forbid
+unauthorised references to other titles. The same boundary applies to artwork, and it is covered under the
+trade-dress section of [[book-covers]].

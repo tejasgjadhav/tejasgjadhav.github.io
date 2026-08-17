@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-08-16
+updated: 2026-08-17
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -268,3 +268,81 @@ See [[backtest-harness-audit-rule]].
 **Everything published is still pre-parity and wrong.** The viewer tables and cards, studies SS5
 and SS6, the Telegram evidence lines and the CLAUDE.md book table all carry superseded numbers
 until one consolidated correction pass runs.
+
+## 2026-08-17 — the open-interest gate conceded, and the ceiling named
+
+**He challenged the open-interest gate and he was right.** It was deployed at ten lots, then five,
+then dropped to "any open interest at all", and every one of those deploys rested on how many signals
+survived rather than on any measured win rate or return. No threshold above zero has ever been tested
+for profitability in either window. What the gate genuinely is: a fidelity fix. A bhavcopy close on a
+contract that never traded is NSE's theoretical settlement price rather than a price anyone could
+have filled, so pricing entries off those contracts inflates the result. Applying the gate roughly
+halved in-sample return, and that is a measurement correction rather than evidence the gate helps.
+Live it is inert, because the bid-ask check blocks every name the open-interest gate blocks and six
+more besides.
+
+**The structural ceiling is now the honest headline caveat.** The live engine refuses a trade whose
+bid-ask spread is worse than 6%, and on 17 August that gate rejected **10 of 17 candidates, 59% of
+them**. No bhavcopy backtest can ever apply it, because those files carry a close and an open-interest
+figure and no bid or ask at all. So every published return is computed over a population that includes
+names the engine would have refused as too wide to trade, and that is a larger source of optimism than
+any open-interest threshold. The audit therefore scores the harness at 7 out of 10 with a ceiling near
+8: reaching 8 means every known bug fixed and both windows re-run, 9 would need real historical
+bid-ask data that does not exist at any price he knows of, and 10 is not a backtest at all. The
+forward record began on 6 August and holds four resolved trades. At fifty it would say more about
+whether these books work than every hour of harness work, because it is the only measurement that
+includes the spread gate, the actual fills and the slippage. See [[backtest-harness-audit-rule]].
+
+## The frozen-parameter defect, found on a live position
+
+No book has run a stop since July, and one open position had one anyway. `stop_cost` is written into
+each position record at entry and frozen there, so a BAJAJ-AUTO bear call opened on 29 July kept the
+stop that was policy that day. Nineteen days later it sat about thirty points from firing and
+realising a loss of ₹9,068 under a policy that says there are no stops. He cleared it. New positions
+now store no stop at all, and a module-level override inside the v2 book — which was the real source
+of the phantom stop the viewer had been advertising for weeks — is gone.
+
+Clearing the field exposed a second bug immediately: the resolver compared a float against an empty
+value, which raises an error that the surrounding handler would have swallowed on every cycle.
+**The general defect stands and is worth carrying to any system with frozen parameters: no book
+re-checks its stored exit rules against the current configuration when it loads.** The take-profit
+level is safe only by accident, because positions store no take-profit field and the resolver reads
+the current value each time it runs.
+
+## The day the engine called a trading day a holiday
+
+On 17 August the engine lost its network at 15:15, and the watchlist he stages before the close was
+lost with it. The chain is worth keeping because every link is a common mistake. A recheck routine
+rebuilt its whole message every five seconds from 09:30 onward, roughly 66,000 needless API calls a
+day, which exhausted the connection. The failure surfaced as an empty result rather than an error, and
+the market-open check cannot tell an empty result from a day on which nothing traded, so it concluded
+the exchange was shut and cached that verdict. The 15:17 list ran late and found nothing; the 15:31
+rebuild found twenty breakouts.
+
+The fix reads the engine's own database first. It writes a market snapshot every few seconds all
+session, and it was sitting on 3,301 snapshots dated that day while it declared a holiday. That layer
+needs no network at all. If both it and the index check are silent the day is treated as trading and
+the verdict is never cached, because **a false holiday silently costs a whole trading day while a
+false trading day costs nothing — the per-stock price guard still refuses to fire on stale data.**
+
+Settlement carried a related defect. It asked for the expiry day's bar, got an empty result because
+the vendor publishes no same-day daily bar, and fell through to the current live price on every
+settlement. It only ever looked correct because settlement runs after 15:40, when the live print
+happens to equal the auction close, which was undocumented and load-bearing. It now settles only on a
+bar dated the expiry itself.
+
+Research inputs moved out of `/tmp` into a gitignored `research/` directory after `/tmp` was wiped
+twice, taking a 1.6 GB price pickle and a cached options-leg store with it and killing two sweeps.
+
+## Architecture is now drawn, not only described
+
+The README carries two mermaid diagrams inside the existing architecture section. The first shows the
+data flow, and it makes the decoupling visible: every arrow into the viewer comes from disk and none
+comes from the engine, so a viewer crash cannot stop trading. The second is the daily clock as a
+timeline from the 09:15 open through the 15:15 auction and deployment freeze, the 15:17 pre-stage
+list, the 15:31 digest, the official close struck at 15:35, the scan at 15:36 and settlement at
+15:40. Mermaid was chosen over an image on purpose, because GitHub renders it natively and it stays
+diffable, so a schedule change moves the diagram in the same commit instead of leaving it silently
+stale. The 15:17 watchlist is a pre-stage list rather than a signal, because it is built before the
+auction matches and its strikes can still move. See [[nse-bhavcopy]] and the session note in
+[[trading-strategies]].

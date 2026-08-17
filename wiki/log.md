@@ -313,3 +313,36 @@ Memory: new kdp-finance-translations and cover-trade-dress-risk; updated institu
 claude-beginners-book and dev-machine-technical-gotchas.
 Deliberately NOT published: the job-search transcript layer — CV content, target employers,
 salary figures and application mechanics. This wiki is public and those stay in private memory.
+
+## [2026-08-17] ingest | Session sync — the OI gate conceded, the frozen stop, and the hardcover that has no formula
+Swept nine transcripts from the last 24 hours. Trading: institutional-trader gained the 17-Aug
+section — he challenged the open-interest gate and won the argument, so it is recorded as a fidelity
+fix rather than an edge, since no threshold above zero has ever been tested for win rate or return
+and the live bid-ask check blocks everything it blocks. The bigger finding is the ceiling: the live
+spread gate rejected 10 of 17 candidates that day and no bhavcopy backtest can model it, because
+those files carry no bid or ask at all, so the harness is scored 7/10 against a maximum near 8 and
+the forward record is the only route past it. Also filed: a live position carried a stop for
+nineteen days after the books stopped using stops, because stop_cost is frozen into the record at
+entry and nothing re-reads config; the engine read a DNS failure as an exchange holiday and lost the
+15:17 watchlist, with the fix now reading its own database first and never caching a negative; the
+settlement path had no date guard and fell through to the current live price; research inputs moved
+out of /tmp after it was wiped twice; and two mermaid diagrams now sit in the README.
+trading-strategies and backtest-harness-audit-rule carry the one-paragraph versions, the latter
+gaining the general rule to name the gate your data cannot model and to audit any parameter frozen
+at entry.
+KDP: book-covers gained the hardcover correction — the inch spine formula in CLAUDE.md was wrong and
+is withdrawn, because KDP's hardcover geometry is metric and the sheet must be built to the size KDP
+itself states; plus JPG is accepted for the Kindle cover only, and a halftone must never be built by
+cropping the finished front artwork. kdp-listing-operations gained the live policy changes (the 70%
+band is now $2.99-$12.99, categories are three per format, four filed URLs are dead), the EPUB
+delivery-fee arithmetic, and the keyword method: run a nonsense-string control before believing
+autocomplete, probe compounds exactly as pasted, and treat Kindle and print as one corpus.
+claude-beginners-book records cover v7, the rebuilt EPUB and two false back-cover claims corrected.
+Memory: new tradingview-delayed-feeds; updated institutional-trader-status, claude-beginners-book,
+kdp-cover-gotchas, kdp-publish-workflow, kdp-keyword-mistake-lessons, dev-machine-technical-gotchas,
+runtime-verification-rule, resume-align-never-fabricate, usd-remote-job-search and
+naukri-bulk-apply-routine.
+Also corrected outside the wiki: the withdrawn hardcover spine formula in both copies of CLAUDE.md.
+Deliberately NOT published: the job-search layer — application totals, the LinkedIn one-per-day cap
+and the ATS mechanics, the CLO CV work, and the SEO identity monitoring. This wiki is public and
+those stay in private memory.

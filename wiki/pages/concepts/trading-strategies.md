@@ -3,7 +3,7 @@ title: Trading strategies — the 4-strategy lineup and their honest standing
 type: concept
 tags: [trading, strategy, nse, options, backtest]
 created: 2026-07-03
-updated: 2026-08-16
+updated: 2026-08-17
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/studies/STOCK_OPTIONS_NO_EDGE.md, ~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md, ~/files/institutional-trader/studies/INTRADAY_90PCT_WINRATE.md, ~/files/institutional-trader/studies/ZERO_DTE_ENTRY_TIME.md, ~/files/institutional-trader/studies/CW_BUCKET_ANALYSIS.md, ~/files/institutional-trader/studies/STOCK_FADE_V2_UNION_VS_D10.md, ~/files/institutional-trader/studies/monthly_fut/MAX_TRADES_OPTIONS.md]
 ---
 
@@ -249,3 +249,11 @@ correct reading is that in-sample is precise but circular and out-of-sample is h
 separate the books. Nothing was deployed. Lowering the take-profit does not rescue a book,
 because a lower target buys win rate and gives back average win size in equal measure. The full
 mechanism and the numbers are on [[institutional-trader]].
+
+On 2026-08-17 the open-interest gate that had been deployed three times was conceded as a fidelity
+fix rather than an edge, because no threshold above zero has ever been tested for win rate or
+return in either window. The gate is inert on the live book, where the bid-ask check binds first,
+and it matters only in the backtest, where open interest is the sole liquidity proxy available.
+That exposed the deeper limit: the live engine rejected 10 of 17 candidates that day on spread
+alone, and no backtest built on end-of-day exchange files can model a gate whose input those files
+do not carry. The mechanism and the audit score are on [[institutional-trader]].
