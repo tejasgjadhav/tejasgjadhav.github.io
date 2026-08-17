@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-08-13
+updated: 2026-08-16
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -206,3 +206,65 @@ Part of [[files-repo]].
   Columns now take shares of the measured viewport and wrap to a second line rather than clip.
   The general point is that his screenshots found three defects that every code check had passed,
   so verify the render rather than the source.
+
+## The corporate-action bug and the leadership reversal (2026-08-15/16)
+
+**A scale mismatch had been fabricating wins for the whole history of this repo.**
+`fetch_upstox_historical` returns split- and bonus-ADJUSTED closes, while bhavcopy `STRIKE_PR`
+and Upstox expired strikes are UNADJUSTED as listed. On a split name the two scales diverge,
+ATM pins to the far end of the ladder, both legs get picked deep ITM, credit approaches width,
+margin approaches zero, and settling against the same adjusted price books a full-credit win
+that never happened. The symptom was visible in the per-symbol median credit-to-width: HCLTECH
+0.96, PIDILITIND 0.95, DRREDDY 0.95, HDFCBANK 0.91, all of them split or bonus names, against
+0.44–0.49 on names with no corporate action. He root-caused it by refusing a +182.8% ROM and a
+1.92:1 win-to-loss as impossible for a vertical, and by refusing an arbitrary c/w cap and asking
+for evidence instead.
+
+**The fix is put-call parity rather than a heuristic guard.** Two guards were tried and failed.
+Spot is now derived from the option chain itself, `S = K + C − P` at the strike where `|CE − PE|`
+is least, because both quotes carry the same unadjusted scale as the strikes and a split cannot
+desync them. The adjusted equity series is still used for the Donchian breakout only. In-sample
+can do this because bhavcopy carries every strike. Out-of-sample cannot, because Upstox expired
+candles exist only for strikes that actually traded, so a parity OOS run returned two of the
+books at almost no trades. OOS still uses drift and ladder-edge guards, and that asymmetry is a
+known weakness of the current numbers.
+
+**The headline is now the median cohort, because the high-c/w tail is not what the live book
+trades.** v2 draws 33.4% of its profit from c/w ≥ 0.65 and v1 draws 38.8%, on high-priced
+dense-ladder names such as MARUTI at 0.73 and LT at 0.60, while all 21 live fills sit at c/w
+0.39–0.47. At the median cohort the honest numbers are v2 80.3% win and +24.0% ROM in-sample
+against 77.1% and −0.3% out-of-sample, v1 79.7% and +23.5% against 80.2% and +5.4%, and v0
+81.5% and +18.8% against 76.8% and −3.9%. **v1 is the only book positive in both windows, which
+reverses the entire history of this repo.** v0 has no tail at all because its band caps at 0.40,
+so its headline needs no discount.
+
+**A bootstrap then showed the out-of-sample window cannot rank the books at all.** The 90%
+confidence intervals are v2 [−26.6%, +29.9%], v1 [−3.3%, +13.5%] and v0 [−18.7%, +9.1%], and all
+three contain zero. v2's 2024 "year" is four trades. In-sample is far better measured but it is
+circular, because the c/w gate, the geometry, the TP levels and the union were all chosen on that
+window, and it carries its own defect: bhavcopy closes are settlement prints, and 85% of rows
+with premium at or above ₹50 carry zero open interest. **Neither window is a green light, so
+nothing was deployed.** See [[capital-curve-verdict]] and [[trading-strategies]].
+
+**The take-profit sweep refuted his own suggestion.** He proposed cutting v2's target to force a
+positive net. A lower target buys win rate and gives back average win size, and the two cancel:
+v2's ROM is flat between +23.4% and +24.1% in-sample across a range that more than doubles the
+target, and TP-30 is its worst out-of-sample cell at −3.4%. v2 is positive in 2 of 3 years at
+every level, so no exit fixes a year-failure. **A parameter whose slope inverts between windows
+is noise**, which is exactly what v1 does — ROM falls as TP rises in-sample and rises
+out-of-sample — so v1 stays at TP-40 even though the OOS column alone would argue for TP-70.
+
+**The harness now models the live one-open-position-per-symbol rule.** Each book tracks the exit
+date of the position it holds per symbol and refuses to re-enter that name until it closes. The
+old harness only enforced the 3-day gap, so 59% of in-sample trades and 31% of out-of-sample
+trades were same-book re-entries inside 35 days, which the live engine could never have taken.
+The bias has a direction: a winner hits its target fast and releases the name while a loser stays
+open to expiry, so the counted re-entries were drawn disproportionately from names still going
+against the book. Five harness gaps stay open — daily caps, 2019-era lot sizes, margin computed
+as width minus credit rather than SPAN, no bid-ask or open-interest gate, and guards rather than
+parity out-of-sample — and the harness has not been adversarially audited since the parity fix.
+See [[backtest-harness-audit-rule]].
+
+**Everything published is still pre-parity and wrong.** The viewer tables and cards, studies SS5
+and SS6, the Telegram evidence lines and the CLAUDE.md book table all carry superseded numbers
+until one consolidated correction pass runs.

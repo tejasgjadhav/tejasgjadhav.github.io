@@ -289,3 +289,27 @@ diagnosis of the August royalty slide on amazon-ads, and the Amazon-autocomplete
 the KDP save mechanics on kdp-listing-operations. New pages: projects/claude-beginners-book (full
 75-chapter draft, 243pp) and syntheses/job-search-book-verdict. kdp-books links both. Index updated,
 graph regenerated.
+
+## [2026-08-16] ingest | Session sync — the corporate-action bug, the translated editions, and a cover trade-dress call
+Swept six transcripts from the last 24 hours. Trading: filed the corporate-action scale mismatch on
+institutional-trader — adjusted Upstox closes against unadjusted bhavcopy strikes fabricated
+full-credit wins across the whole history of the study, the fix derives spot by put-call parity,
+and the result reverses the leadership to v1. Also recorded that a bootstrap then showed all three
+books' confidence intervals contain zero, that the TP sweep refuted the idea of cutting the target
+to force a positive net, that a parameter whose slope inverts between windows is noise, and that
+the harness now models the live one-open-position-per-symbol rule which had been counting 59% of
+in-sample trades the engine could never have taken. Nothing was deployed and every published number
+is still pre-parity. trading-strategies carries the one-paragraph version.
+KDP: new page projects/claude-finance-translations for the German and Spanish editions — 128
+prompts and 18 chapters in both, the 14-page gap traced to the Microsoft walkthrough the Spanish
+book lacks and confirmed independently by the Excel count, the d1 cover shipped for all three
+editions, and the ebook cover built native at 1.6 rather than cropped from the 1.5 print front.
+book-covers gained two sections: the trade-dress call (a rights complaint suspends a listing
+without a court, so separate on the competitor's distinctive devices and keep the functional ones,
+and scan supplied artwork for lookalike marks) and the mechanics of building from supplied artwork
+(report effective DPI first, check the back panel by eye, render a large canvas in bands and prove
+the seams three ways). claude-beginners-book records its cover round. kdp-books links the new page.
+Memory: new kdp-finance-translations and cover-trade-dress-risk; updated institutional-trader-status,
+claude-beginners-book and dev-machine-technical-gotchas.
+Deliberately NOT published: the job-search transcript layer — CV content, target employers,
+salary figures and application mechanics. This wiki is public and those stay in private memory.

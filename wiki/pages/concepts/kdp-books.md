@@ -3,7 +3,7 @@ title: KDP book catalog — AI and Practical Finance Series
 type: concept
 tags: [kdp, books, writing, amazon]
 created: 2026-07-03
-updated: 2026-08-13
+updated: 2026-08-16
 sources: [~/files/kdp-dashboard/data/books.json]
 ---
 
@@ -133,3 +133,9 @@ page: [[claude-beginners-book]].
 concept on 1 August 2026 and sits at 1.4 million in the Kindle store, and the winner of that whole
 category sells two or three copies a day. The evidence and the one honest angle are in
 [[job-search-book-verdict]].
+
+**The translated editions are now their own project (2026-08-16).** German and Spanish editions
+of the finance flagship ship on the same d1 cover design as the English one, and their counts,
+their page difference and their open listing defects are recorded in
+[[claude-finance-translations]]. The number that matters for both is **128 prompts and 18
+chapters**, which the German listing description still contradicts.

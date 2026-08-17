@@ -3,7 +3,7 @@ title: Claude AI for Absolute Beginners — the first non-finance book
 type: project
 tags: [kdp, book, claude, writing]
 created: 2026-08-13
-updated: 2026-08-13
+updated: 2026-08-16
 sources: [~/files/kdp-books/claude-beginners/HANDOFF.md]
 ---
 
@@ -52,3 +52,28 @@ Interior identity is deliberately unlike the finance series: Palatino and Avenir
 teal, clay and brick, so a reader who owns two of his books does not see the same styling twice.
 
 Related: [[kdp-books]], [[voice-pass]], [[book-covers]], [[kdp-listing-operations]].
+
+## The cover, built from his own artwork (2026-08-16)
+
+He supplied a generated front cover rather than running the pipeline from scratch, and three
+things had to change. The word BIBLE came out, because it was the most competitor-specific
+element the file carried, and the freed band was absorbed into the title so it did not read as a
+hole. A small fan-shaped ornament above his byline read as a miniature Anthropic starburst and
+was removed. The halftone was rebuilt as the graded field his reference actually shows, with a
+run down the full left edge. The reasoning behind all three, and the finding that the real risk
+is an Amazon rights complaint rather than a lawsuit, sits in [[book-covers]].
+
+His source file was 1023 px wide, which is a print problem and not a Kindle one: the 1.83× blowup
+a 6×9 bleed needs lands at an effective 164 DPI. A first wrap build also mirrored the front
+artwork under the back panel and printed the description over it, which every geometry gate
+passed. A true 1600 × 2560 Kindle front now exists, replacing the 1:1.5 file built earlier.
+
+The listing package carries three bindings, each traced to a past failure: every claim verified
+against the manuscript first, keywords probed against Amazon's own autocomplete rather than
+guessed, and **no CFA/FRM in the bio on this title**, because it is a general-audience beginner
+book and the finance credentials belong on the finance books. See [[kdp-listing-operations]] and
+[[tejas-jadhav]].
+
+The book now points readers at his personal site rather than the BSR dashboard, and the Anthropic
+relationship is stated as a trademark notice with the book positioned as an independent education
+guide.

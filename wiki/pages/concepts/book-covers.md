@@ -3,7 +3,7 @@ title: Book covers — the pipeline, the click test, and the shelf they sell on
 type: concept
 tags: [kdp, covers, design, amazon, compliance]
 created: 2026-08-11
-updated: 2026-08-11
+updated: 2026-08-16
 sources: [~/.claude/CLAUDE.md, ~/files/kdp-books/claude-cowork-finance/cover/]
 ---
 
@@ -87,3 +87,50 @@ asserts its own honesty, because "real screenshots" reads as defensive.
 Fonts are sourced for the design rather than chosen from what is installed, under a licence that
 permits commercial use — SIL OFL, Apache 2.0 or public domain. The handover names the fonts and
 their licence.
+
+## Resembling a competitor: the risk is Amazon, not a court (2026-08-16)
+
+Settled while checking the [[claude-beginners-book]] cover against a ranking competitor's in the
+same category. **Copyright protects a specific expression, not a look.** A cream ground, an
+orange accent, halftone dots, a large serif title, a numbered feature strip and a byline at the
+foot are conventions running through most covers in that category, typefaces are not
+copyrightable in the US, and colours are not ownable. That is the same reasoning that already
+licenses copying the ranking Claude register.
+
+**The realistic exposure is a rights complaint, which can suspend a listing without any court
+involved**, and the argument back happens while sales stop. So separate on the distinctive
+devices and keep the functional ones. A competitor's signature badge — its shape, its corner,
+its two-tier number setting — is the most identifying element, and changing or dropping it does
+most of the work. A shared decorative motif should differ in count or grade so the two separate
+at thumbnail, which is where a buyer would confuse them. A feature strip listing the book's own
+verified contents is functional rather than decorative, and that is the strongest position to
+hold if anyone asks.
+
+**Scan supplied artwork for accidental lookalike marks.** A cover file he generated himself
+carried a small fan-shaped ornament above the byline that read as a miniature Anthropic
+starburst. Removing it mattered more than the overall resemblance did, because a small lookalike
+of the mark is what turns a style question into a trademark one. See [[claude-anthropic]].
+
+## Building from supplied artwork
+
+**Report the effective print resolution before building the wrap.** A 1023 px source blown up to
+the 1875 px a 6×9 bleed needs at 300 DPI lands at an effective 164 DPI. KDP accepts it and prints
+it, and large serif edges come out softer than they look on screen. Kindle needs a much smaller
+lift and is unaffected. The honest options are to regenerate the source larger or to use a real
+300 DPI rebuild for print and the supplied file for Kindle.
+
+**Check the back panel with your eyes, because the geometry gates cannot see it.** One wrap build
+mirrored the front artwork underneath the back text — reversed title, flipped badge, upside-down
+labels — with the description printed straight over it. Every gate passed.
+
+**A large canvas has to be rendered in bands on 8 GB of RAM.** An 800 DPI cover is roughly 77
+megapixels and headless Chrome returns a blank screenshot or dies on a single surface that size.
+Render horizontal bands and stitch, then prove the joins three ways: align a downscale of the
+large file against the known-good 300 DPI render on a ±2 px grid and confirm it minimises at
+(0,0), run a numeric row-difference scan, and crop the flagged rows at full resolution, because a
+seam that lands on a line of glyphs flags every time and is a false positive. Re-measure safe
+margins on the large file directly rather than scaling them from the small one.
+
+**KDP's own spec is 300 DPI and PDF is their preferred print-cover format.** An 800 DPI JPEG buys
+nothing for a KDP upload and is the right file only when a different printer or distributor asks
+for raster.

@@ -3,7 +3,7 @@ title: Trading strategies — the 4-strategy lineup and their honest standing
 type: concept
 tags: [trading, strategy, nse, options, backtest]
 created: 2026-07-03
-updated: 2026-08-13
+updated: 2026-08-16
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/studies/STOCK_OPTIONS_NO_EDGE.md, ~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md, ~/files/institutional-trader/studies/INTRADAY_90PCT_WINRATE.md, ~/files/institutional-trader/studies/ZERO_DTE_ENTRY_TIME.md, ~/files/institutional-trader/studies/CW_BUCKET_ANALYSIS.md, ~/files/institutional-trader/studies/STOCK_FADE_V2_UNION_VS_D10.md, ~/files/institutional-trader/studies/monthly_fut/MAX_TRADES_OPTIONS.md]
 ---
 
@@ -239,3 +239,13 @@ real-bhavcopy verdicts + the failed index-fade gate) + reproducible scripts. Syn
 - **A backtest can be invalidated by something no statistical test measures.** The BANKNIFTY result
   died on expiry cadence, not on any ₹/trade figure. Check that the instrument still trades the way
   the backtest assumed before trusting seven years of history.
+
+**v1 overtook v2 on 2026-08-16, and then the evidence turned out to be too thin to rank them.**
+A corporate-action scale mismatch had been fabricating full-credit wins across the whole history
+of the stock credit-spread study, and fixing it with put-call parity moved v2's out-of-sample ROM
+to roughly zero at the credit-to-width band it actually trades, while v1 stayed positive in both
+windows. A bootstrap then showed all three books' confidence intervals contain zero, so the
+correct reading is that in-sample is precise but circular and out-of-sample is honest but cannot
+separate the books. Nothing was deployed. Lowering the take-profit does not rescue a book,
+because a lower target buys win rate and gives back average win size in equal measure. The full
+mechanism and the numbers are on [[institutional-trader]].
