@@ -346,3 +346,24 @@ Also corrected outside the wiki: the withdrawn hardcover spine formula in both c
 Deliberately NOT published: the job-search layer — application totals, the LinkedIn one-per-day cap
 and the ATS mechanics, the CLO CV work, and the SEO identity monitoring. This wiki is public and
 those stay in private memory.
+
+## [2026-08-20] ingest | Session sync — the tenor sweep, and what a data source cannot show you
+Minimum time-to-expiry was measured for the first time on the stock credit books and it splits them:
+v2 and v0 are best at the deployed ten days, v1 is better at five in both in-sample cuts, and three
+days is worse than five everywhere. Nothing was deployed, because the out-of-sample sweep had not
+finished. institutional-trader and trading-strategies carry the numbers.
+The finding underneath it is a data-source rule and it is filed on backtest-harness-audit-rule:
+the exchange bhavcopy publishes a settlement close for every LISTED contract rather than only those
+that traded, so it prices unfillable strikes and flatters any result that depends on thinness, while
+the broker's expired-contract candles exist only where a trade happened and enforce the constraint
+physically. nse-bhavcopy carried the wrong claim since July and is corrected in place with the
+contradiction noted; upstox gained the matching section.
+Also filed on institutional-trader: HDFCBANK fell hard and correctly produced no trade, because a
+forty-point spread on a ₹720 stock cannot pay ₹50 of premium, which excludes cheap names
+structurally; three parts of the interface reported three different signal rates and now all derive
+from the one measured figure; and a message now goes out at 15:36 on empty days, so silence is a
+fault signal rather than an ambiguity.
+Memory: updated institutional-trader-status, backtest-harness-audit-rule,
+dev-machine-technical-gotchas, job-search-answer-sheet and usd-remote-job-search.
+Deliberately NOT published: the job-search layer (the salary figure was corrected to ₹37 LPA fixed
+in private memory only), the Accenture background-check paperwork, and the SEO identity work.

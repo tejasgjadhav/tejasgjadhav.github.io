@@ -3,7 +3,7 @@ title: Trading strategies — the 4-strategy lineup and their honest standing
 type: concept
 tags: [trading, strategy, nse, options, backtest]
 created: 2026-07-03
-updated: 2026-08-17
+updated: 2026-08-20
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/studies/STOCK_OPTIONS_NO_EDGE.md, ~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md, ~/files/institutional-trader/studies/INTRADAY_90PCT_WINRATE.md, ~/files/institutional-trader/studies/ZERO_DTE_ENTRY_TIME.md, ~/files/institutional-trader/studies/CW_BUCKET_ANALYSIS.md, ~/files/institutional-trader/studies/STOCK_FADE_V2_UNION_VS_D10.md, ~/files/institutional-trader/studies/monthly_fut/MAX_TRADES_OPTIONS.md]
 ---
 
@@ -257,3 +257,20 @@ and it matters only in the backtest, where open interest is the sole liquidity p
 That exposed the deeper limit: the live engine rejected 10 of 17 candidates that day on spread
 alone, and no backtest built on end-of-day exchange files can model a gate whose input those files
 do not carry. The mechanism and the audit score are on [[institutional-trader]].
+
+
+**On 2026-08-20 the minimum time-to-expiry was measured for the first time, and the three books
+disagree.** The ten-day floor every book ran on had never been tested. In-sample sweeps over the
+full window and over the most recent year both put v2 and v0 at their best exactly where they sit,
+with v2 falling away steeply above ten days. Both cuts also put v1 better at five days than at ten,
+by roughly six points of win rate and a doubling of return in the recent year, for the cost of about
+three trades a year. Three days is worse than five in every book, so the floor is real. Nothing was
+deployed, because the out-of-sample sweep that would confirm it had not finished.
+
+The finding underneath it is about liquidity rather than tenor. Rejections for want of open interest
+climb three and a half times between a three-day and a twenty-five-day floor, while rejections for
+thin premium move the opposite way. Longer tenor buys thinner strikes, and shorter tenor buys
+cheaper ones, which is why the optimum lands in a different place for each book and why neither
+count answers it alone. The consequence for method — that an in-sample file which prices untraded
+contracts cannot see this, and the out-of-sample feed cannot hide it — is on
+[[backtest-harness-audit-rule]].

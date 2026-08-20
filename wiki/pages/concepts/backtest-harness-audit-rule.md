@@ -3,7 +3,7 @@ title: Research scripts are production code — the backtest harness audit rule
 type: concept
 tags: [trading, backtesting, verification, research]
 created: 2026-08-16
-updated: 2026-08-17
+updated: 2026-08-20
 sources: [~/files/institutional-trader/studies/, ~/files/institutional-trader/HANDOFF.md]
 ---
 
@@ -55,6 +55,23 @@ carried a stop for nineteen days after the books stopped using stops, because th
 written into the position when it opened and nothing re-read the configuration afterwards. Audit
 stored parameters against current config at load time, and prefer reading a live value to freezing
 a copy.
+
+**Name the friction your data source cannot represent, and say which side it flatters.** Two
+option-price sources used by the same project behave in opposite ways here. The exchange bhavcopy
+publishes a settlement close for every listed contract, whether or not a single lot changed hands,
+so a harness built on it prices an untraded far-expiry leg at a theoretical value and the trade
+passes through looking fillable. The only visible trace is the open-interest column, which is a
+proxy for the problem rather than the problem itself. The broker's expired-contract candles work the
+other way, because a candle exists only if the contract actually traded that day, so an illiquid leg
+produces no trade at all and the constraint enforces itself.
+
+The consequence is a rule about which window to believe. Any in-sample result that depends on
+something which thins a contract out — time to expiry, distance from the money, a small underlying —
+is the weakest kind of evidence, and the out-of-sample run is not a second opinion but the only
+window where the constraint is physical. The diagnostic is a trade-count comparison cell by cell.
+Where the out-of-sample counts fall away and the in-sample counts held up, the in-sample case was
+built on contracts that could never have been filled. The tenor sweep in [[institutional-trader]] is
+the case that produced this rule.
 
 Related: [[institutional-trader]], [[trading-strategies]], [[capital-curve-verdict]],
 [[nse-bhavcopy]], [[upstox]].

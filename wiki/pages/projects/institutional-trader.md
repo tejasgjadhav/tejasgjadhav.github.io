@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-08-17
+updated: 2026-08-20
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -346,3 +346,67 @@ diffable, so a schedule change moves the diagram in the same commit instead of l
 stale. The 15:17 watchlist is a pre-stage list rather than a signal, because it is built before the
 auction matches and its strikes can still move. See [[nse-bhavcopy]] and the session note in
 [[trading-strategies]].
+
+## Tenor was measured at last, and it splits the books
+
+Every book had run on a ten-day minimum time-to-expiry that nobody had ever tested. On 20 August
+2026 it was swept in-sample across the full 2019 to 2024 window, and again across the most recent
+year alone, so that two cuts could agree or disagree. They agree, and they do not give one answer
+for all three books.
+
+The v2 book peaks exactly where it was deployed. It returns +27.2% of margin at a ten-day floor over
+the full window and +31.0% in the recent year, and it falls away sharply above that, reaching only
++1.7% at twenty-five days. The v0 book also wants ten days and roughly doubles the five-day result.
+The v1 book runs the other way. Five days beats ten in both cuts, +13.3% against +10.3% over the
+full window, and +15.5% against +9.5% in the recent year with the win rate rising from 79.8% to
+85.3%. That matters more than the others because v1 fires about eight times a month against v2's
+four, and the trade count barely moves when the floor drops, costing roughly three trades a year.
+Three days is worse than five everywhere, so there is a floor and it sits at five.
+
+Nothing has been changed in the deployed configuration. The out-of-sample sweep that would confirm
+or kill the v1 result was still running at the end of the session, after two crashes caused by a
+cache-format change that reached one script and not the other.
+
+## Longer tenor buys thinner strikes
+
+[[tejas-jadhav]] argued that a ten-day floor pushes the system into expiries where the strikes have
+no open interest, and that an in-sample test would hide the problem. The rejection counts confirm
+the first half directly. Contracts refused for want of open interest rise from 7,615 at a three-day
+floor to 11,833 at ten days and 26,501 at twenty-five, a monotonic climb of three and a half times.
+Rejections for thin premium move the opposite way, from 60,766 down to 41,974, because a nearer
+expiry carries less time value and more candidates fail the fifty-rupee floor. The two forces trade
+off against each other, which is why the best floor is not obvious from either count alone and why
+it lands in a different place for each book.
+
+The second half of his argument is a point about the data source rather than the strategy, and it
+generalises past this project. It is written up in [[backtest-harness-audit-rule]], with the vendor
+specifics on [[nse-bhavcopy]] and [[upstox]].
+
+## A cheap stock cannot pay for its own spread
+
+HDFCBANK fell hard on 19 August and produced no trade, which looked like a miss. It was not. The
+breakout was detected on all four Donchian windows and the name reached the watchlist as a bull-put
+candidate with excellent liquidity. It was blocked because the credit came to 0.16 of the width
+against a required 0.40, and the premium came to ₹9.20 against a required ₹50. Taking it would have
+risked ₹21,820 to make ₹4,180.
+
+The cause is the share price rather than the move. The stock trades near ₹720 after its bonus issue,
+and a forty-point-wide put spread on a ₹720 stock cannot carry ₹50 of premium however far the stock
+falls. Low-priced names are therefore excluded by the premium floor as a structural matter, not as a
+judgement about any particular day. That is a property of the book worth stating plainly, because it
+otherwise reads as a bug every time a cheap stock moves.
+
+## One number for how often it trades
+
+Three parts of the interface reported three different signal rates for the same book, because each
+had been written at a different time and none had been recalculated after the harness was corrected.
+Every rate now derives from the one measured out-of-sample figure: 2.2 signals a month for v2, 7.5
+for v1, 4.0 for v0, and 21.7 for the system as a whole. The v1 decision header had also kept the
+withdrawn 85% and 86% win rates and now carries the measured 79.1% in-sample and 81.1%
+out-of-sample.
+
+The system also says something when it has nothing to say. A message now goes out at 15:36 on days
+when all three books come back empty, reporting how many names reached the watchlist and naming the
+four gates a trade has to clear. This closes a real gap rather than adding noise: silence used to be
+ambiguous, and on 17 August a network failure made the engine treat a live session as a holiday with
+nothing at all to indicate it. Silence is now a fault signal.
