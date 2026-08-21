@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-08-20
+updated: 2026-08-21
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -363,9 +363,9 @@ full window, and +15.5% against +9.5% in the recent year with the win rate risin
 four, and the trade count barely moves when the floor drops, costing roughly three trades a year.
 Three days is worse than five everywhere, so there is a floor and it sits at five.
 
-Nothing has been changed in the deployed configuration. The out-of-sample sweep that would confirm
-or kill the v1 result was still running at the end of the session, after two crashes caused by a
-cache-format change that reached one script and not the other.
+Nothing has been changed in the deployed configuration, and the out-of-sample sweep has since
+settled the question against the five-day case. That sweep is written up below under "Out-of-sample
+inverted the one in-sample case for a shorter tenor".
 
 ## Longer tenor buys thinner strikes
 
@@ -410,3 +410,102 @@ when all three books come back empty, reporting how many names reached the watch
 four gates a trade has to clear. This closes a real gap rather than adding noise: silence used to be
 ambiguous, and on 17 August a network failure made the engine treat a live session as a holiday with
 nothing at all to indicate it. Silence is now a fault signal.
+
+## Out-of-sample inverted the one in-sample case for a shorter tenor (2026-08-20)
+
+The in-sample work above left one open question. Two of the three stock credit books preferred the
+deployed ten-day floor and the third, v1, preferred five days in both in-sample cuts. The
+out-of-sample sweep over the October 2025 window has now answered it, and it went the other way.
+Ten days won on return on margin, on win rate, on trade count, on rupees a month and on the number
+of positive months. Every column moved against the shorter floor.
+
+That pattern has a name in this project already. The take-profit sweep produced the same signature
+earlier in August, and the record here describes it as what a parameter carrying no information
+looks like. The floor stays at ten days for all three books, so the sweep confirmed the deployed
+setting rather than moved it. Worth separating two things that share the word tenor: the ten-day
+floor belongs to the stock credit books, and the intraday books expire the same day by definition.
+
+## Six defects in the harness of record (2026-08-20)
+
+The backtest that produces the published numbers was audited line by line and six defects came out
+of it, each reproduced against a saved copy of the pre-fix code.
+
+The worst one made the harness non-deterministic. The leg fetcher returned an empty result both when
+the broker's API gave up after six retries and when a contract had genuinely never traded, so every
+persistent timeout deleted a signal without counting it. A flaky network morning therefore produced
+fewer trades than a good one, and nothing in the output said so. Every out-of-sample figure this
+project has published came from that code. A failed request now returns a distinct value, only an
+explicit success body counts as evidence that a contract did not trade, and the run prints its drop
+count whether or not that count is zero.
+
+The second defect corrupted a recorded column rather than a decision. Open interest was assigned in
+the gate loop and read again in the exit loop, so it held whatever the last book evaluated had left
+behind. 500 of 566 v1 rows, which is 88% of them, recorded the open interest of a different book's
+contract. The gate itself always used the right value, so no trade was taken that should not have
+been. The remaining four defects were an import that started a multi-hour run and overwrote the
+stored results, a cache written without an atomic rename, a loop bound that silently discarded the
+newest breakout on every symbol, and a counter incremented from four threads without a lock.
+
+The in-sample window was re-run on the fixed code and came back identical, 1,270 rows before and
+after with the same win rates and the same return on margin. That is the regression check the audit
+needed, because it shows none of the six fixes altered in-sample profit and loss.
+
+## The open-interest table said the opposite of what was recorded
+
+Correcting the leaked column changed the shape of a conclusion, not only its digits. The v1 return
+on margin now decays almost monotonically as open interest rises, from +18.6% in the thinnest bucket
+to +2.9% in the deepest, which is the shape v2 always showed. The old column zigzagged, and the
+repository recorded that zigzag as evidence that open interest and returns are unrelated.
+
+The deployed gate survives, and the argument for it has to change. A link does exist in-sample, and
+it runs the wrong way to justify raising the floor, because thin contracts earn more rather than
+less. The decay is almost certainly an artifact of the data source. The exchange bhavcopy publishes
+a settlement close for contracts that never traded, so thin strikes get flattering marks, and the
+pattern disappears out-of-sample where a candle exists only if a trade happened. See
+[[backtest-harness-audit-rule]] and [[nse-bhavcopy]].
+
+## One window is answering too many questions
+
+A risk is now recorded that has nothing to do with any single result. The October 2024 to 2026
+broker window has answered the credit-to-width bands, the take-profit sweep, the open-interest
+buckets, the seven-floor tenor sweep and the five-versus-ten sweep. Each further question asked of
+the same data erodes its independence, so the next out-of-sample answer is weaker evidence than the
+last one was. Anything new should wait for the forward paper record instead.
+
+The harness as a whole rates seven out of ten. Statistical honesty and out-of-sample discipline both
+rate eight, because the harness has now killed two in-sample findings rather than only confirming
+things. Data fidelity and code correctness rate six. Execution realism rates five and is the binding
+constraint, because the live spread gate rejected ten of seventeen candidates on 17 August and
+cannot be modelled at all without bid and ask history.
+
+## An intraday book was deleted, and a silent notification failure was found
+
+BANKNIFTY was removed from the intraday code rather than left behind a disabled flag. It had never
+opened a position, so nothing needed settling. The book definition, the configuration flag, the
+notification call, the book list, the decision card, the trade-log section and the tracker row are
+all gone, and the intraday book list now names SENSEX alone. The evidence that rejected it stays in
+the studies folder.
+
+Each intraday book now states why it stood down, in one message sent on the morning scan tick
+between 09:16 and 09:19, naming only the book whose expiry falls that day. The message covers the
+credit floor, the calm-regime filter, the thin-credit gate, the election blackout and three data
+failures that used to produce no log line at all. A data outage previously looked exactly like a
+dead engine.
+
+The same work found a failure worth keeping on record. The Telegram helper returns a boolean saying
+whether delivery succeeded, and every caller in the system discarded it. A rotated token would have
+ended every notification permanently and silently. Both this message and the empty-day message at
+15:36 now log a warning when delivery reports failure.
+
+## One cache, three scripts, two formats (2026-08-21)
+
+The re-run of the out-of-sample window on the fixed harness crashed hours in, with a type error
+raised deep inside the price walk. The cause is a cache that three research scripts share and
+disagree about. 6,476 of its 37,258 entries, which is 17%, hold a bare closing price where the
+reader expects a pair of closing price and open interest. The non-atomic write fixed the day before
+is what allowed the two formats to mix inside one file, because a killed run left a fragment behind.
+
+The general rule is filed on [[backtest-harness-audit-rule]]. A cache that more than one script
+writes needs a version tag and a reader that either heals or rejects an entry of the wrong shape.
+The out-of-sample numbers remain unmeasured on the fixed harness as a result, so the published
+figures for the three stock books are still the pre-fix ones and should not be quoted as final.

@@ -367,3 +367,31 @@ Memory: updated institutional-trader-status, backtest-harness-audit-rule,
 dev-machine-technical-gotchas, job-search-answer-sheet and usd-remote-job-search.
 Deliberately NOT published: the job-search layer (the salary figure was corrected to ₹37 LPA fixed
 in private memory only), the Accenture background-check paperwork, and the SEO identity work.
+
+## [2026-08-21] ingest | Session sync — the tenor verdict reversed, and six defects in the harness of record
+The out-of-sample sweep answered the one question the tenor study left open, and it went against the
+in-sample case. v1 looked better at a five-day floor in both in-sample cuts, and out-of-sample ten
+days won every column, so the deployed floor stays at ten on all three stock credit books.
+institutional-trader and trading-strategies both carry the reversal, and the paragraph that said the
+sweep was still running is corrected in place.
+The harness that produces the published numbers was then audited and gave up six defects. The worst
+made a network failure indistinguishable from a contract that never traded, which made the harness
+non-deterministic and means every out-of-sample figure the project has published came from that
+code. A second defect let open interest leak between books, so 88% of v1 rows recorded another
+book's contract, which inverted the shape of the open-interest table and changed the argument for
+the deployed gate without changing the gate. The in-sample re-run came back identical, which is the
+regression check the audit needed.
+The re-run of the out-of-sample window then crashed on a cache that three research scripts share and
+disagree about, with 17% of its entries in the wrong shape. The published out-of-sample figures are
+therefore still the pre-fix ones. backtest-harness-audit-rule gained four general rules from all of
+this: a failed fetch must never look like a genuine absence, audit the script of record rather than
+the copy you run, a shared cache needs a version tag and an atomic write, and a window that has
+answered five questions is spent evidence.
+Also filed on institutional-trader: BANKNIFTY was deleted from the intraday code rather than left
+behind a disabled flag, each intraday book now states why it stood down on the morning scan tick,
+and a notification helper's return value was discarded by every caller, so a rotated token would
+have ended every message permanently and silently.
+Memory: updated institutional-trader-status and backtest-harness-audit-rule.
+Deliberately NOT published: the job-search layer, which is what the other sessions in this window
+were doing — the Naukri bulk-apply and profile-refresh runs, the daily remote applications and the
+SEO identity monitor. Those stay in private memory and their own handoff files.

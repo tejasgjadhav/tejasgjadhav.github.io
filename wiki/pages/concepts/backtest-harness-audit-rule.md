@@ -3,7 +3,7 @@ title: Research scripts are production code — the backtest harness audit rule
 type: concept
 tags: [trading, backtesting, verification, research]
 created: 2026-08-16
-updated: 2026-08-20
+updated: 2026-08-21
 sources: [~/files/institutional-trader/studies/, ~/files/institutional-trader/HANDOFF.md]
 ---
 
@@ -72,6 +72,46 @@ window where the constraint is physical. The diagnostic is a trade-count compari
 Where the out-of-sample counts fall away and the in-sample counts held up, the in-sample case was
 built on contracts that could never have been filled. The tenor sweep in [[institutional-trader]] is
 the case that produced this rule.
+
+**A failed fetch must never look like a genuine absence.** The leg fetcher in the deployed harness
+returned an empty result in two completely different situations. One was a data provider that gave
+up after six retries, and the other was a contract that had genuinely never traded. Every persistent
+timeout therefore deleted a signal without counting it, and the harness became non-deterministic: a
+flaky network morning produced fewer trades than a good one, and the output said nothing about it.
+Every out-of-sample figure the project had published came from that code.
+
+The fix is a pattern worth reusing anywhere a harness reads from a network. A failed request returns
+a value distinct from an empty result, only an explicit success body counts as evidence of absence,
+dropped items are counted, and the run prints that count whether or not it is zero. A clean run then
+reports positive evidence rather than the absence of a warning.
+
+**Audit the script of record, not only the script you happen to be running.** The same fetch defect
+was found and fixed in a derived sweep copy a full day before anyone checked the harness whose
+numbers the project actually quotes. The copy was the thing being executed and the original was the
+thing being cited.
+
+**A cache that several scripts share needs a version tag.** Three research scripts in the same
+project wrote and read one cache file while disagreeing about whether a value was a bare closing
+price or a pair of closing price and open interest. A cache written with a plain truncating dump
+left a fragment behind when a run was killed, the two formats mixed inside one file, and 17% of
+37,258 entries ended up in the wrong shape. The next run crashed hours in with a type error raised
+far from the cause. Write caches to a temporary file and rename them, tag the schema with a version,
+and make the reader either heal or reject an entry of the wrong shape rather than trusting it.
+
+**Rate the harness by dimension rather than as one number.** The [[institutional-trader]] harness
+scores seven out of ten overall, and the breakdown is what carries the information. Statistical
+honesty and out-of-sample discipline rate eight, because the harness has killed two in-sample
+findings rather than only confirming them. Data fidelity and code correctness rate six. Execution
+realism rates five and is the binding constraint, because a live spread gate that rejects most
+candidates cannot be modelled at all without bid and ask history. The overall score cannot rise past
+about eight on this data however much further work goes in, and the honest signal to watch is the
+bug discovery rate. It has not reached zero, so the count of remaining defects is not known to be
+zero either.
+
+**One window can be mined until it stops being evidence.** A single out-of-sample window in this
+project has now answered five separate questions. Each new question asked of the same data erodes
+its independence, so a result drawn from it late is weaker evidence than the first one was. Prefer
+the forward paper record once a window has been queried several times.
 
 Related: [[institutional-trader]], [[trading-strategies]], [[capital-curve-verdict]],
 [[nse-bhavcopy]], [[upstox]].

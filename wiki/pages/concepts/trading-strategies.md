@@ -3,7 +3,7 @@ title: Trading strategies — the 4-strategy lineup and their honest standing
 type: concept
 tags: [trading, strategy, nse, options, backtest]
 created: 2026-07-03
-updated: 2026-08-20
+updated: 2026-08-21
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/studies/STOCK_OPTIONS_NO_EDGE.md, ~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md, ~/files/institutional-trader/studies/INTRADAY_90PCT_WINRATE.md, ~/files/institutional-trader/studies/ZERO_DTE_ENTRY_TIME.md, ~/files/institutional-trader/studies/CW_BUCKET_ANALYSIS.md, ~/files/institutional-trader/studies/STOCK_FADE_V2_UNION_VS_D10.md, ~/files/institutional-trader/studies/monthly_fut/MAX_TRADES_OPTIONS.md]
 ---
 
@@ -266,6 +266,15 @@ with v2 falling away steeply above ten days. Both cuts also put v1 better at fiv
 by roughly six points of win rate and a doubling of return in the recent year, for the cost of about
 three trades a year. Three days is worse than five in every book, so the floor is real. Nothing was
 deployed, because the out-of-sample sweep that would confirm it had not finished.
+
+**The out-of-sample sweep then inverted the v1 case, and the floor stays at ten days for all three
+books.** Running the October 2025 window put ten days ahead of five on return on margin, on win
+rate, on trade count, on rupees a month and on positive months, so every column moved against the
+shorter floor. That signature matches the take-profit sweep earlier in August, which this project
+records as what a parameter carrying no information looks like. The sweep confirmed the deployed
+setting rather than moved it. Separately, BANKNIFTY was deleted from the intraday code rather than
+left behind a disabled flag, because it had never opened a position, so the intraday book list now
+names SENSEX alone.
 
 The finding underneath it is about liquidity rather than tenor. Rejections for want of open interest
 climb three and a half times between a three-day and a twenty-five-day floor, while rejections for
