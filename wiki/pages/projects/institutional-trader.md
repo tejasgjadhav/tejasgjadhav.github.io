@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-08-21
+updated: 2026-08-23
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -509,3 +509,49 @@ The general rule is filed on [[backtest-harness-audit-rule]]. A cache that more 
 writes needs a version tag and a reader that either heals or rejects an entry of the wrong shape.
 The out-of-sample numbers remain unmeasured on the fixed harness as a result, so the published
 figures for the three stock books are still the pre-fix ones and should not be quoted as final.
+
+## The universe expansion study, and a counter that could not see the loss (2026-08-23)
+
+PAGEIND made a move the system never saw, so [[tejas-jadhav]] asked for a name-by-name in-sample and
+out-of-sample measurement of every F&O stock the system does not trade. The first thing the study did
+was check his premise, and it held. NSE carries 208 F&O stock underlyings, the traded universe holds
+113, and PAGEIND is one of the 103 outsiders.
+
+The July 2026 expansion screen could not answer the question. Its candidate data lived in a temporary
+folder and died in a reboot, and its backtest predates all six harness corrections, so its numbers
+are no longer quotable. The new study therefore imports the harness of record and overrides three
+things only: the symbol list, the lot map resolved from the [[upstox]] instrument master, and the
+in-sample data path, which was made a parameter. That is the pattern worth reusing. A study that
+imports the harness inherits every correction; a study that copies the harness inherits the bugs it
+was copied with.
+
+The in-sample half produced 200 trades across the 103 outsiders. PAGEIND is the best of them by a
+wide margin, at 24 trades and 88% wins. Two findings temper the result. Only 24 of the 103 outsiders
+produce any trade at all in nearly six years, because the fifty-rupee premium floor and the
+credit-to-width gate reject the rest, so most of these names sit outside the universe for a
+structural reason. And the median cohort, which is the band where every live fill sits, is weaker
+than the insiders on the strongest book: 60.5% wins against 78.8%. The block would dilute v2 even
+though its full-band numbers look good, so the honest early read is that a few individual names earn
+a look and the block does not. Verdicts wait for the out-of-sample leg, because a name with two
+trades and a perfect record is exactly what collapses out of sample.
+
+The run also exposed a gap in the harness. A DNS outage stopped `api.upstox.com` from resolving, and
+85 of the 103 symbols were skipped at the underlying-fetch stage. That stage sits above the
+fetch-integrity counter, which watches option-leg fetches only, so the run reported itself clean
+while measuring eighteen names. The general rule is filed on [[backtest-harness-audit-rule]]: an
+integrity counter proves nothing about the stages it does not watch.
+
+One operational change came out of the same day. A long research run now yields to the live engine. A
+detached guard suspends the sweep between 08:50 and 09:50 and between 15:00 and 15:45 on weekdays, so
+a study can never contend with the 09:16 entry or the 15:36 scan no matter how long it takes.
+
+## What the project has cost, in hours (2026-08-22)
+
+Measured from 496 commits between 14 June and 21 August, the project has taken roughly 120 hours over
+68 days. He touched it on 53 of 69 calendar days and averaged 2.3 hours on an active day, with a
+10.2-hour day on 31 July. The figure rests on two assumptions, where a session boundary sits and how
+long he worked before the first commit landed, so 78 hours is the floor that commits alone defend and
+141 hours is the figure if his sessions typically ran longer before committing. It undercounts either
+way, because git never sees reading a study, watching the closing window live, placing paper trades,
+or a session that ended in a decision rather than in code. The output beside it is 496 commits, 57
+studies, more than 100 runnable scripts and five live books.

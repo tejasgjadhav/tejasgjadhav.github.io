@@ -3,7 +3,7 @@ title: Research scripts are production code — the backtest harness audit rule
 type: concept
 tags: [trading, backtesting, verification, research]
 created: 2026-08-16
-updated: 2026-08-21
+updated: 2026-08-23
 sources: [~/files/institutional-trader/studies/, ~/files/institutional-trader/HANDOFF.md]
 ---
 
@@ -115,3 +115,20 @@ the forward paper record once a window has been queried several times.
 
 Related: [[institutional-trader]], [[trading-strategies]], [[capital-curve-verdict]],
 [[nse-bhavcopy]], [[upstox]].
+
+## An integrity counter proves nothing about the stages it does not watch (2026-08-23)
+
+The universe expansion run on [[institutional-trader]] counted every failed option-leg fetch and
+reported a clean run. A DNS outage had already skipped 85 of its 103 symbols at the underlying-fetch
+stage, one layer above where the counter looked, so the run measured eighteen names and said nothing
+was wrong.
+
+State which layer each integrity counter covers, and check separately that every symbol on the input
+list was actually visited rather than merely attempted. A silent loss at the level of whole symbols
+is worse than a crash, because the output still looks like an answer.
+
+Two working practices from the same run belong here as well. A study should import the harness of
+record and override only its inputs, so that correcting the harness corrects every study at once. And
+a long research run should yield to the live engine, through a detached guard that suspends it during
+the entry and scan windows, because a sweep that competes with a real trade costs more than the
+sweep is worth.

@@ -3,7 +3,7 @@ title: AIFINANCE — landing page
 type: project
 tags: [personal-site, seo, landing-page]
 created: 2026-07-05
-updated: 2026-08-09
+updated: 2026-08-23
 sources: [~/files/aifinance, https://github.com/tejasgjadhav/AIFINANCE]
 ---
 
@@ -35,5 +35,25 @@ dropped because it did not actually demonstrate Codex; the replacement has stude
 share price, revenue and P&L in plain Python, then do the same through Codex, and compare
 scale and lines of code. Deck house style follows [[scmhrd-ai-finance]]: 20 slides
 max, last slides are practice questions.
+
+Module 2 shipped on 21 August 2026 as *Prompt Engineering and RAG*, in twelve slides. It keeps the
+Module 1 design system, which is a navy and gold palette with Georgia titles and a tip answer printed
+under every practice question. Two slides were rebuilt at [[tejas-jadhav]]'s instruction. The
+hallucination slide now runs in three parts: what a hallucination is, then the question that was
+actually answered wrong, which is Bard's James Webb exoplanet claim from February 2023, then the
+types with an example each. A new slide explains what RAG is before the pipeline slide appears: the
+full form, then retrieve, augment and generate one at a time, with the classroom analogy that a plain
+chatbot sits a closed-book exam while a RAG bot sits an open-book exam and writes the page number in
+the margin. The techniques slide was later simplified so that re-ranking reads as shortlist then
+interview, and self-consistency reads as three analysts computing one ratio.
+
+Two production notes came out of building it. Once he has edited a deck himself, his copy in the
+Downloads folder is the source of truth and gets edited in place, which is the same rule
+[[scmhrd-ai-finance]] follows. And Keynote silently refuses to open a deck that python-pptx wrote
+speaker notes into, with no window and no error, so teaching notes ship as a separate one-page PDF
+instead of inside the file.
+
+The RAG half of this module now has a worked build behind it in
+[[shiprocket-dhrp-rag]], which runs the same pipeline over a real SEBI prospectus with no API key.
 
 Part of [[files-repo]].

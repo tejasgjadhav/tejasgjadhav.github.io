@@ -395,3 +395,45 @@ Memory: updated institutional-trader-status and backtest-harness-audit-rule.
 Deliberately NOT published: the job-search layer, which is what the other sessions in this window
 were doing — the Naukri bulk-apply and profile-refresh runs, the daily remote applications and the
 SEO identity monitor. Those stay in private memory and their own handoff files.
+
+## [2026-08-23] ingest | Session sync — the 103 outsiders, a counter that could not see the loss, and a prospectus made queryable
+The routine's 2026-08-22 run died mid-response when the machine slept, so this sync covers the two
+days it missed as well as today.
+On [[institutional-trader]], a name-by-name study of every F&O stock the system does not trade
+started and its in-sample half finished. His premise held: NSE carries 208 stock underlyings, the
+traded universe holds 113, and the name he said was missed is genuinely one of the 103 outsiders and
+genuinely the best of them. Two findings temper it. Only 24 of the 103 produce a single trade in
+almost six years, because the premium floor and the credit gate reject the rest, so most outsiders
+are outside for a structural reason. And in the band where every live fill sits, the outsiders win
+60.5% against the insiders' 78.8%, so the block would dilute the strongest book even though its
+full-band numbers look good.
+The same run exposed a gap worth more than the study. A DNS outage skipped 85 of the 103 symbols at
+the underlying-fetch stage, which sits above the fetch-integrity counter, so the run reported itself
+clean while measuring eighteen names. [[backtest-harness-audit-rule]] now carries the general rule:
+an integrity counter proves nothing about the stages it does not watch. Two working practices are
+filed beside it — a study should import the harness of record and override only its inputs, and a
+long research run should yield to the live engine through a detached guard during the entry and scan
+windows.
+Also on that page: the project has cost roughly 120 hours over 68 days, measured from 496 commits,
+with 78 hours the floor that commits alone defend.
+[[shiprocket-dhrp-rag]] is a new page. He asked for a retrieval system over Shiprocket's 543-page
+SEBI prospectus, step by step, because he teaches the build. LlamaIndex splits and embeds it,
+ChromaDB holds 885 chunks, and the Codex tool writes page-cited answers, with no API key anywhere —
+which is the constraint that matters, because his students have no paid subscriptions. It sits on a
+worktree branch rather than on main.
+[[aifinance]] gained Module 2, which is Prompt Engineering and RAG in twelve slides, with the
+hallucination slide rebuilt around the question Bard actually answered wrong and a new slide
+explaining what RAG is before the pipeline appears. Two production notes came with it: his edited
+copy in Downloads becomes the source of truth, and Keynote silently refuses a deck that python-pptx
+wrote speaker notes into.
+[[amazon-ads]] gained a second campaign, two dollars a day for the beginners book, launched with all
+ten keywords at the account floor. Its own arithmetic says the floor bid sits slightly above
+break-even, so it buys velocity rather than profit. One reusable interface trap is recorded: per-row
+bid edits in the campaign builder silently revert to the enter-list bid.
+Memory: updated institutional-trader-status, backtest-harness-audit-rule, isbms-ai-finance-course,
+dev-machine-technical-gotchas, amazon-ads-campaign, naukri-apply-mechanics, usd-remote-job-search and
+seo-browser-profile-split; added shiprocket-dhrp-rag and home-network-wifi.
+Deliberately NOT published: the job-search layer, which produced the day's largest finding — an Apply
+button that looks dead is almost always a stale screenshot scale — along with the SEO identity work,
+where the useful result is that a Google AI Overview is not personalised, and his home network
+diagnosis. All three stay in private memory.

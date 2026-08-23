@@ -3,7 +3,7 @@ title: Amazon Ads — Sponsored Products for the flagship Claude-finance book
 type: project
 tags: [kdp, amazon, advertising, marketing]
 created: 2026-07-20
-updated: 2026-08-13
+updated: 2026-08-23
 sources: [~/files/HANDOFF-amazon-ads.md]
 ---
 
@@ -52,5 +52,30 @@ The campaign converts at about 32% ACOS, so running the flagship nearer $10 a da
 roughly break-even ads for three or four weeks is what buys back the sales that rebuild rank.
 
 The keyword evidence method that came out of the same session is on [[kdp-listing-operations]].
+
+## A second campaign, for the beginners book (2026-08-21)
+
+A separate campaign now runs for [[claude-beginners-book]] at two dollars a day, in the United
+States, on manual targeting with dynamic bids set to go down only. One ad group carries all three
+formats at their live listing prices, which are cheaper on Kindle and paperback and dearer on
+hardcover than the listing plan recommended. Ten keywords all sit at the sixty-cent account floor and
+all are exact match, drawn from his own title, which is now a live Amazon autocomplete term, from a
+term that converted twice on the flagship, and from the probe-verified corpus. Four phrase negatives
+keep out free, pdf, course and download.
+
+The economics say plainly what this campaign is. Paperback royalty is about four and a half dollars,
+Kindle royalty is around a dollar on a large file, and break-even cost per click at a ten to twelve
+percent conversion rate is roughly half of what the floor bid costs. The floor therefore sits
+slightly above break-even unless hardcover sales mix in, which makes this a purchase of velocity
+rather than a profit engine. The kill trigger is the same as the other small tests: a hundred clicks
+with fewer than two orders means pause it and move the budget back to the flagship. Committed daily
+spend across seven campaigns is now about twenty-four dollars, and actual spend has historically run
+at half to sixty percent of the cap.
+
+One interface trap is worth recording, because it costs a launch. In the campaign builder, editing a
+bid inside the added-keywords table does not commit. The new value appears, the accessibility
+attribute updates, and then the row reverts to the enter-list bid as soon as another row is clicked.
+The enter-list custom bid is the one that sticks. To give keywords different bids, launch them flat
+and change them afterwards from the campaign's targeting tab.
 
 Part of [[files-repo]].
