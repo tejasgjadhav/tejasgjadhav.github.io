@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-08-23
+updated: 2026-08-24
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -555,3 +555,38 @@ long he worked before the first commit landed, so 78 hours is the floor that com
 way, because git never sees reading a study, watching the closing window live, placing paper trades,
 or a session that ended in a decision rather than in code. The output beside it is 496 commits, 57
 studies, more than 100 runnable scripts and five live books.
+
+## The outsiders out of sample, and a name that did not confirm (2026-08-24)
+
+The out-of-sample leg of the expansion study landed, and it corrects the section above. That section
+leads with PAGEIND on an in-sample record of 24 trades at 88% wins. Out of sample PAGEIND managed six
+trades at 67%, which is a pass rather than a confirmation. The in-sample figure stands as measured;
+it should not be quoted on its own again.
+
+Reaching a usable number took three attempts, because the second run failed the same way the first
+did. A recurring local DNS outage cost 79 symbol-level losses and 163 leg drops, only nine of the 103
+symbols were actually measured, and the run still reported itself complete. A failure that reports
+success cannot be caught by watching the exit code, so the fix was to stop trusting any single pass.
+The walk now re-runs behind a network gate, the leg cache fattens each time so a later pass refetches
+only what earlier passes missed, and nothing is published until a pass finishes with no underlying
+failures. Drops fell from 1,288 to 462 that way. The rule is filed on
+[[backtest-harness-audit-rule]]. Window separation was verified independently rather than assumed:
+there is no overlap of symbol and day between the two windows.
+
+Pooled across the outsiders, the out-of-sample record is 204 trades at 78.4% wins, +14.6% return on
+margin and about ₹354,000. Six names carried enough in-sample history to be judged individually, and
+none of them confirms decisively. PAGEIND and MCX align best across both windows, SRF is flat,
+HDFCAMC fails the both-windows rule outright, and the rest are too thin to count.
+
+The uncomfortable finding is that the strongest names were the ones the in-sample window never saw.
+TVSMOTOR ran nine trades at 89% in sample and sixteen at 94% out of it. LTM posted nine trades at
+100%, and four other names were strong on the same basis. So the case for expanding the universe now
+rests largely on names with no in-sample record at all, which is weaker evidence than the study set
+out to produce, and the study says so rather than presenting the pooled number as the answer.
+
+On [[tejas-jadhav]]'s own expectancy formula, the nine candidate names model at roughly ₹4,300 a
+month on the in-sample window and ₹10,500 on the out-of-sample one. The honest range is ₹4,000 to
+₹10,500 and the truth sits between, because the first window contains none of the new entrants and
+the second is a single favourable regime whose trade counts are floors. Against the current stock
+books at about ₹18,500 a month that would be a lift of a quarter to a half. **Nothing has been put
+into the configuration and no name has been admitted.**

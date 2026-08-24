@@ -3,7 +3,7 @@ title: Research scripts are production code — the backtest harness audit rule
 type: concept
 tags: [trading, backtesting, verification, research]
 created: 2026-08-16
-updated: 2026-08-23
+updated: 2026-08-24
 sources: [~/files/institutional-trader/studies/, ~/files/institutional-trader/HANDOFF.md]
 ---
 
@@ -132,3 +132,17 @@ record and override only its inputs, so that correcting the harness corrects eve
 a long research run should yield to the live engine, through a detached guard that suspends it during
 the entry and scan windows, because a sweep that competes with a real trade costs more than the
 sweep is worth.
+
+## Publish nothing until a pass finishes clean (2026-08-24)
+
+The DNS outage described above turned out to be recurring, and it ruined the retry as well. That
+second run lost 79 symbols and 163 legs, measured nine names out of 103, and reported itself
+complete. A failure that reports success cannot be caught by watching an exit code, and retrying by
+hand does not help when the operator cannot tell a good run from a bad one.
+
+The pattern that worked: run the walk repeatedly behind a network gate, let the cache fatten so each
+pass refetches only what the earlier passes missed, and publish nothing until a pass finishes with no
+underlying failures and no drops. Counts converged from 1,288 to 462 to clean under that loop. Two
+habits support it. Print the drop count in the output itself, so a partial run cannot be mistaken for
+a complete one by anybody reading the file later. And verify independently that the two windows do
+not overlap, rather than trusting that the date filter did its job.

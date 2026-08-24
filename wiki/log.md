@@ -437,3 +437,24 @@ Deliberately NOT published: the job-search layer, which produced the day's large
 button that looks dead is almost always a stale screenshot scale — along with the SEO identity work,
 where the useful result is that a Google AI Overview is not personalised, and his home network
 diagnosis. All three stay in private memory.
+
+## [2026-08-24] ingest | The outsiders answered out of sample, and the best in-sample name did not confirm
+Follow-up sync, same day, after the expansion study finished its out-of-sample leg overnight.
+The result corrects what was filed yesterday. PAGEIND led the in-sample table at 24 trades and 88%
+wins, and out of sample it managed six trades at 67%. That is a pass, not a confirmation, so the
+in-sample figure no longer travels on its own. Both [[institutional-trader]] and the wiki index now
+say so in place rather than quietly dropping the earlier claim.
+Getting the number took three attempts, and the second failure is the useful part. The DNS outage
+that ruined the first run turned out to be recurring and local, and the retry lost 79 symbols and 163
+legs, measured nine names out of 103, and reported itself complete. A failure that reports success is
+invisible to an exit code. [[backtest-harness-audit-rule]] now carries the fix as a general rule: run
+the walk repeatedly behind a network gate, let the cache fatten so each pass refetches only what the
+last one missed, and publish nothing until a pass finishes with no failures and no drops. Drop counts
+converged 1,288 to 462 to clean under that loop.
+Pooled, the outsiders returned 204 trades at 78.4% wins and +14.6% on margin. Six names had enough
+in-sample history to judge and none confirmed decisively. The strongest names — TVSMOTOR, LTM and
+four others — were names the in-sample window never saw at all, so the case for expansion now rests
+on weaker evidence than the study intended to produce, and it says so. Nine candidates model at four
+to ten and a half thousand rupees a month, a quarter to a half above the current stock books.
+Nothing has been put into the configuration and no name has been admitted.
+Memory: updated institutional-trader-status and backtest-harness-audit-rule.
