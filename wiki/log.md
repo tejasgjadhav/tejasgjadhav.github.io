@@ -458,3 +458,29 @@ on weaker evidence than the study intended to produce, and it says so. Nine cand
 to ten and a half thousand rupees a month, a quarter to a half above the current stock books.
 Nothing has been put into the configuration and no name has been admitted.
 Memory: updated institutional-trader-status and backtest-harness-audit-rule.
+
+## [2026-08-25] ingest | The book got its harness chapters and its covers, and the interview guides got a panelist rule
+Daily sync over the sessions of 24 and 25 August. The largest was the Claude Code for Finance
+rebuild. A gap audit found that V5 mentioned MCP three times and hooks once, and never mentioned
+plugins, subagents, the system prompt, the harness, TradingView, routines or output styles at all.
+Chapter 5 had defended that omission in the text. A new Part III answers it in four chapters, every
+fact verified on the machine rather than recalled: the Anthropic finance plugin ships eight skills
+and admits in its own CONNECTORS.md that no accounting MCP server exists yet, and his TradingView
+server exposes exactly 78 tools counted from source. The book is 201 pages and still unpublished.
+All three covers were built from KDP's own Cover Calculator, and the front art at 1024x1536 has to
+be regenerated at twice the size before the print editions go up.
+One cover decision is worth carrying. KDP's ebook cover "must not" list holds two items, copyright
+infringement and any mention of pricing, so a URL is allowed. He still refused to print the free
+prompt page address on the cover, because someone who can read the link has no reason to buy the
+book. [[book-covers]] now separates a commercial call from a compliance one.
+A new [[job-search]] page records the search itself. The Naukri routine applied to 18 jobs on the
+25th against a target of 30 to 40 and reached a running total of 91, and the shortfall is the pool
+rather than the tooling: seven postings in ten are external, and twelve more were abandoned at a
+recruiter chatbot whose first question asked for years in a domain he has never worked in. Two
+interview guides were built the same day, 68 pages general and 40 pages for a TIAA product role.
+The reusable part is how the TIAA one was written. The panelist's live LinkedIn was read first, and
+it showed he had personally implemented Eagle Accounting, Bloomberg PORT+ and FactSet SPAR, so
+those three went onto a never-claim list, and it showed he came up through operations, so the guide
+weights lifecycle detail over product theory.
+Pages touched: claude-code-finance-book, job-search (new), book-covers, tejas-jadhav, index.
+Memory: updated interview-prep-assets, naukri-bulk-apply-routine, kdp-cover-gotchas.

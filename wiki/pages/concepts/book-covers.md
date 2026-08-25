@@ -3,7 +3,7 @@ title: Book covers — the pipeline, the click test, and the shelf they sell on
 type: concept
 tags: [kdp, covers, design, amazon, compliance]
 created: 2026-08-11
-updated: 2026-08-17
+updated: 2026-08-25
 sources: [~/.claude/CLAUDE.md, ~/files/kdp-books/claude-cowork-finance/cover/]
 ---
 
@@ -166,3 +166,20 @@ type-free field in the source image.
 **The verification suite reported CLEAR on that visibly broken wrap.** A suite that passes broken
 output is worse than no suite, because it converts a defect into a signed-off defect. Add a gate that
 tests the thing that actually broke before trusting the next pass.
+
+
+## A URL on a cover is allowed, so keeping one off is a commercial decision
+
+KDP's live ebook cover guidelines were read on 2026-08-25 and the "must not" list holds only
+two items. Do not infringe another artist's copyright, and do not mention pricing or a
+temporary promotional offer. Nothing there bans a web address.
+
+So the call on [[claude-code-finance-book]] was commercial rather than compliant. That book
+gives every prompt away on a free page, and he refused to print the address on the cover:
+someone who can read the link has no reason to buy the book. The back cover promises the free
+page and the address stays in the appendix behind a QR code. State which kind of decision you
+are making when a cover element is questioned, because the two get confused.
+
+The same read confirmed the ebook spec. KDP recommends 2560 high by 1600 wide, at 300 dpi
+minimum, under 5 MB, JPEG and RGB rather than CMYK. Do not stretch artwork to hit those
+numbers — a 2:3 source correctly ships at 1707 × 2560, and KDP says so itself.

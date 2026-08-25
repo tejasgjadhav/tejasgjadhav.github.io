@@ -3,7 +3,7 @@ title: Tejas Jadhav — CFA, FRM
 type: entity
 tags: [person, author, finance, teaching]
 created: 2026-07-03
-updated: 2026-07-23
+updated: 2026-08-25
 sources: [~/files/scmhrd-ai-finance/index.html, ~/files/kdp-dashboard/data/books.json, ~/files/index.html]
 ---
 
@@ -18,7 +18,9 @@ Current activity streams (as of 2026-07):
 - **Trading** — building and forward-testing [[institutional-trader]] via [[upstox]]
 - **Domain expertise** — trade & transaction regulatory reporting ([[trade-regimes-website]])
 - **Job search** — actively interviewing for capital-markets **BA / Product-Owner** roles (incl. a
-  **UBS "PO for Corporate Actions"** interview, Jul 2026); self-identifies as *author and business
+  **UBS "PO for Corporate Actions"** interview, Jul 2026). He accepted an Accenture offer starting
+  7 September 2026 and is still searching to beat it; the routines, volumes and interview guides
+  live in [[job-search]]. He self-identifies as *author and business
   analyst*. Reusable prep digests built: a Corporate-Actions income-processing BA digest and a SQL-for-BA
   Q&A (both under [[files-repo]]). Occupation follow-up: adding **business analyst (Q1017553)** to the
   Wikidata item's P106 (author + financial analyst already present) — see [[google-identity-seo]].
