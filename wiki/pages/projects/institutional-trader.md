@@ -3,7 +3,7 @@ title: Institutional Trader — NSE intraday options paper-trading
 type: project
 tags: [trading, nse, options, python, upstox]
 created: 2026-07-03
-updated: 2026-08-24
+updated: 2026-08-26
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/README.md, ~/files/institutional-trader/studies/]
 ---
 
@@ -590,3 +590,129 @@ month on the in-sample window and ₹10,500 on the out-of-sample one. The honest
 the second is a single favourable regime whose trade counts are floors. Against the current stock
 books at about ₹18,500 a month that would be a lift of a quarter to a half. **Nothing has been put
 into the configuration and no name has been admitted.**
+
+
+## The universe rebuild shipped on 24 August 2026
+
+The nine candidate names were admitted and eight losing names were pruned. UNIVERSE now carries
+PAGEIND, LTM, TVSMOTOR, TIINDIA, SOLARINDS, BDL, AMBER, SHREECEM and MCX. TCS, HCLTECH, OFSS and
+five others were removed, because they were losing about ₹3,870 a month out of sample.
+
+Modelled potential across the stock books rose from ₹18,483 a month to ₹30,992, which is 68% more.
+The decomposition is the honest part. About ₹10,500 to ₹12,000 of the rise is the admitted names,
+which are signal streams the system simply did not scan before. About ₹3,900 is the pruned names no
+longer losing. The bug fixes account for about −₹2,000, and that number is not a loss of profit.
+Fixing a bug never adds potential profit. It only changes how accurately the potential is known.
+
+## Four auditors, seven bugs, and three backtest runs in one afternoon
+
+Four audit agents ran in parallel over the engine, the interface, the backtest and the seams between
+them. Each had to reproduce a defect before it counted as a finding. They returned seven bugs and
+all seven were fixed the same day.
+
+Two were critical. Every v0 fill was being written into the forward database labelled `v2`, because
+the book label sat as a literal inside v2's source and v0 executes that source as a second instance.
+That is the same family as the open-interest leak found the week before. The advisory flag also died
+at the database insert, so a weak-side fill would have entered the headline forward record despite
+the tagging built that afternoon. Below those: the no-signal recheck was re-pricing the previous
+session every five seconds and burning about 4,400 Upstox calls a day into the 15:36 window; the
+money table's total was wrong; the next out-of-sample run would have double-counted the admitted
+names and given them weightless lots; the bonus split-fix left five of ASTRAL's eight pre-bonus
+trades unscaled; and the parity anchor misfired on 86 entries.
+
+The in-sample backtest was then re-run three times, and the first two runs were thrown away. The
+first re-anchored every trade when the audit only justified rejecting a bad class, and v2's
+point-return halved with no explanation. The second set the rejection threshold at 2% when the
+audit's own definition of a misfire was 10%, and it culled a quarter of the book. The third
+reconciled against a predicted row count and shipped. The rule this produced is filed on
+[[backtest-harness-audit-rule]]: predict the row count before the run, and refuse to ship a result
+that disagrees with the prediction.
+
+One naming lesson came out of the same afternoon. Calling the third run "v3" made him think a fourth
+strategy had appeared. There are exactly three books, v2, v1 and v0. Say "run 3".
+
+The run-3 basis is what every surface now carries: 1,177 in-sample trades and 420 out of sample, 131
+traded names in `symbol_history.json`, and a money table totalling 526 signals at ₹36,798 a month.
+
+## The signal message now carries the stock's own record, by side
+
+A Telegram signal prints how many breakout signals the system scanned for that stock in each window,
+the trade counts split into bear calls and bull puts, the win rate and the average profit and loss
+per trade, the per-book v0, v1 and v2 line, and a closing line naming this signal's own side. Example:
+"TORNTPHARM has given 16 bear call trades · 81% win · actual profit ₹+33,956 till date." A window
+with no trades says so rather than printing a blank.
+
+## A quiet day is the normal day
+
+He asks why nothing fired, and the measured record answers it. Out of sample, 374 trades landed on
+179 of about 460 sessions, so 61% of trading days produced zero signals and the busiest single day
+produced 18. On 24 August the watchlist held 18 breakouts and the best of them priced at c/w 0.37,
+under the 0.40 gate. The gate refusing 18 breakouts is the edge working, not the system failing. One
+gap remains: c/w and premium rejections die silently, so only spread and open-interest rejections
+reach the forward database, and a day cannot yet be explained name by name.
+
+## The scan that never ran, and the sentinel that insures it (25 August 2026)
+
+Connection resets at 15:31 blocked the single-threaded engine loop from 15:32 to 15:48. The
+once-a-day scan condition required the market to be open, so by the time the loop recovered the scan
+and its notice never happened at all. He noticed the missing message before any monitor did.
+Re-running that day's scan in a sandbox confirmed all three books said no signal, so the stall cost
+the message and not a trade.
+
+Two fixes shipped. A missed 15:36 scan now catches up until 16:30, labelled LATE and record-only,
+because a signal after 15:40 cannot be placed but the day's answer must still exist. And a sentinel
+thread now runs inside the same engine. It does nothing all day, then from 15:36:20 it checks every
+five seconds whether the scan has fired, and it runs the scan from its own thread if the main loop is
+wedged. A second engine process was rejected on purpose, because it would double the Upstox load that
+caused the stall and put two writers on the same position files. The once-a-day marker is swapped
+atomically under a lock, and eight competing threads were raced against it with exactly one claiming
+the scan every time.
+
+## ULTRACEMCO, and day markers that survive a restart (26 August 2026)
+
+The first trade of the expanded-universe era entered the forward record. ULTRACEMCO fired a bear call
+at 15:36:09 with credit ₹89.97 at c/w 0.45, and Telegram accepted it at 15:36:24 with the message id
+logged. That is inside his stated requirement of a signal by 15:37. The call was verified afterwards
+on every axis: it used the official close of 11,717.0, spot sat 0.71% below the short strike so the
+premium carried no intrinsic contamination, the credit-to-width arithmetic came to exactly 0.450, and
+the geometry was correct on a dense strike ladder.
+
+A spurious "no signal today" notice went out at 15:50 on the same day, and the cause was a restart. A
+deploy reset the in-memory "scan done" marker, the late catch-up path saw an apparently unscanned
+day, re-ran, found nothing new because ULTRACEMCO was correctly held by the re-entry guard, and sent
+the notice. All six once-a-day markers now persist to disk and are loaded at startup, so a restart
+resumes the day instead of repeating it.
+
+The 15:31 digest also changed. It now sends the entire watchlist with the names that pass every gate
+on top, and a note telling him to wait for the 15:36 call. He asked for this because ULTRACEMCO
+passed all its gates at 15:31 and he was not ready to trade it.
+
+## The closing-auction blackbox tab (26 August 2026)
+
+A new tab derives NIFTY and SENSEX inside the closing-auction window, when the index feed goes dark.
+It reads the at-the-money call and put and solves put-call parity, so it needs only the strike and
+the two premiums. Its state lives in `~/files/institutional-trader/HANDOFF-cas-options.md` and the
+session rules behind it are on [[nse-cas-session-2026]].
+
+What the feeds do in that window was measured over five sessions rather than assumed. Both
+at-the-money legs trade in every single minute of 15:15 to 15:28 on both indices. The index feed does
+not vanish either; it republishes the same frozen value fourteen times and then prints the auction
+close at 15:28.
+
+A recorder samples every ten seconds from 15:14 to 15:31 on weekdays, writes to `blackbox_log.jsonl`
+and runs under a launchd agent that restarts it after a crash or a reboot. It was armed on 26 August
+and starts recording on 27 August. On startup it reloads the day's samples from the log, because a
+restart mid-window would otherwise lose minutes that can never be recorded again.
+
+[[upstox]] has no sub-minute history, and this was tested rather than assumed: `seconds` and `ticks`
+both return "Invalid unit" on the historical and the intraday endpoints. One minute is the floor and
+past sessions cannot be backfilled any finer. A one-minute bar still yields two anchored points
+instead of one, because parity can be solved on the bar's open and on its close. That finer view
+changed the picture. SENSEX fell 31.55 points inside the 15:15 minute alone on 26 August and then
+recovered, where close-to-close had rendered the same stretch as a tidy rise of 21.90.
+
+Two design points came out of the build. The mark is a mid-price taken from the full-quote endpoint,
+which carries bid and ask depth, because a mid-price is live even when nothing has traded and a last
+traded price is not. And the index price is now display-only. It used to pick the strike, which meant
+a feed hiccup dropped the whole sample, so the one stretch the tab exists for was the one stretch it
+would have blanked entirely.

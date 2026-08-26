@@ -3,7 +3,7 @@ title: KDP book catalog — AI and Practical Finance Series
 type: concept
 tags: [kdp, books, writing, amazon]
 created: 2026-07-03
-updated: 2026-08-16
+updated: 2026-08-26
 sources: [~/files/kdp-dashboard/data/books.json]
 ---
 
@@ -12,10 +12,13 @@ sources: [~/files/kdp-dashboard/data/books.json]
 
 1. **Claude AI for Finance Professionals** (featured; Kindle 2026-03-17, $5.99) —
    institutional-grade prompts for analysis, valuation & investment research ([[claude-anthropic]]).
-   Re-humanized 2026-07-13/14 and re-counted: front matter corrected from "16 Chapters · 120+
-   Prompts" to **"17 Chapters · 135+ Prompts"** (120 numbered + 14 flagship CRAFT + the Ch.1
-   master). Interior `KDP_PRINT_INTERIOR_v6_ch1_prompting.pdf` 182 pp; EPUB
-   `DIGITAL_BOOK_BLOCK_v6_ch1_prompting.epub`.
+   **Rebuilt end to end on 2026-08-26 and now 205 pages with 122 prompts** — see
+   [[claude-finance-professionals]] for the full rebuild, which removed 307 repeated lines, taught
+   the five prompting techniques in Chapter 1, and moved the two walkthroughs ahead of Chapter 1 so
+   the Look Inside sample opens on real runs. Upload
+   `Claude_AI_Finance_Professionals_FINAL_205pp_INTERIOR.pdf` and `..._FINAL.epub` from
+   `~/Downloads`. The earlier "17 Chapters · 135+ Prompts" count from the 2026-07 re-humanization is
+   superseded.
 2. **AI Prompts for Financial Analysis** (Kindle 2026-03-11) — 100+ practical prompts
 3. **AI Prompts for Financial Analysis — Equity Research Edition**
 4. **Stop Losing Money** (Kindle 2026-04-07)

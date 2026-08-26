@@ -3,7 +3,7 @@ title: Research scripts are production code — the backtest harness audit rule
 type: concept
 tags: [trading, backtesting, verification, research]
 created: 2026-08-16
-updated: 2026-08-24
+updated: 2026-08-26
 sources: [~/files/institutional-trader/studies/, ~/files/institutional-trader/HANDOFF.md]
 ---
 
@@ -146,3 +146,32 @@ underlying failures and no drops. Counts converged from 1,288 to 462 to clean un
 habits support it. Print the drop count in the output itself, so a partial run cannot be mistaken for
 a complete one by anybody reading the file later. And verify independently that the two windows do
 not overlap, rather than trusting that the date filter did its job.
+
+
+## Predict the row count before the run (2026-08-26)
+
+The [[institutional-trader]] in-sample backtest was re-run three times in one afternoon after an
+audit, and the first two results were thrown away. The audit's findings were right both times. The
+fix constants were not. The first attempt re-anchored every trade when the audit only justified
+rejecting a bad class, and the book's point-return halved with no explanation. The second set the
+rejection threshold at 2% when the audit's own definition of the defect was 10%, and it culled a
+quarter of the book.
+
+Both were caught by the same discipline. Predict the expected row count before the run, then refuse
+to ship a result that disagrees with the prediction. The third run predicted about 1,160 rows and
+returned 1,085, with the difference accounted for by misfire entries carrying one or two rows each,
+so it shipped. Explained numbers ship. Unexplained numbers do not, even when they look better than
+the ones they replace.
+
+## A test can print a pass over a visible failure (2026-08-26)
+
+Four failure cases were being proved against the closing-auction sampler, and the script announced
+that all four passed while case 3 was failing on screen. Its conclusion line was hardcoded text
+rather than a check of the result. Case 3 had also only appeared to pass on an earlier run because
+the previous case left a remembered value sitting in memory, so a later case inherited an earlier
+one's success. Re-running with memory cleared between every case exposed a third defect underneath:
+one function had no retry, which is the same missing retry already fixed one function away.
+
+Three habits follow. Compute a test's verdict from the result and never print it. Reset every cache
+and module-level variable between cases. And when a defect is fixed on one call path, grep for the
+same pattern on every sibling path before calling it fixed.

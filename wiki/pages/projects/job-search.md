@@ -3,7 +3,7 @@ title: The job search — routines, volumes, and the interview guides
 type: project
 tags: [job-search, naukri, linkedin, interview, business-analyst, product-owner]
 created: 2026-08-25
-updated: 2026-08-25
+updated: 2026-08-26
 sources: [~/files/HANDOFF-naukri-daily.md, ~/files/HANDOFF-remote-jobs.md, ~/files/.claude/worktrees/brave-wilson-299feb/HANDOFF-tiaa-interview.md, ~/files/.claude/worktrees/swiggy-financial-analysis-7412fb/HANDOFF-ba-po-interview-guide.md]
 ---
 
@@ -16,8 +16,8 @@ continues. The target is capital markets work in Pune or fully remote.
 They must not tread on each other, and they run in this order. At 9:08 the
 `naukri-daily-refresh` routine bumps his profile so recruiters see him first. At 9:35
 `daily-job-applications` works LinkedIn Easy Apply and the global ATS boards. At 10:12
-`naukri-bulk-apply` carries the volume, because LinkedIn caps Easy Apply near one submission a
-day now.
+`naukri-bulk-apply` carries the volume. LinkedIn's Easy Apply throttle has moved twice: it allowed
+three a day on 11 August, fell to one on 17 August, and allowed ten again on 26 August.
 
 **The Naukri target is 30 to 40 a day and the pool does not support it.** On 25 August 2026 the
 routine applied to 18 and the running Naukri total reached 91. About seven postings in ten were
@@ -65,3 +65,28 @@ that set both the never-claim list and the emphasis.
 Both guides state every gap as a gap and give him a scripted honest line for it. The worked case
 studies carry teaching numbers rather than his project metrics, and that caveat travels with
 the files.
+
+
+## 148 applications as of 26 August 2026
+
+Ten went out on 26 August, all through LinkedIn Easy Apply in his own Chrome profile, taking the
+running total to 148. Three are worth watching. Luxoft is hiring a business analyst for trade and
+transaction reporting in Pune District, which is daily OTC derivative reporting across jurisdictions
+and is his delivery lane exactly. MyRemoteTeam posted a capital markets business analyst covering
+equities, fixed income and securities lending, and the application went in four minutes after the
+posting appeared. Double Duty Money Management, a New York boutique, is hiring a senior investment
+operations analyst fully remote from India, and the founder is listed as the poster.
+
+Two questions are open and only he can answer them. Double Duty asked whether he has completed an
+MBA, and LinkedIn had pre-filled Yes. The answer was changed to No, because his degree is an MMS. He
+should decide once whether he wants that answered Yes on the grounds that the MMS is a two-year
+AICTE postgraduate management degree. Separately, four strong roles were skipped only for being
+contracts, and two of them were the best domain matches of the whole sweep.
+
+His LinkedIn profile still pre-fills wrong numbers into Easy Apply forms. This run offered thirteen
+years in Office and twelve in investment banking, and each one was corrected by hand to his standing
+figures of twelve years total and ten in financial services.
+
+Two mechanics make the next run cheaper. Read the job description out of `document.body.innerText`
+after a scroll, so triage costs one JavaScript call and no screenshot. And each click on Easy Apply
+toggles the modal, so firing two clicks in one batch opens it and closes it again.

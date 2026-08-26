@@ -484,3 +484,46 @@ those three went onto a never-claim list, and it showed he came up through opera
 weights lifecycle detail over product theory.
 Pages touched: claude-code-finance-book, job-search (new), book-covers, tejas-jadhav, index.
 Memory: updated interview-prep-assets, naukri-bulk-apply-routine, kdp-cover-gotchas.
+
+## [2026-08-26] ingest | The universe rebuild shipped, the flagship was rebuilt after one review, and a sentinel now insures the 15:36 scan
+Daily sync over the sessions of 25 and 26 August. Two large threads and one new tab.
+
+The [[institutional-trader]] universe rebuild went live on the 24th. Nine names were admitted and
+eight losing names pruned, which took modelled potential from ₹18,483 a month to ₹30,992. The
+decomposition is the part worth keeping. Roughly ₹12,000 of the rise is the admitted names, ₹3,900 is
+the pruned names no longer losing, and the bug fixes account for about −₹2,000. Fixing a bug never
+adds potential profit; it only changes how accurately the potential is known. Four audit agents found
+seven live bugs the same afternoon, the worst of them writing every v0 fill into the forward database
+under v2's label. The in-sample backtest was then re-run three times, and the first two runs were
+thrown away because two of my own fix constants were wrong while the audit's findings were right. The
+rule that came out of it is on [[backtest-harness-audit-rule]]: predict the row count before the run
+and refuse to ship a result that disagrees.
+
+Two operational failures followed and both are fixed. On the 25th a network stall blocked the engine
+loop past the close, so the 15:36 scan and its notice never happened and he noticed the missing
+message before any monitor did. A sentinel thread now runs the scan from its own thread if the main
+loop is wedged at 15:36:20, and a missed scan catches up until 16:30 as a record-only entry. On the
+26th ULTRACEMCO fired at 15:36:09 and reached Telegram at 15:36:24, the first trade of the expanded
+universe, and a restart minutes later sent a spurious no-signal notice because the day markers lived
+in memory. All six now persist to disk.
+
+A new tab derives NIFTY and SENSEX inside the closing-auction blackout by solving put-call parity on
+the at-the-money pair. Both legs trade in every minute of 15:15 to 15:28, and the index feed does not
+vanish but republishes one frozen value fourteen times. [[upstox]] has no sub-minute history at all,
+tested rather than assumed, so a ten-second recorder starts on 27 August.
+
+The flagship book got its own page. [[claude-finance-professionals]] is now 205 pages and 122
+prompts, rebuilt after a customer review said it was informative and did not change how the reader
+works. The repetition was counted at 307 repeated sentence instances and hidden into per-desk house
+boxes, with `PROMPTS.md` verified byte-identical after every step. Chapter 1 now teaches the five
+prompting techniques the book was already using, and the two walkthroughs moved ahead of it so the
+Look Inside sample opens on a real dated run instead of teaching prose. Every character story was
+rewritten in plain English after the first variety pass made them harder to read. The approved 5 to 8
+percent prose cut was declined after measuring, because cutting explanation out of a reference book
+is what makes it dry. One finding to carry: the live prompt site is not built from its repo, and the
+repo holds the older design and two stale prompts.
+
+Pages touched: institutional-trader, claude-finance-professionals (new), kdp-books, job-search,
+backtest-harness-audit-rule, index.
+Memory: updated institutional-trader-status, kdp-finance-book-series, usd-remote-job-search,
+runtime-verification-rule and dev-machine-technical-gotchas, and created cas-blackbox-recorder.
