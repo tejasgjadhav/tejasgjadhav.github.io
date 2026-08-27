@@ -3,7 +3,7 @@ title: Amazon Ads — Sponsored Products for the flagship Claude-finance book
 type: project
 tags: [kdp, amazon, advertising, marketing]
 created: 2026-07-20
-updated: 2026-08-23
+updated: 2026-08-27
 sources: [~/files/HANDOFF-amazon-ads.md]
 ---
 
@@ -79,3 +79,23 @@ The enter-list custom bid is the one that sticks. To give keywords different bid
 and change them afterwards from the campaign's targeting tab.
 
 Part of [[files-repo]].
+
+## A third campaign, on the day the Claude Code book went live (27 August 2026)
+
+He asked for a three-dollar campaign as soon as the book had a listing. It launched and Amazon
+confirmed it on screen. The campaign is named "Claude Code Finance - Auto - Aug 2026" and it runs
+US Sponsored Products with automatic targeting, dynamic bids up and down, a default bid of
+seventy-five cents, a three-dollar daily budget and no end date.
+
+Automatic targeting was chosen deliberately. A book on its first day has no search-term data, so the
+auto campaign generates that data and the terms that win become a manual campaign later.
+
+The campaign advertises the Kindle edition alone, and that was a constraint rather than a choice.
+The product picker in the ads console returned exactly one result, because the paperback and the
+hardcover were still in review on his bookshelf, and the console can only attach an ASIN that is
+live. He made the point that the paperback is the better vehicle, and he is right. A paperback
+royalty per conversion is several times a Kindle royalty, so it absorbs the ad cost far better.
+Attach the paperback to this campaign as soon as it clears review.
+
+Committed daily spend across eight campaigns is now about twenty-seven dollars. See
+[[claude-code-finance-book]] for the title itself.

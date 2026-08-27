@@ -3,7 +3,7 @@ title: KDP listing operations — descriptions, editorial reviews, A+ content
 type: concept
 tags: [kdp, amazon, policy, marketing, listings]
 created: 2026-08-01
-updated: 2026-08-17
+updated: 2026-08-27
 sources: [~/files/HANDOFF.md, ~/files/kdp-books/DESCRIPTIONS-rewrite-2026-07-27.md, ~/files/kdp-books/EDITORIAL-REVIEW-blurbs-draft.md]
 ---
 
@@ -116,3 +116,25 @@ returned zero.
 bare product-name prefix, the highest volume seen in the whole session, and KDP's keyword rules forbid
 unauthorised references to other titles. The same boundary applies to artwork, and it is covered under the
 trade-dress section of [[book-covers]].
+
+## Probe the search box, not the completion API (27 August 2026)
+
+He challenged a keyword set with a single question: did you take Chrome control and see the actual
+search terms on amazon.com? He was right to ask. The earlier probe had used Amazon's completion
+endpoint, and the live dropdown in his signed-in Chrome profile returned a far richer list. Terms
+the dropdown showed that the endpoint never surfaced include *ai finance playbook*, *ai finance
+financial modeling*, *claude for finance and accounting*, *claude code for dummies*, *claude code
+2026* and *ai agents for accountants*. Probe in the live search box from now on, fall back to the
+endpoint only when the browser is unavailable, and say which instrument was used.
+
+One find from that session is worth acting on across the catalogue. His flagship title,
+*claude ai for finance professionals*, now autocompletes on amazon.com. The exact title is a search
+term, so every related book of his should carry it in a keyword slot.
+
+## The author-name fields reject more than you expect
+
+His byline rendered on the live Kindle listing with a stray space. The cause was a trailing space
+left in the First-name field, not in the Last-name field where the gap appeared. KDP also refuses a
+comma inside the Last-name field, so "Jadhav, CFA, FRM" cannot be typed there. Check how the
+flagship's byline was actually split across the two fields and copy that split. The correction is
+made from the eBook details page and does not send the book back for review.

@@ -3,7 +3,7 @@ title: The job search — routines, volumes, and the interview guides
 type: project
 tags: [job-search, naukri, linkedin, interview, business-analyst, product-owner]
 created: 2026-08-25
-updated: 2026-08-26
+updated: 2026-08-27
 sources: [~/files/HANDOFF-naukri-daily.md, ~/files/HANDOFF-remote-jobs.md, ~/files/.claude/worktrees/brave-wilson-299feb/HANDOFF-tiaa-interview.md, ~/files/.claude/worktrees/swiggy-financial-analysis-7412fb/HANDOFF-ba-po-interview-guide.md]
 ---
 
@@ -90,3 +90,36 @@ figures of twelve years total and ten in financial services.
 Two mechanics make the next run cheaper. Read the job description out of `document.body.innerText`
 after a scroll, so triage costs one JavaScript call and no screenshot. And each click on Easy Apply
 toggles the modal, so firing two clicks in one batch opens it and closes it again.
+
+## Where the counters stand on 27 August 2026
+
+The LinkedIn and global channel reached 158 applications. Ten went out that morning, numbered 149 to
+158, and every one was confirmed. The best domain fits of the batch were Luxoft's Senior Business
+Analyst for capital markets, covering OTC derivative clearing, interest-rate derivatives and fixed
+income on an India-remote basis, and METRO Global Solution Center's AI Business Analyst in Pune. Ten
+a day is now the working rate.
+
+The Naukri channel reached 152. That day's run submitted 34 applications, inside its 30 to 40 target
+band. The best fits were two Infosys roles in Pune, an AML Operations Functional SME and a KYC and
+CDD Functional SME, plus an asset management and performance attribution lead at Crescendo Global.
+
+Two corrections to his work history landed the same day and both change every CV. He is Lead
+Business Analyst on the UBS OnePass data platform and not its owner, so "Product Owner" must never
+appear against UBS. The Product Owner title with the team of eight belongs to the CETF programme at
+Credit Suisse. And he worked entirely in Pune. Only Perfect Engineering Works is Satara, and Mumbai
+now appears on no employment line at all. SIMSREE stays Mumbai in the education block, because the
+institute is there. All 22 CVs in his Downloads folder were swept that day.
+
+His final round at TIAA for Associate Director, Product Management is with a panelist named Bharath,
+and reading that panelist's LinkedIn changed the preparation. Bharath is not an investments person.
+He came up as an Infosys developer, led an implementation at Alliance Global, and has spent seven
+years in product. So the second guide, 38 pages and separate from the first so it can be carried
+alone, covers Python basics, the business-analyst work on a legacy-application migration, and
+questions on operational stability, integration and generating custom reports. That matches the role
+itself, which exists to build a data store for credit products.
+
+One answer was scripted with him. Asked whether he has built a data store, he says yes and then
+draws the line himself in the same breath. He defined tables and loaded data into them alongside a
+Palantir Foundry engineer, and he resolved MSCI vendor identifiers against the bank's own. That is
+the business-analyst half of building a data store. Naming the half he did not do is what makes the
+yes credible.

@@ -3,7 +3,7 @@ title: Claude Code for Finance (book build)
 type: project
 tags: [book, kdp, claude-code, writing]
 created: 2026-08-01
-updated: 2026-08-25
+updated: 2026-08-27
 sources: [~/files/claude-code-finance-book/HANDOFF.md, ~/files/claude-code-finance-book/HANDOFF-V6.md, ~/files/claude-code-finance-book/GAPS.md]
 ---
 
@@ -90,3 +90,39 @@ they have no reason to buy. The back cover promises the free page and the addres
 Appendix A behind a QR code. KDP would have allowed the URL — their ebook cover "must not" list
 holds only two items, copyright infringement and any mention of pricing or a temporary
 promotion — so this was a commercial call rather than a compliance one.
+
+## Published — the Kindle went live on 27 August 2026
+
+The book has a listing at last. The Kindle edition is live at ASIN `B0HGQ35XP9` and sells for
+$4.99. The paperback and the hardcover were still marked "In review" on his KDP bookshelf that
+afternoon. Everything written above this section about the book being unpublished is out of date.
+
+Three builds landed that day. v7 was the 201-page interior with the Start Here table, the decision
+tree, the Chapter 1 interface guide, the BUILD THIS boxes and the thirty-day roadmap as Chapter 19.
+v8 numbered the rows of the Chapter 1 screen table 1 to 6 so they match the labels printed on the
+figure, because the table and the figure had been describing the same six things without a shared
+numbering. v9 added one fact to Chapter 1: Claude Code needs a paid Pro or Max plan and has no free
+tier. Upload v9.
+
+He asked for a badge in one corner of the Kindle cover reading "Free Online Prompt Library". It
+ships top right, as a tilted orange tab in the cream strip above the title. Top right is the only
+corner the halftone dot fields leave clear. The badge names the offer and does not print the
+address, so the rule above still holds: the URL stays in Appendix A. Both compliance questions were
+checked against KDP's own pages that day. The badge is neither a price nor a temporary promotion,
+and KDP's Hyperlink Guidelines list links to ancillary material as permitted, which puts the
+in-book link on firmer ground than the badge.
+
+Three cover faults surfaced in review and all three are fixed. The spine had been reading "JADHAV"
+on its own, which breaks his one-line name rule, so both wraps now read `CLAUDE CODE FOR FINANCE —
+TEJAS JADHAV, CFA, FRM` behind a shrink-to-fit guard. The hardcover back text was too light and its
+body weight went from 400 to 540. Darker type sets wider, so the same point sizes wrapped onto more
+lines and pushed the text column into KDP's barcode box, and the sizes and leading had to come back
+down. Example: after the fix the last line of back-cover text sits 1.79 inches above the bottom on
+the paperback and 2.20 inches on the hardcover, and KDP's barcode box is 2 by 1.2 inches. The byline
+overflow he screenshotted came from the source art, whose byline span is asymmetric at 72 pixels
+left and 28 right, so centring it in the fit box put the M of FRM on the trim guide.
+
+The Kindle cover file is `Claude Code for Finance - kindle cover 800dpi.jpg` at 2560 × 3840 pixels
+and 1.45 MB. The subtitle reads the same on the cover art, the interior title page and the metadata
+field, because KDP treats a cover that contradicts the detail page as a rejection trigger. Ads for
+the title are on [[amazon-ads]], and the keyword work is on [[kdp-listing-operations]].

@@ -3,7 +3,7 @@ title: J.A.R.V.I.S. — Mark VII voice assistant
 type: project
 tags: [voice-assistant, python, local, equity-research]
 created: 2026-07-03
-updated: 2026-08-09
+updated: 2026-08-27
 sources: [~/files/JARVIS, https://github.com/tejasgjadhav/JARVIS]
 ---
 
@@ -80,3 +80,14 @@ Per repo history (June 2026) it was removed from web deployment and moved local-
 Part of [[files-repo]]. Uses [[claude-anthropic]] and yfinance. See also [[voicebox]];
 the institutional prompt patterns (assumption logs, sourced WACC, football field) came
 from the user's "Claude AI for Finance Professionals" book ([[kdp-books]]).
+
+## The name is a trademark question, and he is keeping it (27 August 2026)
+
+He asked whether JARVIS is patented and whether there is any problem using it as his agent's name.
+Names cannot be patented at all, so the exposure is trademark rather than patent. There is a
+precedent that sits directly on the point. Jarvis.ai was one of the fastest-growing AI writing tools
+in the market when Marvel's lawyers sent it a cease-and-desist in January 2022 over "Jarvis" used
+alongside "AI assistant", and the company renamed itself Jasper rather than fight Disney.
+
+He decided to keep the name. The risk is small while the app stays local and unpublished, and the
+question is worth raising again only if he ships or markets it under that name.

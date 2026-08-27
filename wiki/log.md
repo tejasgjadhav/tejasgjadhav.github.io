@@ -527,3 +527,40 @@ Pages touched: institutional-trader, claude-finance-professionals (new), kdp-boo
 backtest-harness-audit-rule, index.
 Memory: updated institutional-trader-status, kdp-finance-book-series, usd-remote-job-search,
 runtime-verification-rule and dev-machine-technical-gotchas, and created cas-blackbox-recorder.
+
+## [2026-08-27] ingest | the Claude Code book published, its third ad campaign, and two work-history corrections
+
+[[claude-code-finance-book]] has a listing. The Kindle went live at ASIN B0HGQ35XP9 for $4.99 and
+the print formats sat in review that afternoon, so every earlier note calling the book unpublished
+is now wrong. Three builds landed on the day and v9 is the one to upload, adding the fact that
+Claude Code needs a paid plan. The Kindle cover carries a Free Online Prompt Library badge in the
+top-right, which names the offer without printing the address, so the rule keeping the URL in
+Appendix A still holds. Three cover faults were fixed. The spine had read "JADHAV" alone, the
+hardcover back text was too light, and darkening it made the type set wider and pushed the column
+into KDP's barcode box until the sizes came back down.
+
+A third Amazon campaign launched the same day on [[amazon-ads]], at three dollars a day with
+automatic targeting. It advertises the Kindle alone because the ads console can only attach a live
+ASIN and the paperback was still in review. He is right that the paperback is the better vehicle,
+so attach it when it clears.
+
+Two keyword lessons went onto [[kdp-listing-operations]]. Amazon's completion endpoint returns a
+much thinner list than the live search box in his own Chrome, and his flagship's exact title now
+autocompletes on amazon.com. The KDP author fields also reject a comma in the Last-name field, and
+a trailing space in First-name reaches the live byline.
+
+[[job-search]] passed 158 applications on LinkedIn and 152 on Naukri. Two corrections to his work
+history changed all 22 CVs: he is Lead Business Analyst on the UBS OnePass data platform rather
+than its owner, and he worked entirely in Pune with only Perfect Engineering Works in Satara. His
+TIAA final round is with a panelist who came up through implementation rather than investments, so
+the second guide covers Python, legacy migration, operational stability, integration and custom
+reports.
+
+[[jarvis]] keeps its name. Names cannot be patented, the exposure is trademark, and the precedent is
+Jarvis.ai renaming to Jasper after a Marvel cease-and-desist in January 2022.
+
+Pages touched: claude-code-finance-book, amazon-ads, kdp-listing-operations, jarvis, job-search,
+index.
+Memory: updated claude-code-finance-book, amazon-ads-campaign, jarvis-local-app, kdp-publish-workflow,
+kdp-keyword-mistake-lessons, work-history-locations, interview-prep-assets, usd-remote-job-search
+and naukri-bulk-apply-routine, plus MEMORY.md.
