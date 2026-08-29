@@ -3,7 +3,7 @@ title: Claude Code for Finance (book build)
 type: project
 tags: [book, kdp, claude-code, writing]
 created: 2026-08-01
-updated: 2026-08-27
+updated: 2026-08-29
 sources: [~/files/claude-code-finance-book/HANDOFF.md, ~/files/claude-code-finance-book/HANDOFF-V6.md, ~/files/claude-code-finance-book/GAPS.md]
 ---
 
@@ -126,3 +126,8 @@ The Kindle cover file is `Claude Code for Finance - kindle cover 800dpi.jpg` at 
 and 1.45 MB. The subtitle reads the same on the cover art, the interior title page and the metadata
 field, because KDP treats a cover that contradicts the detail page as a rejection trigger. Ads for
 the title are on [[amazon-ads]], and the keyword work is on [[kdp-listing-operations]].
+
+The print editions went live on 2026-08-28, the paperback at 24.99 dollars and the hardcover at
+44.99, and both now show as format swatches beside the Kindle on the detail page. They were attached
+to the auto ad campaign the same day. See [[amazon-ads]] for that, and for the account balance
+alert that is currently stopping every one of his campaigns from delivering.

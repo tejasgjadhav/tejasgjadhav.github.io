@@ -3,7 +3,7 @@ title: Trading strategies — the 4-strategy lineup and their honest standing
 type: concept
 tags: [trading, strategy, nse, options, backtest]
 created: 2026-07-03
-updated: 2026-08-21
+updated: 2026-08-29
 sources: [~/files/institutional-trader/CLAUDE.md, ~/files/institutional-trader/studies/STOCK_OPTIONS_NO_EDGE.md, ~/files/institutional-trader/studies/CAPITAL_CURVE_RESULTS.md, ~/files/institutional-trader/studies/INTRADAY_90PCT_WINRATE.md, ~/files/institutional-trader/studies/ZERO_DTE_ENTRY_TIME.md, ~/files/institutional-trader/studies/CW_BUCKET_ANALYSIS.md, ~/files/institutional-trader/studies/STOCK_FADE_V2_UNION_VS_D10.md, ~/files/institutional-trader/studies/monthly_fut/MAX_TRADES_OPTIONS.md]
 ---
 
@@ -283,3 +283,13 @@ cheaper ones, which is why the optimum lands in a different place for each book 
 count answers it alone. The consequence for method — that an in-sample file which prices untraded
 contracts cannot see this, and the out-of-sample feed cannot hide it — is on
 [[backtest-harness-audit-rule]].
+
+## The directional intraday line is closed
+
+The sweep fade on [[turtle-soup-verdict]] failed, and the broader search on [[wr70-verdict]] then
+failed at every gate and geometry it tested. Across 713,227 entries and 3,550 cells, not one
+combination reached a 70 per cent hit rate with a positive net, and the in-sample winners reversed
+out of sample. The recommendation that follows is to stop hunting intraday directional edge in
+liquid Indian equities for a 3 per cent monthly target. The deployed credit spread book earns from
+volatility and time decay instead, which is why it survived the same out-of-sample test that killed
+the directional work.

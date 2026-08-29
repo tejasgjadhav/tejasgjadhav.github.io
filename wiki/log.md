@@ -564,3 +564,41 @@ index.
 Memory: updated claude-code-finance-book, amazon-ads-campaign, jarvis-local-app, kdp-publish-workflow,
 kdp-keyword-mistake-lessons, work-history-locations, interview-prep-assets, usd-remote-job-search
 and naukri-bulk-apply-routine, plus MEMORY.md.
+
+## [2026-08-29] ingest | memory + wiki sync — the win-rate line closed, the print ads attached, and the TIAA round sat
+Scheduled `update-memory-wiki-and-graph` run over the ten transcripts changed in the last 24 hours.
+Six were scheduled routines and this routine's own runs were skipped by design.
+
+The largest new finding is on [[wr70-verdict]]. He asked for an intraday book clearing a 70 per cent
+win rate and 3 per cent a month together. The search covered 713,227 entries, thirty instruments and
+3,550 gate by geometry cells, and not one cell reaches a 70 per cent hit rate with a positive net.
+That holds in sample too, where the search had 3,550 chances to overfit, and the in-sample to
+out-of-sample net correlation is minus 0.112, meaning the winners reversed. The arithmetic at the
+top of the study predicted it: a 70 per cent win rate puts the target where expectancy is zero, so
+the high win rate corner is the most expensive place to hunt. The scope note matters as much as the
+result, because every gate tested was univariate and conjunctions, machine learning and order flow
+were never searched.
+
+[[amazon-ads]] gained the print editions and lost its delivery. The paperback and hardcover of
+[[claude-code-finance-book]] went live on 28 August at 24.99 and 44.99 dollars, and a scheduled
+routine attached both ASINs to the auto campaign the same morning. The console then showed a red
+banner across every campaign saying delivery has stopped for insufficient balance in his India
+account. Check that banner before diagnosing any underspend as a bid problem.
+
+[[job-search]] reached 168 applications on LinkedIn and the ATS boards and 163 on Naukri. The Naukri
+run submitted eleven rather than thirty because the native-apply pool was exhausted, and it was
+logged as eleven rather than padded. His TIAA final round ran on 27 August and covered leveraged
+loans, the CLO waterfall and what a loan operations team needs from its data. The close was neutral
+to positive, the normal clock at a captive is two to four weeks, and he joins Accenture on 7
+September, so the next move is one email to the recruiter asking for a decision date and for a
+verbal before that.
+
+Pages touched: wr70-verdict (new), turtle-soup-verdict, trading-strategies, amazon-ads,
+claude-code-finance-book, job-search, index. Graph rebuilt.
+
+Held back from the public wiki, per standing practice: his Wipro exit records, which name his
+manager, his work email and his termination date. Those went to private memory only.
+
+Memory: new wr70-win-rate-verdict and wipro-offboarding-portals; updated amazon-ads-campaign,
+claude-code-finance-book, interview-prep-assets, usd-remote-job-search, naukri-bulk-apply-routine
+and job-search-answer-sheet, plus MEMORY.md.

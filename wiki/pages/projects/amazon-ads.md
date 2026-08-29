@@ -3,7 +3,7 @@ title: Amazon Ads — Sponsored Products for the flagship Claude-finance book
 type: project
 tags: [kdp, amazon, advertising, marketing]
 created: 2026-07-20
-updated: 2026-08-27
+updated: 2026-08-29
 sources: [~/files/HANDOFF-amazon-ads.md]
 ---
 
@@ -99,3 +99,18 @@ Attach the paperback to this campaign as soon as it clears review.
 
 Committed daily spend across eight campaigns is now about twenty-seven dollars. See
 [[claude-code-finance-book]] for the title itself.
+
+## The print editions attached, and then every campaign stopped
+
+A scheduled routine watched the detail page and acted the morning the print formats appeared. On
+2026-08-28 all three formats were live: the Kindle at 4.99 dollars, the paperback at 24.99 and the
+hardcover at 44.99. Both print ASINs went into the auto campaign's single ad group, and a fresh page
+load confirms three products in it. The Kindle ad reads Delivering and the two print ads read
+Pending review, which is the normal state for a new ad. Nothing else was touched, so the budget
+stays at three dollars a day and the targeting stays automatic.
+
+The same console now shows a red banner across every campaign, saying the campaigns have stopped
+delivering because of insufficient balance and asking him to add balance to his India account. That
+turns the balance alert from a throttle into a hard stop. **Check that banner before diagnosing any
+underspend as a bid problem**, because the July diagnosis on this page assumes delivery is possible
+at all.

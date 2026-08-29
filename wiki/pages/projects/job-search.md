@@ -3,7 +3,7 @@ title: The job search — routines, volumes, and the interview guides
 type: project
 tags: [job-search, naukri, linkedin, interview, business-analyst, product-owner]
 created: 2026-08-25
-updated: 2026-08-27
+updated: 2026-08-29
 sources: [~/files/HANDOFF-naukri-daily.md, ~/files/HANDOFF-remote-jobs.md, ~/files/.claude/worktrees/brave-wilson-299feb/HANDOFF-tiaa-interview.md, ~/files/.claude/worktrees/swiggy-financial-analysis-7412fb/HANDOFF-ba-po-interview-guide.md]
 ---
 
@@ -123,3 +123,45 @@ draws the line himself in the same breath. He defined tables and loaded data int
 Palantir Foundry engineer, and he resolved MSCI vendor identifiers against the bank's own. That is
 the business-analyst half of building a data store. Naming the half he did not do is what makes the
 yes credible.
+
+## Where the volumes stand on 28 August 2026
+
+The LinkedIn and global ATS channel reached 168 applications. Ten went out that morning and all ten
+were confirmed on screen. The best of them was a capital markets business analyst role covering
+equities, fixed income and agency securities lending, which is his lane word for word and is India
+remote. A core banking business analyst post at Intellect Design Arena in Pune came second, and an
+institutional custody product manager role at Ceffu came third on level and money.
+
+The Naukri channel reached 163, and that day's run submitted eleven rather than the usual thirty to
+forty. The reason is that the native-apply pool was genuinely exhausted, because most of what
+remained asks the candidate to apply on the company's own site. The number was logged as eleven
+rather than padded. The best fit was a payments-domain business analyst covering SWIFT, SEPA and
+UPI, in Pune.
+
+Two mechanics are worth carrying into the next run. Numeric salary fields reject the shorthand, so
+"33 LPA" fails and 3300000 works, and the same trap appeared on two different forms in two days.
+And notice period in days is three while his last working day is 31 August, not the generic thirty
+that a form invites. From 7 September that answer changes again to whatever Accenture's probation
+clause says, so he needs to read the clause before he quotes a number.
+
+## The TIAA final round happened
+
+He sat the round on 2026-08-27. He was asked what a leveraged loan is and answered on high debt to
+EBITDA. He was asked about CLOs and described a pool of leveraged loans with a waterfall running
+senior to mezzanine to equity. The follow-up asked what a loan operations team actually needs, and
+he answered with the data sources: the accounting book of record, document data, and valuation data
+including SOFR pricing, so the desk can see repricings and amendments.
+
+The close was neutral to positive. The panelist said he would make sure the first-round interviewer
+sends his feedback and that he would submit his own, then that HR takes its own time. The first half
+carries information, because someone who has decided against a candidate does not volunteer to chase
+the other panelist. The second half is honest rather than a hedge. At a captive the panel recommends
+and HR runs the requisition, the banding and the offer, so two to four weeks is the normal clock and
+a written offer inside seven days is unlikely.
+
+That collides with his Accenture start on 7 September. The move is one email to the recruiter rather
+than a note to the panel. It states the start date as a fact, asks for the expected decision date,
+and asks specifically whether a verbal confirmation is possible before then. A general request for
+an update gets a general answer, and naming the verbal gives them something they can actually
+deliver inside a week. Around 8 September there is a second legitimate touch, because he will have
+joined and his notice period will have changed, and the recruiter should hold the correct figure.

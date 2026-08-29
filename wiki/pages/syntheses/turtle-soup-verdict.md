@@ -3,7 +3,7 @@ title: Turtle Soup (PDH/PDL liquidity sweep) — backtested and rejected
 type: synthesis
 tags: [trading, backtest, strategy, nse, mcx, intraday]
 created: 2026-08-10
-updated: 2026-08-10
+updated: 2026-08-29
 sources: [~/files/HANDOFF-turtlesoup.md]
 ---
 
@@ -77,3 +77,10 @@ history reaches back to January 2022, returning empty before that. Instrument ke
 `engine.instruments.to_instrument_key` in [[institutional-trader]]. MCX keys exist, but a live
 contract carries only its own listing history, so a continuous commodity series needs contract
 stitching through the expired-instruments endpoint, and that one does need the auth token.
+
+## What happened next
+
+The same harness was pointed at the general question rather than this one strategy. It searched
+3,550 gate and geometry combinations for anything that clears a 70 per cent win rate and 3 per cent
+a month together, and found nothing. That study is on [[wr70-verdict]], and it measures the tension
+the arithmetic above predicted.
