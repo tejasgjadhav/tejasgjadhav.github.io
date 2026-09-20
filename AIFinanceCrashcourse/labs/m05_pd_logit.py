@@ -36,10 +36,10 @@ else:
     df = pd.read_excel(io.BytesIO(z.read(name)), header=1)
 df = df.rename(columns={"default payment next month": "DEFAULT"})
 
-df["UTILISATION"] = (df["BILL_AMT1"] / df["LIMIT_BAL"]).clip(0, 2).round(4)
+df["UTILIZATION"] = (df["BILL_AMT1"] / df["LIMIT_BAL"]).clip(0, 2).round(4)
 df["PAY_RATIO"] = (df["PAY_AMT1"] / df["BILL_AMT1"].where(df["BILL_AMT1"] > 0, np.nan)).clip(0, 2)
 df["PAY_RATIO"] = df["PAY_RATIO"].fillna(0).round(4)
-FEATS = ["LIMIT_BAL", "AGE", "PAY_0", "PAY_2", "UTILISATION", "PAY_RATIO"]
+FEATS = ["LIMIT_BAL", "AGE", "PAY_0", "PAY_2", "UTILIZATION", "PAY_RATIO"]
 X, y = df[FEATS], df["DEFAULT"]
 Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.30, random_state=RS, stratify=y)
 
