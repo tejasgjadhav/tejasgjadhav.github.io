@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI in Finance Crash Course &middot; companion resources</title>
+<meta name="description" content="Slides and runnable labs that accompany the book AI in Finance: The Complete Crash Course by Tejas Jadhav, CFA, FRM.">
+<style>
+:root{--paper:#FCFAF5;--ink:#1B1B1B;--green:#1E4D3A;--copper:#B8622B;--sand:#F4EFE6;--rule:#D9D2C4;--slate:#4A4A4A}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font:16px/1.65 "Iowan Old Style",Charter,Georgia,serif}
+.wrap{max-width:980px;margin:0 auto;padding:0 22px}
+h1,h2,h3,.sans{font-family:"Gill Sans","Avenir Next",Helvetica,sans-serif}
+header{background:var(--green);color:#F7F4EC;padding:54px 0 46px}
+header .kick{font-family:"Gill Sans",sans-serif;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:#C8D8CF}
+header h1{font-size:40px;line-height:1.1;margin:12px 0 6px;font-weight:700;letter-spacing:-.5px}
+header p.sub{font-style:italic;font-size:18px;color:#E3EAE5;max-width:640px}
+header p.by{font-family:"Gill Sans",sans-serif;font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin-top:20px;color:#C8D8CF}
+.note{background:var(--sand);border-left:4px solid var(--copper);padding:14px 18px;margin:30px 0;font-size:15px}
+h2{font-size:24px;margin:44px 0 6px;color:var(--green)}
+h2+p.lede{color:var(--slate);margin-bottom:18px}
+table{width:100%;border-collapse:collapse;margin:14px 0 8px;font-size:15px}
+th{font-family:"Gill Sans",sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate);text-align:left;border-bottom:2px solid var(--green);padding:8px 10px 6px}
+td{border-bottom:1px solid var(--rule);padding:11px 10px;vertical-align:top}
+td.m{font-family:"Gill Sans",sans-serif;font-weight:700;color:var(--copper);white-space:nowrap}
+a{color:var(--copper);text-decoration:none;border-bottom:1px solid rgba(184,98,43,.35)}
+a:hover{border-bottom-color:var(--copper)}
+a.none,a.dl{border:0}
+.dl{font-family:"Gill Sans",sans-serif;font-size:13px;display:inline-block;background:var(--sand);border:1px solid var(--rule)!important;border-radius:3px;padding:3px 9px;margin:2px 4px 2px 0;color:var(--green)}
+.dl:hover{background:var(--green);color:#fff}
+.soon{font-family:"Gill Sans",sans-serif;font-size:12px;color:var(--slate);font-style:italic}
+code{font-family:Menlo,monospace;font-size:13.5px;background:var(--sand);padding:1px 5px;border-radius:3px}
+pre{font-family:Menlo,monospace;font-size:13px;background:#1B2B24;color:#E8EFE9;padding:14px 16px;border-radius:5px;overflow-x:auto;margin:12px 0}
+footer{border-top:1px solid var(--rule);margin-top:56px;padding:26px 0 44px;font-size:13.5px;color:var(--slate)}
+.pill{display:inline-block;font-family:"Gill Sans",sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--sand);color:var(--green);padding:3px 9px;border-radius:20px;margin-left:8px}
+</style></head><body>
+<header><div class="wrap">
+<div class="kick">Companion resources</div>
+<h1>AI in Finance Crash Course</h1>
+<p class="sub">The slides and the runnable labs that go with the book <em>AI in Finance: The Complete Crash Course</em>.</p>
+<p class="by">Tejas Jadhav, CFA, FRM</p>
+</div></header>
+<div class="wrap">
+
+<div class="note"><strong>Everything here is free and needs no API key.</strong> The labs run on public data: SEC EDGAR for filings and Yahoo Finance for prices. You need Python 3.9 or newer and about ten minutes per lab. The language-model steps print the exact prompt if you have no model connected, so you can paste it into any assistant.</div>
+
+<h2>Start here</h2>
+<p class="lede">Download the labs, install the three libraries, run the first script.</p>
+<p>The <a class="dl" href="ai-finance-labs.zip">whole lab folder is one zip file</a>, 61 KB, holding every script and the dated data snapshots. You can also take any single script from the table below. Unzip it and run this.</p>
+<pre>cd labs
+pip3 install yfinance pandas numpy requests
+python3 m01_edgar_pnl.py AAPL</pre>
+<p>Or run four of the labs in this browser tab, with nothing installed. The <a href="labs.html">live labs</a> load Python into the page and read a dated snapshot of the same public data. The code pane is editable and the Run button executes what is in it.</p>
+
+<h2>The ten modules</h2>
+<p class="lede">Each module is one chapter of the book: an hour of concepts, an hour of architecture, an hour building the thing.</p>
+<table>
+<tr><th>Module</th><th>What you build</th><th>Slides</th><th>Lab</th></tr>
+<tr><td class="m">01</td><td>Foundations of agentic AI. A script that pulls a 10-K income statement from SEC EDGAR and checks its own subtotals.</td><td><a class="dl" href="slides/Module-01-Foundations-of-Agentic-AI.pptx">PPTX</a></td><td><a class="dl" href="labs/m01_edgar_pnl.py">m01_edgar_pnl.py</a><a class="dl" href="labs/m01_extract_prompt.txt">prompt</a></td></tr>
+<tr><td class="m">02</td><td>Prompt engineering and RAG. A question-and-answer bot over a 200-page IPO prospectus that cites its page.</td><td><a class="dl" href="slides/Module-02-Prompt-Engineering-and-RAG.pptx">PPTX</a></td><td><a class="dl" href="labs/m02_ingest.py">ingest</a><a class="dl" href="labs/m02_query.py">query</a><a class="dl" href="labs/m02_questions.txt">questions</a></td></tr>
+<tr><td class="m">03</td><td>Model Context Protocol and agent teams. Three agents write one investment memo, hand-off by hand-off.</td><td><a class="dl" href="slides/Module-03-MCP-and-Agent-Orchestration.pptx">PPTX</a></td><td><a class="dl" href="labs/m03_three_agent_memo.py">m03_three_agent_memo.py</a></td></tr>
+<tr><td class="m">04</td><td>Algorithmic trading. A 20-day breakout rule on SPY, backtested honestly, with costs at 5, 10 and 20 basis points.</td><td><a class="dl" href="slides/Module-04-Algorithmic-Trading-and-Execution.pptx">PPTX</a></td><td><a class="dl" href="labs/m04_spy_momentum.py">m04_spy_momentum.py</a></td></tr>
+<tr><td class="m">05</td><td>Risk modelling. A probability-of-default model and a 10,000-path Monte Carlo VaR engine on five US large caps.</td><td><a class="dl" href="slides/Module-05-Risk-Modelling.pptx">PPTX</a><a class="dl" href="slides/Module-05-VS-Code-Intro-and-Demo.pptx">VS Code</a></td><td><a class="dl" href="labs/m05_mc_var.py">m05_mc_var.py</a><a class="dl" href="labs/m05_pd_logit.py">m05_pd_logit.py</a></td></tr>
+<tr><td class="m">06</td><td>RegTech. A Pillar 3 disclosure pipeline where the extractor is ground truth and the model only writes the prose.</td><td><a class="dl" href="slides/Module-06-RegTech-and-Basel-Compliance.pptx">PPTX</a></td><td><a class="dl" href="labs/m06_pillar3_check.py">m06_pillar3_check.py</a><a class="dl" href="labs/m06_pillar3_docx.py">docx</a></td></tr>
+<tr><td class="m">07</td><td>Governance, security and cost. A model inventory record, a prompt-injection test, and the rules that stop it.</td><td><a class="dl" href="slides/Module-07-AI-Governance-Security-and-Cost.pptx">PPTX</a></td><td><span class="soon">in the book</span></td></tr>
+<tr><td class="m">08</td><td>Fund administration. A daily NAV engine with an exception list and AI-written commentary.</td><td><a class="dl" href="slides/Module-08-Fund-Administration-NAV.pptx">PPTX</a></td><td><a class="dl" href="labs/m08_nav_engine.py">m08_nav_engine.py</a><a class="dl" href="labs/m08_holdings.csv">holdings.csv</a></td></tr>
+<tr><td class="m">09</td><td>Market commentary and valuation. A dashboard with a simplified DCF and a morning note the model drafts.</td><td><a class="dl" href="slides/Module-09-Market-Commentary-and-Dashboards.pptx">PPTX</a></td><td><a class="dl" href="labs/m09_dashboard.py">m09_dashboard.py</a></td></tr>
+<tr><td class="m">10</td><td>Capstone. The ten deliverables assembled into one deployed system, with the rubric and a mock panel.</td><td><a class="dl" href="slides/Module-10-Capstone-Integrated-System.pptx">PPTX</a></td><td><span class="soon">in the book</span></td></tr>
+</table>
+
+<h2>How the labs behave</h2>
+<p class="lede">Three rules hold across every script here.</p>
+<p><strong>The arithmetic happens in Python, not in the model.</strong> Every number you see was computed by code you can read. The language model writes sentences about those numbers and nothing else.</p>
+<p><strong>Every figure is labelled.</strong> A backtest says it is a backtest. A simulation says it is a simulation. A constructed example says so on the same line. Nothing here is a live track record, and nothing here is investment advice.</p>
+<p><strong>The browser labs match the book. The downloadable scripts will not.</strong> Each lab on this site reads a stored snapshot, so it prints the same figures the book prints and you can check one against the other. The scripts in <code>labs/</code> pull the most recent data at the moment you run them, so their numbers move. The book quotes one dated run so you can see the shape of the output.</p>
+
+<h2>Licence and use</h2>
+<p>The lab code is free to read, run and modify for your own learning. The slides are the author's teaching material, shared for readers of the book and for students of the course. Please do not resell either, or present them as your own.</p>
+
+<footer><div>Companion site to <strong>AI in Finance: The Complete Crash Course</strong> by Tejas Jadhav, CFA, FRM. Part of the AI and Practical Finance Series.</div>
+<div style="margin-top:8px">Education only. Not investment, legal or tax advice. Independent publication, not affiliated with or endorsed by any company or tool named on this site.</div></footer>
+</div></body></html>

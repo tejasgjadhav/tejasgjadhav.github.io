@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 01: a 10-K income statement that checks its own subtotals</title>
+<meta name="description" content="Run Module 1 of the AI in Finance Crash Course in your browser. Reads a dated SEC EDGAR snapshot, prints a three-year income statement in millions, and recomputes two subtotals.">
+<link rel="stylesheet" href="assets/lab.css">
+</head><body>
+<header><div class="wrap">
+<div class="kick">Live lab &middot; Module 01</div>
+<h1>The income statement that checks itself</h1>
+<p class="sub">Pull three years of Apple's income statement out of an SEC EDGAR snapshot, print it in millions, then recompute two subtotals and mark each one PASS or FAIL.</p>
+<p class="by"><a class="back" href="labs.html">&larr; All live labs</a></p>
+</div></header>
+<div class="wrap">
+
+<div class="note"><strong>This page runs Python in your browser.</strong> Nothing is installed and nothing is sent anywhere. The code below is the same code as <code>labs/m01_edgar_pnl.py</code>, with the network call swapped for a file that is already on this site.</div>
+
+<h2>What the lab does</h2>
+<p class="lede">The script runs four steps, in the order they appear below.</p>
+<p>The script reads the SEC's XBRL company facts for one filer. It keeps only the rows that came from a Form 10-K, carry a full-year period, and sit on a clean twelve-month frame. It picks the three most recent fiscal year ends that have a revenue figure. Then it prints the statement in millions and recomputes two subtotals in Python.</p>
+<p>The two checks are the point of the lab. Net sales minus cost of sales should equal gross margin. Gross margin minus total operating expenses should equal operating income. If either check says FAIL, the table is wrong and you do not use it. A language model reading the same filing would never tell you that.</p>
+
+<div class="snapnote"><strong>This is a dated snapshot, not live data.</strong> The file behind this page is <code>data/aapl_companyfacts_slim.json</code>, taken on <strong>20 September 2026</strong>, trimmed to the income-statement tags. Apple's last fiscal year in it ends 27 September 2025. To run the same lab against live EDGAR data on your own machine:<br>
+<code>python3 labs/m01_edgar_pnl.py 320193</code></div>
+
+<h2>Run it</h2>
+<div class="controls">
+  <div><label for="ticker">Filer</label>
+    <select id="ticker">
+      <option value="AAPL" selected>AAPL &middot; Apple Inc. (CIK 320193)</option>
+      <option value="MSFT">MSFT &middot; Microsoft Corporation (CIK 789019)</option>
+    </select></div>
+</div>
+<div class="buttons">
+  <button id="run">Run</button>
+  <button id="reset" class="ghost">Reset code</button>
+  <span id="status" class="status">Starting.</span>
+</div>
+
+<textarea id="code" class="code" spellcheck="false"># The page injects two things before this code runs:
+#   AAPL and MSFT  -- the text of the two snapshot files
+#   PARAMS         -- {"ticker": "AAPL"} or {"ticker": "MSFT"}, from the dropdown above
+import json
+
+raw = AAPL if PARAMS["ticker"] == "AAPL" else MSFT
+facts = json.loads(raw)
+gaap = facts["facts"]["us-gaap"]
+
+# The income statement lines we want, in the order a P&L prints them.
+# Left: the XBRL tag. Right: the label we print.
+LINES = [
+    ("RevenueFromContractWithCustomerExcludingAssessedTax", "Net sales"),
+    ("CostOfGoodsAndServicesSold", "Cost of sales"),
+    ("GrossProfit", "Gross margin"),
+    ("ResearchAndDevelopmentExpense", "Research and development"),
+    ("SellingGeneralAndAdministrativeExpense", "Selling, general and administrative"),
+    ("OperatingExpenses", "Total operating expenses"),
+    ("OperatingIncomeLoss", "Operating income"),
+    ("IncomeTaxExpenseBenefit", "Provision for income taxes"),
+    ("NetIncomeLoss", "Net income"),
+]
+
+
+def annual_values(tag):
+    """Return {period_end: value} for full-year figures reported in a 10-K.
+
+    The API's "fy" field is the year of the FILING, not of the period, so a 10-K
+    that shows three years of history tags all three with the same fy. We key by
+    the period end date instead, which is unambiguous.
+    """
+    out = {}
+    if tag not in gaap:
+        return out
+    for row in gaap[tag]["units"].get("USD", []):
+        frame = row.get("frame", "")
+        if (row.get("form") == "10-K" and row.get("fp") == "FY"
+                and frame.startswith("CY") and "Q" not in frame):
+            out[row["end"]] = row["val"]
+    return out
+
+
+# Pick the three most recent fiscal year ends that carry a revenue figure.
+periods = sorted(annual_values(LINES[0][0]))[-3:]
+
+print(facts["entityName"] + "  (CIK " + str(facts["cik"]) + ")")
+print("Source: SEC EDGAR XBRL company facts, Form 10-K, full fiscal year")
+print("Snapshot taken " + facts["_snapshot_as_of"] + ". Figures in USD millions.")
+print()
+print("Fiscal year ended".ljust(38) + "".join(p.rjust(14) for p in periods))
+
+table = {}
+for tag, label in LINES:
+    vals = annual_values(tag)
+    table[tag] = vals
+    row = "".join(
+        format(vals[p] / 1e6, ">14,.0f") if p in vals else "not tagged".rjust(14)
+        for p in periods)
+    print(label.ljust(38) + row)
+
+# Recompute two subtotals. If a check fails, do not use the table.
+print()
+for p in periods:
+    try:
+        sales = table["RevenueFromContractWithCustomerExcludingAssessedTax"][p]
+        cogs = table["CostOfGoodsAndServicesSold"][p]
+        gm = table["GrossProfit"][p]
+        ok1 = "PASS" if sales - cogs == gm else "FAIL"
+    except KeyError:
+        gm = None
+        ok1 = "SKIPPED (a line is not tagged)"
+    try:
+        opex = table["OperatingExpenses"][p]
+        opinc = table["OperatingIncomeLoss"][p]
+        ok2 = "PASS" if gm is not None and gm - opex == opinc else "FAIL"
+    except KeyError:
+        ok2 = "SKIPPED (a line is not tagged)"
+    print(p + "  sales - cost of sales = gross margin: " + ok1)
+    print(p + "  gross margin - operating expenses = operating income: " + ok2)
+
+print()
+print("Now open the 10-K on sec.gov and match one line against the printed statement.")
+</textarea>
+
+<pre id="out" class="out">Waiting for Python to start.</pre>
+
+<h2>What you should see</h2>
+<p class="lede">The book quotes one run of this lab. Chapter 1 prints this table.</p>
+<pre>Fiscal year ended                         2023-09-30    2024-09-28    2025-09-27
+Net sales                                    383,285       391,035       416,161
+Cost of sales                                214,137       210,352       220,960
+Gross margin                                 169,148       180,683       195,201
+Research and development                      29,915        31,370        34,550
+Selling, general and administrative           24,932        26,097        27,601
+Total operating expenses                      54,847        57,467        62,151
+Operating income                             114,301       123,216       133,050
+Provision for income taxes                    16,741        29,749        20,719
+Net income                                    96,995        93,736       112,010</pre>
+<p>All six checks pass. The page above reproduces that table digit for digit, because the snapshot was taken after Apple's FY2025 10-K was filed and EDGAR does not restate a filed figure.</p>
+<p>Switch the dropdown to Microsoft and one line changes behaviour. Microsoft does not tag <code>SellingGeneralAndAdministrativeExpense</code> in its company facts, so that row prints <em>not tagged</em> and both subtotal checks still run on the lines that are there. That is the honest result, and it is what you want a checker to do. A model asked to fill the gap would have written a number.</p>
+
+<h2>Where this lab goes next</h2>
+<p>Module 1 in the book carries a second half this page does not run: a prompt that asks a language model to extract the same statement into JSON, so you can compare what the model read against what the code computed. That step needs a model, so it stays in the downloadable script and the book. The prompt is at <a class="dl" href="labs/m01_extract_prompt.txt">m01_extract_prompt.txt</a> and the full script is at <a class="dl" href="labs/m01_edgar_pnl.py">m01_edgar_pnl.py</a>.</p>
+
+<footer><div>Companion site to <strong>AI in Finance: The Complete Crash Course</strong> by Tejas Jadhav, CFA, FRM. Part of the AI and Practical Finance Series.</div>
+<div style="margin-top:8px">Education only. Not investment, legal or tax advice. Every figure on this page comes from a dated public filing and is labelled with its date. Independent publication, not affiliated with or endorsed by any company or tool named on this site.</div></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/pyodide/v314.0.7/full/pyodide.js"></script>
+<script src="assets/lab.js"></script>
+<script>
+initLab({
+  data: {AAPL: "data/aapl_companyfacts_slim.json", MSFT: "data/msft_companyfacts_slim.json"},
+  packages: [],
+  params: () => ({ticker: document.getElementById("ticker").value})
+});
+</script>
+</body></html>

@@ -1,0 +1,15 @@
+{
+ "_snapshot_as_of": "2026-09-18",
+ "_source": "Yahoo Finance closes for 2026-09-18, as published in Chapter 8 of the book",
+ "_note": "Constructed fund. The five holdings, cash, accrued expenses and share count were chosen for the exercise. The prices are real closes.",
+ "shares_outstanding": 100000,
+ "cash": 250000.0,
+ "accrued_expenses": 4200.0,
+ "holdings": [
+  {"ticker": "SPY",  "name": "SPDR S&P 500 ETF",   "quantity": 1200, "price": 761.69, "prev_close": 762.60, "price_date": "2026-09-18"},
+  {"ticker": "QQQ",  "name": "Invesco QQQ Trust",  "quantity": 900,  "price": 721.45, "prev_close": 716.94, "price_date": "2026-09-18"},
+  {"ticker": "AAPL", "name": "Apple Inc.",         "quantity": 1500, "price": 336.13, "prev_close": 337.01, "price_date": "2026-09-18"},
+  {"ticker": "MSFT", "name": "Microsoft Corp.",    "quantity": 800,  "price": 493.78, "prev_close": 497.76, "price_date": "2026-09-18"},
+  {"ticker": "XOM",  "name": "Exxon Mobil Corp.",  "quantity": 2500, "price": 163.54, "prev_close": 163.26, "price_date": "2026-09-18"}
+ ]
+}

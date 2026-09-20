@@ -1,0 +1,55 @@
+/* Shared styling for the live lab pages. Base rules are copied from index.html
+   so a lab page and the home page read as one site. */
+:root{--paper:#FCFAF5;--ink:#1B1B1B;--green:#1E4D3A;--copper:#B8622B;--sand:#F4EFE6;--rule:#D9D2C4;--slate:#4A4A4A}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font:16px/1.65 "Iowan Old Style",Charter,Georgia,serif}
+.wrap{max-width:980px;margin:0 auto;padding:0 22px}
+h1,h2,h3,.sans{font-family:"Gill Sans","Avenir Next",Helvetica,sans-serif}
+header{background:var(--green);color:#F7F4EC;padding:54px 0 46px}
+header .kick{font-family:"Gill Sans",sans-serif;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:#C8D8CF}
+header h1{font-size:40px;line-height:1.1;margin:12px 0 6px;font-weight:700;letter-spacing:-.5px}
+header p.sub{font-style:italic;font-size:18px;color:#E3EAE5;max-width:640px}
+header p.by{font-family:"Gill Sans",sans-serif;font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin-top:20px;color:#C8D8CF}
+header a.back{color:#C8D8CF;border-bottom:1px solid rgba(200,216,207,.4);font-family:"Gill Sans",sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+header a.back:hover{color:#fff;border-bottom-color:#fff}
+.note{background:var(--sand);border-left:4px solid var(--copper);padding:14px 18px;margin:30px 0;font-size:15px}
+h2{font-size:24px;margin:44px 0 6px;color:var(--green)}
+h2+p.lede{color:var(--slate);margin-bottom:18px}
+h3{font-size:16px;margin:26px 0 4px;color:var(--green);letter-spacing:.02em}
+p{margin-bottom:12px}
+table{width:100%;border-collapse:collapse;margin:14px 0 8px;font-size:15px}
+th{font-family:"Gill Sans",sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate);text-align:left;border-bottom:2px solid var(--green);padding:8px 10px 6px}
+td{border-bottom:1px solid var(--rule);padding:11px 10px;vertical-align:top}
+td.m{font-family:"Gill Sans",sans-serif;font-weight:700;color:var(--copper);white-space:nowrap}
+a{color:var(--copper);text-decoration:none;border-bottom:1px solid rgba(184,98,43,.35)}
+a:hover{border-bottom-color:var(--copper)}
+a.none,a.dl{border:0}
+.dl{font-family:"Gill Sans",sans-serif;font-size:13px;display:inline-block;background:var(--sand);border:1px solid var(--rule)!important;border-radius:3px;padding:3px 9px;margin:2px 4px 2px 0;color:var(--green)}
+.dl:hover{background:var(--green);color:#fff}
+.soon{font-family:"Gill Sans",sans-serif;font-size:12px;color:var(--slate);font-style:italic}
+code{font-family:Menlo,monospace;font-size:13.5px;background:var(--sand);padding:1px 5px;border-radius:3px}
+pre{font-family:Menlo,monospace;font-size:13px;background:#1B2B24;color:#E8EFE9;padding:14px 16px;border-radius:5px;overflow-x:auto;margin:12px 0}
+footer{border-top:1px solid var(--rule);margin-top:56px;padding:26px 0 44px;font-size:13.5px;color:var(--slate)}
+.pill{display:inline-block;font-family:"Gill Sans",sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--sand);color:var(--green);padding:3px 9px;border-radius:20px;margin-left:8px}
+
+/* --- lab-page additions --- */
+.snapnote{background:var(--sand);border-left:4px solid var(--green);padding:14px 18px;margin:26px 0;font-size:14.5px}
+.snapnote strong{color:var(--green)}
+.snapnote code{background:#fff}
+.controls{display:flex;flex-wrap:wrap;gap:16px 26px;align-items:flex-end;background:var(--sand);border:1px solid var(--rule);border-radius:5px;padding:14px 18px;margin:18px 0 6px}
+.controls label{font-family:"Gill Sans",sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate);display:block;margin-bottom:5px}
+.controls select,.controls input[type=text],.controls input[type=number]{font-family:Menlo,monospace;font-size:13px;padding:5px 8px;border:1px solid var(--rule);border-radius:3px;background:#fff;color:var(--ink)}
+.controls .chk{font-family:"Gill Sans",sans-serif;font-size:14px;color:var(--ink);display:flex;align-items:center;gap:7px;padding-bottom:5px}
+.buttons{margin:14px 0 4px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+button{font-family:"Gill Sans",sans-serif;font-size:14px;letter-spacing:.06em;padding:8px 20px;border-radius:3px;border:1px solid var(--green);background:var(--green);color:#F7F4EC;cursor:pointer}
+button:hover{background:#163B2C}
+button.ghost{background:transparent;color:var(--green)}
+button.ghost:hover{background:var(--sand)}
+button[disabled]{opacity:.45;cursor:not-allowed}
+.status{font-family:"Gill Sans",sans-serif;font-size:13px;color:var(--slate)}
+.status.busy::before{content:"";display:inline-block;width:9px;height:9px;margin-right:7px;border-radius:50%;background:var(--copper);animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.25}50%{opacity:1}}
+textarea.code{width:100%;min-height:340px;font-family:Menlo,monospace;font-size:12.5px;line-height:1.55;background:#1B2B24;color:#E8EFE9;border:0;border-radius:5px;padding:14px 16px;resize:vertical;tab-size:4}
+pre.out{min-height:120px;white-space:pre;font-size:12.5px;line-height:1.5}
+pre.out.err{background:#3A1E16;color:#F4D9CE}
+.boot{background:#1B2B24;color:#C8D8CF;border-radius:5px;padding:14px 16px;font-family:Menlo,monospace;font-size:13px;margin:12px 0}

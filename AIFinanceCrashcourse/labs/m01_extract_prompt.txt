@@ -1,0 +1,11 @@
+You are a financial analyst. Below is raw text copied from a company's annual report on Form 10-K. Extract the income statement for the most recent fiscal year only.
+
+Return one JSON object with exactly these keys, in this order: company, period_end, unit, currency, net_sales, cost_of_sales, gross_margin, research_and_development, selling_general_and_administrative, total_operating_expenses, operating_income, income_before_income_taxes, provision_for_income_taxes, net_income, diluted_eps.
+
+Rules:
+1. Copy each number exactly as printed, in the unit the report states. Do not convert units.
+2. If a line is not printed in the text, write null. Do not calculate it.
+3. Do not add any line that is not in the text.
+4. Return only the JSON. No explanation, no code fence.
+
+TEXT:

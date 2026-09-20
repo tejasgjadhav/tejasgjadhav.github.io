@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 05: Monte Carlo VaR on five US large caps</title>
+<meta name="description" content="Run Module 5 of the AI in Finance Crash Course in your browser. A 10,000-path Monte Carlo VaR and CVaR on an equal-weighted five-stock portfolio, with a fixed seed.">
+<link rel="stylesheet" href="assets/lab.css">
+</head><body>
+<header><div class="wrap">
+<div class="kick">Live lab &middot; Module 05</div>
+<h1>Ten thousand simulated days</h1>
+<p class="sub">Measure the mean and covariance of five US large caps, draw 10,000 correlated one-day outcomes, and read the 95% and 99% VaR and CVaR off the sorted list.</p>
+<p class="by"><a class="back" href="labs.html">&larr; All live labs</a></p>
+</div></header>
+<div class="wrap">
+
+<div class="note"><strong>This page runs Python in your browser.</strong> Nothing is installed and nothing is sent anywhere. The method is the same as <code>labs/m05_mc_var.py</code>. The two lines that needed SciPy are rewritten with the standard library's <code>NormalDist</code>, so the page loads numpy and nothing else.</div>
+
+<h2>What the lab does</h2>
+<p class="lede">The script runs nine steps, and the sixth is where the correlation gets in.</p>
+<p>The script turns two years of daily closes into daily log returns. It measures the mean vector and the covariance matrix of those returns. It Cholesky-factors the covariance matrix, which is the step that makes the simulated draws carry the same correlations as the real ones. Then it draws 10,000 simulated one-day return vectors and values a $1,000,000 equal-weighted portfolio in each.</p>
+<p>Sort the 10,000 outcomes. The 500th worst is the 95% VaR. The 100th worst is the 99% VaR. The mean of everything past each line is the CVaR at that level. The script then cross-checks the answer against historical simulation and the parametric normal method, and backtests the 99% figure against the last 250 real days.</p>
+
+<div class="snapnote"><strong>This is a dated snapshot, not live data.</strong> The file behind this page is <code>data/us5_daily.csv</code>, taken on <strong>20 September 2026</strong>, carrying daily closes for AAPL, MSFT, JPM, XOM and JNJ from 1 August 2024 to 31 August 2026. <strong>The generator is seeded at 42</strong>, and the seed is printed in the output, so this page gives the same numbers every time you load it. To run the same lab against live prices on your own machine:<br>
+<code>pip3 install yfinance pandas numpy scipy &amp;&amp; python3 labs/m05_mc_var.py</code></div>
+
+<h2>Run it</h2>
+<div class="controls">
+  <div><label for="paths">Simulated paths</label><input type="number" id="paths" value="10000" min="1000" max="200000" step="1000" style="width:100px"></div>
+  <div><label for="seed">Seed</label><input type="number" id="seed" value="42" min="0" max="999999" style="width:80px"></div>
+  <div><label for="value">Portfolio value ($)</label><input type="number" id="value" value="1000000" min="1000" step="1000" style="width:120px"></div>
+  <div><label for="start">Returns from</label><input type="text" id="start" value="2024-08-01" size="10"></div>
+</div>
+<div class="buttons">
+  <button id="run">Run</button>
+  <button id="reset" class="ghost">Reset code</button>
+  <span id="status" class="status">Starting.</span>
+</div>
+
+<textarea id="code" class="code" spellcheck="false"># The page injects two things before this code runs:
+#   US5     -- the text of data/us5_daily.csv
+#   PARAMS  -- {"paths", "seed", "value", "start"} from the controls above
+import math
+import numpy as np
+from statistics import NormalDist
+
+TICKERS = ["AAPL", "MSFT", "JPM", "XOM", "JNJ"]
+WEIGHTS = np.array([0.20] * 5)
+PORTFOLIO_VALUE = PARAMS["value"]
+N_PATHS = PARAMS["paths"]
+SEED = PARAMS["seed"]
+LEVELS = [0.95, 0.99]
+
+# 1. Read the snapshot. The first line is a comment carrying the snapshot date.
+lines = [l for l in US5.splitlines() if l.strip()]
+asof = [l for l in lines if l.startswith("#")][0].lstrip("# ")
+body = [l for l in lines if not l.startswith("#")]
+header = body[0].split(",")
+cols = [header.index(t) for t in TICKERS]
+rows = [r.split(",") for r in body[1:] if r.split(",")[0] >= PARAMS["start"]]
+dates = [r[0] for r in rows]
+prices = np.array([[float(r[i]) for i in cols] for r in rows])
+
+# 2. Daily log returns.
+log_ret = np.log(prices[1:] / prices[:-1])
+ret_dates = dates[1:]
+
+# 3. and 4. Mean, covariance, Cholesky factor.
+mu = log_ret.mean(axis=0)
+sigma = np.cov(log_ret, rowvar=False)
+L = np.linalg.cholesky(sigma)
+
+# 5. and 6. Draw the paths and value the portfolio in each one.
+rng = np.random.default_rng(SEED)
+Z = rng.standard_normal((N_PATHS, len(TICKERS)))
+R = mu + Z @ L.T
+pnl = PORTFOLIO_VALUE * ((np.exp(R) - 1) @ WEIGHTS)
+
+
+# 7. VaR is the cut. CVaR is the average of everything past it.
+def var_cvar(p, level):
+    cut = np.quantile(p, 1 - level)
+    return -cut, -p[p <= cut].mean()
+
+
+print("=" * 72)
+print("MONTE CARLO ONE-DAY VaR | five US large caps, equal-weighted, $%s" % f"{PORTFOLIO_VALUE:,}")
+print("=" * 72)
+print("Snapshot        : " + asof)
+print("Data window     : %s to %s (%d daily returns)" % (ret_dates[0], ret_dates[-1], len(log_ret)))
+print("Paths           : %s   seed = %d  (fixed, so this page is reproducible)" % (f"{N_PATHS:,}", SEED))
+print("Return model    : multivariate normal on daily log returns (Cholesky)")
+print()
+
+print("--- Step 1: inputs measured from history ---")
+print("      weight  last close $  mean daily %  daily vol %  annual vol %")
+dv = np.sqrt(np.diag(sigma))
+for j, t in enumerate(TICKERS):
+    print("%-6s%8.1f%14.2f%14.3f%13.3f%14.3f"
+          % (t, WEIGHTS[j], prices[-1, j], mu[j] * 100, dv[j] * 100, dv[j] * math.sqrt(252) * 100))
+print()
+print("Correlation of daily log returns:")
+corr = np.corrcoef(log_ret, rowvar=False)
+print("      " + "".join(t.rjust(6) for t in TICKERS))
+for j, t in enumerate(TICKERS):
+    print(t.ljust(6) + "".join(("%.2f" % corr[j, k]).rjust(6) for k in range(5)))
+print()
+
+print("--- Step 2: VaR and CVaR from the %s simulated days ---" % f"{N_PATHS:,}")
+print("       VaR $  VaR %  CVaR $  CVaR %")
+for lv in LEVELS:
+    v, c = var_cvar(pnl, lv)
+    print("%-4s%8s%7.2f%8s%8.2f"
+          % (("%.0f%%" % (lv * 100)), f"{v:,.0f}", v / PORTFOLIO_VALUE * 100,
+             f"{c:,.0f}", c / PORTFOLIO_VALUE * 100))
+print()
+
+print("--- Step 3: the same portfolio by the other two methods ---")
+hist_pnl = PORTFOLIO_VALUE * ((np.exp(log_ret) - 1) @ WEIGHTS)
+port_sigma = float(np.sqrt(WEIGHTS @ sigma @ WEIGHTS))
+port_mu = float(WEIGHTS @ mu)
+nd = NormalDist()
+print("       Monte Carlo VaR $  Historical VaR $  Parametric VaR $  MC CVaR $  Hist CVaR $  Param CVaR $")
+for lv in LEVELS:
+    mv, mc = var_cvar(pnl, lv)
+    hv, hc = var_cvar(hist_pnl, lv)
+    z = nd.inv_cdf(1 - lv)
+    pdf = math.exp(-z * z / 2) / math.sqrt(2 * math.pi)
+    pv = -PORTFOLIO_VALUE * (port_mu + z * port_sigma)
+    pc = -PORTFOLIO_VALUE * (port_mu - port_sigma * pdf / (1 - lv))
+    print("%-5s%18s%18s%18s%11s%13s%14s"
+          % (("%.0f%%" % (lv * 100)), f"{mv:,.0f}", f"{hv:,.0f}", f"{pv:,.0f}",
+             f"{mc:,.0f}", f"{hc:,.0f}", f"{pc:,.0f}"))
+print()
+
+print("--- Step 4: backtest the 99% VaR against the last 250 real days ---")
+var99, _ = var_cvar(pnl, 0.99)
+last250 = hist_pnl[-250:]
+breaches = int((last250 < -var99).sum())
+zone = "green (0-4)" if breaches <= 4 else "yellow (5-9)" if breaches <= 9 else "red (10 or more)"
+worst = ret_dates[-250:][int(np.argmin(last250))]
+print("99%% one-day VaR used  : $%s" % f"{var99:,.0f}")
+print("Days tested           : 250 (%s to %s)" % (ret_dates[-250], ret_dates[-1]))
+print("Breaches              : %d   expected about 2 or 3" % breaches)
+print("Basel zone            : " + zone)
+print("Worst real day        : %s, P&L $%s" % (worst, f"{last250.min():,.0f}"))
+print()
+
+print("--- The three worst real days in the whole window ---")
+for j in np.argsort(hist_pnl)[:3]:
+    print("%s   P&L $%s" % (ret_dates[j], f"{hist_pnl[j]:,.0f}"))
+print("Real days below the 99%% VaR across all %d days: %d"
+      % (len(hist_pnl), int((hist_pnl < -var99).sum())))
+print()
+print("Every figure above is a simulation on the dates stated. It is not a forecast.")
+</textarea>
+
+<pre id="out" class="out">Waiting for Python to start.</pre>
+
+<h2>What you should see</h2>
+<p class="lede">This page runs the book's portfolio on the book's window, so it prints the book's numbers.</p>
+<p>Chapter 5 reports a 95% one-day VaR of $13,919 and a 99% VaR of $19,685, with CVaR of $17,373 and $21,991, on 499 daily returns. This page prints the same four figures. The backtest agrees too: zero breaches of the 99% VaR in the last 250 days, four breaches across the full 499, and a worst real day of 12 February 2026 that lost $19,401 against a VaR of $19,685.</p>
+<p>Read that last pair again. The model cleared its own worst day by $284 on a $1,000,000 book. The chapter calls that an uncomfortable margin and it is right.</p>
+<p>One label differs from the printed output, and it is not an error. The book reports the data window as 20 September 2024 to 18 September 2026, because the script prints the dates it asked the data vendor for. This page reports 23 September 2024, because it prints the date of the first return it actually computed. The first close in the file cannot produce a return, and 20 September 2024 was a Friday. Both statements describe the same 499 returns.</p>
+<p>Compare the three methods in step 3 before you move on. Monte Carlo gives a 99% VaR of $19,685, historical simulation gives $18,759 and the parametric formula gives $20,060. Those sit within about $1,300 of each other and that is the calm part of the table. The 99% CVaR figures are $21,991, $35,555 and $23,102, and the historical one is nearly $14,000 above the other two. April 2025 is the reason. On 4 April this portfolio lost $59,284 and on 3 April it lost $41,929. A normal distribution fitted to two years of data does not produce days like those, and historical simulation does not have to, because it already saw them.</p>
+<p>Change the seed and run it again. The VaR moves by a few hundred dollars on every draw. Change the confidence to 99.5% and watch the CVaR move much further than the VaR, because the tail is thin and a handful of paths now carry the whole estimate.</p>
+<p>One caveat on the data. This page reads a snapshot taken on 20 September 2026, so it will keep printing these figures. A live fetch on a later date will not, and not only because the window rolls forward. Every dividend that goes ex restates the adjusted price history behind it, so the same window on the same dates returns slightly different numbers on a later run. A risk figure you cannot reproduce is a risk figure you cannot defend, which is the argument for storing the snapshot your model was fitted on.</p>
+
+<h2>Where this lab goes next</h2>
+<p>Raise the path count to 100,000 and watch the VaR barely move. Monte Carlo error is not the thing that makes this number wrong. Change the seed instead, and watch how much the 99% figure wobbles between runs, because the 99% cut is read off the 100th worst path out of 10,000 and 100 observations is a thin sample. Then change the start date and watch the number move far more than either. The window choice is the biggest decision in the whole lab, and nothing in the output tells you that unless you go looking. The full script, which also carries the probability-of-default model, is at <a class="dl" href="labs/m05_mc_var.py">m05_mc_var.py</a> and <a class="dl" href="labs/m05_pd_logit.py">m05_pd_logit.py</a>.</p>
+
+<footer><div>Companion site to <strong>AI in Finance: The Complete Crash Course</strong> by Tejas Jadhav, CFA, FRM. Part of the AI and Practical Finance Series.</div>
+<div style="margin-top:8px">Education only. Not investment, legal or tax advice. Every figure on this page is a simulation on a dated snapshot, and it is not a forecast. Independent publication, not affiliated with or endorsed by any company or tool named on this site.</div></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/pyodide/v314.0.7/full/pyodide.js"></script>
+<script src="assets/lab.js"></script>
+<script>
+initLab({
+  data: {US5: "data/us5_daily.csv"},
+  packages: ["numpy"],
+  params: () => ({
+    paths: parseInt(document.getElementById("paths").value, 10),
+    seed: parseInt(document.getElementById("seed").value, 10),
+    value: parseInt(document.getElementById("value").value, 10),
+    start: document.getElementById("start").value.trim()
+  })
+});
+</script>
+</body></html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 08: a daily NAV pack with an exception list</title>
+<meta name="description" content="Run Module 8 of the AI in Finance Crash Course in your browser. Prices a constructed fund from a dated snapshot, computes NAV per share, and flags missing prices, stale dates and large moves.">
+<link rel="stylesheet" href="assets/lab.css">
+</head><body>
+<header><div class="wrap">
+<div class="kick">Live lab &middot; Module 08</div>
+<h1>The NAV pack that refuses to release itself</h1>
+<p class="sub">Price a constructed fund, compute NAV per share, and run three checks. A missing price holds the NAV. Nobody has to remember to look.</p>
+<p class="by"><a class="back" href="labs.html">&larr; All live labs</a></p>
+</div></header>
+<div class="wrap">
+
+<div class="note"><strong>This page runs Python in your browser.</strong> Nothing is installed and nothing is sent anywhere. The engine is the same as <code>labs/m08_nav_engine.py</code>, with the price fetch swapped for a file that is already on this site.</div>
+
+<h2>What the lab does</h2>
+<p class="lede">Price the book, add the cash, take out the accruals, divide by the shares. Then check three things before anyone signs.</p>
+<p>The arithmetic is the easy half. Multiply each holding's quantity by its price, add them up, add the cash, subtract the accrued expenses, and divide by the shares outstanding. That is NAV per share.</p>
+<p>The exception list is the half that matters. A missing price means the number is incomplete, so the NAV is held rather than released. A price dated earlier than the fund's own pricing date is stale, and somebody has to re-query the vendor. A holding that moved more than 5% on the day is flagged for a human to confirm against the vendor, because a real move and a bad price look identical in a spreadsheet.</p>
+<p>The status line is computed, not typed. That is the whole idea. A NAV pack that prints READY FOR REVIEW when a price is missing is worse than no pack at all.</p>
+
+<div class="snapnote"><strong>This is a dated snapshot, not live data.</strong> The file behind this page is <code>data/nav_prices.json</code>, holding the closes for <strong>18 September 2026</strong>. It carries five holdings with quantities, that day's close, the prior close and the price date, plus the cash balance, the accrued expense and the share count. The fund is a constructed example and is not a real fund. To run the same lab against live prices on your own machine:<br>
+<code>pip3 install yfinance &amp;&amp; python3 labs/m08_nav_engine.py</code> &nbsp;(add <code>--inject</code> for the faulted run)</div>
+
+<h2>Run it</h2>
+<div class="controls">
+  <div class="chk"><input type="checkbox" id="inject"> <label for="inject" style="margin:0;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink)">Inject an error</label></div>
+  <div><label for="limit">Day-move limit (%)</label><input type="number" id="limit" value="5" min="1" max="50" step="1" style="width:70px"></div>
+  <div><label for="accrued">Accrued expenses ($)</label><input type="number" id="accrued" value="4200" min="0" step="100" style="width:110px"></div>
+</div>
+<div class="buttons">
+  <button id="run">Run</button>
+  <button id="reset" class="ghost">Reset code</button>
+  <span id="status" class="status">Starting.</span>
+</div>
+
+<textarea id="code" class="code" spellcheck="false"># The page injects two things before this code runs:
+#   NAV     -- the text of data/nav_prices.json
+#   PARAMS  -- {"inject", "limit", "accrued"} from the controls above
+import json
+
+book = json.loads(NAV)
+AS_OF = book["_snapshot_as_of"]
+CASH = book["cash"]
+SHARES_OUTSTANDING = book["shares_outstanding"]
+ACCRUED_EXPENSES = PARAMS["accrued"]
+if ACCRUED_EXPENSES != ACCRUED_EXPENSES:  # blank control
+    ACCRUED_EXPENSES = book["accrued_expenses"]
+MOVE_LIMIT = PARAMS["limit"] / 100.0
+
+# The snapshot carries one price per holding, its prior close, and the date
+# the price belongs to. The prior close is what the day-move check measures
+# against, so the check can actually run rather than printing n/a.
+priced = {}
+for h in book["holdings"]:
+    priced[h["ticker"]] = {"qty": h["quantity"], "last": h["price"],
+                           "prior": h["prev_close"], "date": h["price_date"]}
+
+if PARAMS["inject"]:
+    # The same two faults the book injects with --inject, and nothing else.
+    priced["XOM"]["last"] = None                     # a missing price
+    priced["MSFT"]["date"] = "2026-09-15"            # a price three days stale
+
+exceptions = []
+rows = []
+market_value = 0.0
+for t, h in priced.items():
+    if h["last"] is None:
+        exceptions.append("%s: MISSING PRICE. Cannot value %s shares. Hold the NAV."
+                          % (t, f"{h['qty']:,.0f}"))
+        rows.append((t, h["qty"], None, None, None, h["date"]))
+        continue
+    if h["date"] != AS_OF:
+        exceptions.append("%s: STALE DATE. Price dated %s, fund priced as of %s."
+                          % (t, h["date"], AS_OF))
+    move = (h["last"] / h["prior"] - 1) if h["prior"] else None
+    if move is not None and abs(move) > MOVE_LIMIT:
+        exceptions.append("%s: LARGE MOVE. %+.2f%% on the day, limit is %.0f%%."
+                          % (t, move * 100, MOVE_LIMIT * 100))
+    mv = h["last"] * h["qty"]
+    market_value += mv
+    rows.append((t, h["qty"], h["last"], move, mv, h["date"]))
+
+total_assets = market_value + CASH
+net_assets = total_assets - ACCRUED_EXPENSES
+nav = net_assets / SHARES_OUTSTANDING
+
+print("DAILY NAV PACK  (constructed example)   priced as of %s" % AS_OF)
+print("-" * 78)
+print("Ticker".ljust(7) + "Shares".rjust(9) + "Close".rjust(12) + "Day move".rjust(11)
+      + "Market value".rjust(17) + "Price date".rjust(13))
+for t, qty, last, move, mv, d in rows:
+    c = f"{last:,.2f}" if last is not None else "n/a"
+    m = ("%+.2f%%" % (move * 100)) if move is not None else "n/a"
+    v = f"{mv:,.2f}" if mv is not None else "n/a"
+    print(t.ljust(7) + f"{qty:,.0f}".rjust(9) + c.rjust(12) + m.rjust(11)
+          + v.rjust(17) + str(d).rjust(13))
+print("-" * 78)
+for label, val in [("Securities at market", market_value), ("Cash", CASH),
+                   ("Total assets", total_assets), ("Less accrued expenses", ACCRUED_EXPENSES),
+                   ("Net assets", net_assets)]:
+    print(label.ljust(40) + f"{val:,.2f}".rjust(20))
+print("Shares outstanding".ljust(40) + f"{SHARES_OUTSTANDING:,}".rjust(20))
+print("NAV per share".ljust(40) + f"{nav:,.4f}".rjust(20))
+print()
+
+print("EXCEPTIONS (%d)" % len(exceptions))
+if not exceptions:
+    print("  none. NAV may be released after the four-eyes check.")
+for e in sorted(exceptions):
+    print("  * " + e)
+if any("MISSING" in e for e in exceptions):
+    print("  NAV STATUS: HELD. A missing price means the number above is incomplete.")
+else:
+    print("  NAV STATUS: READY FOR REVIEW.")
+print()
+print("COMMENTARY TEMPLATE (fill only from the table above; every number must appear there)")
+print("  As of {as_of}, the fund's NAV per share was {nav}.")
+print("  The largest contributor to the day's move was {ticker}, which {rose/fell} {move}.")
+print("  {n} exception(s) were raised: {list them or write 'none'}.")
+print("  The NAV is {released / held} pending {reason}.")
+</textarea>
+
+<pre id="out" class="out">Waiting for Python to start.</pre>
+
+<h2>What you should see</h2>
+<p class="lede">This page runs the book's fund on the book's prices, so it prints the book's numbers.</p>
+<p>The clean run prints a NAV per share of <strong>31.1720</strong> and raises zero exceptions. That is the figure Chapter 8 quotes. Securities come to 2,871,402.00, cash adds 250,000.00, the accrued expense of 4,200.00 comes off, and 3,117,202.00 divided by 100,000 shares gives the NAV.</p>
+<p>Tick <em>Inject an error</em> and the page reproduces the book's second run. It blanks the XOM price and backdates the MSFT price to 15 September, which is exactly what <code>--inject</code> does in the script. The NAV per share drops to <strong>27.0835</strong>, two exceptions appear, and the status line flips to <code>NAV STATUS: HELD</code>.</p>
+<p>Read that second number before you move on. It is wrong by four dollars a share, and the engine printed it anyway. A missing price contributes zero to the sum, so the arithmetic completes and looks finished. The exception list is the only thing standing between that number and a client statement.</p>
+<p>One small difference from the printed pack. The book's run fetched prices live and Yahoo returned more decimal places than it displays, so its market values carry a floating-point tail: 649,305.01 rather than 649,305.00. The snapshot on this site stores prices at two decimals, so this page prints the round cent. The chapter treats that tail as a lesson in its own right, and the fix is to round the price to the vendor's stated precision before multiplying.</p>
+<p>Change the day-move limit to 1 and run it again. QQQ moved 0.63 percent and nothing fires, because no holding moved more than one percent that day. Drop it to 0.5 and QQQ and MSFT both appear. A threshold that never fires is not evidence of a clean book.</p>
+
+<h2>Where this lab goes next</h2>
+<p>Module 8 in the book carries a second half this page does not run: a language model writes the commentary from the template above, and the exercise is to catch it when it invents a number that is not in the table. That step needs a model, so it stays in the downloadable script and the book. The full script is at <a class="dl" href="labs/m08_nav_engine.py">m08_nav_engine.py</a>.</p>
+
+<footer><div>Companion site to <strong>AI in Finance: The Complete Crash Course</strong> by Tejas Jadhav, CFA, FRM. Part of the AI and Practical Finance Series.</div>
+<div style="margin-top:8px">Education only. Not investment, legal or tax advice. The fund on this page is a constructed example and is not a real fund. Independent publication, not affiliated with or endorsed by any company or tool named on this site.</div></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/pyodide/v314.0.7/full/pyodide.js"></script>
+<script src="assets/lab.js"></script>
+<script>
+initLab({
+  data: {NAV: "data/nav_prices.json"},
+  packages: [],
+  params: () => ({
+    inject: document.getElementById("inject").checked,
+    limit: parseFloat(document.getElementById("limit").value),
+    accrued: parseFloat(document.getElementById("accrued").value)
+  })
+});
+</script>
+</body></html>

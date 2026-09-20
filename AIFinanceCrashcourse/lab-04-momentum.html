@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 04: a 20-day breakout on SPY, tested honestly</title>
+<meta name="description" content="Run Module 4 of the AI in Finance Crash Course in your browser. A 20-day breakout rule on a dated SPY snapshot, with costs at 5, 10 and 20 basis points, a monthly table and a summary.">
+<link rel="stylesheet" href="assets/lab.css">
+</head><body>
+<header><div class="wrap">
+<div class="kick">Live lab &middot; Module 04</div>
+<h1>A 20-day breakout, tested honestly</h1>
+<p class="sub">Buy SPY at the next open when it closes above its prior 20-day high. Sell at the next open when it closes below its prior 10-day low. The rule is long only. Then read the report the way a risk manager reads it.</p>
+<p class="by"><a class="back" href="labs.html">&larr; All live labs</a></p>
+</div></header>
+<div class="wrap">
+
+<div class="note"><strong>This page runs Python in your browser.</strong> Nothing is installed and nothing is sent anywhere. The rule, the costs and the report are the same as <code>labs/m04_spy_momentum.py</code>. The pandas calls are rewritten in plain numpy so the page loads in seconds.</div>
+
+<h2>What the lab does</h2>
+<p class="lede">The script runs five steps, and the third one is the step most backtests get wrong.</p>
+<p>The signal is read on a closed bar. The trade happens at the <em>next</em> session's open. A backtest that trades on the same bar that produced the signal is looking into the future, and the book scores that as zero. That is why the last bar of the window is dropped: it has no next open to trade on.</p>
+<p>Costs are charged per side at half the round-trip figure, at 5, 10 and 20 basis points. The parameters 20 and 10 were chosen before the data was downloaded, so there is no fitting step and nothing to overfit.</p>
+
+<div class="snapnote"><strong>This is a dated snapshot, not live data.</strong> The file behind this page is <code>data/spy_daily.csv</code>, taken on <strong>20 September 2026</strong>, covering 1 August 2024 to 31 August 2026. The window before September 2024 is warm-up for the 20-day lookback. To run the same lab against live prices on your own machine:<br>
+<code>pip3 install yfinance pandas numpy &amp;&amp; python3 labs/m04_spy_momentum.py</code></div>
+
+<h2>Run it</h2>
+<p class="lede">The window defaults to the book's. The last bar inside it is dropped, so a window ending 31 August 2026 tests to 28 August 2026, exactly as the book's run did.</p>
+<div class="controls">
+  <div><label for="start">Window start</label><input type="text" id="start" value="2024-09-03" size="10"></div>
+  <div><label for="end">Window end</label><input type="text" id="end" value="2026-08-31" size="10"></div>
+  <div><label for="entry">Entry lookback</label><input type="number" id="entry" value="20" min="2" max="120" style="width:70px"></div>
+  <div><label for="exitlb">Exit lookback</label><input type="number" id="exitlb" value="10" min="2" max="120" style="width:70px"></div>
+</div>
+<div class="buttons">
+  <button id="run">Run</button>
+  <button id="reset" class="ghost">Reset code</button>
+  <span id="status" class="status">Starting.</span>
+</div>
+
+<textarea id="code" class="code" spellcheck="false"># The page injects two things before this code runs:
+#   SPY     -- the text of data/spy_daily.csv
+#   PARAMS  -- {"start", "end", "entry", "exit"} from the controls above
+import numpy as np
+
+ENTRY, EXIT = PARAMS["entry"], PARAMS["exit"]
+ROUND_TRIP_BPS = [5, 10, 20]
+RISK_FREE = 0.0  # stated, not hidden
+
+# 1. Data. The first line of the file is a comment carrying the snapshot date.
+lines = [l for l in SPY.splitlines() if l.strip()]
+asof = [l for l in lines if l.startswith("#")][0]
+rows = [l.split(",") for l in lines if not l.startswith("#")][1:]
+dates = [r[0] for r in rows]
+O = np.array([float(r[1]) for r in rows])
+C = np.array([float(r[4]) for r in rows])
+
+
+def rolling(a, n, fn):
+    out = np.full(len(a), np.nan)
+    for i in range(n - 1, len(a)):
+        out[i] = fn(a[i - n + 1:i + 1])
+    return out
+
+
+# 2. Signal, read on a closed bar against the PRIOR window.
+prior_high = np.concatenate([[np.nan], rolling(C, ENTRY, np.max)[:-1]])
+prior_low = np.concatenate([[np.nan], rolling(C, EXIT, np.min)[:-1]])
+enter, leave = C > prior_high, C < prior_low
+
+pos = np.zeros(len(C), dtype=int)
+holding = False
+for i in range(len(C)):
+    if holding and leave[i]:
+        holding = False
+    elif not holding and enter[i]:
+        holding = True
+    pos[i] = int(holding)
+
+# 3. Timing. Act at the NEXT session's open, never on the signal bar.
+pos = np.concatenate([[0], pos[:-1]])
+
+i0 = next(i for i, d in enumerate(dates) if d >= PARAMS["start"])
+i1 = max(i for i, d in enumerate(dates) if d <= PARAMS["end"])
+d, o, p = dates[i0:i1 + 1], O[i0:i1 + 1], pos[i0:i1 + 1]
+d, o, p = d[:-1], o[:-1], p[:-1]  # the last bar has no next open to trade on
+
+# A position held from open to open earns the open-to-open return.
+oo = np.full(len(o), np.nan)
+oo[:-1] = o[1:] / o[:-1] - 1
+bench = np.nan_to_num(oo)
+
+
+# 4. Costs. Half the round trip on each side.
+def net_returns(bps):
+    gross = np.nan_to_num(oo * p)
+    trades = np.empty(len(p))
+    trades[0] = p[0]
+    trades[1:] = np.abs(np.diff(p))
+    return gross - trades * (bps / 2 / 1e4)
+
+
+def stats(r):
+    eq = np.cumprod(1 + r)
+    dd = (eq / np.maximum.accumulate(eq) - 1).min()
+    ann = r.mean() * 252 - RISK_FREE
+    vol = r.std(ddof=1) * np.sqrt(252)
+    down = r[r < 0].std(ddof=1) * np.sqrt(252)
+    return {"total": eq[-1] - 1, "sharpe": ann / vol, "sortino": ann / down, "max_dd": dd}
+
+
+def monthly(r):
+    out = {}
+    for dt, x in zip(d, r):
+        out.setdefault(dt[:7], []).append(1 + x)
+    return {k: float(np.prod(v)) - 1 for k, v in out.items()}
+
+
+def round_trips(bps):
+    rows, entry = [], None
+    for i in range(1, len(p)):
+        if p[i] == 1 and p[i - 1] == 0:
+            entry = i
+        elif p[i] == 0 and p[i - 1] == 1 and entry is not None:
+            buy = o[entry] * (1 + bps / 2 / 1e4)
+            sell = o[i] * (1 - bps / 2 / 1e4)
+            rows.append((sell / buy - 1, i - entry))
+            entry = None
+    return rows
+
+
+# 5. Report.
+n_rt = int(np.clip(np.diff(p), 0, None).sum())
+print("SPY 20-day breakout, entry %d / exit %d, long only. Backtest, not a live record."
+      % (ENTRY, EXIT))
+_a = asof.lstrip("# ")
+print(_a[0].upper() + _a[1:])
+print("Test window: %s to %s (%d sessions). Round trips: %d. Days in market: %d of %d."
+      % (d[0], d[-1], len(d), n_rt, p.sum(), len(d)))
+
+cols = ["SPY buy and hold"] + ["rule @ %d bps" % b for b in ROUND_TRIP_BPS]
+series = {"SPY buy and hold": bench}
+for b in ROUND_TRIP_BPS:
+    series["rule @ %d bps" % b] = net_returns(b)
+
+print("\nMonthly returns (net of the stated cost, percent):")
+tbl = {k: monthly(v) for k, v in series.items()}
+print(" " * 8 + "".join(c.rjust(16) for c in cols))
+for m in sorted(tbl[cols[0]]):
+    print(m.ljust(8) + "".join(("%.1f" % (tbl[c][m] * 100)).rjust(16) for c in cols))
+
+print("\nSummary over the window (annualised, risk-free rate 0):")
+for c in cols:
+    s = stats(series[c])
+    print("  %-18s total %6.1f%%   Sharpe %5.2f   Sortino %5.2f   max drawdown %6.1f%%"
+          % (c, s["total"] * 100, s["sharpe"], s["sortino"], s["max_dd"] * 100))
+
+print("\nClosed round trips, net of cost:")
+for b in ROUND_TRIP_BPS:
+    t = round_trips(b)
+    if not t:
+        print("  @ %2d bps: no closed round trips in this window." % b)
+        continue
+    wins = sum(1 for r, _ in t if r > 0)
+    print("  @ %2d bps: %d trades, %d winners (%.0f%%), average hold %.0f sessions, "
+          "best %+.1f%%, worst %+.1f%%"
+          % (b, len(t), wins, wins / len(t) * 100, np.mean([h for _, h in t]),
+             max(r for r, _ in t) * 100, min(r for r, _ in t) * 100))
+print("  A win rate on fewer than 30 trades is not evidence. Say so in your report.")
+
+mid = "%04d-%02d" % (int(d[0][:4]) + 1, int(d[0][5:7]))
+print("\nFirst 12 months vs last 12 months, total return, percent:")
+for c in cols:
+    m = tbl[c]
+    first = np.prod([1 + m[k] for k in m if k < mid]) - 1
+    second = np.prod([1 + m[k] for k in m if k >= mid]) - 1
+    print("  %-18s first %6.1f%%   second %6.1f%%" % (c, first * 100, second * 100))
+
+print("\nThe parameters were not fitted to this data. A different window will give different numbers.")
+</textarea>
+
+<pre id="out" class="out">Waiting for Python to start.</pre>
+
+<h2>What you should see</h2>
+<p class="lede">This page runs the book's rule on the book's data, so it prints the book's numbers.</p>
+<p>Chapter 4 reports a test window of 2024-09-03 to 2026-08-28 across 499 sessions, with 13 round trips and 286 days in the market. This page prints the same. Buy and hold returns 41.0% with a Sharpe of 1.11, a Sortino of 1.45 and a maximum drawdown of 19.8%. The rule at 5 basis points returns 17.4% with a Sharpe of 1.04, a Sortino of 1.00 and a drawdown of 7.4%. It makes 13 trades, 6 of them winners, and holds each one for 22 sessions on average. Every one of those figures matches the chapter.</p>
+<p>Two details in the data make that possible, and both are worth knowing if you build your own version. The file starts on 3 June 2024, three months before the test window opens, because a 20-day lookback needs 20 closes before it can produce its first signal. Start the file on the first day of the window instead and the rule sits in cash for the first month, which costs it 11 days in the market. The benchmark is also measured open to open rather than close to close, because the rule trades at the open and the comparison has to be fair.</p>
+<p>Read the monthly table rather than the totals. March 2025 and March 2026 both show 0.0 for the rule, because it was already in cash before each fall. April 2026 shows what that safety cost: SPY rose 10.3% and the rule caught 6.9%, because a breakout rule cannot re-enter until the price has made a new 20-day high and by then part of the rebound has gone. October 2025 is the same story in miniature, with SPY up 3.4% and the rule flat. The three cost columns barely move, because 13 round trips in two years is not enough trading for costs to matter.</p>
+<p>Change the entry lookback to 10 and run it again. More trades, more costs, and a drawdown that starts to look like the index. Then try 50. The point of the controls is not to find a better number. It is to watch how little the result holds still when you move one.</p>
+<p>One caveat on the data. This page reads a snapshot taken on 20 September 2026, so it will keep printing these figures. A live fetch on a later date will not, because every dividend that goes ex restates the whole adjusted price history behind it. That is worth knowing before you trust any backtest you cannot re-run.</p>
+
+<h2>Where this lab goes next</h2>
+<p>Change the exit lookback from 10 to 20 in the control above and write down what you expect before you press Run: fewer trades, longer holds, a bigger drawdown, and probably more of the April rally. Then read the table and see whether you were right. One change, written down in advance with a reason, is research. Twenty changes, keeping the best, is data snooping. The full script is at <a class="dl" href="labs/m04_spy_momentum.py">m04_spy_momentum.py</a>.</p>
+
+<footer><div>Companion site to <strong>AI in Finance: The Complete Crash Course</strong> by Tejas Jadhav, CFA, FRM. Part of the AI and Practical Finance Series.</div>
+<div style="margin-top:8px">Education only. Not investment, legal or tax advice. Every figure on this page is a backtest on a dated snapshot. A backtest is a ceiling on what a rule can earn, never a promise. Independent publication, not affiliated with or endorsed by any company or tool named on this site.</div></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/pyodide/v314.0.7/full/pyodide.js"></script>
+<script src="assets/lab.js"></script>
+<script>
+initLab({
+  data: {SPY: "data/spy_daily.csv"},
+  packages: ["numpy"],
+  params: () => ({
+    start: document.getElementById("start").value.trim(),
+    end: document.getElementById("end").value.trim(),
+    entry: parseInt(document.getElementById("entry").value, 10),
+    exit: parseInt(document.getElementById("exitlb").value, 10)
+  })
+});
+</script>
+</body></html>
