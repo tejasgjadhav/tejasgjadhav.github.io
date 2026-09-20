@@ -53,3 +53,36 @@ textarea.code{width:100%;min-height:340px;font-family:Menlo,monospace;font-size:
 pre.out{min-height:120px;white-space:pre;font-size:12.5px;line-height:1.5}
 pre.out.err{background:#3A1E16;color:#F4D9CE}
 .boot{background:#1B2B24;color:#C8D8CF;border-radius:5px;padding:14px 16px;font-family:Menlo,monospace;font-size:13px;margin:12px 0}
+
+
+/* Phones. Readers arrive here by scanning a QR code in a printed book, so a
+   phone is the common case rather than the edge case. The lab output is a
+   fixed-width column table and must not be wrapped, so it scrolls inside its
+   own box and the page itself never scrolls sideways. */
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  header{padding:32px 0 28px}
+  header h1{font-size:27px;line-height:1.15}
+  header p.sub{font-size:16px}
+  h2{font-size:20px;margin:30px 0 6px}
+  .note,.snapnote{padding:12px 14px;font-size:15px}
+  .controls{gap:12px 18px;padding:12px 14px}
+  .controls label{font-size:11px}
+  .controls select,.controls input[type=text],.controls input[type=number]{font-size:16px}
+  .buttons{flex-wrap:wrap;gap:10px}
+  button{flex:1 1 auto;min-width:120px}
+  textarea.code{min-height:260px;font-size:11px;line-height:1.5;padding:12px}
+  pre.out{font-size:10.5px;line-height:1.45;padding:12px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  pre{overflow-x:auto}
+  /* Let the table scroll inside itself, but never force the row wider than it
+     has to be: only the short module cell resists wrapping. */
+  table{display:block;overflow-x:auto}
+  td.m{white-space:nowrap}
+  /* A select is as wide as its longest option, which pushed the whole page to
+     465px on an iPhone. Cap it and let the option text ellipsize. */
+  .controls{width:100%}
+  .controls > div{max-width:100%;min-width:0}
+  .controls select{max-width:100%;width:100%}
+  .pill{font-size:12px}
+  p,li{font-size:16px}
+}

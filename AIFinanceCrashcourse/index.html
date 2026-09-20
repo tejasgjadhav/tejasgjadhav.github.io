@@ -31,6 +31,34 @@ code{font-family:Menlo,monospace;font-size:13.5px;background:var(--sand);padding
 pre{font-family:Menlo,monospace;font-size:13px;background:#1B2B24;color:#E8EFE9;padding:14px 16px;border-radius:5px;overflow-x:auto;margin:12px 0}
 footer{border-top:1px solid var(--rule);margin-top:56px;padding:26px 0 44px;font-size:13.5px;color:var(--slate)}
 .pill{display:inline-block;font-family:"Gill Sans",sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--sand);color:var(--green);padding:3px 9px;border-radius:20px;margin-left:8px}
+
+/* Phones. A QR code in a printed book is scanned with a phone, so this is the
+   arrival path that matters most. The four-column module table cannot shrink
+   below about 490px because filenames do not break, which made the whole page
+   zoom out. On narrow screens each row becomes a stacked block instead. */
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  header{padding:34px 0 30px}
+  header h1{font-size:30px}
+  header p.sub{font-size:16px}
+  h2{font-size:21px;margin:32px 0 6px}
+  body{font-size:16px}
+  table,thead,tbody,tr,td{display:block;width:100%}
+  thead{display:none}
+  table{font-size:16px}
+  tr{border-bottom:1px solid var(--rule);padding:14px 0}
+  td{border:0;padding:2px 0}
+  td.m{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--copper)}
+  td.m:before{content:"Module "}
+  td:nth-child(2){margin:2px 0 8px}
+  td:nth-child(3):before{content:"Slides: ";font-size:13px;color:var(--slate)}
+  td:nth-child(4):before{content:"Lab: ";font-size:13px;color:var(--slate)}
+  .dl{display:inline-block;margin:2px 8px 2px 0;word-break:break-word}
+  pre{font-size:12px;padding:12px;white-space:pre-wrap;word-break:break-word}
+  code{word-break:break-word}
+  .note{padding:12px 14px;font-size:15px}
+  th,.soon,.pill{font-size:12px}
+}
 </style></head><body>
 <header><div class="wrap">
 <div class="kick">Companion resources</div>
