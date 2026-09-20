@@ -205,7 +205,10 @@ def run_streamlit():
     # The top of this range is deliberately above the discount rate floor of 0.06, so you can
     # drive terminal growth past the discount rate and watch the engine return a negative
     # value per share instead of refusing. Breaking it on purpose is the exercise.
-    a["terminal_growth"] = st.sidebar.slider("Terminal growth", 0.0, 0.10, a["terminal_growth"], 0.005)
+    # The stops are offset by 0.0005 so terminal growth can never land exactly on
+    # the discount rate. Equal values divide by zero; above it, the engine returns
+    # a negative number, which is the thing the reader is told to go and see.
+    a["terminal_growth"] = st.sidebar.slider("Terminal growth", 0.0005, 0.1005, a["terminal_growth"], 0.005)
 
     px, facts, fcf = load(ticker)
     base = float(fcf.iloc[-1])
