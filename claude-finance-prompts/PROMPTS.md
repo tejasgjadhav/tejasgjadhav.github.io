@@ -4,7 +4,7 @@ A free repository of 122 finance prompts, in full. Each one shows the same five 
 
 Numbering is stable: Prompt 47 here stays Prompt 47 wherever you reference it.
 
-> CRAFT is this book's framework. It is not Anthropic's and it is not in the model documentation, so there is no point looking for it there.
+> CRAFT is the framework used on this page. It is not Anthropic's and it is not in the model documentation, so there is no point looking for it there.
 
 ---
 
