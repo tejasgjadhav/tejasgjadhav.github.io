@@ -4,9 +4,8 @@
 Design constants, helper functions and slide rhythm are lifted from
 ~/files/aifinance/build_module5.py so these decks match Modules 1-5 exactly.
 
-Content is sourced from the book chapters in
-~/files/kdp-books/ai-finance-master-guide/parts/ (17-m07 .. 20-m10) and from the
-canonical syllabus in ~/files/aifinance/index.html. Module 6 has no chapter file
+Content is sourced from the course notes for modules 7 to 10 and from the
+canonical syllabus in ~/files/aifinance/index.html. Module 6 has no notes file
 yet, so it is built from the MOD 06 syllabus card plus the basel-analyzer README
 architecture, reframed for US markets.
 

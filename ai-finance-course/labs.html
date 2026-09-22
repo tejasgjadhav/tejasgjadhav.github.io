@@ -2,13 +2,13 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Live labs &middot; AI in Finance Crash Course</title>
-<meta name="description" content="Four labs from the book AI in Finance: The Complete Crash Course, running in your browser on dated data snapshots. No install, no API key, no server.">
+<meta name="description" content="Four labs from the course AI in Finance: The Complete Crash Course, running in your browser on dated data snapshots. No install, no API key, no server.">
 <link rel="stylesheet" href="assets/lab.css">
 </head><body>
 <header><div class="wrap">
 <div class="kick">Companion resources</div>
 <h1>Live labs</h1>
-<p class="sub">Four labs from the book, running in your browser on dated snapshots of the real data. Nothing to install and no API key.</p>
+<p class="sub">Four labs from the course, running in your browser on dated snapshots of the real data. Nothing to install and no API key.</p>
 <p class="by"><a class="back" href="index.html">&larr; Back to the course</a></p>
 </div></header>
 <div class="wrap">
@@ -16,7 +16,7 @@
 <div class="note"><strong>Every lab on this page runs real Python.</strong> The pages load Pyodide, which is CPython compiled to WebAssembly, pinned to version 314.0.7. The code pane is editable and the Run button executes what is in it. Nothing you type leaves your machine, and no lab makes a network call once the page has loaded.</div>
 
 <h2>The four labs</h2>
-<p class="lede">Each one reads a snapshot in <code>data/</code>, prints its own as-of date, and reproduces the figures the book prints.</p>
+<p class="lede">Each one reads a snapshot in <code>data/</code>, prints its own as-of date, and reproduces the figures the course prints.</p>
 <table>
 <tr><th>Module</th><th>Lab</th><th>What it does</th></tr>
 <tr><td class="m">01</td><td><a href="lab-01-edgar.html">The income statement that checks itself</a></td><td>Reads Apple's SEC EDGAR company facts, prints a three-year income statement in millions, then recomputes gross margin and operating income and marks each one PASS or FAIL. Switch the dropdown to Microsoft and watch a line print <em>not tagged</em> instead of a guess.</td></tr>
@@ -26,8 +26,8 @@
 </table>
 
 <h2>What is not here, and why</h2>
-<p class="lede">Six labs in the book do not appear on this page. Four of them need a language model.</p>
-<p>A browser can run Python. It cannot run a language model that you have not paid for and connected. These four steps are the ones where a model does the work, so they stay in the downloadable scripts and in the book:</p>
+<p class="lede">Six labs in the course do not appear on this page. Four of them need a language model.</p>
+<p>A browser can run Python. It cannot run a language model that you have not paid for and connected. These four steps are the ones where a model does the work, so they stay in the downloadable scripts and in the course:</p>
 <table>
 <tr><th>Module</th><th>The step that needs a model</th><th>Where to get it</th></tr>
 <tr><td class="m">02</td><td>The retrieval answer. The lab builds a searchable index over a 200-page IPO prospectus, then asks a model to answer a question and cite the page it came from. The retrieval half is code. The answer half is the model.</td><td><a class="dl" href="labs/m02_ingest.py">ingest</a><a class="dl" href="labs/m02_query.py">query</a><a class="dl" href="labs/m02_questions.txt">questions</a></td></tr>
@@ -44,9 +44,9 @@ python3 m02_ingest.py</pre>
 <h2>How these pages work</h2>
 <p class="lede">Three things are worth knowing before you trust a number one of them prints.</p>
 <p><strong>The data is a dated snapshot.</strong> Each lab reads a file in <code>data/</code> that was pulled once, on 20 September 2026, and frozen. Every page prints that date at the top of its output. The snapshot is what makes the pages reproducible, and it is also what makes them wrong about today. Each page carries the one-line command that runs the same lab against live data on your own machine.</p>
-<p><strong>The numbers do not always match the book.</strong> Where they differ, the page says so, names the figure, and gives the reason. Lab 4 differs because the snapshot carries unadjusted closes and the book's run added dividends back. Lab 5 differs because the snapshot's window is three weeks shorter at one end and three weeks longer at the other. Lab 8 differs because the snapshot holds a different fund. Lab 1 matches digit for digit, because a filed 10-K does not change.</p>
+<p><strong>The numbers do not always match the course.</strong> Where they differ, the page says so, names the figure, and gives the reason. Lab 4 differs because the snapshot carries unadjusted closes and the course's run added dividends back. Lab 5 differs because the snapshot's window is three weeks shorter at one end and three weeks longer at the other. Lab 8 differs because the snapshot holds a different fund. Lab 1 matches digit for digit, because a filed 10-K does not change.</p>
 <p><strong>The arithmetic happens in Python.</strong> Every number these pages print was computed by code you can read and edit in the pane. Nothing on this page was written by a language model, and nothing here is investment advice.</p>
 
-<footer><div>Companion site to <strong>AI in Finance: The Complete Crash Course</strong> by Tejas Jadhav, CFA, FRM. Part of the AI and Practical Finance Series.</div>
+<footer><div>Companion site to the course <strong>AI in Finance: The Complete Crash Course</strong>, taught by Tejas Jadhav, CFA, FRM.</div>
 <div style="margin-top:8px">Education only. Not investment, legal or tax advice. Every figure in these labs is a backtest, a simulation, or a constructed example, and it is labelled as such on the line where it appears. Independent publication, not affiliated with or endorsed by any company or tool named on this site.</div></footer>
 </div></body></html>

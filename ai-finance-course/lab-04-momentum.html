@@ -17,14 +17,14 @@
 
 <h2>What the lab does</h2>
 <p class="lede">The script runs five steps, and the third one is the step most backtests get wrong.</p>
-<p>The signal is read on a closed bar. The trade happens at the <em>next</em> session's open. A backtest that trades on the same bar that produced the signal is looking into the future, and the book scores that as zero. That is why the last bar of the window is dropped: it has no next open to trade on.</p>
+<p>The signal is read on a closed bar. The trade happens at the <em>next</em> session's open. A backtest that trades on the same bar that produced the signal is looking into the future, and the course scores that as zero. That is why the last bar of the window is dropped: it has no next open to trade on.</p>
 <p>Costs are charged per side at half the round-trip figure, at 5, 10 and 20 basis points. The parameters 20 and 10 were chosen before the data was downloaded, so there is no fitting step and nothing to overfit.</p>
 
 <div class="snapnote"><strong>This is a dated snapshot, not live data.</strong> The file behind this page is <code>data/spy_daily.csv</code>, taken on <strong>20 September 2026</strong>, covering 1 August 2024 to 31 August 2026. The window before September 2024 is warm-up for the 20-day lookback. To run the same lab against live prices on your own machine:<br>
 <code>pip3 install yfinance pandas numpy &amp;&amp; python3 labs/m04_spy_momentum.py</code></div>
 
 <h2>Run it</h2>
-<p class="lede">The window defaults to the book's. The last bar inside it is dropped, so a window ending 31 August 2026 tests to 28 August 2026, exactly as the book's run did.</p>
+<p class="lede">The window defaults to the course's. The last bar inside it is dropped, so a window ending 31 August 2026 tests to 28 August 2026, exactly as the course's run did.</p>
 <div class="controls">
   <div><label for="start">Window start</label><input type="text" id="start" value="2024-09-03" size="10"></div>
   <div><label for="end">Window end</label><input type="text" id="end" value="2026-08-31" size="10"></div>
@@ -181,8 +181,8 @@ print("\nThe parameters were not fitted to this data. A different window will gi
 <pre id="out" class="out">Waiting for Python to start.</pre>
 
 <h2>What you should see</h2>
-<p class="lede">This page runs the book's rule on the book's data, so it prints the book's numbers.</p>
-<p>Chapter 4 reports a test window of 2024-09-03 to 2026-08-28 across 499 sessions, with 13 round trips and 286 days in the market. This page prints the same. Buy and hold returns 41.0% with a Sharpe of 1.11, a Sortino of 1.45 and a maximum drawdown of 19.8%. The rule at 5 basis points returns 17.4% with a Sharpe of 1.04, a Sortino of 1.00 and a drawdown of 7.4%. It makes 13 trades, 6 of them winners, and holds each one for 22 sessions on average. Every one of those figures matches the chapter.</p>
+<p class="lede">This page runs the course's rule on the course's data, so it prints the course's numbers.</p>
+<p>Module 4 reports a test window of 2024-09-03 to 2026-08-28 across 499 sessions, with 13 round trips and 286 days in the market. This page prints the same. Buy and hold returns 41.0% with a Sharpe of 1.11, a Sortino of 1.45 and a maximum drawdown of 19.8%. The rule at 5 basis points returns 17.4% with a Sharpe of 1.04, a Sortino of 1.00 and a drawdown of 7.4%. It makes 13 trades, 6 of them winners, and holds each one for 22 sessions on average. Every one of those figures matches the chapter.</p>
 <p>Two details in the data make that possible, and both are worth knowing if you build your own version. The file starts on 3 June 2024, three months before the test window opens, because a 20-day lookback needs 20 closes before it can produce its first signal. Start the file on the first day of the window instead and the rule sits in cash for the first month, which costs it 11 days in the market. The benchmark is also measured open to open rather than close to close, because the rule trades at the open and the comparison has to be fair.</p>
 <p>Read the monthly table rather than the totals. March 2025 and March 2026 both show 0.0 for the rule, because it was already in cash before each fall. April 2026 shows what that safety cost: SPY rose 10.3% and the rule caught 6.9%, because a breakout rule cannot re-enter until the price has made a new 20-day high and by then part of the rebound has gone. October 2025 is the same story in miniature, with SPY up 3.4% and the rule flat. The three cost columns barely move, because 13 round trips in two years is not enough trading for costs to matter.</p>
 <p>Change the entry lookback to 10 and run it again. More trades, more costs, and a drawdown that starts to look like the index. Then try 50. The point of the controls is not to find a better number. It is to watch how little the result holds still when you move one.</p>
@@ -191,7 +191,7 @@ print("\nThe parameters were not fitted to this data. A different window will gi
 <h2>Where this lab goes next</h2>
 <p>Change the exit lookback from 10 to 20 in the control above and write down what you expect before you press Run: fewer trades, longer holds, a bigger drawdown, and probably more of the April rally. Then read the table and see whether you were right. One change, written down in advance with a reason, is research. Twenty changes, keeping the best, is data snooping. The full script is at <a class="dl" href="labs/m04_spy_momentum.py">m04_spy_momentum.py</a>.</p>
 
-<footer><div>Companion site to <strong>AI in Finance: The Complete Crash Course</strong> by Tejas Jadhav, CFA, FRM. Part of the AI and Practical Finance Series.</div>
+<footer><div>Companion site to the course <strong>AI in Finance: The Complete Crash Course</strong>, taught by Tejas Jadhav, CFA, FRM.</div>
 <div style="margin-top:8px">Education only. Not investment, legal or tax advice. Every figure on this page is a backtest on a dated snapshot. A backtest is a ceiling on what a rule can earn, never a promise. Independent publication, not affiliated with or endorsed by any company or tool named on this site.</div></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/pyodide/v314.0.7/full/pyodide.js"></script>

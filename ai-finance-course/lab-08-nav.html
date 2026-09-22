@@ -59,7 +59,7 @@ for h in book["holdings"]:
                            "prior": h["prev_close"], "date": h["price_date"]}
 
 if PARAMS["inject"]:
-    # The same two faults the book injects with --inject, and nothing else.
+    # The same two faults the course script injects with --inject, and nothing else.
     priced["XOM"]["last"] = None                     # a missing price
     priced["MSFT"]["date"] = "2026-09-15"            # a price three days stale
 
@@ -126,17 +126,17 @@ print("  The NAV is {released / held} pending {reason}.")
 <pre id="out" class="out">Waiting for Python to start.</pre>
 
 <h2>What you should see</h2>
-<p class="lede">This page runs the book's fund on the book's prices, so it prints the book's numbers.</p>
-<p>The clean run prints a NAV per share of <strong>31.1720</strong> and raises zero exceptions. That is the figure Chapter 8 quotes. Securities come to 2,871,402.00, cash adds 250,000.00, the accrued expense of 4,200.00 comes off, and 3,117,202.00 divided by 100,000 shares gives the NAV.</p>
-<p>Tick <em>Inject an error</em> and the page reproduces the book's second run. It blanks the XOM price and backdates the MSFT price to 15 September, which is exactly what <code>--inject</code> does in the script. The NAV per share drops to <strong>27.0835</strong>, two exceptions appear, and the status line flips to <code>NAV STATUS: HELD</code>.</p>
+<p class="lede">This page runs the course's fund on the course's prices, so it prints the course's numbers.</p>
+<p>The clean run prints a NAV per share of <strong>31.1720</strong> and raises zero exceptions. That is the figure Module 8 quotes. Securities come to 2,871,402.00, cash adds 250,000.00, the accrued expense of 4,200.00 comes off, and 3,117,202.00 divided by 100,000 shares gives the NAV.</p>
+<p>Tick <em>Inject an error</em> and the page reproduces the course's second run. It blanks the XOM price and backdates the MSFT price to 15 September, which is exactly what <code>--inject</code> does in the script. The NAV per share drops to <strong>27.0835</strong>, two exceptions appear, and the status line flips to <code>NAV STATUS: HELD</code>.</p>
 <p>Read that second number before you move on. It is wrong by four dollars a share, and the engine printed it anyway. A missing price contributes zero to the sum, so the arithmetic completes and looks finished. The exception list is the only thing standing between that number and a client statement.</p>
-<p>One small difference from the printed pack. The book's run fetched prices live and Yahoo returned more decimal places than it displays, so its market values carry a floating-point tail: 649,305.01 rather than 649,305.00. The snapshot on this site stores prices at two decimals, so this page prints the round cent. The chapter treats that tail as a lesson in its own right, and the fix is to round the price to the vendor's stated precision before multiplying.</p>
+<p>One small difference from the course pack. The course's run fetched prices live and Yahoo returned more decimal places than it displays, so its market values carry a floating-point tail: 649,305.01 rather than 649,305.00. The snapshot on this site stores prices at two decimals, so this page prints the round cent. The chapter treats that tail as a lesson in its own right, and the fix is to round the price to the vendor's stated precision before multiplying.</p>
 <p>Change the day-move limit to 1 and run it again. QQQ moved 0.63 percent and nothing fires, because no holding moved more than one percent that day. Drop it to 0.5 and QQQ and MSFT both appear. A threshold that never fires is not evidence of a clean book.</p>
 
 <h2>Where this lab goes next</h2>
-<p>Module 8 in the book carries a second half this page does not run: a language model writes the commentary from the template above, and the exercise is to catch it when it invents a number that is not in the table. That step needs a model, so it stays in the downloadable script and the book. The full script is at <a class="dl" href="labs/m08_nav_engine.py">m08_nav_engine.py</a>.</p>
+<p>Module 8 in the course carries a second half this page does not run: a language model writes the commentary from the template above, and the exercise is to catch it when it invents a number that is not in the table. That step needs a model, so it stays in the downloadable script and the book. The full script is at <a class="dl" href="labs/m08_nav_engine.py">m08_nav_engine.py</a>.</p>
 
-<footer><div>Companion site to <strong>AI in Finance: The Complete Crash Course</strong> by Tejas Jadhav, CFA, FRM. Part of the AI and Practical Finance Series.</div>
+<footer><div>Companion site to the course <strong>AI in Finance: The Complete Crash Course</strong>, taught by Tejas Jadhav, CFA, FRM.</div>
 <div style="margin-top:8px">Education only. Not investment, legal or tax advice. The fund on this page is a constructed example and is not a real fund. Independent publication, not affiliated with or endorsed by any company or tool named on this site.</div></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/pyodide/v314.0.7/full/pyodide.js"></script>

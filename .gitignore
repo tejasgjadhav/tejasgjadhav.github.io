@@ -31,3 +31,13 @@ kdp-dashboard/
 trade-regimes-website/
 voicebox/
 vt-ocs/
+
+# Personal second brain. Local notes only. Never republish without a review.
+wiki/
+
+# Working notes and agent instructions. These were readable at
+# tejasgjadhav.github.io/<name>.md. They stay on disk and are not published.
+CLAUDE.md
+HANDOFF.md
+HANDOFF-*.md
+seo-*.md

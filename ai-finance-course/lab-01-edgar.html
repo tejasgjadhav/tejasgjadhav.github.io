@@ -124,7 +124,7 @@ print("Now open the 10-K on sec.gov and match one line against the printed state
 <pre id="out" class="out">Waiting for Python to start.</pre>
 
 <h2>What you should see</h2>
-<p class="lede">The book quotes one run of this lab. Chapter 1 prints this table.</p>
+<p class="lede">The course quotes one run of this lab. Module 1 prints this table.</p>
 <pre>Fiscal year ended                         2023-09-30    2024-09-28    2025-09-27
 Net sales                                    383,285       391,035       416,161
 Cost of sales                                214,137       210,352       220,960
@@ -139,9 +139,9 @@ Net income                                    96,995        93,736       112,010
 <p>Switch the dropdown to Microsoft and one line changes behaviour. Microsoft does not tag <code>SellingGeneralAndAdministrativeExpense</code> in its company facts, so that row prints <em>not tagged</em> and both subtotal checks still run on the lines that are there. That is the honest result, and it is what you want a checker to do. A model asked to fill the gap would have written a number.</p>
 
 <h2>Where this lab goes next</h2>
-<p>Module 1 in the book carries a second half this page does not run: a prompt that asks a language model to extract the same statement into JSON, so you can compare what the model read against what the code computed. That step needs a model, so it stays in the downloadable script and the book. The prompt is at <a class="dl" href="labs/m01_extract_prompt.txt">m01_extract_prompt.txt</a> and the full script is at <a class="dl" href="labs/m01_edgar_pnl.py">m01_edgar_pnl.py</a>.</p>
+<p>Module 1 in the course carries a second half this page does not run: a prompt that asks a language model to extract the same statement into JSON, so you can compare what the model read against what the code computed. That step needs a model, so it stays in the downloadable script and the book. The prompt is at <a class="dl" href="labs/m01_extract_prompt.txt">m01_extract_prompt.txt</a> and the full script is at <a class="dl" href="labs/m01_edgar_pnl.py">m01_edgar_pnl.py</a>.</p>
 
-<footer><div>Companion site to <strong>AI in Finance: The Complete Crash Course</strong> by Tejas Jadhav, CFA, FRM. Part of the AI and Practical Finance Series.</div>
+<footer><div>Companion site to the course <strong>AI in Finance: The Complete Crash Course</strong>, taught by Tejas Jadhav, CFA, FRM.</div>
 <div style="margin-top:8px">Education only. Not investment, legal or tax advice. Every figure on this page comes from a dated public filing and is labelled with its date. Independent publication, not affiliated with or endorsed by any company or tool named on this site.</div></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/pyodide/v314.0.7/full/pyodide.js"></script>

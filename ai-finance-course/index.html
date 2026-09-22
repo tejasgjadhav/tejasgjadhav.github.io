@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI in Finance Crash Course &middot; companion resources</title>
-<meta name="description" content="Slides and runnable labs that accompany the book AI in Finance: The Complete Crash Course by Tejas Jadhav, CFA, FRM.">
+<meta name="description" content="Slides and runnable labs that accompany the course AI in Finance: The Complete Crash Course, taught by Tejas Jadhav, CFA, FRM.">
 <style>
 :root{--paper:#FCFAF5;--ink:#1B1B1B;--green:#1E4D3A;--copper:#B8622B;--sand:#F4EFE6;--rule:#D9D2C4;--slate:#4A4A4A}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -32,7 +32,7 @@ pre{font-family:Menlo,monospace;font-size:13px;background:#1B2B24;color:#E8EFE9;
 footer{border-top:1px solid var(--rule);margin-top:56px;padding:26px 0 44px;font-size:13.5px;color:var(--slate)}
 .pill{display:inline-block;font-family:"Gill Sans",sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--sand);color:var(--green);padding:3px 9px;border-radius:20px;margin-left:8px}
 
-/* Phones. A QR code in a printed book is scanned with a phone, so this is the
+/* Phones. A QR code on a printed handout is scanned with a phone, so this is the
    arrival path that matters most. The four-column module table cannot shrink
    below about 490px because filenames do not break, which made the whole page
    zoom out. On narrow screens each row becomes a stacked block instead. */
@@ -63,7 +63,7 @@ footer{border-top:1px solid var(--rule);margin-top:56px;padding:26px 0 44px;font
 <header><div class="wrap">
 <div class="kick">Companion resources</div>
 <h1>AI in Finance Crash Course</h1>
-<p class="sub">The slides and the runnable labs that go with the book <em>AI in Finance: The Complete Crash Course</em>.</p>
+<p class="sub">The slides and the runnable labs that go with the course <em>AI in Finance: The Complete Crash Course</em>.</p>
 <p class="by">Tejas Jadhav, CFA, FRM</p>
 </div></header>
 <div class="wrap">
@@ -71,7 +71,7 @@ footer{border-top:1px solid var(--rule);margin-top:56px;padding:26px 0 44px;font
 <div class="note"><strong>Everything here is free and needs no API key.</strong> The labs run on public data: SEC EDGAR for filings and Yahoo Finance for prices. You need Python 3.9 or newer and about ten minutes per lab. The language-model steps print the exact prompt if you have no model connected, so you can paste it into any assistant.</div>
 
 <h2>What this is</h2>
-<p class="lede">These are the slides and labs from a course that is actually taught, not a set of files made to go with a book.</p>
+<p class="lede">These are the slides and labs from a course that is actually taught, not a set of files made to go with a reading list.</p>
 <p>The ten modules here are the ten sessions of an elective taught to postgraduate finance students. Each session runs for three hours. The deck on this page is the deck used in class, and the lab is the thing the students build.</p>
 <p><strong>You do not need a finance degree, and you do not need to code.</strong> Every finance term is explained the first time it appears. Every lab is a short Python script, printed in full and explained line by line. If you would rather not run code, each lab prints the exact prompt so you can paste it into any free AI chat and get the same result by hand.</p>
 <p><strong>The results are shown as they came out, including the failures.</strong> The trading lab backtests a rule that loses to the index. The valuation lab prints a model's commentary that is fluent, confident and wrong, with the engine's own answer beside it. A page that only shows its successes cannot be told apart from a slide deck.</p>
@@ -85,7 +85,7 @@ python3 m01_edgar_pnl.py AAPL</pre>
 <p>Or run four of the labs in this browser tab, with nothing installed. The <a href="labs.html">live labs</a> load Python into the page and read a dated snapshot of the same public data. The code pane is editable and the Run button executes what is in it.</p>
 
 <h2>The ten modules</h2>
-<p class="lede">Each module is one chapter of the book: an hour of concepts, an hour of architecture, an hour building the thing.</p>
+<p class="lede">Each module is one session of the course: an hour of concepts, an hour of architecture, an hour building the thing.</p>
 <table>
 <tr><th>Module</th><th>What you build</th><th>Slides</th><th>Lab</th></tr>
 <tr><td class="m">01</td><td>Foundations of agentic AI. A script that pulls a 10-K income statement from SEC EDGAR and checks its own subtotals.</td><td><a class="dl" href="slides/Module-01-Foundations-of-Agentic-AI.pptx">PPTX</a></td><td><a class="dl" href="labs/m01_edgar_pnl.py">m01_edgar_pnl.py</a><a class="dl" href="labs/m01_extract_prompt.txt">prompt</a></td></tr>
@@ -97,18 +97,18 @@ python3 m01_edgar_pnl.py AAPL</pre>
 <tr><td class="m">07</td><td>Governance, security and cost. A model inventory record, a prompt-injection test, and the rules that stop it.</td><td><a class="dl" href="slides/Module-07-AI-Governance-Security-and-Cost.pptx">PPTX</a></td><td><a class="dl" href="labs/m07_output_check.py">m07_output_check.py</a></td></tr>
 <tr><td class="m">08</td><td>Fund administration. A daily NAV engine with an exception list and AI-written commentary.</td><td><a class="dl" href="slides/Module-08-Fund-Administration-NAV.pptx">PPTX</a></td><td><a class="dl" href="labs/m08_nav_engine.py">m08_nav_engine.py</a><a class="dl" href="labs/m08_holdings.csv">holdings.csv</a></td></tr>
 <tr><td class="m">09</td><td>Market commentary and valuation. A dashboard with a simplified DCF and a morning note the model drafts.</td><td><a class="dl" href="slides/Module-09-Market-Commentary-and-Dashboards.pptx">PPTX</a></td><td><a class="dl" href="labs/m09_dashboard.py">m09_dashboard.py</a></td></tr>
-<tr><td class="m">10</td><td>Capstone. The ten deliverables assembled into one deployed system, with the rubric and a mock panel.</td><td><a class="dl" href="slides/Module-10-Capstone-Integrated-System.pptx">PPTX</a></td><td><span class="soon">in the book</span></td></tr>
+<tr><td class="m">10</td><td>Capstone. The ten deliverables assembled into one deployed system, with the rubric and a mock panel.</td><td><a class="dl" href="slides/Module-10-Capstone-Integrated-System.pptx">PPTX</a></td><td><span class="soon">in the course</span></td></tr>
 </table>
 
 <h2>How the labs behave</h2>
 <p class="lede">Three rules hold across every script here.</p>
 <p><strong>The arithmetic happens in Python, not in the model.</strong> Every number you see was computed by code you can read. The language model writes sentences about those numbers and nothing else.</p>
 <p><strong>Every figure is labelled.</strong> A backtest says it is a backtest. A simulation says it is a simulation. A constructed example says so on the same line. Nothing here is a live track record, and nothing here is investment advice.</p>
-<p><strong>The browser labs match the book. The downloadable scripts will not.</strong> Each lab on this site reads a stored snapshot, so it prints the same figures the book prints and you can check one against the other. The scripts in <code>labs/</code> pull the most recent data at the moment you run them, so their numbers move. The book quotes one dated run so you can see the shape of the output.</p>
+<p><strong>The browser labs match the course. The downloadable scripts will not.</strong> Each lab on this site reads a stored snapshot, so it prints the same figures the course prints and you can check one against the other. The scripts in <code>labs/</code> pull the most recent data at the moment you run them, so their numbers move. The course quotes one dated run so you can see the shape of the output.</p>
 
 <h2>Licence and use</h2>
-<p>The lab code is free to read, run and modify for your own learning. The slides are the author's teaching material, shared for readers of the book and for students of the course. Please do not resell either, or present them as your own.</p>
+<p>The lab code is free to read, run and modify for your own learning. The slides are the author's teaching material, shared for students of the course. Please do not resell either, or present them as your own.</p>
 
-<footer><div>Companion site to <strong>AI in Finance: The Complete Crash Course</strong> by Tejas Jadhav, CFA, FRM. Part of the AI and Practical Finance Series.</div>
+<footer><div>Companion site to the course <strong>AI in Finance: The Complete Crash Course</strong>, taught by Tejas Jadhav, CFA, FRM.</div>
 <div style="margin-top:8px">Education only. Not investment, legal or tax advice. Independent publication, not affiliated with or endorsed by any company or tool named on this site.</div></footer>
 </div></body></html>
