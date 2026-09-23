@@ -1,8 +1,8 @@
 # AI in Finance Crash Course
 
-Companion site for the course **AI in Finance: The Complete Crash Course**, taught by Tejas Jadhav, CFA, FRM.
+Companion site for the course **AI in Finance: The Complete Crash Course**.
 
-Live at https://tejasgjadhav.github.io/AIFinanceCrashcourse/
+Live at https://tejasgjadhav.github.io/ai-finance-course/
 
 - `slides/` teaching decks, one per module
 - `labs/` the runnable lab scripts from the course (public data, no API key needed)
