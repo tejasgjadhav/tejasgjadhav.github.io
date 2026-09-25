@@ -1,4 +1,8 @@
+# Crawling stays allowed on purpose.
+# The home page carries <meta name="robots" content="noindex">, and Google can
+# only act on that if it is still allowed to fetch the page. Disallowing here
+# would block the crawl, leave the old entry in the index, and make removal
+# slower rather than faster.
+
 User-agent: *
 Allow: /
-
-Sitemap: https://tejasgjadhav.github.io/sitemap.xml
