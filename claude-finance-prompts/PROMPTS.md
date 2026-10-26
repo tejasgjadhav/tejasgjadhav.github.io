@@ -75,7 +75,7 @@ Then change one layer. Change three at once and you learn nothing about which on
 ### PROMPT 1 — The Benjamin Graham Margin of Safety & Net-Net Screen
 
 ```
-CONTEXT: Attached: the 1,617 US-listed holdings screening file (NBIM_13F_2026Q2_holdings.csv) with balance sheet and ten-year earnings fields already pulled. Output feeds the value watchlist review. Data vintage: last reported fiscal year. Source: https://www.sec.gov/Archives/edgar/data/1374170/000137417026000069/Q2_2026.xml
+CONTEXT: Attached: the 1,617 US-listed holdings universe (NBIM_13F_2026Q2_holdings.csv), with balance sheet and ten-year earnings fields pulled from each issuer's own filings into your screening file. Output feeds the value watchlist review. Data vintage: last reported fiscal year. Source: https://www.sec.gov/Archives/edgar/data/1374170/000137417026000069/Q2_2026.xml
 
 ROLE: Senior value analyst applying Benjamin Graham's documented Security Analysis methodology.
 
@@ -2115,7 +2115,7 @@ TONE: Practical and platform-neutral. Describe what the interface does today and
 ### PROMPT 105 — The Institutional Monte Carlo Portfolio VaR Implementation
 
 ```
-CONTEXT: The repo holds position-level holdings for NBIM_13F_2026Q2_holdings.csv and a daily return history covering 1 April 2026 to 30 June 2026. CLAUDE.md already carries the standing validation rule. Python environment is set up. Source: https://www.sec.gov/Archives/edgar/data/1374170/000137417026000069/Q2_2026.xml
+CONTEXT: The repo holds the position-level holdings from NBIM_13F_2026Q2_holdings.csv, with a daily return history for 1 April 2026 to 30 June 2026 from your own market-data feed. CLAUDE.md already carries the standing validation rule. Python environment is set up. Source: https://www.sec.gov/Archives/edgar/data/1374170/000137417026000069/Q2_2026.xml
 
 ROLE: Quantitative risk engineer — specifying and reviewing Monte Carlo VaR in Python.
 
@@ -2192,7 +2192,7 @@ TONE: Engineering register. Report failures as failures. Paper results labelled 
 ### PROMPT 109 — The Institutional Investment Strategy Backtesting Engine
 
 ```
-CONTEXT: Price and fundamental history for 1,617 US-listed holdings sits in the repo as dated CSVs. Results feed a strategy review, so the walk-forward split has to be fixed before any run. Source: https://www.sec.gov/Archives/edgar/data/1374170/000137417026000069/Q2_2026.xml
+CONTEXT: Price and fundamental history for the 1,617 US-listed names in NBIM_13F_2026Q2_holdings.csv sits in the repo as dated CSVs from your own market-data feed. Results feed a strategy review, so the walk-forward split has to be fixed before any run. Source: https://www.sec.gov/Archives/edgar/data/1374170/000137417026000069/Q2_2026.xml
 
 ROLE: Quantitative strategist — specifying and reviewing backtesting engine.
 
@@ -2230,7 +2230,7 @@ TONE: Engineering register. Report failures as failures. Paper results labelled 
 ### PROMPT 111 — The Institutional Performance Analytics & Attribution
 
 ```
-CONTEXT: Available: dated cash flows, valuations, and sector weights for NBIM_13F_2026Q2_holdings.csv and its benchmark. The output supports a composite report, so methodology choices have to be documented in code. Source: https://www.sec.gov/Archives/edgar/data/1374170/000137417026000069/Q2_2026.xml
+CONTEXT: Available: the holdings in NBIM_13F_2026Q2_holdings.csv, with dated cash flows, valuations and sector weights for the composite and its benchmark from your own records. The output supports a composite report, so methodology choices have to be documented in code. Source: https://www.sec.gov/Archives/edgar/data/1374170/000137417026000069/Q2_2026.xml
 
 ROLE: Performance analytics engineer — specifying GIPS-compatible performance suite.
 
